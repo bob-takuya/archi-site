@@ -10,8 +10,8 @@ export default function BuildingsPage() {
   const [filteredBuildings, setFilteredBuildings] = useState(buildingsData);
 
   // Get unique architects and years for filter dropdowns
-  const architects = ['', ...new Set(buildingsData.map((building) => building.architect))].sort();
-  const years = ['', ...new Set(buildingsData.map((building) => building.year.toString()))].sort((a, b) => b.localeCompare(a));
+  const architects = ['', ...Array.from(new Set(buildingsData.map((building) => building.architect)))].sort();
+  const years = ['', ...Array.from(new Set(buildingsData.map((building) => building.year.toString())))].sort((a, b) => b.localeCompare(a));
 
   // Filter buildings when search term or filters change
   useEffect(() => {
