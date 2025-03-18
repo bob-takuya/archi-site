@@ -25,7 +25,7 @@ export default function MapPage() {
   }, [selectedPrefecture]);
 
   // Get unique prefectures for the filter dropdown
-  const prefectures = ['all', ...new Set(buildingsData.map((building) => building.prefecture))].sort();
+  const prefectures = ['all', ...Array.from(new Set(buildingsData.map((building) => building.prefecture)))].sort();
 
   return (
     <>
