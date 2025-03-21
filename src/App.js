@@ -10,6 +10,7 @@ import ArchitectureSinglePage from './pages/ArchitectureSinglePage';
 import ArchitectsPage from './pages/ArchitectsPage';
 import ArchitectSinglePage from './pages/ArchitectSinglePage';
 import MapPage from './pages/MapPage';
+import DbExplorer from './pages/DbExplorer';
 
 const theme = createTheme({
   palette: {
@@ -53,6 +54,7 @@ function App() {
           <Route path="/architects" element={<ArchitectsPage />} />
           <Route path="/architects/:id" element={<ArchitectSinglePage />} />
           <Route path="/map" element={<MapPage />} />
+          <Route path="/db-explorer" element={<DbExplorer />} />
         </Routes>
       </main>
       <Footer />

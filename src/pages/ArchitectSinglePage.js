@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom';
 import { 
   Container, 
   Typography, 
@@ -9,6 +9,7 @@ import {
   Chip,
   Divider,
   Button,
+  ButtonGroup,
   CircularProgress,
   Table,
   TableBody,
@@ -17,7 +18,9 @@ import {
   TableRow,
   Card,
   CardContent,
-  CardActionArea
+  CardActionArea,
+  Tooltip,
+  Link
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -26,104 +29,261 @@ import SchoolIcon from '@mui/icons-material/School';
 import PersonIcon from '@mui/icons-material/Person';
 import WorkIcon from '@mui/icons-material/Work';
 import PublicIcon from '@mui/icons-material/Public';
+import LanguageIcon from '@mui/icons-material/Language';
+import SearchIcon from '@mui/icons-material/Search';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import LinkIcon from '@mui/icons-material/Link';
+import CakeIcon from '@mui/icons-material/Cake';
+import CategoryIcon from '@mui/icons-material/Category';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
+import { getArchitectById, getAllArchitects } from '../services/DbService';
+import MapComponent from '../components/Map';
+import ArchitectureList from '../components/ArchitectureList';
+
+// Wikipediaアイコンコンポーネント
+const WikipediaIcon = () => (
+  <Box
+    component="span"
+    sx={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 24,
+      height: 24,
+    }}
+  >
+    <Typography
+      variant="caption"
+      component="span"
+      sx={{
+        fontFamily: 'serif',
+        fontWeight: 'bold',
+        fontSize: '16px',
+      }}
+    >
+      W
+    </Typography>
+  </Box>
+);
 
 const ArchitectSinglePage = () => {
   const { id } = useParams();
   const [architect, setArchitect] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [teacherInfo, setTeacherInfo] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchArchitect = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/architects/${id}`);
-        if (!response.ok) {
-          throw new Error('建築家の取得に失敗しました');
+        const data = await getArchitectById(parseInt(id));
+        if (!data) {
+          setError('建築家情報が見つかりませんでした。');
+          setLoading(false);
+          return;
         }
-        const data = await response.json();
         setArchitect(data);
-      } catch (error) {
-        console.error('Error fetching architect:', error);
-        setError(error.message);
+        
+        // 教師情報を取得
+        const teachers = [];
+        if (data.teacher1) {
+          const teacherInfo = { name: data.teacher1, id: null };
+          try {
+            // 教師の名前からIDを検索する処理（実装は省略）
+            // 実際のデータベースクエリに置き換える必要があります
+            teacherInfo.id = await findArchitectIdByName(data.teacher1);
+          } catch (err) {
+            console.error('教師情報の取得に失敗:', err);
+          }
+          teachers.push(teacherInfo);
+        }
+        
+        if (data.teacher2) {
+          const teacherInfo = { name: data.teacher2, id: null };
+          try {
+            teacherInfo.id = await findArchitectIdByName(data.teacher2);
+          } catch (err) {
+            console.error('教師情報の取得に失敗:', err);
+          }
+          teachers.push(teacherInfo);
+        }
+        
+        if (data.teacher3) {
+          const teacherInfo = { name: data.teacher3, id: null };
+          try {
+            teacherInfo.id = await findArchitectIdByName(data.teacher3);
+          } catch (err) {
+            console.error('教師情報の取得に失敗:', err);
+          }
+          teachers.push(teacherInfo);
+        }
+        
+        setTeacherInfo(teachers);
+      } catch (err) {
+        console.error('建築家データ取得エラー:', err);
+        setError('建築家情報の読み込み中にエラーが発生しました。');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchArchitect();
+    if (id) {
+      fetchArchitect();
+    }
   }, [id]);
+
+  // 建築家名からIDを検索する関数（実際のアプリでは適切に実装する必要があります）
+  const findArchitectIdByName = async (name) => {
+    // この関数は、既存の建築家データベースから名前でIDを検索する処理を実装します
+    // 例: SELECT id FROM architects WHERE name = ?
+    // サンプルとしてnullを返しています
+    return null;
+  };
+
+  // 学校・学部情報をフォーマットする関数
+  const formatEducation = () => {
+    if (!architect) return null;
+    
+    const education = [];
+    
+    if (architect.school) {
+      let eduStr = architect.school;
+      if (architect.faculty) {
+        eduStr += ` ${architect.faculty}`;
+      }
+      education.push(eduStr);
+    }
+    
+    if (architect.schoolAbroad) {
+      education.push(architect.schoolAbroad);
+    }
+    
+    return education.length > 0 ? education.join('、') : null;
+  };
+
+  // 教師情報をフォーマットする関数
+  const formatTeachers = () => {
+    if (!teacherInfo || teacherInfo.length === 0) return null;
+    
+    return teacherInfo.map((teacher, index) => (
+      <span key={index}>
+        {index > 0 && '、'}
+        {teacher.id ? (
+          <Link component={RouterLink} to={`/architects/${teacher.id}`} color="inherit" underline="hover">
+            {teacher.name}
+          </Link>
+        ) : (
+          teacher.name
+        )}
+      </span>
+    ));
+  };
+
+  // タグをクリックしたときの処理
+  const handleTagClick = (tagType, value) => {
+    if (!value) return;
+    
+    let searchParam = '';
+    
+    switch (tagType) {
+      case 'nationality':
+        searchParam = `nationality=${encodeURIComponent(value)}`;
+        break;
+      case 'born':
+        searchParam = `birthyear_from=${encodeURIComponent(value)}&birthyear_to=${encodeURIComponent(value)}`;
+        break;
+      case 'died':
+        searchParam = `deathyear=${encodeURIComponent(value)}`;
+        break;
+      case 'category':
+        searchParam = `category=${encodeURIComponent(value)}`;
+        break;
+      default:
+        return;
+    }
+    
+    navigate(`/architects?${searchParam}`);
+  };
+
+  // Google検索とWikipediaのURL生成
+  const getGoogleSearchUrl = (architectName, nationality) => {
+    const searchQuery = `${architectName} ${nationality || ''} 建築家`;
+    return `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+  };
+
+  const getWikipediaSearchUrl = (architectName) => {
+    return `https://ja.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(architectName)}`;
+  };
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container>
-        <Typography variant="h5" color="error" sx={{ textAlign: 'center', my: 4 }}>
-          エラーが発生しました: {error}
-        </Typography>
-        <Button
-          variant="contained"
-          component={RouterLink}
-          to="/architects"
-          startIcon={<ArrowBackIcon />}
-        >
-          建築家一覧に戻る
-        </Button>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+          <CircularProgress />
+        </Box>
       </Container>
     );
   }
 
-  if (!architect) {
+  if (error || !architect) {
     return (
-      <Container>
-        <Typography variant="h5" sx={{ textAlign: 'center', my: 4 }}>
-          建築家が見つかりませんでした
-        </Typography>
-        <Button
-          variant="contained"
-          component={RouterLink}
-          to="/architects"
-          startIcon={<ArrowBackIcon />}
-        >
-          建築家一覧に戻る
-        </Button>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Paper sx={{ p: 3 }}>
+          <Typography variant="h5" color="error" gutterBottom>
+            エラー
+          </Typography>
+          <Typography paragraph>
+            {error || '建築家情報が見つかりませんでした。'}
+          </Typography>
+          <Button 
+            variant="outlined" 
+            startIcon={<ArrowBackIcon />} 
+            onClick={() => navigate(-1)}
+          >
+            戻る
+          </Button>
+        </Paper>
       </Container>
     );
   }
 
-  // 生年と没年の処理
-  const birthYear = architect.ZAT_BIRTHYEAR > 0 ? architect.ZAT_BIRTHYEAR : null;
-  const deathYear = architect.ZAT_DEATHYEAR > 0 ? architect.ZAT_DEATHYEAR : null;
-  
-  // 生年月日と没年月日の処理
-  const formatDate = (year, month, day) => {
-    if (!year || year <= 0) return null;
-    
-    let dateStr = `${year}年`;
-    if (month && month > 0) dateStr += `${month}月`;
-    if (day && day > 0) dateStr += `${day}日`;
-    
-    return dateStr;
-  };
-  
-  const birthdate = formatDate(
-    architect.ZAT_BIRTHYEAR, 
-    architect.ZAT_BIRTHMONTH, 
-    architect.ZAT_BIRTHDAY
-  );
-  
-  const deathdate = formatDate(
-    architect.ZAT_DEATHYEAR, 
-    architect.ZAT_DEATHMONTH, 
-    architect.ZAT_DEATHDAY
-  );
+  // 作品からタグを収集し、重複を除去
+  const allTags = new Set();
+  if (architect.works) {
+    architect.works.forEach(work => {
+      if (work.tag) {
+        const tags = work.tag.split(',');
+        tags.forEach(tag => {
+          const trimmedTag = tag.trim();
+          if (trimmedTag && !trimmedTag.includes('の追加建築')) {
+            allTags.add(trimmedTag);
+          }
+        });
+      }
+    });
+  }
+
+  // 建築家固有のタグを生成
+  const architectTags = [];
+  if (architect.nationality) {
+    architectTags.push(`nationality:${architect.nationality}`);
+  }
+  if (architect.birthYear > 0) {
+    // 10年単位の年代を計算
+    const decade = Math.floor(architect.birthYear / 10) * 10;
+    architectTags.push(`born:${decade}s`);
+  }
+  if (architect.deathYear > 0) {
+    architectTags.push(`died:${architect.deathYear}`);
+  }
+  if (architect.category) {
+    architectTags.push(`category:${architect.category}`);
+  }
+  if (architect.school) {
+    architectTags.push(`school:${architect.school}`);
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -139,47 +299,51 @@ const ArchitectSinglePage = () => {
 
       <Paper sx={{ p: 3, mb: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          {architect.ZAT_ARCHITECT || '不明'}
+          {architect.name || '不明'}
         </Typography>
-        {architect.ZAT_ARCHITECT_EN && (
-          <Typography variant="h5" color="text.secondary" gutterBottom>
-            {architect.ZAT_ARCHITECT_EN}
-          </Typography>
-        )}
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, my: 3 }}>
-          {architect.ZAT_OFFICE && (
-            <Chip 
-              icon={<BusinessIcon />} 
-              label={architect.ZAT_OFFICE} 
-              variant="outlined" 
-            />
-          )}
-          {architect.ZAT_PREFECTURE && (
-            <Chip 
-              icon={<LocationOnIcon />} 
-              label={architect.ZAT_PREFECTURE} 
-              variant="outlined" 
-            />
-          )}
-          {architect.ZAT_NATIONALITY && (
+          {/* 建築家固有のタグを表示 */}
+          {architect.nationality && (
             <Chip 
               icon={<PublicIcon />} 
-              label={architect.ZAT_NATIONALITY} 
+              label={`nationality:${architect.nationality}`} 
               variant="outlined" 
+              onClick={() => handleTagClick('nationality', architect.nationality)}
+              clickable
             />
           )}
-          {birthdate && !deathdate && (
+          {architect.birthYear > 0 && (
             <Chip 
-              icon={<PersonIcon />} 
-              label={birthdate} 
+              icon={<CakeIcon />} 
+              label={`born:${Math.floor(architect.birthYear / 10) * 10}s`} 
               variant="outlined" 
+              onClick={() => handleTagClick('born', Math.floor(architect.birthYear / 10) * 10)}
+              clickable
             />
           )}
-          {birthdate && deathdate && (
+          {architect.deathYear > 0 && (
             <Chip 
-              icon={<PersonIcon />} 
-              label={`${birthdate} - ${deathdate}`} 
+              icon={<PersonOffIcon />} 
+              label={`died:${architect.deathYear}`} 
+              variant="outlined" 
+              onClick={() => handleTagClick('died', architect.deathYear)}
+              clickable
+            />
+          )}
+          {architect.category && (
+            <Chip 
+              icon={<CategoryIcon />} 
+              label={`category:${architect.category}`} 
+              variant="outlined" 
+              onClick={() => handleTagClick('category', architect.category)}
+              clickable
+            />
+          )}
+          {architect.office && (
+            <Chip 
+              icon={<BusinessIcon />} 
+              label={architect.office} 
               variant="outlined" 
             />
           )}
@@ -187,163 +351,226 @@ const ArchitectSinglePage = () => {
 
         <Divider sx={{ my: 3 }} />
 
+        {/* リンクボタングループ - 区切り線の下に配置 */}
+        <Box sx={{ mb: 3, display: 'flex', flexDirection: 'row', gap: 1 }}>
+          {/* 事務所/建築家のホームページURLがある場合はボタンを表示 */}
+          {architect.website && (
+            <Tooltip title="公式ホームページ">
+              <Button
+                href={architect.website.startsWith('http') ? architect.website : `http://${architect.website}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<LinkIcon />}
+                variant="contained"
+                size="small"
+                sx={{ 
+                  backgroundColor: '#4caf50', 
+                  color: '#ffffff',
+                  '&:hover': { 
+                    backgroundColor: '#388e3c',
+                  }
+                }}
+              >
+                ホームページ
+              </Button>
+            </Tooltip>
+          )}
+          
+          <Tooltip title="Google検索">
+            <Button
+              href={getGoogleSearchUrl(architect.name, architect.nationality)}
+              target="_blank"
+              rel="noopener noreferrer"
+              startIcon={<SearchIcon />}
+              variant="contained"
+              size="small"
+              sx={{ 
+                backgroundColor: '#4285F4', 
+                color: '#ffffff',
+                '&:hover': { 
+                  backgroundColor: '#3367D6',
+                }
+              }}
+            >
+              検索
+            </Button>
+          </Tooltip>
+          
+          <Tooltip title="Wikipediaで検索">
+            <Button
+              href={getWikipediaSearchUrl(architect.name)}
+              target="_blank"
+              rel="noopener noreferrer"
+              startIcon={<WikipediaIcon />}
+              variant="contained"
+              size="small"
+              sx={{ 
+                backgroundColor: '#333333', 
+                color: '#ffffff',
+                '&:hover': { 
+                  backgroundColor: '#222222',
+                }
+              }}
+            >
+              Wikipedia
+            </Button>
+          </Tooltip>
+        </Box>
+
         <TableContainer component={Paper} variant="outlined" sx={{ mb: 4 }}>
           <Table>
             <TableBody>
-              {architect.ZAT_OFFICE && (
-                <TableRow>
-                  <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
-                    <Typography variant="subtitle2">事務所</Typography>
-                  </TableCell>
-                  <TableCell>
-                    {architect.ZAT_OFFICE}
-                    {architect.ZAT_OFFICE_EN && ` (${architect.ZAT_OFFICE_EN})`}
-                  </TableCell>
-                </TableRow>
-              )}
-              
-              {(birthdate || deathdate) && (
-                <TableRow>
-                  <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
-                    <Typography variant="subtitle2">生年月日 - 没年月日</Typography>
-                  </TableCell>
-                  <TableCell>
-                    {birthdate || '不明'} {deathdate ? `- ${deathdate}` : ''}
-                  </TableCell>
-                </TableRow>
-              )}
-              
-              {architect.ZAT_PREFECTURE && (
-                <TableRow>
-                  <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
-                    <Typography variant="subtitle2">都道府県</Typography>
-                  </TableCell>
-                  <TableCell>{architect.ZAT_PREFECTURE}</TableCell>
-                </TableRow>
-              )}
-              
-              {architect.ZAT_NATIONALITY && (
+              {architect.nationality && (
                 <TableRow>
                   <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
                     <Typography variant="subtitle2">国籍</Typography>
                   </TableCell>
-                  <TableCell>
-                    {architect.ZAT_NATIONALITY}
-                    {architect.ZAT_NATIONALITY_ENG && ` (${architect.ZAT_NATIONALITY_ENG})`}
-                  </TableCell>
+                  <TableCell>{architect.nationality}</TableCell>
                 </TableRow>
               )}
               
-              {architect.ZAT_SCHOOL && (
+              {(architect.birthYear > 0 || architect.deathYear > 0) && (
                 <TableRow>
                   <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
-                    <Typography variant="subtitle2">学歴</Typography>
+                    <Typography variant="subtitle2">生年 - 没年</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{architect.ZAT_SCHOOL}</Typography>
-                    {architect.ZAT_SCHOOL_ABROAD && (
-                      <Typography variant="body2" sx={{ mt: 1 }}>{architect.ZAT_SCHOOL_ABROAD}</Typography>
-                    )}
+                    {architect.birthYear > 0 ? `${architect.birthYear}年` : '不明'} 
+                    {architect.deathYear > 0 ? ` - ${architect.deathYear}年` : ''}
                   </TableCell>
                 </TableRow>
               )}
-              
-              {(architect.ZAT_TEACHER1 || architect.ZAT_TEACHER2 || architect.ZAT_TEACHER3) && (
+
+              {architect.office && (
                 <TableRow>
                   <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
-                    <Typography variant="subtitle2">師事</Typography>
+                    <Typography variant="subtitle2">事務所</Typography>
                   </TableCell>
-                  <TableCell>
-                    {architect.ZAT_TEACHER1 && <Typography>{architect.ZAT_TEACHER1}</Typography>}
-                    {architect.ZAT_TEACHER2 && <Typography>{architect.ZAT_TEACHER2}</Typography>}
-                    {architect.ZAT_TEACHER3 && <Typography>{architect.ZAT_TEACHER3}</Typography>}
+                  <TableCell>{architect.office}</TableCell>
+                </TableRow>
+              )}
+
+              {architect.prefecture && (
+                <TableRow>
+                  <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
+                    <Typography variant="subtitle2">拠点</Typography>
                   </TableCell>
+                  <TableCell>{architect.prefecture}</TableCell>
                 </TableRow>
               )}
               
-              {(architect.ZAT_FROM_OFFICE1 || architect.ZAT_FROM_OFFICE2 || architect.ZAT_FROM_OFFICE3) && (
+              {architect.nameEn && (
                 <TableRow>
                   <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
-                    <Typography variant="subtitle2">出身事務所</Typography>
+                    <Typography variant="subtitle2">英語表記</Typography>
+                  </TableCell>
+                  <TableCell>{architect.nameEn}</TableCell>
+                </TableRow>
+              )}
+
+              {/* 教育背景 */}
+              {(architect.school || architect.faculty || architect.schoolAbroad) && (
+                <TableRow>
+                  <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
+                    <Typography variant="subtitle2">教育背景</Typography>
                   </TableCell>
                   <TableCell>
-                    {architect.ZAT_FROM_OFFICE1 && <Typography>{architect.ZAT_FROM_OFFICE1}</Typography>}
-                    {architect.ZAT_FROM_OFFICE2 && <Typography>{architect.ZAT_FROM_OFFICE2}</Typography>}
-                    {architect.ZAT_FROM_OFFICE3 && <Typography>{architect.ZAT_FROM_OFFICE3}</Typography>}
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <SchoolIcon sx={{ mr: 1, fontSize: '1rem', color: 'text.secondary' }} />
+                      <Typography variant="body2">{formatEducation()}</Typography>
+                    </Box>
                   </TableCell>
                 </TableRow>
               )}
-              
-              {architect.ZAT_WEBSITE && (
+
+              {/* 師事した建築家 */}
+              {(architect.teacher1 || architect.teacher2 || architect.teacher3) && (
                 <TableRow>
                   <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
-                    <Typography variant="subtitle2">ウェブサイト</Typography>
+                    <Typography variant="subtitle2">師事した建築家</Typography>
                   </TableCell>
                   <TableCell>
-                    <a href={architect.ZAT_WEBSITE} target="_blank" rel="noopener noreferrer">
-                      {architect.ZAT_WEBSITE}
-                    </a>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      {formatTeachers()}
+                    </Box>
                   </TableCell>
+                </TableRow>
+              )}
+
+              {/* カテゴリー */}
+              {architect.category && (
+                <TableRow>
+                  <TableCell component="th" sx={{ width: '30%', bgcolor: 'rgba(0, 0, 0, 0.03)' }}>
+                    <Typography variant="subtitle2">カテゴリー</Typography>
+                  </TableCell>
+                  <TableCell>{architect.category}</TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </TableContainer>
 
-        {architect.ZAT_DESCRIPTION && (
+        {/* 受賞歴・選定タグの表示 */}
+        {allTags.size > 0 && (
           <Box sx={{ mb: 4 }}>
             <Typography variant="h6" gutterBottom>
-              概要
+              受賞歴・選定
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+              {Array.from(allTags).map((tag, index) => (
+                <Chip 
+                  key={index}
+                  icon={<EmojiEventsIcon />}
+                  label={tag}
+                  onClick={() => handleTagClick('category', tag)}
+                  clickable
+                  color="secondary"
+                  variant="outlined"
+                  size="small"
+                />
+              ))}
+            </Box>
+          </Box>
+        )}
+
+        {architect.bio && (
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h6" gutterBottom>
+              経歴
             </Typography>
             <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
-              {architect.ZAT_DESCRIPTION}
+              {architect.bio}
             </Typography>
           </Box>
         )}
 
         {architect.works && architect.works.length > 0 && (
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h6" gutterBottom>
-              代表作
-            </Typography>
-            <Grid container spacing={3}>
-              {architect.works.map((work) => (
-                <Grid item key={work.id} xs={12} sm={6} md={4}>
-                  <Card 
-                    sx={{ 
-                      height: '100%', 
-                      display: 'flex', 
-                      flexDirection: 'column',
-                      transition: 'transform 0.2s',
-                      '&:hover': {
-                        transform: 'scale(1.02)',
-                      },
-                    }}
-                  >
-                    <CardActionArea component={RouterLink} to={`/architecture/${work.id}`}>
-                      <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography gutterBottom variant="subtitle1" component="h3">
-                          {work.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {work.year && work.year !== 0 ? work.year : '不明'} | {work.prefecture || '不明'} | {work.category || '不明'}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-              <Button 
-                variant="outlined" 
-                component={RouterLink} 
-                to={`/architecture?architect=${encodeURIComponent(architect.ZAT_ARCHITECT)}`}
-              >
-                すべての作品を見る
-              </Button>
+          <>
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="h6" gutterBottom>
+                作品マップ
+              </Typography>
+              {architect.works.some(work => work.latitude && work.longitude) ? (
+                <Box sx={{ height: '400px', width: '100%', mb: 3, border: '1px solid #eee', borderRadius: '4px', overflow: 'hidden' }}>
+                  <MapComponent 
+                    markers={architect.works.filter(work => work.latitude && work.longitude)}
+                    zoom={5}
+                  />
+                </Box>
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  位置情報が登録されている作品がありません。
+                </Typography>
+              )}
             </Box>
-          </Box>
+
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="h6" gutterBottom>
+                代表作品
+              </Typography>
+              <ArchitectureList architectures={architect.works} />
+            </Box>
+          </>
         )}
       </Paper>
     </Container>

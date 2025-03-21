@@ -19,12 +19,14 @@ import HomeIcon from '@mui/icons-material/Home';
 import ArchitectureIcon from '@mui/icons-material/AccountBalance';
 import PeopleIcon from '@mui/icons-material/People';
 import MapIcon from '@mui/icons-material/Map';
+import StorageIcon from '@mui/icons-material/Storage';
 
 const navLinks = [
   { title: 'ホーム', path: '/', icon: <HomeIcon /> },
   { title: '建築作品', path: '/architecture', icon: <ArchitectureIcon /> },
   { title: '建築家', path: '/architects', icon: <PeopleIcon /> },
-  { title: 'マップ', path: '/map', icon: <MapIcon /> }
+  { title: 'マップ', path: '/map', icon: <MapIcon /> },
+  { title: 'DBエクスプローラー', path: '/db-explorer', icon: <StorageIcon /> }
 ];
 
 const Header = () => {

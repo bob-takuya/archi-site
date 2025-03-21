@@ -1,0 +1,50 @@
+# Site settings
+title: 日本の建築マップ
+description: 建築学生向けの国内建築情報サイト
+baseurl: "/archi-site" # the subpath of your site, e.g. /blog
+url: "https://bob-takuya.github.io" # the base hostname & protocol for your site
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+# Collections
+collections:
+  buildings:
+    output: true
+    permalink: /buildings/:path/
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+      type: "buildings"
+    values:
+      layout: "building"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .github
+  - README.md
+  - LICENSE
+  - _backup
+  - Dockerfile
+  - docker-compose.yml
+
+# Plugins
+plugins:
+  - jekyll-seo-tag

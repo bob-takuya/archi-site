@@ -353,4 +353,43 @@ process.on('SIGINT', () => {
     console.log('データベース接続を閉じました');
     process.exit(0);
   });
+});
+
+// GET /architects - 建築家の一覧を取得
+app.get('/architects', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const searchTerm = req.query.search || '';
+    const selectedTags = req.query.tags ? req.query.tags.split(',') : [];
+    const sortBy = req.query.sortBy || 'name';
+    const sortOrder = req.query.sortOrder || 'asc';
+    
+    // 新しい検索パラメータ
+    const nationality = req.query.nationality || '';
+    const category = req.query.category || '';
+    const school = req.query.school || '';
+    const birthYearFrom = parseInt(req.query.birthyear_from) || 0;
+    const birthYearTo = parseInt(req.query.birthyear_to) || 0;
+    const deathYear = parseInt(req.query.deathyear) || 0;
+    
+    const result = await db.getAllArchitects(
+      page, 
+      limit, 
+      searchTerm, 
+      selectedTags, 
+      sortBy, 
+      sortOrder,
+      nationality,
+      category,
+      school,
+      birthYearFrom,
+      birthYearTo,
+      deathYear
+    );
+    res.json(result);
+  } catch (error) {
+    console.error('Error fetching architects:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 }); 
