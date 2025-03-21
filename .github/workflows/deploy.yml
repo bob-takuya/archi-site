@@ -1,17 +1,33 @@
-name: Deploy to GitHub Pages (Disabled)
-
-# This workflow is currently disabled
-# We're using manual deployment instead
+name: Deploy to GitHub Pages
 
 on:
-  # Disable automatic triggers
-  # push:
-  #   branches: [ main ]
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: No-op
-        run: echo "Workflow is disabled"
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: gh-pages
+          clean: true 
