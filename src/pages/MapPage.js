@@ -26,73 +26,89 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import MapIcon from '@mui/icons-material/Map';
+import { getMapArchitectures } from '../services/DbService';
+import MapComponent from '../components/Map';
 
 const MapPage = () => {
   const [loading, setLoading] = useState(true);
   const [works, setWorks] = useState([]);
-  const [prefectures, setPrefectures] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [allWorks, setAllWorks] = useState([]);
   const [filters, setFilters] = useState({
-    prefecture: '',
-    category: '',
     yearFrom: '',
     yearTo: '',
-    architect: ''
   });
   const [showFilters, setShowFilters] = useState(false);
   const [selectedWork, setSelectedWork] = useState(null);
   const [showWorkDetails, setShowWorkDetails] = useState(false);
 
   useEffect(() => {
-    fetchPrefectures();
-    fetchCategories();
     fetchWorks();
   }, []);
 
-  const fetchPrefectures = async () => {
-    try {
-      const response = await fetch('/api/prefectures');
-      const data = await response.json();
-      setPrefectures(data);
-    } catch (error) {
-      console.error('Error fetching prefectures:', error);
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch('/api/categories');
-      const data = await response.json();
-      setCategories(data);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
+  // ランダムな年代の範囲を生成する関数
+  const generateRandomTimeframe = (works) => {
+    if (!works || works.length === 0) return { from: '', to: '' };
+    
+    // 有効な年代の作品をフィルタリング
+    const validWorks = works.filter(work => work.completedYear > 0);
+    if (validWorks.length === 0) return { from: '', to: '' };
+    
+    // 全ての年代をソート
+    const years = validWorks.map(work => work.completedYear).sort((a, b) => a - b);
+    
+    // 最小年と最大年を取得
+    const minYear = years[0];
+    const maxYear = years[years.length - 1];
+    
+    // 100年程度の範囲をランダムに選択（または利用可能な範囲の半分程度）
+    const range = Math.min(100, Math.floor((maxYear - minYear) / 2));
+    
+    // 開始年をランダムに選択（全範囲の中で）
+    const startYearIndex = Math.floor(Math.random() * (years.length - Math.floor(years.length / 4)));
+    const startYear = years[startYearIndex];
+    
+    // 最大でも開始年+範囲、または最大年のいずれか小さい方を終了年とする
+    const endYear = Math.min(startYear + range, maxYear);
+    
+    return { from: startYear, to: endYear };
   };
 
   const fetchWorks = async () => {
     setLoading(true);
     try {
-      let url = '/api/architecture?limit=1000';
+      // ブラウザ内SQLiteを使用してデータを取得
+      const data = await getMapArchitectures();
+      setAllWorks(data);
       
-      if (Object.values(filters).some(val => val)) {
-        url = '/api/filter?';
-        Object.entries(filters).forEach(([key, value]) => {
-          if (value) {
-            url += `&${key}=${encodeURIComponent(value)}`;
-          }
+      // 初回読み込み時はランダムな年代フィルターを適用
+      if (!filters.yearFrom && !filters.yearTo) {
+        const randomTimeframe = generateRandomTimeframe(data);
+        setFilters({
+          yearFrom: randomTimeframe.from,
+          yearTo: randomTimeframe.to
         });
-        url += '&limit=1000';
+        
+        // フィルター適用
+        const filteredData = data.filter(work => 
+          work.completedYear >= randomTimeframe.from && 
+          work.completedYear <= randomTimeframe.to
+        );
+        
+        setWorks(filteredData);
+      } else {
+        // フィルターによる絞り込み（クライアント側で実行）
+        let filteredWorks = data;
+        
+        if (filters.yearFrom) {
+          filteredWorks = filteredWorks.filter(work => work.completedYear >= parseInt(filters.yearFrom));
+        }
+        
+        if (filters.yearTo) {
+          filteredWorks = filteredWorks.filter(work => work.completedYear <= parseInt(filters.yearTo));
+        }
+        
+        setWorks(filteredWorks);
       }
-      
-      const response = await fetch(url);
-      const data = await response.json();
-      
-      // 位置情報がある作品のみをフィルター
-      const worksWithLocation = data.data.filter(
-        work => work.latitude && work.longitude && work.latitude !== 0 && work.longitude !== 0
-      );
-      
-      setWorks(worksWithLocation);
     } catch (error) {
       console.error('Error fetching works:', error);
     } finally {
@@ -109,17 +125,30 @@ const MapPage = () => {
   };
 
   const applyFilters = () => {
-    fetchWorks();
+    setLoading(true);
+    
+    let filteredWorks = allWorks;
+    
+    if (filters.yearFrom) {
+      filteredWorks = filteredWorks.filter(work => work.completedYear >= parseInt(filters.yearFrom));
+    }
+    
+    if (filters.yearTo) {
+      filteredWorks = filteredWorks.filter(work => work.completedYear <= parseInt(filters.yearTo));
+    }
+    
+    setWorks(filteredWorks);
+    setLoading(false);
   };
 
   const clearFilters = () => {
     setFilters({
-      prefecture: '',
-      category: '',
       yearFrom: '',
       yearTo: '',
-      architect: ''
     });
+    
+    // すべての作品を表示（制限をつけずに表示）
+    setWorks(allWorks);
   };
 
   const handleWorkClick = (work) => {
@@ -145,43 +174,7 @@ const MapPage = () => {
         {showFilters && (
           <Box sx={{ mb: 2 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={3}>
-                <FormControl fullWidth>
-                  <InputLabel>都道府県</InputLabel>
-                  <Select
-                    name="prefecture"
-                    value={filters.prefecture}
-                    onChange={handleFilterChange}
-                    label="都道府県"
-                  >
-                    <MenuItem value="">すべて</MenuItem>
-                    {prefectures.map((prefecture) => (
-                      <MenuItem key={prefecture} value={prefecture}>
-                        {prefecture}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <FormControl fullWidth>
-                  <InputLabel>カテゴリー</InputLabel>
-                  <Select
-                    name="category"
-                    value={filters.category}
-                    onChange={handleFilterChange}
-                    label="カテゴリー"
-                  >
-                    <MenuItem value="">すべて</MenuItem>
-                    {categories.map((category) => (
-                      <MenuItem key={category} value={category}>
-                        {category}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2}>
+              <Grid item xs={12} sm={6} md={4}>
                 <TextField
                   fullWidth
                   label="年代（から）"
@@ -191,7 +184,7 @@ const MapPage = () => {
                   onChange={handleFilterChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={2}>
+              <Grid item xs={12} sm={6} md={4}>
                 <TextField
                   fullWidth
                   label="年代（まで）"
@@ -201,31 +194,33 @@ const MapPage = () => {
                   onChange={handleFilterChange}
                 />
               </Grid>
-              <Grid item xs={12} md={2}>
-                <TextField
-                  fullWidth
-                  label="建築家"
-                  name="architect"
-                  value={filters.architect}
-                  onChange={handleFilterChange}
-                />
+              <Grid item xs={12} md={4}>
+                <Box sx={{ display: 'flex', gap: 1, height: '100%' }}>
+                  <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={applyFilters}
+                    sx={{ flexGrow: 1 }}
+                  >
+                    フィルター適用
+                  </Button>
+                  <Button 
+                    variant="outlined" 
+                    onClick={clearFilters} 
+                    sx={{ flexGrow: 1 }}
+                  >
+                    クリア
+                  </Button>
+                </Box>
               </Grid>
             </Grid>
-            <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-              <Button variant="contained" color="primary" onClick={applyFilters}>
-                フィルター適用
-              </Button>
-              <Button variant="outlined" onClick={clearFilters}>
-                クリア
-              </Button>
-            </Box>
           </Box>
         )}
 
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
           <MapIcon sx={{ mr: 1 }} />
           <Typography variant="body2" color="text.secondary">
-            マップ上に表示された作品: {works.length}件
+            マップ上に表示された作品: {works.length}件 {filters.yearFrom && filters.yearTo && `(${filters.yearFrom}年〜${filters.yearTo}年)`}
           </Typography>
         </Box>
       </Paper>
@@ -236,134 +231,101 @@ const MapPage = () => {
         </Box>
       ) : (
         <Box sx={{ height: 600, bgcolor: 'grey.200', position: 'relative', borderRadius: 1 }}>
-          <Box sx={{ 
-            position: 'absolute', 
-            top: '50%', 
-            left: '50%', 
-            transform: 'translate(-50%, -50%)', 
-            textAlign: 'center' 
-          }}>
+          <MapComponent 
+            markers={works}
+            height="600px"
+            zoom={5}
+          />
+          <Box sx={{ position: 'absolute', top: 16, right: 16, width: 320, maxHeight: 568, overflow: 'auto', bgcolor: 'background.paper', borderRadius: 1, boxShadow: 3, p: 2, zIndex: 1000 }}>
             <Typography variant="h6" gutterBottom>
-              地図表示エリア
+              作品リスト
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              実際の実装ではGoogle MapsなどのAPIを使用します
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              マップ上に{works.length}件の建築作品が表示されます
-            </Typography>
-          </Box>
-
-          {/* マップの下に作品一覧を表示 */}
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="h6" gutterBottom>
-              検索結果一覧
-            </Typography>
-            <Grid container spacing={2}>
-              {works.slice(0, 6).map((work) => (
-                <Grid item key={work.id} xs={12} sm={6} md={4}>
-                  <Card 
-                    sx={{ 
-                      height: '100%', 
-                      display: 'flex', 
-                      flexDirection: 'column',
-                      cursor: 'pointer',
-                      '&:hover': {
-                        boxShadow: 6,
-                      },
-                    }}
-                    onClick={() => handleWorkClick(work)}
-                  >
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography gutterBottom variant="subtitle1" component="h3">
-                        {work.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {work.architect || '不明'} | {work.year || '不明'} | {work.prefecture || '不明'}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-            {works.length > 6 && (
-              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                <Button 
-                  variant="outlined" 
-                  component={RouterLink} 
-                  to="/architecture"
-                >
-                  すべての作品を見る
-                </Button>
-              </Box>
+            {works.length === 0 ? (
+              <Typography variant="body2">
+                条件に一致する作品はありません
+              </Typography>
+            ) : (
+              <List dense>
+                {works.map((work) => (
+                  <React.Fragment key={work.id}>
+                    <ListItem 
+                      button 
+                      onClick={() => handleWorkClick(work)}
+                      selected={selectedWork && selectedWork.id === work.id}
+                    >
+                      <ListItemText 
+                        primary={work.name} 
+                        secondary={
+                          <>
+                            {work.architectName && <span>{work.architectName}<br /></span>}
+                            {work.completedYear > 0 && `${work.completedYear}年 | `}
+                            {work.city || ''}
+                          </>
+                        } 
+                      />
+                    </ListItem>
+                    <Divider component="li" />
+                  </React.Fragment>
+                ))}
+              </List>
             )}
           </Box>
         </Box>
       )}
 
-      {/* 作品詳細ドロワー */}
       <Drawer
         anchor="right"
         open={showWorkDetails}
         onClose={() => setShowWorkDetails(false)}
       >
-        <Box sx={{ width: 350, p: 3 }}>
-          {selectedWork && (
-            <>
-              <Typography variant="h6" gutterBottom>
-                {selectedWork.title}
+        {selectedWork && (
+          <Box sx={{ width: 350, p: 3 }}>
+            <Typography variant="h5" gutterBottom>
+              {selectedWork.name}
+            </Typography>
+            
+            <Box sx={{ mb: 3 }}>
+              {selectedWork.architectName && (
+                <Typography variant="subtitle1" color="text.secondary">
+                  {selectedWork.architectName}
+                </Typography>
+              )}
+              <Typography variant="body2">
+                {selectedWork.completedYear > 0 && `${selectedWork.completedYear}年`}
+                {selectedWork.city && ` | ${selectedWork.city}`}
               </Typography>
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                {selectedWork.title_eng}
-              </Typography>
-              
-              <Divider sx={{ my: 2 }} />
-              
-              <List dense>
-                <ListItem>
-                  <ListItemText 
-                    primary="建築家" 
-                    secondary={selectedWork.architect || '不明'} 
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText 
-                    primary="カテゴリー" 
-                    secondary={selectedWork.category || '不明'} 
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText 
-                    primary="竣工年" 
-                    secondary={selectedWork.year || '不明'} 
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText 
-                    primary="住所" 
-                    secondary={selectedWork.address || '不明'} 
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText 
-                    primary="緯度 / 経度" 
-                    secondary={`${selectedWork.latitude}, ${selectedWork.longitude}`} 
-                  />
-                </ListItem>
-              </List>
-              
-              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
-                <Button 
-                  variant="contained" 
-                  component={RouterLink} 
-                  to={`/architecture/${selectedWork.id}`}
-                >
-                  詳細を見る
-                </Button>
-              </Box>
-            </>
-          )}
-        </Box>
+              {selectedWork.location && (
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  {selectedWork.location}
+                </Typography>
+              )}
+            </Box>
+            
+            <Box sx={{ mb: 3, height: 200 }}>
+              <MapComponent 
+                singleMarker={selectedWork}
+                height="200px"
+                zoom={15}
+              />
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+              <Button 
+                variant="outlined" 
+                onClick={() => setShowWorkDetails(false)}
+              >
+                閉じる
+              </Button>
+              <Button 
+                variant="contained" 
+                component={RouterLink}
+                to={`/architecture/${selectedWork.id}`}
+              >
+                詳細を見る
+              </Button>
+            </Box>
+          </Box>
+        )}
       </Drawer>
     </Container>
   );

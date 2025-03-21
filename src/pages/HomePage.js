@@ -10,23 +10,34 @@ import {
   Button,
   Box,
   Container,
-  Paper
+  Paper,
+  CircularProgress,
+  Alert,
+  Snackbar
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { getAllArchitectures } from '../services/DbService';
 
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [recentWorks, setRecentWorks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isDbReady, setIsDbReady] = useState(false);
 
   useEffect(() => {
     const fetchRecentWorks = async () => {
       try {
-        const response = await fetch('/api/architecture?limit=6');
-        const data = await response.json();
-        setRecentWorks(data.data);
+        setLoading(true);
+        setError(null);
+        console.log('最近の建築作品を取得中...');
+        const data = await getAllArchitectures(1, 6);
+        setRecentWorks(data.items);
+        setIsDbReady(true);
+        console.log('建築作品の取得に成功しました', data);
       } catch (error) {
-        console.error('Error fetching recent works:', error);
+        console.error('建築作品の取得に失敗:', error);
+        setError(error.message || 'データベースからの読み込みに失敗しました');
       } finally {
         setLoading(false);
       }
@@ -64,45 +75,66 @@ const HomePage = () => {
           日本の建築作品と建築家を検索・閲覧できるデータベース
         </Typography>
 
-        <Box 
-          component="form" 
-          onSubmit={handleSearch}
-          sx={{ 
-            mt: 4,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            maxWidth: 600,
-            mx: 'auto'
-          }}
-        >
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="建築作品、建築家、住所などで検索"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ mr: 1 }}
-          />
-          <Button 
-            type="submit"
-            variant="contained" 
-            color="primary"
-            startIcon={<SearchIcon />}
+        {isDbReady && (
+          <Box 
+            component="form" 
+            onSubmit={handleSearch}
+            sx={{ 
+              mt: 4,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              maxWidth: 600,
+              mx: 'auto'
+            }}
           >
-            検索
-          </Button>
-        </Box>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="建築作品、建築家、住所などで検索"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              sx={{ mr: 1 }}
+            />
+            <Button 
+              type="submit"
+              variant="contained" 
+              color="primary"
+              startIcon={<SearchIcon />}
+            >
+              検索
+            </Button>
+          </Box>
+        )}
       </Box>
 
       <Box sx={{ py: 4 }}>
         <Typography variant="h4" gutterBottom>
           最近の建築作品
         </Typography>
+        
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {error}
+            <Button 
+              size="small" 
+              variant="outlined" 
+              sx={{ ml: 2 }} 
+              component={RouterLink} 
+              to="/db-explorer"
+            >
+              診断ツールを開く
+            </Button>
+          </Alert>
+        )}
+
         <Grid container spacing={4}>
           {loading ? (
-            <Typography>読み込み中...</Typography>
-          ) : (
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: 4 }}>
+              <CircularProgress />
+              <Typography sx={{ ml: 2 }}>データベースを読み込み中...</Typography>
+            </Box>
+          ) : recentWorks.length > 0 ? (
             recentWorks.map((work) => (
               <Grid item key={work.id} xs={12} sm={6} md={4}>
                 <Card 
@@ -119,31 +151,38 @@ const HomePage = () => {
                   <CardActionArea component={RouterLink} to={`/architecture/${work.id}`}>
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Typography gutterBottom variant="h5" component="h2">
-                        {work.title}
+                        {work.name}
                       </Typography>
                       <Typography color="text.secondary">
-                        {work.architect || '不明'}
+                        {work.architectName || '不明'}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {work.year && work.year !== 0 ? work.year : '不明'} | {work.prefecture || '不明'} | {work.category || '不明'}
+                        {work.completedYear && work.completedYear !== 0 ? work.completedYear : '不明'} | {work.city || '不明'}
                       </Typography>
                     </CardContent>
                   </CardActionArea>
                 </Card>
               </Grid>
             ))
+          ) : (
+            <Box sx={{ width: '100%', textAlign: 'center', my: 4 }}>
+              <Typography>建築作品が見つかりませんでした</Typography>
+            </Box>
           )}
         </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <Button 
-            variant="outlined" 
-            color="primary" 
-            component={RouterLink} 
-            to="/architecture"
-          >
-            すべての作品を見る
-          </Button>
-        </Box>
+        
+        {isDbReady && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Button 
+              variant="outlined" 
+              color="primary" 
+              component={RouterLink} 
+              to="/architecture"
+            >
+              すべての作品を見る
+            </Button>
+          </Box>
+        )}
       </Box>
 
       <Grid container spacing={4} sx={{ mt: 2 }}>

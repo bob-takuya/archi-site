@@ -1,0 +1,5 @@
+{
+  "serverMode": "chunked",
+  "requestChunkSize": 524288,
+  "databaseLengthBytes": 8384512
+}

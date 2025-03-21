@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "client": "webpack serve --open",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && node scripts/prepare-db.js",
+    "prepare-db": "node scripts/prepare-db.js",
     "dev": "concurrently \"npm run start\" \"npm run client\""
   },
   "repository": {
@@ -28,9 +29,13 @@
     "@mui/material": "^6.4.8",
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "leaflet": "^1.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.4.0",
+    "sql.js": "^1.13.0",
+    "sql.js-httpvfs": "^0.8.12",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
@@ -39,6 +44,7 @@
     "@babel/preset-react": "^7.26.3",
     "babel-loader": "^10.0.0",
     "concurrently": "^9.1.2",
+    "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.3",
     "style-loader": "^4.0.0",
