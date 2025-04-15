@@ -1,0 +1,43 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "echo 'Using existing deployed site'",
+      "url": [
+        "https://bob-takuya.github.io/archi-site/",
+        "https://bob-takuya.github.io/archi-site/#/architects",
+        "https://bob-takuya.github.io/archi-site/#/architecture",
+        "https://bob-takuya.github.io/archi-site/#/map"
+      ],
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "desktop",
+        "throttling": {
+          "rttMs": 40,
+          "throughputKbps": 10240,
+          "cpuSlowdownMultiplier": 1,
+          "requestLatencyMs": 0,
+          "downloadThroughputKbps": 0,
+          "uploadThroughputKbps": 0
+        }
+      }
+    },
+    "assert": {
+      "preset": "lighthouse:no-pwa",
+      "assertions": {
+        "first-contentful-paint": ["error", {"maxNumericValue": 1500, "aggregationMethod": "optimistic"}],
+        "interactive": ["error", {"maxNumericValue": 3800, "aggregationMethod": "optimistic"}],
+        "cumulative-layout-shift": ["error", {"maxNumericValue": 0.1, "aggregationMethod": "optimistic"}],
+        "largest-contentful-paint": ["warning", {"maxNumericValue": 2500, "aggregationMethod": "optimistic"}],
+        "total-blocking-time": ["warning", {"maxNumericValue": 300, "aggregationMethod": "optimistic"}],
+        "speed-index": ["warning", {"maxNumericValue": 3000, "aggregationMethod": "optimistic"}],
+        "categories:performance": ["error", {"minScore": 0.9}],
+        "categories:accessibility": ["warning", {"minScore": 0.9}],
+        "categories:best-practices": ["warning", {"minScore": 0.9}],
+        "categories:seo": ["warning", {"minScore": 0.9}]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
