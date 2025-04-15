@@ -1,0 +1,182 @@
+/**
+ * Database loader service that handles database initialization
+ * This service ensures the database is properly loaded before allowing queries
+ */
+
+import { createDbWorker } from 'sql.js-httpvfs';
+import type { SqliteWorker, WorkerHttpvfs } from 'sql.js-httpvfs/dist/sqlite.worker';
+import { 
+  getCachedQuery, 
+  generateCacheKey,
+  clearCacheItem,
+  clearCache 
+} from './DatabaseCache';
+
+// Singleton instance to avoid multiple database initializations
+let dbWorker: SqliteWorker<WorkerHttpvfs> | null = null;
+let initPromise: Promise<SqliteWorker<WorkerHttpvfs>> | null = null;
+
+// Determine the base path for assets
+// In production (GitHub Pages), the base path is /archi-site/
+// In development, the base path is /
+const BASE_PATH = import.meta.env.PROD ? '/archi-site' : '';
+
+/**
+ * Initialize the database connection
+ * This must be called before any SQL queries can be executed
+ */
+export async function initDatabase(): Promise<SqliteWorker<WorkerHttpvfs>> {
+  // Return existing worker if already initialized
+  if (dbWorker) {
+    return dbWorker;
+  }
+
+  // Return existing initialization promise if already in progress
+  if (initPromise) {
+    return initPromise;
+  }
+
+  console.log(`Initializing database from ${BASE_PATH}/db/archimap.sqlite`);
+
+  // Initialize the database
+  initPromise = createDbWorker(
+    [{
+      from: 'chunks',
+      config: {
+        serverMode: 'full',
+        requestChunkSize: 4 * 1024 * 1024, // 4MB chunks for requests
+        url: `${BASE_PATH}/db/archimap.sqlite`,
+        suffixUrl: `${BASE_PATH}/db/archimap.sqlite.suffix`,
+      },
+    }],
+    () => new Worker(`${BASE_PATH}/sqlite.worker.js`),
+    20 * 1024 * 1024, // 20MB cache size
+  ).then(worker => {
+    dbWorker = worker;
+    console.log('Database initialized successfully');
+    return worker;
+  }).catch(error => {
+    console.error('Database initialization failed:', error);
+    initPromise = null;
+    throw error;
+  });
+
+  return initPromise;
+}
+
+/**
+ * Execute a SQL query with parameters
+ * @param sql SQL query to execute
+ * @param params Query parameters
+ * @param useCache Whether to use caching (default true)
+ * @returns Query results
+ */
+export async function executeQuery<T = any>(
+  sql: string,
+  params: any[] = [],
+  useCache: boolean = true
+): Promise<T[]> {
+  // Generate cache key if caching is enabled
+  const cacheKey = useCache ? generateCacheKey(sql, params) : '';
+  
+  // Use the caching layer if enabled
+  if (useCache) {
+    return getCachedQuery<T[]>(
+      cacheKey,
+      () => executeQueryDirect<T>(sql, params),
+      // Determine appropriate TTL based on query type
+      // SELECT queries can be cached longer than others
+      sql.trim().toLowerCase().startsWith('select') ? 300000 : 60000
+    );
+  }
+  
+  // Execute directly without caching
+  return executeQueryDirect<T>(sql, params);
+}
+
+/**
+ * Direct execution of SQL query without caching
+ * @param sql SQL query to execute
+ * @param params Query parameters
+ * @returns Query results
+ */
+async function executeQueryDirect<T = any>(
+  sql: string,
+  params: any[] = []
+): Promise<T[]> {
+  const worker = await initDatabase();
+  try {
+    const result = await worker.db.exec(sql, params);
+    if (!result || result.length === 0) {
+      return [];
+    }
+
+    // Transform sql.js result format to array of objects
+    const rows: T[] = [];
+    const columns = result[0].columns;
+    const values = result[0].values;
+
+    for (const value of values) {
+      const row: any = {};
+      columns.forEach((column, index) => {
+        row[column] = value[index];
+      });
+      rows.push(row as T);
+    }
+
+    return rows;
+  } catch (error) {
+    console.error('Query execution failed:', error);
+    console.error('SQL:', sql);
+    console.error('Params:', params);
+    throw error;
+  }
+}
+
+/**
+ * Execute a SQL query and return a single result
+ * @param sql SQL query to execute
+ * @param params Query parameters
+ * @param useCache Whether to use caching (default true)
+ * @returns Single query result or null
+ */
+export async function executeQuerySingle<T = any>(
+  sql: string,
+  params: any[] = [],
+  useCache: boolean = true
+): Promise<T | null> {
+  const results = await executeQuery<T>(sql, params, useCache);
+  return results.length > 0 ? results[0] : null;
+}
+
+/**
+ * Check if the database is available by executing a simple query
+ * @returns True if database is available, false otherwise
+ */
+export async function isDatabaseAvailable(): Promise<boolean> {
+  try {
+    const worker = await initDatabase();
+    const result = await worker.db.exec('SELECT 1');
+    return result && result.length > 0;
+  } catch (error) {
+    console.error('Database availability check failed:', error);
+    return false;
+  }
+}
+
+/**
+ * Clear the query cache
+ * @param specific Optional specific cache key to clear
+ */
+export function clearQueryCache(specific?: string): void {
+  if (specific) {
+    clearCacheItem(specific);
+  } else {
+    clearCache();
+  }
+}
+
+/**
+ * Export database service utilities
+ */
+export { getCachedQuery, generateCacheKey };

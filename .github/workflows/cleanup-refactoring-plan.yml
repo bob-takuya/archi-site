@@ -1,0 +1,1058 @@
+name: Project Cleanup and Refactoring Plan
+
+description: |
+  This document outlines a comprehensive plan to clean up the codebase, remove unused files,
+  and fix bugs for GitHub Pages deployment, using 2025's best practices and TypeScript.
+
+file_assessment:
+  # Detailed assessment of files to keep, refactor, or remove
+  keep:
+    - pattern: "src/**/*.{ts,tsx}"
+      reason: "Main React application code in TypeScript"
+      
+    - pattern: "public/**/*"
+      reason: "Static assets for the client"
+      
+    - pattern: "tests/**/*.{ts,tsx}"
+      reason: "Test files"
+      
+    - pattern: "assets/**/*"
+      reason: "Images and styling assets"
+      
+    - pattern: "server.ts"
+      reason: "TypeScript server implementation (to be adapted for static deployment)"
+      
+    - pattern: "webpack.config.js"
+      reason: "Webpack configuration for client build (to be migrated to Vite)"
+      
+    - pattern: "package.json"
+      reason: "Project dependencies and scripts"
+      
+    - pattern: "tsconfig.json"
+      reason: "TypeScript configuration (needs updates)"
+      
+    - pattern: "playwright.config.ts"
+      reason: "E2E test configuration"
+      
+    - pattern: "jest.setup.js"
+      reason: "Jest test setup (to be migrated to TypeScript)"
+      
+    - pattern: "Archimap_database.sqlite"
+      reason: "SQLite database file (to be used with sql.js)"
+      
+    - pattern: "README.md"
+      reason: "Project documentation"
+      
+  refactor:
+    - file: "server.js"
+      reason: "Migrate fully to TypeScript (server.ts)"
+      actions:
+        - "Ensure all functionality is in server.ts"
+        - "Update imports to TypeScript syntax"
+        - "Add proper type definitions"
+      commands:
+        - command: "rm server.js"
+          purpose: "Remove after confirming all functionality is migrated"
+        - command: "pnpm exec tsc -p tsconfig.server.json"
+          purpose: "Compile server TypeScript code"
+      
+    - file: "src/services/DbService.ts"
+      reason: "Adapt for client-side database with sql.js"
+      actions:
+        - "Create new StaticDatabaseService for client-side operations"
+        - "Optimize queries for client-side execution"
+        - "Add caching for expensive operations"
+      libraries:
+        - name: "sql.js-httpvfs"
+          version: "^0.8.12"
+          docs: "https://github.com/phiresky/sql.js-httpvfs"
+        - name: "sql.js"
+          version: "^1.13.0"
+          docs: "https://sql.js.org/"
+      
+    - file: "src/utils/formatters.ts"
+      reason: "Ensure proper type safety"
+      actions:
+        - "Add explicit type annotations"
+        - "Use TypeScript 5.8 features like const type parameters"
+        - "Add unit tests for all formatter functions"
+      tools:
+        - name: "TypeScript"
+          version: "5.8.2"
+          docs: "https://www.typescriptlang.org/docs/handbook/utility-types.html"
+      
+    - pattern: "webpack.config.js"
+      reason: "Migrate from Webpack to Vite for faster builds"
+      actions:
+        - "Create vite.config.ts configuration"
+        - "Update build scripts in package.json"
+        - "Configure Vite plugins for WebAssembly support"
+      tools:
+        - name: "Vite"
+          version: "5.2.6"
+          docs: "https://vitejs.dev/guide/"
+        - name: "vite-plugin-wasm"
+          version: "^3.3.0"
+          docs: "https://github.com/Menci/vite-plugin-wasm"
+      commands:
+        - command: "pnpm add -D vite @vitejs/plugin-react typescript"
+          purpose: "Install Vite and plugins"
+        - command: "pnpm add -D vite-plugin-wasm vite-plugin-top-level-await"
+          purpose: "Add WebAssembly support for sql.js"
+  
+  remove:
+    - pattern: "temp_preserved/**/*"
+      reason: "Temporary files that should be removed after confirming functionality"
+      command: "rm -rf temp_preserved/"
+      verification: "Ensure all needed code is migrated to src/ directory"
+      
+    - pattern: "**/*.js"
+      exclude: ["webpack.config.js", "jest.setup.js", "scripts/**/*.js"]
+      reason: "Convert JavaScript files to TypeScript"
+      command: "find . -name '*.js' -not -path './node_modules/*' -not -path './webpack.config.js' -not -path './jest.setup.js' -not -path './scripts/*' | xargs rm"
+      verification: "Ensure TypeScript equivalents exist"
+      
+    - pattern: "**/*.jsx"
+      reason: "Convert JSX files to TSX"
+      command: "find . -name '*.jsx' -not -path './node_modules/*' | xargs rm"
+      verification: "Ensure TSX equivalents exist"
+
+refactoring_tasks:
+  # Detailed refactoring tasks with specific tools and commands
+  tasks:
+    - name: Migrate to Vite from Webpack
+      description: |
+        Replace Webpack with Vite for faster development and builds.
+        This includes:
+        - Creating a Vite configuration file
+        - Updating build scripts
+        - Configuring HMR and TypeScript support
+      priority: high
+      steps:
+        - name: "Install Vite and related packages"
+          command: "pnpm add -D vite @vitejs/plugin-react vite-tsconfig-paths"
+          
+        - name: "Create Vite configuration"
+          file: "vite.config.ts"
+          content: |
+            import { defineConfig } from 'vite';
+            import react from '@vitejs/plugin-react';
+            import tsconfigPaths from 'vite-tsconfig-paths';
+            import wasm from 'vite-plugin-wasm';
+            import topLevelAwait from 'vite-plugin-top-level-await';
+            
+            export default defineConfig({
+              plugins: [
+                react(),
+                tsconfigPaths(),
+                wasm(),
+                topLevelAwait()
+              ],
+              build: {
+                outDir: 'dist',
+                sourcemap: true,
+                minify: 'terser',
+                target: 'es2020',
+                rollupOptions: {
+                  output: {
+                    manualChunks: {
+                      react: ['react', 'react-dom'],
+                      router: ['react-router-dom'],
+                      ui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+                      leaflet: ['leaflet', 'react-leaflet'],
+                    }
+                  }
+                }
+              },
+              resolve: {
+                alias: {
+                  '@': '/src'
+                }
+              },
+              server: {
+                port: 5173,
+                proxy: {
+                  '/api': {
+                    target: 'http://localhost:3000',
+                    changeOrigin: true
+                  }
+                }
+              }
+            });
+          
+        - name: "Update package.json scripts"
+          file: "package.json"
+          changes: |
+            Replace webpack scripts with Vite:
+            "dev:client": "vite",
+            "build": "vite build",
+            "preview": "vite preview",
+      tools:
+        - name: "Vite"
+          version: "5.2.6"
+          docs: "https://vitejs.dev/guide/"
+        - name: "@vitejs/plugin-react"
+          version: "^5.0.0"
+          docs: "https://github.com/vitejs/vite/tree/main/packages/plugin-react"
+      
+    - name: Implement client-side database with sql.js
+      description: |
+        Create a client-side database service using sql.js for static deployment.
+        This allows the application to work without a server on GitHub Pages.
+      priority: critical
+      steps:
+        - name: "Install sql.js and related packages"
+          command: "pnpm add sql.js sql.js-httpvfs"
+          
+        - name: "Create StaticDatabaseService"
+          file: "src/services/db/StaticDatabaseService.ts"
+          content: |
+            import { createDbWorker } from 'sql.js-httpvfs';
+            import type { DbWorker } from 'sql.js-httpvfs';
+            
+            // Types for database results
+            export interface QueryResult {
+              columns: string[];
+              values: any[][];
+            }
+            
+            // Database worker configuration
+            const workerUrl = new URL('/sql-wasm-worker.js', import.meta.url).toString();
+            const wasmUrl = new URL('/sql-wasm.wasm', import.meta.url).toString();
+            
+            export class StaticDatabaseService {
+              private static instance: StaticDatabaseService;
+              private dbWorker: DbWorker | null = null;
+              private isInitializing = false;
+              private initPromise: Promise<DbWorker> | null = null;
+              
+              private constructor() {}
+              
+              public static getInstance(): StaticDatabaseService {
+                if (!StaticDatabaseService.instance) {
+                  StaticDatabaseService.instance = new StaticDatabaseService();
+                }
+                return StaticDatabaseService.instance;
+              }
+              
+              public async initDatabase(): Promise<DbWorker> {
+                if (this.dbWorker) return this.dbWorker;
+                
+                if (this.isInitializing) {
+                  return this.initPromise!;
+                }
+                
+                this.isInitializing = true;
+                
+                this.initPromise = new Promise<DbWorker>(async (resolve, reject) => {
+                  try {
+                    console.log('Initializing static database...');
+                    
+                    const worker = await createDbWorker({
+                      from: 'file', // Use the local file from the GitHub Pages deployment
+                      config: {
+                        serverMode: 'full',
+                        requestChunkSize: 4096,
+                        url: '/db/database.sqlite',
+                      },
+                    }, workerUrl, wasmUrl);
+                    
+                    console.log('Static database initialized successfully');
+                    this.dbWorker = worker;
+                    resolve(worker);
+                  } catch (err) {
+                    console.error('Failed to initialize database', err);
+                    reject(err);
+                  } finally {
+                    this.isInitializing = false;
+                  }
+                });
+                
+                return this.initPromise;
+              }
+              
+              public async executeQuery(query: string, params: any[] = []): Promise<QueryResult[]> {
+                if (!this.dbWorker) {
+                  await this.initDatabase();
+                }
+                
+                try {
+                  const result = await this.dbWorker!.db.exec(query, params);
+                  return result as QueryResult[];
+                } catch (err) {
+                  console.error('Query execution error:', err);
+                  throw err;
+                }
+              }
+              
+              // Method to get all architectures with pagination
+              public async getAllArchitectures(
+                page: number = 1,
+                limit: number = 12,
+                searchTerm: string = '',
+                sortBy: string = 'name'
+              ): Promise<{ data: any[], total: number }> {
+                const offset = (page - 1) * limit;
+                
+                // Build search condition if searchTerm is provided
+                const searchCondition = searchTerm
+                  ? "WHERE ZAA_NAME LIKE ?1 OR ZAA_PREFECTURE LIKE ?1 OR ZAA_CITY LIKE ?1"
+                  : "";
+                
+                // Count total matching items
+                const countQuery = `
+                  SELECT COUNT(*) as total FROM ZCDARCHITECTURE
+                  ${searchCondition}
+                `;
+                
+                // Query for paginated data
+                const dataQuery = `
+                  SELECT * FROM ZCDARCHITECTURE
+                  ${searchCondition}
+                  ORDER BY ${this.escapeSortColumn(sortBy)} 
+                  LIMIT ?2 OFFSET ?3
+                `;
+                
+                const params = searchTerm 
+                  ? [`%${searchTerm}%`, limit, offset]
+                  : [limit, offset];
+                
+                try {
+                  // Execute count query
+                  const countResult = await this.executeQuery(countQuery, 
+                    searchTerm ? [`%${searchTerm}%`] : []);
+                  
+                  // Execute data query
+                  const dataResult = await this.executeQuery(dataQuery, params);
+                  
+                  // Parse results
+                  const total = countResult[0]?.values[0]?.[0] || 0;
+                  
+                  // Convert to array of objects
+                  const data = this.resultToObjects(dataResult[0]);
+                  
+                  return { data, total };
+                } catch (error) {
+                  console.error('Error fetching architectures:', error);
+                  throw error;
+                }
+              }
+              
+              // Helper method to convert SQL.js results to objects
+              private resultToObjects(result: QueryResult): any[] {
+                if (!result || !result.columns || !result.values) {
+                  return [];
+                }
+                
+                return result.values.map(row => {
+                  const obj: Record<string, any> = {};
+                  result.columns.forEach((col, i) => {
+                    obj[col] = row[i];
+                  });
+                  return obj;
+                });
+              }
+              
+              // Helper method to prevent SQL injection in column names
+              private escapeSortColumn(column: string): string {
+                // Only allow alphanumeric and underscore characters
+                const cleaned = column.replace(/[^a-zA-Z0-9_]/g, '');
+                return cleaned || 'ZAA_NAME'; // Default to ZAA_NAME if invalid
+              }
+            }
+            
+            export const staticDbService = StaticDatabaseService.getInstance();
+          
+        - name: "Create script to prepare database for static serving"
+          file: "scripts/prepare-static-db.ts"
+          content: |
+            import * as fs from 'fs';
+            import * as path from 'path';
+            import { Database } from 'sqlite3';
+            
+            const sourceDbPath = path.join(__dirname, '../Archimap_database.sqlite');
+            const outputDir = path.join(__dirname, '../public/db');
+            const outputDbPath = path.join(outputDir, 'database.sqlite');
+            
+            async function prepareStaticDatabase() {
+              console.log('Preparing database for static deployment...');
+              
+              // Ensure output directory exists
+              if (!fs.existsSync(outputDir)) {
+                fs.mkdirSync(outputDir, { recursive: true });
+              }
+              
+              return new Promise<void>((resolve, reject) => {
+                // Open source database
+                const sourceDb = new Database(sourceDbPath, (err) => {
+                  if (err) {
+                    console.error('Error opening source database:', err.message);
+                    return reject(err);
+                  }
+                  
+                  console.log('Source database opened successfully');
+                  
+                  // Copy database file
+                  fs.copyFile(sourceDbPath, outputDbPath, (err) => {
+                    if (err) {
+                      console.error('Error copying database:', err);
+                      return reject(err);
+                    }
+                    
+                    console.log('Database copied successfully to:', outputDbPath);
+                    
+                    // Close database
+                    sourceDb.close((err) => {
+                      if (err) {
+                        console.error('Error closing database:', err.message);
+                      }
+                      console.log('Database preparation complete');
+                      resolve();
+                    });
+                  });
+                });
+              });
+            }
+            
+            // Execute the function
+            prepareStaticDatabase()
+              .then(() => process.exit(0))
+              .catch(err => {
+                console.error('Failed to prepare static database:', err);
+                process.exit(1);
+              });
+          
+        - name: "Add script to package.json"
+          file: "package.json"
+          changes: |
+            Add to scripts section:
+              "prepare-static-db": "ts-node scripts/prepare-static-db.ts",
+              "build:static": "pnpm run prepare-static-db && pnpm run build"
+      tools:
+        - name: "sql.js"
+          version: "^1.13.0"
+          docs: "https://sql.js.org/"
+        - name: "sql.js-httpvfs"
+          version: "^0.8.12"
+          docs: "https://github.com/phiresky/sql.js-httpvfs"
+      
+    - name: Update React Router for GitHub Pages
+      description: |
+        Configure React Router for proper operation on GitHub Pages.
+        Use HashRouter or provide a 404.html redirect solution for client-side routing.
+      priority: high
+      steps:
+        - name: "Update router implementation"
+          file: "src/index.tsx"
+          changes: |
+            import { createRoot } from 'react-dom/client';
+            import { HashRouter } from 'react-router-dom';
+            import App from './App';
+            import './index.css';
+            
+            // Initialize database before rendering
+            import { staticDbService } from './services/db/StaticDatabaseService';
+            
+            const container = document.getElementById('root')!;
+            const root = createRoot(container);
+            
+            // Load database in background
+            staticDbService.initDatabase()
+              .then(() => console.log('Database loaded successfully'))
+              .catch(err => console.error('Failed to load database:', err));
+            
+            root.render(
+              <HashRouter>
+                <App />
+              </HashRouter>
+            );
+          
+        - name: "Create 404.html redirect (alternative approach)"
+          file: "public/404.html"
+          content: |
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Archi-site - Redirecting</title>
+              <script type="text/javascript">
+                // Single Page Apps for GitHub Pages
+                // https://github.com/rafgraph/spa-github-pages
+                var pathSegmentsToKeep = 1;
+                var l = window.location;
+                l.replace(
+                  l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                  l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?p=/' +
+                  l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+                  (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+                  l.hash
+                );
+              </script>
+            </head>
+            <body>
+              <h1>Redirecting...</h1>
+              <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
+            </body>
+            </html>
+          note: "Only needed if not using HashRouter"
+      tools:
+        - name: "React Router"
+          version: "^7.4.0"
+          docs: "https://reactrouter.com/en/main/router-components/hash-router"
+        - name: "SPA GitHub Pages"
+          docs: "https://github.com/rafgraph/spa-github-pages"
+      
+    - name: Optimize bundle size
+      description: |
+        Implement code splitting, lazy loading, and tree shaking for optimal performance.
+      priority: medium
+      steps:
+        - name: "Configure code splitting in React Router"
+          file: "src/App.tsx"
+          changes: |
+            import { lazy, Suspense } from 'react';
+            import { Routes, Route } from 'react-router-dom';
+            import LoadingIndicator from './components/ui/LoadingIndicator';
+            
+            // Use lazy loading for route components
+            const HomePage = lazy(() => import('./pages/HomePage'));
+            const ArchitectsPage = lazy(() => import('./pages/ArchitectsPage'));
+            const ArchitecturePage = lazy(() => import('./pages/ArchitecturePage'));
+            const ArchitectSinglePage = lazy(() => import('./pages/ArchitectSinglePage'));
+            const ArchitectureSinglePage = lazy(() => import('./pages/ArchitectureSinglePage'));
+            const MapPage = lazy(() => import('./pages/MapPage'));
+            
+            function App() {
+              return (
+                <div className="app">
+                  <Suspense fallback={<LoadingIndicator />}>
+                    <Routes>
+                      <Route path="/" element={<HomePage />} />
+                      <Route path="/architects" element={<ArchitectsPage />} />
+                      <Route path="/architects/:id" element={<ArchitectSinglePage />} />
+                      <Route path="/architecture" element={<ArchitecturePage />} />
+                      <Route path="/architecture/:id" element={<ArchitectureSinglePage />} />
+                      <Route path="/map" element={<MapPage />} />
+                    </Routes>
+                  </Suspense>
+                </div>
+              );
+            }
+            
+            export default App;
+          
+        - name: "Create a loading indicator component"
+          file: "src/components/ui/LoadingIndicator.tsx"
+          content: |
+            import { CircularProgress, Box, Typography } from '@mui/material';
+            
+            interface LoadingIndicatorProps {
+              message?: string;
+            }
+            
+            const LoadingIndicator = ({ message = 'Loading...' }: LoadingIndicatorProps) => {
+              return (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  height="100vh"
+                >
+                  <CircularProgress size={60} thickness={4} />
+                  <Typography variant="h6" style={{ marginTop: 16 }}>
+                    {message}
+                  </Typography>
+                </Box>
+              );
+            };
+            
+            export default LoadingIndicator;
+      tools:
+        - name: "React.lazy()"
+          docs: "https://react.dev/reference/react/lazy"
+        - name: "Dynamic imports"
+          docs: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import"
+      
+    - name: Fix TypeScript configurations
+      description: |
+        Update and optimize TypeScript configuration for strict type checking.
+      priority: high
+      steps:
+        - name: "Update main tsconfig.json"
+          file: "tsconfig.json"
+          content: |
+            {
+              "compilerOptions": {
+                "target": "ES2020",
+                "useDefineForClassFields": true,
+                "lib": ["ES2020", "DOM", "DOM.Iterable"],
+                "module": "ESNext",
+                "skipLibCheck": true,
+                
+                /* Bundler mode */
+                "moduleResolution": "bundler",
+                "allowImportingTsExtensions": true,
+                "resolveJsonModule": true,
+                "isolatedModules": true,
+                "noEmit": true,
+                "jsx": "react-jsx",
+                
+                /* Linting */
+                "strict": true,
+                "noImplicitAny": true,
+                "strictNullChecks": true,
+                "noUnusedLocals": true,
+                "noUnusedParameters": true,
+                "noFallthroughCasesInSwitch": true,
+                "forceConsistentCasingInFileNames": true,
+                
+                /* Paths */
+                "baseUrl": ".",
+                "paths": {
+                  "@/*": ["src/*"]
+                }
+              },
+              "include": ["src"],
+              "references": [{ "path": "./tsconfig.node.json" }]
+            }
+          
+        - name: "Create tsconfig.node.json for Node.js code"
+          file: "tsconfig.node.json"
+          content: |
+            {
+              "compilerOptions": {
+                "composite": true,
+                "skipLibCheck": true,
+                "module": "ESNext",
+                "moduleResolution": "bundler",
+                "allowSyntheticDefaultImports": true
+              },
+              "include": ["vite.config.ts", "scripts"]
+            }
+          
+        - name: "Create tsconfig.server.json for server code"
+          file: "tsconfig.server.json"
+          content: |
+            {
+              "compilerOptions": {
+                "target": "ES2022",
+                "module": "CommonJS",
+                "moduleResolution": "node",
+                "esModuleInterop": true,
+                "outDir": "./dist",
+                "rootDir": ".",
+                "strict": true,
+                "noImplicitAny": true,
+                "strictNullChecks": true,
+                "noUnusedLocals": true,
+                "noUnusedParameters": true,
+                "resolveJsonModule": true,
+                "forceConsistentCasingInFileNames": true,
+                "skipLibCheck": true
+              },
+              "include": ["server.ts", "server/**/*", "src/services/DbService.ts", "src/types/**/*"],
+              "exclude": ["node_modules", "dist", "src/components", "src/pages"]
+            }
+      tools:
+        - name: "TypeScript"
+          version: "5.8.2"
+          docs: "https://www.typescriptlang.org/tsconfig"
+        - name: "Node.js TypeScript"
+          docs: "https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping"
+
+testing_plan:
+  # Test-driven development approach with detailed test specifications
+  unit_tests:
+    - component_tests:
+        pattern: "src/components/**/*.test.tsx"
+        tools: ["@testing-library/react", "jest"]
+        command: "pnpm run test:unit"
+        best_practices:
+          - "Test component rendering"
+          - "Test user interactions"
+          - "Test error states"
+          - "Mock external dependencies"
+    
+    - service_tests:
+        pattern: "src/services/**/*.test.ts"
+        tools: ["jest", "msw"]
+        command: "pnpm run test:unit"
+        best_practices:
+          - "Mock database operations"
+          - "Test error handling"
+          - "Test data transformations"
+    
+    - util_tests:
+        pattern: "src/utils/**/*.test.ts"
+        tools: ["jest"]
+        command: "pnpm run test:unit"
+        best_practices:
+          - "Test edge cases"
+          - "Test with various inputs"
+          - "100% coverage for utility functions"
+    
+  integration_tests:
+    - api_flow_tests:
+        pattern: "tests/integration/api/**/*.test.ts"
+        tools: ["supertest", "jest"]
+        command: "pnpm run test:integration"
+        best_practices:
+          - "Test complete API flows"
+          - "Test with real database"
+          - "Test error responses"
+    
+    - user_flow_tests:
+        pattern: "tests/integration/flows/**/*.test.tsx"
+        tools: ["@testing-library/react", "msw", "jest"]
+        command: "pnpm run test:integration"
+        best_practices:
+          - "Test multi-step user flows"
+          - "Test state management"
+          - "Test routing interactions"
+    
+  e2e_tests:
+    - pattern: "tests/e2e/**/*.spec.ts"
+      tools: ["playwright"]
+      command: "pnpm run test:e2e"
+      best_practices:
+        - "Test in multiple browsers"
+        - "Record videos of test runs"
+        - "Test real user scenarios"
+
+static_deployment_tasks:
+  # Specific tasks for GitHub Pages deployment
+  tasks:
+    - name: Configure GitHub repository for Pages deployment
+      description: |
+        Set up the GitHub repository for automated GitHub Pages deployment.
+      priority: critical
+      steps:
+        - name: "Set up GitHub Actions workflow"
+          file: ".github/workflows/github-pages-deploy.yml"
+          note: "Already created"
+        
+        - name: "Enable GitHub Pages in repository settings"
+          instructions: |
+            1. Go to the repository on GitHub
+            2. Navigate to Settings > Pages
+            3. Set the source to "GitHub Actions"
+          docs: "https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-github-actions-workflow"
+      tools:
+        - name: "GitHub Pages"
+          docs: "https://docs.github.com/en/pages"
+        - name: "GitHub Actions"
+          docs: "https://docs.github.com/en/actions"
+    
+    - name: Create database initialization indicator
+      description: |
+        Create a component to show progress while loading the database on client startup.
+      priority: high
+      steps:
+        - name: "Create DatabaseLoader component"
+          file: "src/components/DatabaseLoader.tsx"
+          content: |
+            import { useState, useEffect } from 'react';
+            import { Box, CircularProgress, Typography, LinearProgress } from '@mui/material';
+            import { staticDbService } from '../services/db/StaticDatabaseService';
+            
+            interface DatabaseLoaderProps {
+              children: React.ReactNode;
+            }
+            
+            const DatabaseLoader = ({ children }: DatabaseLoaderProps) => {
+              const [loading, setLoading] = useState(true);
+              const [error, setError] = useState<string | null>(null);
+              const [progress, setProgress] = useState(0);
+              
+              useEffect(() => {
+                const initDb = async () => {
+                  try {
+                    // Simulate progress updates
+                    const interval = setInterval(() => {
+                      setProgress(prev => {
+                        const newProgress = prev + (5 * Math.random());
+                        return newProgress > 90 ? 90 : newProgress;
+                      });
+                    }, 500);
+                    
+                    // Initialize database
+                    await staticDbService.initDatabase();
+                    clearInterval(interval);
+                    setProgress(100);
+                    
+                    // Small delay to show 100% before hiding
+                    setTimeout(() => {
+                      setLoading(false);
+                    }, 500);
+                  } catch (err) {
+                    setError(`Failed to load database: ${err instanceof Error ? err.message : String(err)}`);
+                    console.error('Database initialization error:', err);
+                  }
+                };
+                
+                initDb();
+              }, []);
+              
+              if (error) {
+                return (
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100vh"
+                    p={3}
+                  >
+                    <Typography variant="h5" color="error" gutterBottom>
+                      Database Error
+                    </Typography>
+                    <Typography variant="body1" align="center">
+                      {error}
+                    </Typography>
+                    <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+                      Please try refreshing the page or contact support if the problem persists.
+                    </Typography>
+                  </Box>
+                );
+              }
+              
+              if (loading) {
+                return (
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100vh"
+                    p={3}
+                  >
+                    <CircularProgress size={60} thickness={4} />
+                    <Typography variant="h6" sx={{ mt: 2, mb: 3 }}>
+                      Loading Architectural Database...
+                    </Typography>
+                    <Box sx={{ width: '80%', maxWidth: 400 }}>
+                      <LinearProgress variant="determinate" value={progress} />
+                      <Typography variant="caption" align="center" display="block" sx={{ mt: 1 }}>
+                        {Math.round(progress)}%
+                      </Typography>
+                    </Box>
+                  </Box>
+                );
+              }
+              
+              return <>{children}</>;
+            };
+            
+            export default DatabaseLoader;
+          
+        - name: "Update App.tsx to use DatabaseLoader"
+          file: "src/App.tsx"
+          changes: |
+            // Add DatabaseLoader component
+            import DatabaseLoader from './components/DatabaseLoader';
+            
+            function App() {
+              return (
+                <DatabaseLoader>
+                  <div className="app">
+                    <Suspense fallback={<LoadingIndicator />}>
+                      {/* ...existing routes... */}
+                    </Suspense>
+                  </div>
+                </DatabaseLoader>
+              );
+            }
+    
+    - name: Add offline support with Service Worker
+      description: |
+        Implement a service worker for offline functionality and cache control.
+      priority: medium
+      steps:
+        - name: "Configure Vite PWA plugin"
+          command: "pnpm add -D vite-plugin-pwa"
+          
+        - name: "Update vite.config.ts"
+          file: "vite.config.ts"
+          changes: |
+            import { VitePWA } from 'vite-plugin-pwa';
+            
+            // Add to plugins array:
+            VitePWA({
+              registerType: 'autoUpdate',
+              includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+              manifest: {
+                name: 'Japanese Architecture Map',
+                short_name: 'ArchiMap',
+                description: 'Interactive map and database of Japanese architecture',
+                theme_color: '#ffffff',
+                icons: [
+                  {
+                    src: 'pwa-192x192.png',
+                    sizes: '192x192',
+                    type: 'image/png'
+                  },
+                  {
+                    src: 'pwa-512x512.png',
+                    sizes: '512x512',
+                    type: 'image/png'
+                  }
+                ]
+              },
+              workbox: {
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,wasm}'],
+                runtimeCaching: [
+                  {
+                    urlPattern: /^https:\/\/bob-takuya\.github\.io\/archi-site\/db\/.*/i,
+                    handler: 'CacheFirst',
+                    options: {
+                      cacheName: 'database-cache',
+                      expiration: {
+                        maxEntries: 10,
+                        maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+                      },
+                      cacheableResponse: {
+                        statuses: [0, 200],
+                      },
+                    },
+                  }
+                ]
+              }
+            })
+          
+        - name: "Register service worker in index.tsx"
+          file: "src/index.tsx"
+          changes: |
+            // Add after other imports
+            import { registerSW } from 'virtual:pwa-register';
+            
+            // Add before render
+            const updateSW = registerSW({
+              onNeedRefresh() {
+                if (confirm('New content available. Reload?')) {
+                  updateSW(true);
+                }
+              },
+              onOfflineReady() {
+                console.log('App ready to work offline');
+              },
+            });
+      tools:
+        - name: "Vite PWA Plugin"
+          version: "^0.17.5"
+          docs: "https://vite-pwa-org.netlify.app/"
+        - name: "Workbox"
+          docs: "https://developer.chrome.com/docs/workbox/"
+
+implementation_order:
+  # Suggested implementation order for tasks
+  phases:
+    - phase: 1
+      tasks: 
+        - "Set up GitHub workflow files"
+        - "Clean up unused files in temp_preserved/"
+        - "Update TypeScript configurations"
+        - "Migrate from Webpack to Vite"
+      purpose: "Establish modern development environment"
+      
+    - phase: 2
+      tasks:
+        - "Implement client-side database with sql.js"
+        - "Update React Router for GitHub Pages"
+        - "Create database loading indicator"
+      purpose: "Enable static site functionality"
+      
+    - phase: 3
+      tasks:
+        - "Implement code splitting and lazy loading"
+        - "Write tests for all components"
+        - "Fix bugs and address TypeScript errors"
+      purpose: "Optimize performance and ensure quality"
+      
+    - phase: 4
+      tasks:
+        - "Add offline support with Service Worker"
+        - "Create SEO improvements"
+        - "Final testing and documentation"
+      purpose: "Polish and finalize for production"
+
+documentation:
+  # Documentation updates needed
+  tasks:
+    - name: "Update README.md"
+      file: "README.md"
+      content: |
+        # Japanese Architecture Map
+        
+        An interactive map and database of Japanese architectural works.
+        
+        ## Features
+        
+        - Browse architectural works across Japan
+        - Search and filter by architect, location, and time period
+        - View detailed information about buildings and architects
+        - Interactive map integration with Leaflet
+        
+        ## Technologies
+        
+        - React 19 with TypeScript
+        - Client-side SQLite database using sql.js
+        - Material UI for components
+        - React Router for navigation
+        - Vite for building and development
+        - Deployed on GitHub Pages
+        
+        ## Development
+        
+        ### Prerequisites
+        
+        - Node.js 20.12.1 or higher
+        - pnpm 10.5.0 or higher
+        
+        ### Setup
+        
+        ```bash
+        # Clone the repository
+        git clone https://github.com/bob-takuya/archi-site.git
+        cd archi-site
+        
+        # Install dependencies
+        pnpm install
+        
+        # Prepare the database
+        pnpm run prepare-db
+        
+        # Start the development server
+        pnpm run dev
+        ```
+        
+        ### Testing
+        
+        ```bash
+        # Run unit tests
+        pnpm run test
+        
+        # Run E2E tests
+        pnpm run test:e2e
+        
+        # Run tests with coverage
+        pnpm run test:coverage
+        ```
+        
+        ### Building
+        
+        ```bash
+        # Build for production
+        pnpm run build
+        
+        # Preview the production build
+        pnpm run preview
+        ```
+        
+        ## Deployment
+        
+        The application is automatically deployed to GitHub Pages when changes are pushed to the main branch.
+        
+        ## License
+        
+        ISC License

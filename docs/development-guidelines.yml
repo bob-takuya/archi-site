@@ -1,0 +1,643 @@
+name: Archi-site 開発指針
+
+description: |
+  このファイルはArchi-siteプロジェクトの開発全体に関する指針と方針を記述しています。
+  サーバーサイドSQLiteアプリケーションをGitHub Pages上で動作する静的サイトに変換する
+  プロジェクト全体の方向性、手順、ベストプラクティスを含みます。
+  2025年4月13日時点での最新情報です。
+
+  【重要】全ての開発作業の前後と作業中に、必ずこの指針ファイルと
+  .github/workflows/内の各種YAMLファイルを参照してください。
+  作業が指針から外れないよう、常に確認と参照を行ってください。
+
+重要行動指針:
+  # 開発者が常に守るべき行動指針
+  
+  最優先事項:
+    - "全ての開発タスク開始前に必ずこの開発指針ファイル(development-guidelines.yml)を確認すること"
+    - "実装中に疑問点が生じた場合は作業を中断し、必ずこの指針ファイルを再度参照すること"
+    - "作業完了前に実装内容がこの指針と一致しているか確認すること"
+    - "各フェーズの作業前に対応するワークフローファイル(.github/workflows/*.yml)を必ず確認すること"
+    - "どのファイルを修正すべきか迷った場合は、まずこの開発指針に立ち返ること"
+  
+  ドキュメント遵守:
+    - "この開発指針は単なる参考資料ではなく、必ず従うべき開発標準です"
+    - "指針からの逸脱が必要な場合は、必ず理由を記録し、指針自体の更新を検討してください"
+    - "チーム全員がこの指針に従うことで、一貫性のある高品質な実装が可能になります"
+    - "定期的（少なくとも一日一回）にこの指針全体を通読し、開発方向性を確認してください"
+  
+  知見の継続的更新:
+    - "開発中に得られた知見は、必ずこの指針またはworkflowファイルに反映してください"
+    - "問題解決方法や最適化テクニックは、後続の開発者のために必ず文書化してください"
+    - "実装パターンやベストプラクティスを発見したら、すぐにこの指針に追記してください"
+    - "指針の更新は、プロジェクトの継続的な改善の最も重要な部分です"
+
+開発の流れ:
+  # プロジェクト開発の全体的な流れ
+  
+  1. 環境セットアップと分析:
+    # 開発環境の準備と現状分析
+    
+    - task: 開発環境の準備
+      description: |
+        必要なツールと依存関係をインストールし、開発環境を整えます。
+      actions:
+        - "Node.js v20のインストール確認: node -v"
+        - "npmパッケージのインストール: npm ci"
+        - "VSCode拡張機能のインストール: ESLint, Prettier, SQLite Viewer"
+        - "ローカル開発サーバーの起動: npm run dev"
+      
+    - task: プロジェクト構造分析
+      description: |
+        既存のコードベースの構造を理解し、変換が必要な部分を特定します。
+      actions:
+        - "ファイル構造の確認: find . -type f -not -path \"./node_modules/*\" | sort"
+        - "サーバーサイド依存部分の特定: grep -r \"require(\" --include=\"*.js\" --include=\"*.ts\" ."
+        - "データベース接続部分の特定: grep -r \"sqlite\" --include=\"*.js\" --include=\"*.ts\" ."
+        - "APIエンドポイントの特定: grep -r \"app.get\" --include=\"*.js\" --include=\"*.ts\" ."
+  
+  2. 変換準備:
+    # 静的サイト変換の準備作業
+    
+    - task: 静的サイト変換計画の確認
+      description: |
+        .github/workflows/static-site-conversion.ymlに記載された計画の内容を確認します。
+      actions:
+        - "変換計画の内容確認: cat .github/workflows/static-site-conversion.yml"
+        - "必要な依存関係の追加準備: npm list sql.js"
+      
+    - task: クリーンアップ計画の確認
+      description: |
+        .github/workflows/cleanup-plan.ymlに記載された計画の内容を確認します。
+      actions:
+        - "クリーンアップ計画の確認: cat .github/workflows/cleanup-plan.yml"
+        - "重複ファイルの確認: find src temp_preserved -type f -name \"*.tsx\" | sort"
+  
+  3. 実装フェーズ:
+    # 具体的な実装作業
+    
+    - task: インフラ変更の実装
+      description: |
+        ViteへのWebpack移行とGitHub Pages向け設定を実装します。
+      actions:
+        - "Vite依存関係の追加: npm install -D vite @vitejs/plugin-react vite-tsconfig-paths"
+        - "Vite設定ファイルの作成: touch vite.config.ts"
+        - "404.htmlリダイレクトの作成: touch public/404.html"
+        - "GitHub Pages設定の修正: touch .nojekyll"
+      
+    - task: データベースサービスの変換
+      description: |
+        サーバーサイドSQLiteからクライアントサイドSQL.jsへの変換を実装します。
+      actions:
+        - "SQL.js依存関係の追加: npm install sql.js sql.js-httpvfs"
+        - "クライアントDBサービスの作成: mkdir -p src/services/db"
+        - "静的データベース準備スクリプトの作成: mkdir -p scripts"
+      
+    - task: API実装の変換
+      description: |
+        サーバーサイドAPIエンドポイントをクライアントサイドサービスに変換します。
+      actions:
+        - "クライアントサイドサービスの作成"
+        - "各APIエンドポイントの置き換え"
+        - "サーバーレス処理フローの構築"
+      
+    - task: ルーティングの修正
+      description: |
+        BrowserRouterからHashRouterへの変更でGitHub Pages対応を実装します。
+      actions:
+        - "App.tsxの更新"
+        - "index.tsxの更新"
+        - "リンクURLの調整"
+  
+  4. テストとデバッグ:
+    # 実装の検証作業
+    
+    - task: ユニットテスト実装
+      description: |
+        変更部分に対するユニットテストを実装します。
+      actions:
+        - "テスト環境の準備: npm test -- --watchAll=false"
+        - "データベースサービスのテスト作成"
+        - "コンポーネントテストの修正"
+      
+    - task: E2Eテスト実装
+      description: |
+        変更後の全体挙動を検証するE2Eテストを実装します。
+      actions:
+        - "Playwrightテストの準備: npx playwright test --config=playwright.config.ts"
+        - "ナビゲーションテストの作成"
+        - "データ表示テストの作成"
+      
+    - task: パフォーマンス検証
+      description: |
+        変換後のパフォーマンスを測定し、最適化を行います。
+      actions:
+        - "Lighthouse測定: npx lighthouse URL --view"
+        - "バンドルサイズ分析: npm run analyze"
+        - "メモリリーク検出: Chrome DevTools Performance Monitor"
+  
+  5. デプロイと検証:
+    # 実装のデプロイと最終検証
+    
+    - task: GitHub Pagesデプロイ
+      description: |
+        GitHub Actionsを使用して自動デプロイを設定します。
+      actions:
+        - "デプロイワークフローの実行: .github/workflows/deploy-to-gh-pages.yml"
+        - "デプロイ結果の確認: GitHub > Actions > Workflows"
+      
+    - task: デプロイ後の検証
+      description: |
+        デプロイ後の実際の動作を検証します。
+      actions:
+        - "全機能の動作確認: https://bob-takuya.github.io/archi-site/"
+        - "不具合の記録: GitHub Issues"
+        - "パフォーマンスの測定: https://pagespeed.web.dev/"
+
+実装方針:
+  # 実装全般に関する指針
+  
+  コード規約:
+    # 一貫したコーディング規約
+    
+    - name: ファイル命名規則
+      description: |
+        一貫したファイル命名規則を適用します。
+      rules:
+        - "コンポーネント: PascalCase (例: Button.tsx)"
+        - "ユーティリティ: camelCase (例: formatDate.ts)"
+        - "定数: UPPER_SNAKE_CASE"
+        - "型定義ファイル: camelCase (例: architect.ts)"
+    
+    - name: コンポーネント構造
+      description: |
+        Reactコンポーネントの構造に関する規約です。
+      rules:
+        - "関数コンポーネントのみ使用（クラスコンポーネント禁止）"
+        - "アロー関数スタイルで定義する"
+        - "props型はインターフェースで定義する"
+        - "デフォルト値はデフォルトパラメータで定義する"
+        - "メモ化（React.memo, useMemo, useCallback）を適切に使用する"
+    
+    - name: インポート順序
+      description: |
+        インポート文の順序に関する規約です。
+      rules:
+        - "1. React/React DOM関連のインポート"
+        - "2. サードパーティライブラリのインポート"
+        - "3. 自プロジェクトの型定義やコンテキストのインポート"
+        - "4. コンポーネントのインポート"
+        - "5. ユーティリティやフックのインポート"
+        - "6. アセット（画像、CSS）のインポート"
+    
+    - name: TypeScript規約
+      description: |
+        TypeScriptコードに関する規約です。
+      rules:
+        - "any型の使用を避け、具体的な型を定義する"
+        - "非nullアサーション（!）よりもオプショナルチェーン（?.）を優先"
+        - "読み取り専用プロパティには readonly を付与"
+        - "ユニオン型よりも判別可能なユニオン型を優先"
+        - "インターフェース名の接頭辞に I を付けない"
+  
+  パフォーマンス最適化:
+    # パフォーマンス最適化の方針
+    
+    - name: レンダリング最適化
+      description: |
+        レンダリングパフォーマンスに関する最適化方針です。
+      techniques:
+        - "React.memo を適切に使用してコンポーネントの不要な再レンダリングを防止"
+        - "useMemo, useCallback を使用して値と関数の再計算を最小化"
+        - "大きなリストには仮想化スクロール (react-window) を使用"
+        - "画像には適切なサイズとフォーマット (WebP, AVIF) を使用"
+        - "CSSアニメーションはGPUアクセラレーションを活用 (transform, opacity)"
+    
+    - name: データロード最適化
+      description: |
+        データ読み込みに関する最適化方針です。
+      techniques:
+        - "SQL.js-httpvfs を使用して必要な部分のみをストリーミングでロード"
+        - "クエリに WHERE 句とインデックスを適切に使用"
+        - "検索結果はページング処理でロード（無限スクロール）"
+        - "大量データを扱う際は Web Workers で処理をバックグラウンド化"
+        - "メモ化と状態管理で重複クエリを最小化"
+    
+    - name: バンドル最適化
+      description: |
+        JavaScriptバンドルサイズに関する最適化方針です。
+      techniques:
+        - "コード分割 (React.lazy, import()) でチャンクを小さく保つ"
+        - "重い依存関係はダイナミックインポートを使用"
+        - "未使用のコードや機能を削除 (tree-shaking)"
+        - "同じ機能の複数ライブラリの重複を避ける"
+        - "小さいユーティリティライブラリよりも標準機能を優先"
+
+指針参照チェックリスト:
+  # 各開発ステップで必ず確認すべき事項
+  
+  開発開始時:
+    - "development-guidelines.ymlの全体を通読"
+    - "関連するworkflowファイル(.github/workflows/*.yml)を確認"
+    - "実装する機能が既存の指針に含まれているか確認"
+    - "必要な依存関係とツールが揃っているか確認"
+  
+  実装中:
+    - "少なくとも2時間ごとに関連する指針セクションを再確認"
+    - "コード規約に準拠しているか随時確認"
+    - "パフォーマンス最適化ガイドラインを意識しているか確認"
+    - "デバッグで得られた知見を記録準備"
+  
+  作業完了前:
+    - "実装がすべての要件と指針を満たしているか確認"
+    - "すべてのテストが成功することを確認"
+    - "コード品質メトリクスが基準を満たしているか確認"
+    - "開発中に得られた知見がすべて文書化されているか確認"
+    - "開発指針の更新が必要な点がないか確認"
+  
+  レビュー時:
+    - "レビュアーはこの指針ファイルを参照しながらレビューを実施"
+    - "指針からの逸脱がある場合、正当な理由があるか確認"
+    - "指針の改善提案があれば記録"
+    - "知見の文書化が適切に行われているか確認"
+
+デバッグと知見収集:
+  # デバッグ方法と知見の記録方法
+  
+  デバッグ手法:
+    # 効果的なデバッグ方法
+    
+    - name: ブラウザデバッグ
+      description: |
+        ブラウザを使用したデバッグ方法です。
+      methods:
+        - "Chrome DevTools の Elements パネルでDOM構造を検証"
+        - "Console パネルで console.log 出力を確認"
+        - "Network パネルでリクエスト/レスポンスを分析"
+        - "Performance パネルでボトルネックを特定"
+        - "Application パネルでStorageとCacheを検証"
+        - "React DevTools でコンポーネント階層とprops/stateを確認"
+        - "Redux DevTools で状態変化を追跡（Reduxを使用する場合）"
+    
+    - name: VSCodeデバッグ
+      description: |
+        VSCodeを使用したデバッグ方法です。
+      methods:
+        - "JavaScript Debug Terminal でブレークポイントデバッグ"
+        - "launch.json の設定でBreakpoints, LogPoints, Watchを活用"
+        - "デバッグコンソールでステップ実行と変数検査"
+        - "SQLite Viewer 拡張機能でデータベースの内容を確認"
+    
+    - name: SQLデバッグ
+      description: |
+        SQL.jsのデバッグ方法です。
+      methods:
+        - "executeQuery の結果を console.log で確認"
+        - "SQLクエリをフォーマットして可読性を高める"
+        - "WHERE句の条件をシンプルにして動作確認"
+        - "Chrome DevTools > Network で.sqliteファイルのロードを確認"
+        - "実行計画をチェック: EXPLAIN QUERY PLAN SELECT ..."
+  
+  知見記録:
+    # 学んだ知見の記録方法
+    
+    - name: デバッグ知見ログ
+      description: |
+        デバッグ中に発見した問題と解決策を記録します。
+      format: |
+        ```
+        ## 発見した問題
+
+        - 日時: 2025-04-13 14:30
+        - 状況: MapPage.tsxで位置データが表示されない
+        - 環境: Chrome 125.0.0.0, Vite 5.0.0, sql.js 1.8.0
+
+        ## 症状
+        地図コンポーネント上にマーカーが表示されず、コンソールに
+        "Cannot read properties of undefined (reading 'latitude')" エラーが出力される。
+
+        ## 調査
+        1. React DevToolsでpropsを確認 -> データは正しく渡されている
+        2. NetworkタブでAPIリクエストを確認 -> レスポンスは正常
+        3. console.logでデータ形式を確認 -> APIレスポンスと型定義の不一致を発見
+
+        ## 原因
+        API返却値のプロパティ名は `lat`, `lng` だが、
+        コンポーネントは `latitude`, `longitude` を期待していた。
+
+        ## 解決策
+        1. 型定義ファイル (architecture.ts) のインターフェースを修正
+        2. もしくは、MapMarkerコンポーネント内でのプロパティマッピングを変更
+
+        ## 学んだこと
+        - 型定義とAPIレスポンスの一致を保証する仕組みが必要
+        - APIの変更時は型定義の更新も必須
+        - 型変換用のアダプターパターンの導入を検討
+        ```
+      location: "docs/debug-logs/"
+      command: "mkdir -p docs/debug-logs && touch docs/debug-logs/$(date +%Y-%m-%d)_problem_name.md"
+    
+    - name: 開発Tips収集
+      description: |
+        再利用可能な開発テクニックやTipsを収集します。
+      format: |
+        ```
+        # 開発Tip: わかりやすいタイトル
+
+        ## 概要
+        簡潔な説明（1-2文）
+
+        ## 詳細
+        詳細な説明や背景
+
+        ## 使用例
+        ```typescript
+        // コードサンプル
+        ```
+
+        ## 注意点
+        - 使用時の注意点
+        - 制限事項
+
+        ## 参考リンク
+        - [タイトル](URL)
+        ```
+      location: "docs/tips/"
+      command: "mkdir -p docs/tips && touch docs/tips/tip_name.md"
+    
+    - name: パフォーマンス最適化記録
+      description: |
+        パフォーマンス最適化の取り組みと結果を記録します。
+      format: |
+        ```
+        # パフォーマンス最適化: 最適化項目名
+
+        ## 対象
+        最適化対象のコンポーネントやページ
+
+        ## Before
+        - メトリクス: 数値（例: FCP 2.5s, Bundle Size 1.2MB）
+        - 問題点: 詳細な説明
+
+        ## 実施した最適化
+        1. 実施内容1（コードサンプルなど）
+        2. 実施内容2
+        3. 実施内容3
+
+        ## After
+        - メトリクス: 数値（例: FCP 1.2s, Bundle Size 800KB）
+        - 改善率: xx%
+
+        ## 学んだこと
+        - 発見1
+        - 発見2
+
+        ## 今後の課題
+        - 残された課題
+        ```
+      location: "docs/performance/"
+      command: "mkdir -p docs/performance && touch docs/performance/$(date +%Y-%m-%d)_optimization_name.md"
+
+CI/CD:
+  # 継続的インテグレーション/デプロイに関する方針
+  
+  テスト戦略:
+    # テスト実装の戦略
+    
+    - name: ユニットテスト
+      description: |
+        コンポーネントと機能の単体テスト戦略です。
+      guidelines:
+        - "コンポーネントごとに基本的なレンダリングテストを作成"
+        - "プロップスの変更に対する挙動テストを実装"
+        - "イベントハンドラーの動作確認テストを実装"
+        - "条件付きレンダリングのすべてのケースをテスト"
+        - "カスタムフックは個別にテスト"
+        - "データ取得関数はモックレスポンスでテスト"
+      tools:
+        - "Jest: テストランナー"
+        - "React Testing Library: コンポーネントテスト"
+        - "MSW: APIモック"
+    
+    - name: E2Eテスト
+      description: |
+        エンドツーエンドテスト戦略です。
+      guidelines:
+        - "主要なユーザーフローを網羅するテストを作成"
+        - "複数ブラウザでのテストを自動化"
+        - "レスポンシブデザインの検証にビューポートサイズを活用"
+        - "テスト失敗時のスクリーンショット自動保存"
+        - "ローカルストレージとセッションストレージの状態も検証"
+      tools:
+        - "Playwright: E2Eテスト"
+        - "GitHub Actions: CI環境での実行"
+    
+    - name: パフォーマンステスト
+      description: |
+        パフォーマンステスト戦略です。
+      guidelines:
+        - "Webパフォーマンスの主要メトリクスを継続的に測定"
+        - "バンドルサイズの増加をモニタリング"
+        - "重要なページのLighthouseスコアを定期的に計測"
+        - "メモリ使用量とリークをプロファイリング"
+      tools:
+        - "Lighthouse CI: パフォーマンススコア"
+        - "Bundle Analyzer: バンドルサイズ分析"
+        - "Web Vitals: コアWebバイタル計測"
+  
+  デプロイ戦略:
+    # デプロイに関する戦略
+    
+    - name: GitHub Pages デプロイ
+      description: |
+        GitHub Pagesへのデプロイ戦略です。
+      workflow:
+        - "プルリクエストマージ時に自動デプロイを実行"
+        - "環境変数を本番/ステージングで切り替え"
+        - "デプロイ前にすべてのテストを実行"
+        - "静的アセットはCDNキャッシュを活用"
+        - "デプロイ結果を自動でSlack通知"
+      tools:
+        - "GitHub Actions: CI/CD自動化"
+        - "actions/deploy-pages: GitHub Pagesデプロイ"
+        - "upload-pages-artifact: ビルド成果物のアップロード"
+
+必須リソース:
+  # 参照すべき重要なリソース
+  
+  ドキュメント:
+    - name: "sql.js公式ドキュメント"
+      url: "https://github.com/sql-js/sql.js/blob/master/README.md"
+      description: "ブラウザ内SQLiteの基本的な使い方"
+      
+    - name: "sql.js-httpvfs ドキュメント"
+      url: "https://github.com/phiresky/sql.js-httpvfs/blob/master/README.md"
+      description: "大規模SQLiteファイルの効率的なロード方法"
+      
+    - name: "React Router公式ドキュメント"
+      url: "https://reactrouter.com/en/main"
+      description: "React Routerの使い方と設定方法"
+      
+    - name: "GitHub Pages ドキュメント"
+      url: "https://docs.github.com/en/pages"
+      description: "GitHub Pagesの設定と使用方法"
+      
+    - name: "Vite公式ドキュメント"
+      url: "https://vitejs.dev/guide/"
+      description: "Viteの設定と最適化方法"
+  
+  チュートリアル:
+    - name: "SPA on GitHub Pages"
+      url: "https://github.com/rafgraph/spa-github-pages"
+      description: "GitHub PagesでのSPA実装テクニック"
+      
+    - name: "SQLite to SQL.js Migration Guide"
+      url: "https://github.com/sql-js/sql.js/blob/master/examples/GUI/index.html"
+      description: "SQLiteからSQL.jsへの移行例"
+  
+  コミュニティ:
+    - name: "Stack Overflow - sql.js"
+      url: "https://stackoverflow.com/questions/tagged/sql.js"
+      description: "SQL.jsに関する質問と回答"
+      
+    - name: "GitHub Discussions - React Router"
+      url: "https://github.com/remix-run/react-router/discussions"
+      description: "React Routerのディスカッション"
+
+指針の更新手順:
+  # この開発指針自体の更新プロセス
+  
+  条件:
+    - "実装中に指針と異なる優れたアプローチを発見した場合"
+    - "指針に記載されていない問題や解決策を見つけた場合"
+    - "既存の指針が正確ではないと判断した場合"
+    - "チームで合意された新しいベストプラクティスがある場合"
+  
+  手順:
+    - "1. 更新が必要な理由と根拠を文書化"
+    - "2. 提案する変更内容を具体的に記述"
+    - "3. プルリクエストを作成して変更をレビュー"
+    - "4. チームの承認を得て変更をマージ"
+    - "5. 全員に更新内容を通知"
+  
+  更新履歴:
+    - version: "1.0.0"
+      date: "2025-04-13"
+      author: "Takuya Itabashi"
+      changes: "初期バージョン作成"
+    
+    - version: "1.0.1"
+      date: "2025-04-13"
+      author: "Takuya Itabashi"
+      changes: "指針遵守の重要性と更新手順を追加"
+
+よくある問題と解決策:
+  # 発生しやすい問題と対処法
+  
+  - name: "GitHub Pagesでのルーティング404エラー"
+    problem: |
+      GitHub Pages上でSPAのルーティングが動作せず、404エラーが発生する。
+    solution: |
+      1. HashRouter を使用する (BrowserRouter の代わりに)
+      2. 404.html ファイルを作成し、リダイレクトスクリプトを追加
+      3. スクリプトでURLパラメータを使ってルートパスに転送
+      4. サブディレクトリにデプロイする場合は basename を設定
+    example: |
+      ```jsx
+      // App.tsx
+      import { HashRouter as Router } from 'react-router-dom';
+      
+      const App = () => (
+        <Router>
+          <Routes />
+        </Router>
+      );
+      ```
+  
+  - name: "SQL.jsでのパフォーマンス問題"
+    problem: |
+      大きなデータセットを扱う際にSQL.jsのパフォーマンスが低下する。
+    solution: |
+      1. sql.js-httpvfs を使用して必要な部分だけをロード
+      2. WHERE句で結果を絞り込む
+      3. LIMIT, OFFSET でページング処理を実装
+      4. インデックスを適切に設定
+      5. Web Workerで処理をバックグラウンド化
+    example: |
+      ```typescript
+      // 効率的なクエリ例
+      const query = `
+        SELECT * FROM architecture
+        WHERE prefecture = ?
+          AND year BETWEEN ? AND ?
+        ORDER BY year DESC
+        LIMIT ? OFFSET ?
+      `;
+      
+      const results = await executeQuery(query, [
+        prefecture,
+        yearStart,
+        yearEnd, 
+        limit,
+        offset
+      ]);
+      ```
+  
+  - name: "非同期データロードとコンポーネントレンダリング"
+    problem: |
+      非同期データロードが完了する前にコンポーネントがレンダリングされエラーになる。
+    solution: |
+      1. ローディング状態を表示
+      2. エラー状態を適切に処理
+      3. オプショナルチェーン（?.）を使用
+      4. Suspenseとlazy loadingを活用（React 18以降）
+    example: |
+      ```jsx
+      const ArchitectPage = () => {
+        const [data, setData] = useState(null);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+        
+        useEffect(() => {
+          async function loadData() {
+            try {
+              setLoading(true);
+              const result = await getArchitectById(id);
+              setData(result);
+            } catch (err) {
+              setError(err);
+            } finally {
+              setLoading(false);
+            }
+          }
+          
+          loadData();
+        }, [id]);
+        
+        if (loading) return <LoadingSpinner />;
+        if (error) return <ErrorMessage error={error} />;
+        if (!data) return <NotFound />;
+        
+        return <ArchitectDetail architect={data} />;
+      };
+      ```
+
+評価指標:
+  # プロジェクトの成功を測るための指標
+  
+  ユーザー体験:
+    - "ページロード時間: FCP < 1.5秒"
+    - "インタラクション遅延: TTI < 3.8秒"
+    - "レイアウトシフト: CLS < 0.1"
+    - "全体Lighthouseスコア: パフォーマンス > 90"
+  
+  コード品質:
+    - "テストカバレッジ: > 80%"
+    - "ESLintエラー: 0件"
+    - "TypeScript厳格モードのエラー: 0件"
+    - "重複コード: < 5%"
+  
+  デプロイ安定性:
+    - "デプロイ失敗率: < 1%"
+    - "ロールバック回数: < 2回/月"
+    - "本番環境バグ修正数: < 3件/月"

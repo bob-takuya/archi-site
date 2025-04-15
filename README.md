@@ -1,70 +1,201 @@
-# 建築データベース閲覧アプリケーション
+# 日本の建築マップ (Japanese Architecture Map)
 
-このアプリケーションはSQLiteデータベースに保存された日本の建築作品と建築家の情報を閲覧するためのウェブアプリケーションです。
+An interactive database and map application for Japanese architectural works.
 
-## 特徴
+## Overview
 
-- 14,000件以上の建築作品と2,900人以上の建築家情報を閲覧可能
-- 作品や建築家の詳細情報の表示
-- キーワード検索機能
-- 地域、カテゴリー、年代などでのフィルタリング
-- マップ上での建築作品の位置表示
+This application provides a comprehensive database of architectural works in Japan, allowing users to browse, search, and visualize buildings on an interactive map. Users can explore architectural works by various criteria including location, architect, year, and style.
 
-## 技術スタック
+## Features
 
-- **バックエンド**: Node.js, Express
-- **データベース**: SQLite3
-- **フロントエンド**: React, Material-UI
-- **ビルドツール**: Webpack, Babel
+- **Building Database**: Browse and search through a comprehensive collection of Japanese architectural works
+- **Architect Profiles**: Explore information about architects and their works
+- **Interactive Map**: Visualize buildings on a map with filtering options
+- **Responsive Design**: Optimized for both desktop and mobile devices
+- **Bilingual Support**: Interface available in Japanese and English
+- **Offline Capability**: Works even with limited connectivity
 
-## 必要条件
+## Technology Stack
 
-- Node.js 14.0以上
-- npm 6.0以上
+### Frontend
+- React 19.0.0
+- TypeScript 5.8.2
+- Material UI 6.4.8
+- Leaflet 1.9.4 (for maps)
+- React Router 7.4.0
 
-## セットアップ手順
+### Backend
+- Node.js
+- Express 4.21.2
+- SQLite3 5.1.7 (with sql.js for browser access)
 
-1. リポジトリをクローン
-```
-git clone <リポジトリURL>
+### Build Tools
+- Webpack 5.98.0
+- TypeScript 5.8.2
+
+### Testing
+- Jest
+- React Testing Library
+- Playwright for E2E testing
+
+## Setup and Installation
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/bob-takuya/archi-site.git
 cd archi-site
 ```
 
-2. 依存関係のインストール
-```
+2. Install dependencies:
+```bash
 npm install
 ```
 
-3. アプリケーションの起動（開発モード）
+3. Prepare the database:
+```bash
+npm run prepare-db
 ```
+
+4. Start the development server:
+```bash
 npm run dev
 ```
 
-4. ブラウザで以下のURLにアクセス
+This will start both the backend server and the frontend development server. The application will be available at http://localhost:8080.
+
+## Development
+
+### Project Structure
+
 ```
-http://localhost:8080
+archi-site/
+├── public/            # Static assets
+├── scripts/           # Build and utility scripts
+├── server/            # Backend API server
+│   ├── middleware/    # Express middleware
+│   ├── routes/        # API routes
+│   └── utils/         # Server utilities
+├── src/               # Frontend source code
+│   ├── components/    # React components
+│   │   └── ui/        # Reusable UI components
+│   ├── context/       # React contexts for state management
+│   ├── hooks/         # Custom React hooks
+│   ├── pages/         # Page components
+│   ├── services/      # API and database services
+│   │   └── db/        # Database access modules
+│   ├── styles/        # CSS styles
+│   ├── types/         # TypeScript type definitions
+│   └── utils/         # Utility functions
+└── tests/             # Test files
+    ├── unit/          # Unit tests
+    └── screenshots/   # Test screenshots
 ```
 
-## 使用方法
+### Available Scripts
 
-### 建築作品の閲覧
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run test` - Run unit tests
+- `npm run test:e2e` - Run end-to-end tests
+- `npm run test:coverage` - Run tests with coverage report
+- `npm run prepare-db` - Prepare database for development
 
-- ホーム画面から検索またはカテゴリーを選択
-- 建築作品一覧画面でフィルターや検索を利用
-- 作品をクリックして詳細を表示
+## Testing
 
-### 建築家の閲覧
+### Unit Tests
 
-- メニューから「建築家」を選択
-- 名前や事務所名で検索
-- 建築家をクリックして詳細情報と作品リストを表示
+Run unit tests with:
 
-### マップ機能
+```bash
+npm test
+```
 
-- メニューから「マップ」を選択
-- 地図上に表示された建築作品をクリックして詳細表示
-- フィルター機能で特定の条件に合う作品のみ表示
+### End-to-End Tests
 
-## ライセンス
+Run E2E tests with:
 
-このプロジェクトは [MIT ライセンス](LICENSE) の下で公開されています。 
+```bash
+npm run test:e2e
+```
+
+To view test reports:
+
+```bash
+npx playwright show-report test-results/reports
+```
+
+## Deployment
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+This will create optimized production builds in the `dist` directory.
+
+### Start Production Server
+
+```bash
+npm start
+```
+
+### GitHub Pages Deployment
+
+This application has transitioned from server-side SQLite to static hosting on GitHub Pages. Deployment is automated via GitHub Actions upon pushing to the main branch.
+
+#### Deployment Workflow
+
+1. GitHub Actions workflow is defined in `.github/workflows/deploy.yml`
+2. Build process:
+   - Run tests (lint, type-check, unit tests, E2E tests)
+   - Convert database to static files (`scripts/prepare-static-db.js`)
+   - Build the application using Vite
+   - Add necessary headers and static files
+3. Deploy to the `gh-pages` branch
+4. Post-build audits (Lighthouse, link checks)
+
+#### Key Technical Elements
+
+- **Client-side Database**: Streaming large SQLite databases using SQL.js and sql.js-httpvfs
+- **SPA Routing**: Client-side routing with HashRouter
+- **Performance Optimization**:
+  - Caching database queries
+  - Bundle optimization and splitting
+  - Static asset caching settings
+- **Security**: Enable SharedArrayBuffer with COOP/COEP headers
+
+#### Post-Deployment Verification
+
+- **Production URL**: https://bob-takuya.github.io/archi-site/
+- **Verification Checklist**:
+  1. Database connection
+  2. Map display and interaction
+  3. Search functionality
+  4. Detail page rendering
+  5. Responsive design
+- **Audit Results**: Check Lighthouse scores and link check results from GitHub Actions
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the ISC License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Data sourced from various architectural archives and publications
+- Thanks to the Shinkenchiku magazine for inspiration and references

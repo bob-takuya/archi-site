@@ -19,6 +19,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
+// サーバー起動
+app.listen(PORT, () => {
+  console.log(`サーバーが起動しました: http://localhost:${PORT}`);
+});
+
+// アプリケーション終了時にデータベース接続を閉じる
+process.on('SIGINT', () => {
+  db.close(() => {
+    console.log('データベース接続を閉じました');
+    process.exit(0);
+  });
+});
+
 // 建築作品の取得（ページネーション付き）
 app.get('/api/architecture', (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -337,24 +350,6 @@ app.get('/api/filter', (req, res) => {
   });
 });
 
-// フロントエンドのルーティング
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
-// サーバー起動
-app.listen(PORT, () => {
-  console.log(`サーバーが起動しました: http://localhost:${PORT}`);
-});
-
-// アプリケーション終了時にデータベース接続を閉じる
-process.on('SIGINT', () => {
-  db.close(() => {
-    console.log('データベース接続を閉じました');
-    process.exit(0);
-  });
-});
-
 // GET /architects - 建築家の一覧を取得
 app.get('/architects', async (req, res) => {
   try {
@@ -392,4 +387,9 @@ app.get('/architects', async (req, res) => {
     console.error('Error fetching architects:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-}); 
+});
+
+// フロントエンドのルーティング
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});

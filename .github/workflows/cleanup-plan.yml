@@ -1,0 +1,650 @@
+name: プロジェクトクリーンアップと最適化計画
+
+description: |
+  このファイルはArchi-siteプロジェクトの不要なファイル削除、重複コードのリファクタリング、
+  およびコードベースの最適化のための詳細な手順を記載しています。
+  2025年4月時点のベストプラクティスに基づいたTypeScriptとReactアプリケーションの
+  リファクタリングガイドラインを提供します。
+
+ファイル評価:
+  # プロジェクト内のファイル状態の評価
+  
+  保持すべきファイル:
+    - src/components: "コアReactコンポーネント"
+    - src/context: "アプリケーション状態管理のためのコンテキスト"
+    - src/hooks: "カスタムReactフック"
+    - src/pages: "アプリケーションページコンポーネント"
+    - src/services: "データアクセスとAPI呼び出し"
+    - src/styles: "スタイルシート"
+    - src/types: "TypeScript型定義"
+    - src/utils: "ユーティリティ関数"
+    - public: "静的アセット"
+    - assets: "画像および共有スタイル"
+    - tests: "テストファイル"
+    - server.ts: "リファクタリング後のTypeScriptサーバー"
+    - webpack.config.js: "Webpackビルド設定（Viteへの移行検討）"
+    - package.json: "プロジェクト依存関係"
+    - tsconfig.json: "TypeScript設定"
+    - playwright.config.ts: "E2Eテスト設定"
+    - jest.setup.js: "Jestテスト設定"
+    - Archimap_database.sqlite: "アプリケーションデータベース"
+    - README.md: "プロジェクトドキュメント"
+  
+  リファクタリングが必要なファイル:
+    - server.js: |
+        JavaScriptバージョンのサーバーコードを完全にTypeScript (server.ts) に移行する。
+        サーバーサイドロジックもクライアントサイドで動作するように変更する。
+        
+    - src/services/DbService.ts: |
+        サーバーサイドのデータベースアクセスからクライアントサイドSQL.jsでの実装に変更する。
+        
+    - temp_preserved/: |
+        一時的に保存されたファイルから必要なコードを抽出し、メインのコードベースに統合する。
+  
+  削除すべきファイル:
+    - server.js: "TypeScript版に完全に移行後"
+    - temp_preserved/: "必要なコードを抽出後"
+    - node_modules/.cache: "キャッシュファイル（再インストール可能）"
+    - dist: "ビルドファイル（再ビルド可能）"
+    - 重複コンポーネントファイル: "同じ機能を持つ複数のファイルバージョン"
+
+重複コード分析:
+  # 重複コードと統合戦略の分析
+  
+  手順:
+    - name: 重複コードの特定
+      command: npx jscpd src/ temp_preserved/ --ignore "**/*.test.ts,**/*.test.tsx,**/node_modules/**"
+      description: |
+        jscpdツールを使用して重複コードブロックを特定します。
+        このコマンドはsrcディレクトリとtemp_preservedディレクトリ内の重複を検出します。
+        参照: https://github.com/kucherenko/jscpd
+      
+    - name: 構造的な類似性分析
+      command: |
+        find src temp_preserved -type f -name "*.ts" -o -name "*.tsx" | \
+        xargs grep -l "import React" | \
+        sort > /tmp/react-components.txt
+      description: |
+        同様のインポートパターンを持つファイルをリストアップし、潜在的な重複を発見します。
+      
+    - name: TypeScript型の一貫性チェック
+      command: npx tsc --noEmit
+      description: |
+        TypeScriptコンパイラを使用して型の一貫性をチェックし、
+        重複したインターフェイスや型定義を特定します。
+
+リファクタリング計画:
+  # コードリファクタリングの詳細計画
+  
+  フェーズ1: 重複ファイルの統合
+    # 重複ファイルをメインコードベースに統合
+    
+    - name: コンポーネントの統合
+      手順:
+        - task: Mapコンポーネントの統合
+          command: |
+            diff -u src/components/Map.tsx temp_preserved/components/Map.tsx
+          description: |
+            両方のMap.tsxファイルの違いを確認し、最新かつ最適な機能を持つバージョンを特定します。
+          
+        - task: 統合されたMapコンポーネントの作成
+          file: src/components/Map/index.tsx
+          description: |
+            統合されたバージョンをコンポーネントディレクトリ構造に合わせて作成します。
+          
+        - task: Mapコンポーネントのテスト作成
+          command: mkdir -p tests/unit/components/Map
+          description: |
+            統合されたコンポーネント用のテストディレクトリを作成します。
+      
+    - name: サービスの統合
+      手順:
+        - task: DbServiceの統合
+          command: |
+            diff -u src/services/DbService.ts temp_preserved/services/DbService.ts
+          description: |
+            DbServiceファイルの違いを分析して統合します。
+          
+        - task: クライアントサイドDbServiceの作成
+          file: src/services/db/ClientDatabaseService.ts
+          description: |
+            サーバーサイドからクライアントサイドに変換されたデータベースサービスを作成します。
+      
+    - name: ページの統合
+      手順:
+        - task: HomePage.tsxの統合
+          command: |
+            diff -u src/pages/HomePage.tsx temp_preserved/pages/HomePage.tsx
+          description: |
+            HomePageコンポーネントの違いを分析します。
+          
+        - task: 他のページファイルの統合チェック
+          command: |
+            for f in src/pages/*.tsx; do
+              basename=$(basename $f)
+              if [ -f "temp_preserved/pages/$basename" ]; then
+                echo "Comparing $basename..."
+                diff -u "$f" "temp_preserved/pages/$basename"
+              fi
+            done
+          description: |
+            すべてのページコンポーネントを比較して差異を特定します。
+  
+  フェーズ2: サーバーコードのTypeScript変換
+    # JavaScriptサーバーコードをTypeScriptに完全に移行
+    
+    - name: server.tsファイルの検証と強化
+      手順:
+        - task: server.tsの型チェック
+          command: npx tsc --noEmit server.ts
+          description: |
+            TypeScriptコンパイラで型エラーがないか確認します。
+          
+        - task: server.tsのESLintチェック
+          command: npx eslint server.ts --fix
+          description: |
+            コードスタイルとベストプラクティスの問題を修正します。
+      
+    - name: サーバーコードのクライアントサイド実装への変換
+      手順:
+        - task: APIエンドポイントのマッピング
+          command: |
+            grep -r "app.get" --include="*.js" --include="*.ts" . | \
+            awk -F':' '{print $2}' | sort | uniq > /tmp/api-endpoints.txt
+          description: |
+            すべてのAPIエンドポイントをリスト化して、クライアントサイド実装の計画を立てます。
+          
+        - task: クライアントサイドAPIサービスの作成
+          file: src/services/api/ClientApiService.ts
+          description: |
+            サーバーAPIエンドポイントをクライアントサイドSQLクエリに変換したサービスを作成します。
+  
+  フェーズ3: コード最適化とパフォーマンス改善
+    # コードの品質と実行速度の最適化
+    
+    - name: React最適化
+      手順:
+        - task: useMemoとuseCallbackの適用
+          command: |
+            find src -type f -name "*.tsx" -exec grep -l "React.useEffect" {} \; | \
+            xargs code
+          description: |
+            パフォーマンスに影響する可能性のあるコンポーネントを特定し、
+            メモ化とコールバック最適化を適用します。
+          
+        - task: React DevToolsによるパフォーマンス分析
+          description: |
+            Chrome DevToolsとReact DevToolsを使用して、
+            レンダリングのボトルネックを特定し、最適化します。
+            参照: https://reactjs.org/docs/optimizing-performance.html
+      
+    - name: バンドルサイズの最適化
+      手順:
+        - task: バンドル分析
+          command: npm run analyze
+          description: |
+            バンドルアナライザーを使用して大きなバンドルを特定し、
+            コード分割やレイジーローディングの候補を見つけます。
+          
+        - task: tree shakingの確認
+          command: |
+            grep -r "import \* as" --include="*.ts" --include="*.tsx" src/
+          description: |
+            非効率なインポートパターンを見つけ、個別のインポートに変更します。
+          
+        - task: 未使用のコードと依存関係の削除
+          command: npx depcheck
+          description: |
+            使用されていない依存関係を特定して削除します。
+      
+    - name: コード品質の向上
+      手順:
+        - task: ESLintルールの適用
+          command: npx eslint --fix src/**/*.{ts,tsx}
+          description: |
+            一貫したコードスタイルを適用します。
+          
+        - task: TypeScriptの厳格モードの有効化
+          file: tsconfig.json
+          changes: |
+            {
+              "compilerOptions": {
+                "strict": true,
+                "noImplicitAny": true,
+                "strictNullChecks": true,
+                "strictFunctionTypes": true,
+                "strictBindCallApply": true,
+                "strictPropertyInitialization": true,
+                "noImplicitThis": true,
+                "alwaysStrict": true
+              }
+            }
+          description: |
+            TypeScriptの厳格な型チェックを有効にして、型の安全性を向上させます。
+
+テスト戦略:
+  # テスト駆動開発の具体的なアプローチ
+  
+  単体テスト:
+    - name: コンポーネントテスト環境の設定
+      手順:
+        - task: Jestとテストライブラリの設定確認
+          command: cat jest.setup.js
+          description: |
+            Jestの設定を確認し、最新のテスト環境が整っているか確認します。
+          
+        - task: テストユーティリティの作成
+          file: tests/utils/test-utils.tsx
+          content: |
+            import React, { ReactElement } from 'react';
+            import { render, RenderOptions } from '@testing-library/react';
+            import { ThemeProvider } from '@mui/material/styles';
+            import { theme } from '../../src/styles/theme';
+            import { AppProvider } from '../../src/context/AppContext';
+            
+            const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
+              return (
+                <ThemeProvider theme={theme}>
+                  <AppProvider>
+                    {children}
+                  </AppProvider>
+                </ThemeProvider>
+              );
+            };
+            
+            const customRender = (
+              ui: ReactElement,
+              options?: Omit<RenderOptions, 'wrapper'>
+            ) => render(ui, { wrapper: AllTheProviders, ...options });
+            
+            export * from '@testing-library/react';
+            export { customRender as render };
+          description: |
+            プロバイダーとコンテキストを含むテスト用のカスタムレンダリング関数を作成します。
+      
+    - name: コンポーネントテスト実装
+      手順:
+        - task: ボタンコンポーネントテスト
+          file: tests/unit/components/ui/Button.test.tsx
+          content: |
+            import React from 'react';
+            import { render, screen, fireEvent } from '../../../utils/test-utils';
+            import { Button } from '../../../../src/components/ui/Button';
+            
+            describe('Button Component', () => {
+              it('renders correctly with default props', () => {
+                render(<Button>ボタンテキスト</Button>);
+                const button = screen.getByText('ボタンテキスト');
+                expect(button).toBeInTheDocument();
+                expect(button).not.toBeDisabled();
+              });
+              
+              it('applies the primary variant style', () => {
+                render(<Button variant="primary">プライマリー</Button>);
+                const button = screen.getByText('プライマリー');
+                expect(button).toHaveClass(/MuiButton-containedPrimary/);
+              });
+              
+              it('handles click events', () => {
+                const handleClick = jest.fn();
+                render(<Button onClick={handleClick}>クリック</Button>);
+                fireEvent.click(screen.getByText('クリック'));
+                expect(handleClick).toHaveBeenCalledTimes(1);
+              });
+              
+              it('disables the button when disabled prop is true', () => {
+                render(<Button disabled>無効</Button>);
+                expect(screen.getByText('無効')).toBeDisabled();
+              });
+            });
+          description: |
+            ボタンコンポーネントの単体テストを作成します。
+            これはテスト駆動開発の例として機能します。
+      
+    - name: サービステスト実装
+      手順:
+        - task: ClientDatabaseServiceのテスト
+          file: tests/unit/services/db/ClientDatabaseService.test.ts
+          content: |
+            import {
+              initDatabase,
+              executeQuery,
+              getSingleResult,
+              getResultsArray,
+              DatabaseStatus,
+              getDatabaseStatus
+            } from '../../../../src/services/db/ClientDatabaseService';
+            
+            jest.mock('sql.js-httpvfs', () => ({
+              createDbWorker: jest.fn().mockResolvedValue({
+                db: {
+                  exec: jest.fn().mockImplementation((query, params) => {
+                    if (query.includes('sqlite_version')) {
+                      return [{ columns: ['version'], values: [['3.36.0']] }];
+                    }
+                    if (query.includes('SELECT * FROM')) {
+                      return [{ 
+                        columns: ['id', 'name'],
+                        values: [[1, 'テストデータ']] 
+                      }];
+                    }
+                    if (query.includes('COUNT')) {
+                      return [{ columns: ['total'], values: [[10]] }];
+                    }
+                    return [];
+                  })
+                }
+              })
+            }));
+            
+            describe('ClientDatabaseService', () => {
+              beforeEach(() => {
+                jest.clearAllMocks();
+              });
+              
+              it('should initialize the database successfully', async () => {
+                const dbWorker = await initDatabase();
+                expect(dbWorker).toBeDefined();
+                expect(getDatabaseStatus()).toBe(DatabaseStatus.READY);
+              });
+              
+              it('should execute a query and return results', async () => {
+                const results = await executeQuery('SELECT * FROM test');
+                expect(results).toHaveLength(1);
+                expect(results[0].columns).toContain('name');
+              });
+              
+              it('should return a single result object', async () => {
+                const result = await getSingleResult('SELECT * FROM test WHERE id = ?', [1]);
+                expect(result).toEqual({ id: 1, name: 'テストデータ' });
+              });
+              
+              it('should return an array of result objects', async () => {
+                const results = await getResultsArray('SELECT * FROM test');
+                expect(results).toBeInstanceOf(Array);
+                expect(results[0]).toEqual({ id: 1, name: 'テストデータ' });
+              });
+            });
+          description: |
+            クライアントサイドデータベースサービスのモックテストを作成します。
+            SQL.jsの動作をモックして、データベース操作をテストします。
+  
+  E2Eテスト:
+    - name: Playwrightテスト環境の設定
+      手順:
+        - task: Playwrightの設定確認
+          command: cat playwright.config.ts
+          description: |
+            Playwrightの設定を確認し、必要に応じて更新します。
+          
+        - task: スクリーンショットディレクトリの作成
+          command: mkdir -p tests/screenshots
+          description: |
+            テスト実行中のスクリーンショットを保存するディレクトリを作成します。
+      
+    - name: 基本的なE2Eテスト実装
+      手順:
+        - task: ナビゲーションテスト
+          file: tests/e2e/navigation.spec.ts
+          content: |
+            import { test, expect } from '@playwright/test';
+            
+            test.describe('Navigation Tests', () => {
+              test('should navigate between main pages', async ({ page }) => {
+                await page.goto('/');
+                await expect(page).toHaveTitle(/日本の建築マップ/);
+                
+                await page.click('a:has-text("建築家")');
+                await expect(page).toHaveURL(/.*architects/);
+                await expect(page.locator('h1')).toContainText('建築家');
+                
+                await page.click('a:has-text("建築作品")');
+                await expect(page).toHaveURL(/.*architecture/);
+                await expect(page.locator('h1')).toContainText('建築作品');
+                
+                await page.click('a:has-text("地図")');
+                await expect(page).toHaveURL(/.*map/);
+                await expect(page.locator('.leaflet-container')).toBeVisible();
+                
+                await page.click('a:has-text("ホーム")');
+                await expect(page).toHaveURL(/.*\/$/);
+              });
+              
+              test('should maintain state between page navigations', async ({ page }) => {
+                await page.goto('/');
+                
+                await page.fill('input[type="search"]', '東京');
+                await page.press('input[type="search"]', 'Enter');
+                
+                await expect(page.locator('.search-results')).toBeVisible();
+                
+                await page.click('a:has-text("建築家")');
+                await page.goBack();
+                
+                await expect(page.locator('input[type="search"]')).toHaveValue('東京');
+                await expect(page.locator('.search-results')).toBeVisible();
+              });
+            });
+          description: |
+            基本的なナビゲーションとページ間の状態維持をテストします。
+          
+        - task: 検索機能のテスト
+          file: tests/e2e/search.spec.ts
+          content: |
+            import { test, expect } from '@playwright/test';
+            
+            test.describe('Search Functionality', () => {
+              test('should search for architecture works', async ({ page }) => {
+                await page.goto('/architecture');
+                
+                await page.fill('input[placeholder="検索..."]', '東京タワー');
+                await page.click('button[type="submit"]');
+                
+                await expect(page.locator('.architecture-list')).toContainText('東京タワー');
+              });
+              
+              test('should filter results with multiple criteria', async ({ page }) => {
+                await page.goto('/architecture');
+                
+                await page.click('button:has-text("エリア")');
+                await page.click('text="東京都"');
+                
+                await page.click('button:has-text("年代")');
+                await page.fill('input[aria-label="開始年"]', '1950');
+                await page.fill('input[aria-label="終了年"]', '1970');
+                await page.click('button:has-text("適用")');
+                
+                await expect(page.locator('.filter-chip')).toContainText('東京都');
+                await expect(page.locator('.filter-chip')).toContainText('1950-1970');
+                
+                await expect(page.locator('.architecture-item')).toHaveCount({ min: 1 });
+              });
+            });
+          description: |
+            検索機能とフィルタリング機能をテストします。
+
+クリーンアップ実行計画:
+  # プロジェクトクリーンアップの実行手順
+  
+  フェーズ1: 不要なファイルの削除
+    # 未使用のファイルを特定して削除
+    
+    手順:
+      - task: 未使用のJSファイルの特定
+        command: |
+          find . -name "*.js" -not -path "./node_modules/*" \
+          -not -path "./dist/*" -not -path "./tests/mocks/*" \
+          -not -path "./webpack.config.js" -not -path "./jest.setup.js" \
+          -not -path "*.config.js"
+        description: |
+          TypeScriptプロジェクトで不要になったJSファイルを特定します。
+        
+      - task: フェイクデータと一時ファイルのチェック
+        command: |
+          find . -name "*mock*.ts" -o -name "*test-data*.ts" -o -name "*temp*.ts" 
+        description: |
+          テスト用またはモック用の一時ファイルを特定します。
+        
+      - task: 一時保存ディレクトリの削除
+        command: |
+          echo "削除予定のディレクトリは以下の通りです:"
+          ls -la temp_preserved/
+          echo "ファイルごとにチェックして問題なければ削除してください。"
+        description: |
+          必要なコードを抽出した後のtemp_preservedディレクトリを削除します。
+  
+  フェーズ2: ビルドシステムの最適化
+    # ビルド設定の最適化
+    
+    手順:
+      - task: package.jsonの整理
+        command: |
+          npx sort-package-json
+          npx npm-check-updates -u
+        description: |
+          package.jsonを整理して依存関係を最新に更新します。
+        
+      - task: Viteの設定（オプション）
+        command: |
+          npm install -D vite @vitejs/plugin-react vite-tsconfig-paths
+          touch vite.config.ts
+        description: |
+          WebpackからViteに移行する場合の設定です。
+        
+      - task: ESLintとPrettierの設定
+        command: |
+          npm install -D eslint prettier eslint-config-prettier eslint-plugin-prettier
+          touch .eslintrc.js .prettierrc
+        description: |
+          コード品質とフォーマット設定を追加します。
+  
+  フェーズ3: テストカバレッジの向上
+    # テスト件数と品質の向上
+    
+    手順:
+      - task: 現在のテストカバレッジの確認
+        command: npm test -- --coverage
+        description: |
+          現在のテストカバレッジ状況を確認します。
+        
+      - task: ユニットテストの追加
+        command: |
+          find src/components -name "*.tsx" -not -name "*.test.tsx" | \
+          while read file; do
+            base=$(basename $file .tsx)
+            test_file="tests/unit/components/${base}.test.tsx"
+            if [ ! -f "$test_file" ]; then
+              echo "$base: テストファイルが見つかりません"
+            fi
+          done
+        description: |
+          テストが不足しているコンポーネントを特定し、新しいテストを追加します。
+        
+      - task: スナップショットテストの追加
+        command: |
+          mkdir -p tests/snapshots
+          touch tests/snapshots/README.md
+        description: |
+          コンポーネントのスナップショットテストを追加します。
+  
+  フェーズ4: ドキュメント改善
+    # プロジェクトドキュメントの強化
+    
+    手順:
+      - task: READMEの更新
+        command: |
+          touch README.md
+          code README.md
+        description: |
+          プロジェクトのREADMEを最新情報で更新します。
+        
+      - task: APIドキュメントの生成
+        command: |
+          npm install -D typedoc
+          npm pkg set scripts.docs="typedoc --entryPointStrategy expand ./src"
+          mkdir -p docs
+        description: |
+          TypeDocを使用してAPIドキュメントを生成します。
+        
+      - task: コンポーネントストーリーブックの検討
+        command: |
+          npm install -D @storybook/react
+          npx sb init --type react
+        description: |
+          Storybookを使用してコンポーネントのドキュメントを作成します（オプション）。
+
+リファクタリングのベストプラクティス:
+  # リファクタリング中に従うべきプラクティス
+  
+  コーディング規約:
+    - "明示的な型付け: any型の使用を避け、明示的な型を定義する"
+    - "関数のサイズ: 関数は単一の責任を持ち、20行以内を目指す"
+    - "コンポーネント分割: 200行を超えるコンポーネントは分割を検討する"
+    - "命名規則: キャメルケースとパスカルケースを一貫して使用する"
+    - "コメント: 複雑なロジックには説明コメントを追加する"
+    - "非同期処理: async/awaitを使用し、thenチェーンを避ける"
+    - "テスト: 変更ごとにテストを作成/更新する"
+  
+  パフォーマンス考慮事項:
+    - "メモ化: 計算コストの高い関数にはuseMemoとuseCallbackを使用する"
+    - "レンダリング最適化: React.memoを適切に使用する"
+    - "バンドルサイズ: 大きなライブラリはダイナミックインポートを検討する"
+    - "画像最適化: WebPやAVIFなどの最新フォーマットを使用する"
+    - "リスト仮想化: 大きなリストにはreact-windowなどを検討する"
+  
+  アクセシビリティ考慮事項:
+    - "セマンティックHTML: 適切なHTML要素を使用する（div乱用を避ける）"
+    - "キーボードナビゲーション: すべての操作はキーボードでも可能にする"
+    - "WAI-ARIA: 適切なARIA属性を使用する"
+    - "色のコントラスト: WCAGガイドラインを遵守する"
+    - "フォーカス管理: フォーカス可能な要素に視覚的なフォーカスを提供する"
+
+参考リソース:
+  # リファクタリングとテスト駆動開発の参考資料
+  
+  書籍:
+    - name: "リファクタリング 既存のコードを安全に改善する（第2版）"
+      author: "Martin Fowler"
+      url: "https://www.oreilly.co.jp/books/9784274224546/"
+      
+    - name: "Clean Code アジャイルソフトウェア達人の技"
+      author: "Robert C. Martin"
+      url: "https://www.amazon.co.jp/dp/4048930591"
+      
+    - name: "テスト駆動開発"
+      author: "Kent Beck"
+      url: "https://www.ohmsha.co.jp/book/9784274217883/"
+  
+  ウェブサイト:
+    - name: "TypeScript Deep Dive"
+      url: "https://typescript-jp.gitbook.io/deep-dive/"
+      description: "TypeScriptの詳細なガイド"
+      
+    - name: "React公式ドキュメント (2025年版)"
+      url: "https://react.dev/"
+      description: "最新のReactベストプラクティス"
+      
+    - name: "Testing Library チュートリアル"
+      url: "https://testing-library.com/docs/"
+      description: "ユーザー中心のテスト手法"
+      
+    - name: "Refactoring.Guru"
+      url: "https://refactoring.guru/ja"
+      description: "リファクタリングパターンとデザインパターン"
+  
+  ツール:
+    - name: "ESLint"
+      url: "https://eslint.org/"
+      description: "コード品質と一貫性のためのリンター"
+      
+    - name: "Prettier"
+      url: "https://prettier.io/"
+      description: "コードフォーマッター"
+      
+    - name: "SonarQube/SonarCloud"
+      url: "https://www.sonarqube.org/"
+      description: "コード品質と技術的負債の分析"
+      
+    - name: "Chromatic"
+      url: "https://www.chromatic.com/"
+      description: "視覚的回帰テストとStorybook共有"

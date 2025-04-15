@@ -1,0 +1,1694 @@
+name: Test-Driven Development Plan
+
+description: |
+  This document provides a comprehensive test-driven development (TDD) approach for the Archi-site project.
+  It details precise test specifications for each component and feature with 2025's best testing practices.
+
+testing_philosophy:
+  principles:
+    - name: "Write tests before implementation (TDD)"
+      description: |
+        For each feature:
+        1. Write failing tests that define the expected behavior
+        2. Implement the minimum code to make tests pass
+        3. Refactor while keeping tests green
+      references:
+        - name: "Test-Driven Development by Example" 
+          author: "Kent Beck"
+          url: "https://www.oreilly.com/library/view/test-driven-development/0321146530/"
+    
+    - name: "Component-driven testing"
+      description: |
+        Build and test components in isolation using Storybook before integrating:
+        1. Create stories for each component state
+        2. Test component rendering and interactions
+        3. Document component API
+      tools:
+        - name: "Storybook"
+          version: "8.0.0"
+          docs: "https://storybook.js.org/docs/react/get-started/introduction"
+        - name: "Testing Library"
+          version: "15.0.0"
+          docs: "https://testing-library.com/docs/"
+    
+    - name: "Testing pyramid"
+      description: |
+        Follow the testing pyramid for balanced test coverage:
+        - Many unit tests (fast, focused)
+        - Fewer integration tests (component compositions)
+        - Fewer E2E tests (critical user flows)
+      references:
+        - name: "The Practical Test Pyramid"
+          url: "https://martinfowler.com/articles/practical-test-pyramid.html"
+    
+    - name: "Mocking strategy"
+      description: |
+        Use principled mocking approach to isolate tests:
+        - Mock external dependencies (APIs, databases)
+        - Use in-memory implementations for services
+        - Use a consistent mocking strategy across the codebase
+      tools:
+        - name: "MSW (Mock Service Worker)"
+          version: "2.2.1"
+          docs: "https://mswjs.io/docs/"
+        - name: "Jest Mock Functions"
+          docs: "https://jestjs.io/docs/mock-functions"
+
+testing_tools:
+  unit_testing:
+    - name: "Vitest"
+      version: "1.3.1"
+      docs: "https://vitest.dev/guide/"
+      usage: "Fast unit testing framework for Vite projects"
+      advantages:
+        - "Native ESM support"
+        - "TypeScript support out of the box"
+        - "HMR for tests (fast watch mode)"
+        - "Compatible with Jest API"
+      setup: |
+        ```bash
+        pnpm add -D vitest
+        ```
+        
+        Update package.json:
+        ```json
+        "scripts": {
+          "test": "vitest run",
+          "test:watch": "vitest",
+          "test:coverage": "vitest run --coverage",
+          "test:ui": "vitest --ui"
+        }
+        ```
+    
+    - name: "Testing Library"
+      version: "15.0.0"
+      docs: "https://testing-library.com/docs/react-testing-library/intro"
+      usage: "User-centric testing utilities for React components"
+      setup: |
+        ```bash
+        pnpm add -D @testing-library/react @testing-library/user-event @testing-library/jest-dom
+        ```
+        
+        Create test setup file (setup-tests.ts):
+        ```ts
+        import '@testing-library/jest-dom';
+        import { afterEach } from 'vitest';
+        import { cleanup } from '@testing-library/react';
+        
+        // Run cleanup after each test
+        afterEach(() => {
+          cleanup();
+        });
+        ```
+  
+  e2e_testing:
+    - name: "Playwright"
+      version: "1.51.1"
+      docs: "https://playwright.dev/docs/intro"
+      usage: "End-to-end testing across multiple browsers"
+      advantages:
+        - "Cross-browser testing (Chromium, Firefox, WebKit)"
+        - "Auto-wait capabilities"
+        - "Network request interception"
+        - "Visual testing capabilities"
+      setup: |
+        ```bash
+        pnpm add -D @playwright/test
+        npx playwright install
+        ```
+        
+        Create playwright.config.ts:
+        ```ts
+        import { defineConfig, devices } from '@playwright/test';
+        
+        export default defineConfig({
+          testDir: 'tests/e2e',
+          timeout: 30000,
+          forbidOnly: !!process.env.CI,
+          retries: process.env.CI ? 2 : 0,
+          workers: process.env.CI ? 1 : undefined,
+          reporter: [
+            ['html', { outputFolder: 'playwright-results' }],
+            ['json', { outputFile: 'test-results/results.json' }]
+          ],
+          use: {
+            baseURL: 'http://localhost:5173',
+            trace: 'on-first-retry',
+            screenshot: 'only-on-failure',
+            video: 'on-first-retry'
+          },
+          projects: [
+            {
+              name: 'chromium',
+              use: { ...devices['Desktop Chrome'] },
+            },
+            {
+              name: 'firefox',
+              use: { ...devices['Desktop Firefox'] },
+            },
+            {
+              name: 'webkit',
+              use: { ...devices['Desktop Safari'] },
+            },
+            {
+              name: 'mobile-chrome',
+              use: { ...devices['Pixel 7'] },
+            },
+            {
+              name: 'mobile-safari',
+              use: { ...devices['iPhone 14'] },
+            }
+          ],
+          webServer: {
+            command: 'pnpm run preview',
+            port: 5173,
+            reuseExistingServer: !process.env.CI,
+          },
+        });
+        ```
+  
+  component_testing:
+    - name: "Storybook"
+      version: "8.0.0"
+      docs: "https://storybook.js.org/docs/react/get-started/introduction"
+      usage: "UI component development and testing environment"
+      advantages:
+        - "Isolated component development"
+        - "Visual testing"
+        - "Interactive documentation"
+        - "Accessibility testing"
+      setup: |
+        ```bash
+        pnpm add -D storybook
+        pnpm dlx storybook init
+        ```
+        
+        Add test command to package.json:
+        ```json
+        "scripts": {
+          "storybook": "storybook dev -p 6006",
+          "build-storybook": "storybook build",
+          "test:storybook": "test-storybook"
+        }
+        ```
+  
+  mocking:
+    - name: "MSW (Mock Service Worker)"
+      version: "2.2.1"
+      docs: "https://mswjs.io/docs/"
+      usage: "API mocking library for browser and Node"
+      advantages:
+        - "Intercepts actual requests"
+        - "Works in browser and Node.js"
+        - "TypeScript support"
+        - "Reusable mocks between tests and Storybook"
+      setup: |
+        ```bash
+        pnpm add -D msw
+        ```
+        
+        Create mocks/handlers.ts:
+        ```ts
+        import { http, HttpResponse } from 'msw';
+        
+        export const handlers = [
+          http.get('/api/architecture', () => {
+            return HttpResponse.json({
+              data: [
+                // Mock architecture data
+              ],
+              total: 10
+            });
+          }),
+          
+          http.get('/api/architects', () => {
+            return HttpResponse.json({
+              data: [
+                // Mock architects data
+              ],
+              total: 5
+            });
+          }),
+        ];
+        ```
+  
+  coverage:
+    - name: "Vitest Coverage"
+      usage: "Code coverage reporting tool integrated with Vitest"
+      setup: |
+        ```bash
+        pnpm add -D @vitest/coverage-v8
+        ```
+        
+        Update vitest.config.ts:
+        ```ts
+        import { defineConfig } from 'vitest/config';
+        
+        export default defineConfig({
+          test: {
+            coverage: {
+              provider: 'v8',
+              reporter: ['text', 'json', 'html'],
+              exclude: [
+                'tests/**',
+                '**/*.d.ts',
+                '**/*.config.{js,ts}',
+                '**/mocks/**'
+              ],
+              thresholds: {
+                statements: 80,
+                branches: 70,
+                functions: 80,
+                lines: 80
+              }
+            }
+          }
+        });
+        ```
+
+database_testing:
+  # Tests for database functionality
+  approach: |
+    Database testing should be conducted at multiple levels:
+    1. Unit tests with mocked database responses
+    2. Integration tests with an in-memory SQLite database
+    3. E2E tests with the actual database
+  
+  unit_tests:
+    - name: StaticDatabaseService Tests
+      file: src/services/db/__tests__/StaticDatabaseService.test.ts
+      description: |
+        Tests the client-side database service with SQL.js.
+        Uses a small test database for fast tests.
+      implementation: |
+        ```typescript
+        import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+        import { StaticDatabaseService } from '../StaticDatabaseService';
+        
+        // Mock the SQL.js worker
+        vi.mock('sql.js-httpvfs', () => ({
+          createDbWorker: vi.fn().mockResolvedValue({
+            db: {
+              exec: vi.fn().mockImplementation((query, params) => {
+                // Return mock data based on the query
+                if (query.includes('COUNT(*)')) {
+                  return [{ columns: ['total'], values: [[10]] }];
+                }
+                
+                if (query.includes('ZCDARCHITECTURE')) {
+                  return [{
+                    columns: ['ZAA_ID', 'ZAA_NAME', 'ZAA_PREFECTURE'],
+                    values: [
+                      [1, 'Tokyo Tower', 'Tokyo'],
+                      [2, 'Osaka Castle', 'Osaka']
+                    ]
+                  }];
+                }
+                
+                return [];
+              })
+            }
+          })
+        }));
+        
+        describe('StaticDatabaseService', () => {
+          let dbService: StaticDatabaseService;
+          
+          beforeEach(() => {
+            // Reset mocks before each test
+            vi.clearAllMocks();
+            dbService = StaticDatabaseService.getInstance();
+          });
+          
+          it('should be a singleton', () => {
+            const instance1 = StaticDatabaseService.getInstance();
+            const instance2 = StaticDatabaseService.getInstance();
+            expect(instance1).toBe(instance2);
+          });
+          
+          it('should initialize database', async () => {
+            const worker = await dbService.initDatabase();
+            expect(worker).toBeDefined();
+          });
+          
+          it('should execute queries', async () => {
+            const result = await dbService.executeQuery('SELECT * FROM test');
+            expect(result).toBeDefined();
+          });
+          
+          it('should get architectures with pagination', async () => {
+            const result = await dbService.getAllArchitectures(1, 10);
+            expect(result.data).toHaveLength(2);
+            expect(result.total).toBe(10);
+          });
+          
+          it('should filter architectures by search term', async () => {
+            const result = await dbService.getAllArchitectures(1, 10, 'Tokyo');
+            expect(result.data).toBeDefined();
+          });
+          
+          it('should handle errors during initialization', async () => {
+            // Force the createDbWorker mock to reject
+            vi.mocked(createDbWorker).mockRejectedValueOnce(new Error('Connection failed'));
+            
+            await expect(dbService.initDatabase()).rejects.toThrow('Connection failed');
+          });
+        });
+        ```
+    
+    - name: Database Utility Tests
+      file: src/utils/__tests__/dbUtils.test.ts
+      description: |
+        Tests utility functions for working with database results.
+      implementation: |
+        ```typescript
+        import { describe, it, expect } from 'vitest';
+        import { resultToObjects, escapeSortColumn } from '../dbUtils';
+        
+        describe('Database Utilities', () => {
+          describe('resultToObjects', () => {
+            it('should convert SQL result to array of objects', () => {
+              const result = {
+                columns: ['id', 'name', 'location'],
+                values: [
+                  [1, 'Building A', 'Tokyo'],
+                  [2, 'Building B', 'Osaka']
+                ]
+              };
+              
+              const objects = resultToObjects(result);
+              
+              expect(objects).toHaveLength(2);
+              expect(objects[0]).toEqual({ id: 1, name: 'Building A', location: 'Tokyo' });
+              expect(objects[1]).toEqual({ id: 2, name: 'Building B', location: 'Osaka' });
+            });
+            
+            it('should return empty array for undefined result', () => {
+              expect(resultToObjects(undefined)).toEqual([]);
+            });
+            
+            it('should return empty array for result with no columns or values', () => {
+              expect(resultToObjects({ columns: [], values: [] })).toEqual([]);
+            });
+          });
+          
+          describe('escapeSortColumn', () => {
+            it('should allow valid column names', () => {
+              expect(escapeSortColumn('name')).toBe('name');
+              expect(escapeSortColumn('ZAA_NAME')).toBe('ZAA_NAME');
+              expect(escapeSortColumn('column_with_underscore')).toBe('column_with_underscore');
+            });
+            
+            it('should sanitize invalid column names', () => {
+              expect(escapeSortColumn('name; DROP TABLE users;')).toBe('nameDROPTABLEusers');
+              expect(escapeSortColumn('')).toBe('ZAA_NAME'); // Default
+              expect(escapeSortColumn('123')).toBe('123');
+              expect(escapeSortColumn('name.column')).toBe('namecolumn');
+            });
+          });
+        });
+        ```
+  
+  integration_tests:
+    - name: SQLite Database Integration Tests
+      file: tests/integration/database/sqlite.test.ts
+      description: |
+        Tests database operations against an actual SQLite database.
+        Uses a test database with sample data.
+      setup: |
+        ```typescript
+        import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+        import * as fs from 'fs';
+        import * as path from 'path';
+        import { Database } from 'sqlite3';
+        
+        const TEST_DB_PATH = path.join(__dirname, '../../../.test-db.sqlite');
+        
+        // Helper to run SQL queries on test database
+        function runQuery(query: string, params: any[] = []): Promise<any[]> {
+          return new Promise((resolve, reject) => {
+            const db = new Database(TEST_DB_PATH);
+            db.all(query, params, (err, rows) => {
+              db.close();
+              if (err) return reject(err);
+              resolve(rows);
+            });
+          });
+        }
+        
+        describe('SQLite Database Integration', () => {
+          // Set up test database
+          beforeAll(async () => {
+            // Create test database
+            if (fs.existsSync(TEST_DB_PATH)) {
+              fs.unlinkSync(TEST_DB_PATH);
+            }
+            
+            const db = new Database(TEST_DB_PATH);
+            
+            // Create tables
+            await new Promise<void>((resolve, reject) => {
+              db.exec(`
+                CREATE TABLE ZCDARCHITECTURE (
+                  ZAA_ID INTEGER PRIMARY KEY,
+                  ZAA_NAME TEXT,
+                  ZAA_PREFECTURE TEXT,
+                  ZAA_CITY TEXT,
+                  ZAA_YEAR INTEGER
+                );
+                
+                CREATE TABLE ZCDARCHITECT (
+                  ZAR_ID INTEGER PRIMARY KEY,
+                  ZAR_NAME TEXT,
+                  ZAR_BIRTHYEAR INTEGER,
+                  ZAR_NATIONALITY TEXT
+                );
+                
+                -- Insert sample data
+                INSERT INTO ZCDARCHITECTURE VALUES
+                  (1, 'Tokyo Tower', 'Tokyo', 'Minato', 1958),
+                  (2, 'Osaka Castle', 'Osaka', 'Osaka', 1583),
+                  (3, 'Kinkaku-ji', 'Kyoto', 'Kyoto', 1397);
+                  
+                INSERT INTO ZCDARCHITECT VALUES
+                  (1, 'Tachū Naitō', 1886, 'Japanese'),
+                  (2, 'Toyotomi Hideyoshi', 1537, 'Japanese'),
+                  (3, 'Ashikaga Yoshimitsu', 1358, 'Japanese');
+              `, (err) => {
+                db.close();
+                if (err) return reject(err);
+                resolve();
+              });
+            });
+          });
+          
+          // Clean up test database
+          afterAll(() => {
+            if (fs.existsSync(TEST_DB_PATH)) {
+              fs.unlinkSync(TEST_DB_PATH);
+            }
+          });
+          
+          it('should retrieve architecture by ID', async () => {
+            const rows = await runQuery(
+              'SELECT * FROM ZCDARCHITECTURE WHERE ZAA_ID = ?',
+              [1]
+            );
+            
+            expect(rows).toHaveLength(1);
+            expect(rows[0].ZAA_NAME).toBe('Tokyo Tower');
+          });
+          
+          it('should retrieve architectures with pagination', async () => {
+            const rows = await runQuery(
+              'SELECT * FROM ZCDARCHITECTURE LIMIT ? OFFSET ?',
+              [2, 1]
+            );
+            
+            expect(rows).toHaveLength(2);
+            expect(rows[0].ZAA_NAME).toBe('Osaka Castle');
+          });
+          
+          it('should filter architectures by search term', async () => {
+            const rows = await runQuery(
+              'SELECT * FROM ZCDARCHITECTURE WHERE ZAA_NAME LIKE ?',
+              ['%Tower%']
+            );
+            
+            expect(rows).toHaveLength(1);
+            expect(rows[0].ZAA_NAME).toBe('Tokyo Tower');
+          });
+          
+          it('should sort architectures by year', async () => {
+            const rows = await runQuery(
+              'SELECT * FROM ZCDARCHITECTURE ORDER BY ZAA_YEAR ASC'
+            );
+            
+            expect(rows).toHaveLength(3);
+            expect(rows[0].ZAA_NAME).toBe('Kinkaku-ji');
+            expect(rows[2].ZAA_NAME).toBe('Tokyo Tower');
+          });
+        });
+        ```
+
+component_testing:
+  # Tests for React components
+  approach: |
+    Component testing follows a multi-layered approach:
+    1. Unit tests with Testing Library for individual components
+    2. Storybook stories for visual testing and documentation
+    3. Integration tests for component compositions
+  
+  ui_components:
+    - name: Button Component Tests
+      file: src/components/ui/__tests__/Button.test.tsx
+      implementation: |
+        ```typescript
+        import { describe, it, expect, vi } from 'vitest';
+        import { render, screen, fireEvent } from '@testing-library/react';
+        import Button from '../Button';
+        
+        describe('Button Component', () => {
+          it('renders correctly with default props', () => {
+            render(<Button>Click me</Button>);
+            const button = screen.getByRole('button', { name: /click me/i });
+            
+            expect(button).toBeInTheDocument();
+            expect(button).toHaveClass('button');
+            expect(button).not.toBeDisabled();
+          });
+          
+          it('applies variant class when specified', () => {
+            render(<Button variant="primary">Primary Button</Button>);
+            const button = screen.getByRole('button');
+            
+            expect(button).toHaveClass('button-primary');
+          });
+          
+          it('applies size class when specified', () => {
+            render(<Button size="large">Large Button</Button>);
+            const button = screen.getByRole('button');
+            
+            expect(button).toHaveClass('button-large');
+          });
+          
+          it('disables the button when disabled prop is true', () => {
+            render(<Button disabled>Disabled Button</Button>);
+            const button = screen.getByRole('button');
+            
+            expect(button).toBeDisabled();
+          });
+          
+          it('calls onClick handler when clicked', () => {
+            const handleClick = vi.fn();
+            render(<Button onClick={handleClick}>Clickable Button</Button>);
+            const button = screen.getByRole('button');
+            
+            fireEvent.click(button);
+            
+            expect(handleClick).toHaveBeenCalledTimes(1);
+          });
+          
+          it('does not call onClick when disabled', () => {
+            const handleClick = vi.fn();
+            render(<Button onClick={handleClick} disabled>Disabled Button</Button>);
+            const button = screen.getByRole('button');
+            
+            fireEvent.click(button);
+            
+            expect(handleClick).not.toHaveBeenCalled();
+          });
+          
+          it('renders with custom className', () => {
+            render(<Button className="custom-class">Custom Button</Button>);
+            const button = screen.getByRole('button');
+            
+            expect(button).toHaveClass('button');
+            expect(button).toHaveClass('custom-class');
+          });
+        });
+        ```
+      storybook: |
+        ```typescript
+        // Button.stories.tsx
+        import type { Meta, StoryObj } from '@storybook/react';
+        import Button from './Button';
+        
+        const meta = {
+          title: 'UI/Button',
+          component: Button,
+          parameters: {
+            layout: 'centered',
+          },
+          tags: ['autodocs'],
+          argTypes: {
+            variant: {
+              control: 'select',
+              options: ['default', 'primary', 'secondary', 'danger'],
+            },
+            size: {
+              control: 'select',
+              options: ['small', 'medium', 'large'],
+            },
+          },
+        } satisfies Meta<typeof Button>;
+        
+        export default meta;
+        type Story = StoryObj<typeof meta>;
+        
+        export const Default: Story = {
+          args: {
+            children: 'Button',
+          },
+        };
+        
+        export const Primary: Story = {
+          args: {
+            variant: 'primary',
+            children: 'Primary Button',
+          },
+        };
+        
+        export const Secondary: Story = {
+          args: {
+            variant: 'secondary',
+            children: 'Secondary Button',
+          },
+        };
+        
+        export const Large: Story = {
+          args: {
+            size: 'large',
+            children: 'Large Button',
+          },
+        };
+        
+        export const Small: Story = {
+          args: {
+            size: 'small',
+            children: 'Small Button',
+          },
+        };
+        
+        export const Disabled: Story = {
+          args: {
+            disabled: true,
+            children: 'Disabled Button',
+          },
+        };
+        ```
+    
+    - name: SearchBar Component Tests
+      file: src/components/ui/__tests__/SearchBar.test.tsx
+      implementation: |
+        ```typescript
+        import { describe, it, expect, vi } from 'vitest';
+        import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+        import userEvent from '@testing-library/user-event';
+        import SearchBar from '../SearchBar';
+        
+        describe('SearchBar Component', () => {
+          it('renders correctly with default props', () => {
+            render(<SearchBar onSearch={() => {}} />);
+            
+            expect(screen.getByRole('textbox')).toBeInTheDocument();
+            expect(screen.getByRole('button')).toBeInTheDocument();
+          });
+          
+          it('displays placeholder text', () => {
+            render(<SearchBar onSearch={() => {}} placeholder="Search buildings..." />);
+            
+            expect(screen.getByPlaceholderText('Search buildings...')).toBeInTheDocument();
+          });
+          
+          it('updates input value on change', async () => {
+            const user = userEvent.setup();
+            render(<SearchBar onSearch={() => {}} />);
+            
+            const input = screen.getByRole('textbox');
+            await user.type(input, 'Tokyo Tower');
+            
+            expect(input).toHaveValue('Tokyo Tower');
+          });
+          
+          it('calls onSearch when form is submitted', async () => {
+            const handleSearch = vi.fn();
+            const user = userEvent.setup();
+            render(<SearchBar onSearch={handleSearch} />);
+            
+            const input = screen.getByRole('textbox');
+            const button = screen.getByRole('button');
+            
+            await user.type(input, 'Tokyo Tower');
+            await user.click(button);
+            
+            expect(handleSearch).toHaveBeenCalledWith('Tokyo Tower');
+          });
+          
+          it('calls onSearch when Enter key is pressed', async () => {
+            const handleSearch = vi.fn();
+            const user = userEvent.setup();
+            render(<SearchBar onSearch={handleSearch} />);
+            
+            const input = screen.getByRole('textbox');
+            
+            await user.type(input, 'Tokyo Tower{Enter}');
+            
+            expect(handleSearch).toHaveBeenCalledWith('Tokyo Tower');
+          });
+          
+          it('shows loading state when isLoading is true', () => {
+            render(<SearchBar onSearch={() => {}} isLoading={true} />);
+            
+            expect(screen.getByRole('progressbar')).toBeInTheDocument();
+            expect(screen.getByRole('button')).toBeDisabled();
+          });
+          
+          it('clears input when clearOnSearch is true', async () => {
+            const handleSearch = vi.fn();
+            const user = userEvent.setup();
+            render(<SearchBar onSearch={handleSearch} clearOnSearch={true} />);
+            
+            const input = screen.getByRole('textbox');
+            
+            await user.type(input, 'Tokyo Tower{Enter}');
+            
+            expect(handleSearch).toHaveBeenCalledWith('Tokyo Tower');
+            expect(input).toHaveValue('');
+          });
+        });
+        ```
+  
+  complex_components:
+    - name: ArchitectureList Component Tests
+      file: src/components/__tests__/ArchitectureList.test.tsx
+      implementation: |
+        ```typescript
+        import { describe, it, expect, vi } from 'vitest';
+        import { render, screen, within } from '@testing-library/react';
+        import userEvent from '@testing-library/user-event';
+        import { MemoryRouter } from 'react-router-dom';
+        import ArchitectureList from '../ArchitectureList';
+        
+        // Mock data
+        const mockArchitectures = [
+          { ZAA_ID: 1, ZAA_NAME: 'Tokyo Tower', ZAA_PREFECTURE: 'Tokyo', ZAA_YEAR: 1958 },
+          { ZAA_ID: 2, ZAA_NAME: 'Osaka Castle', ZAA_PREFECTURE: 'Osaka', ZAA_YEAR: 1583 },
+          { ZAA_ID: 3, ZAA_NAME: 'Kinkaku-ji', ZAA_PREFECTURE: 'Kyoto', ZAA_YEAR: 1397 }
+        ];
+        
+        // Wrapper component with router
+        const renderWithRouter = (ui: React.ReactElement) => {
+          return render(ui, { wrapper: MemoryRouter });
+        };
+        
+        describe('ArchitectureList Component', () => {
+          it('renders a list of architecture items', () => {
+            renderWithRouter(
+              <ArchitectureList 
+                architectures={mockArchitectures}
+                loading={false}
+                onPageChange={() => {}}
+                totalItems={3}
+                page={1}
+                itemsPerPage={10}
+              />
+            );
+            
+            // Check if all items are rendered
+            expect(screen.getByText('Tokyo Tower')).toBeInTheDocument();
+            expect(screen.getByText('Osaka Castle')).toBeInTheDocument();
+            expect(screen.getByText('Kinkaku-ji')).toBeInTheDocument();
+            
+            // Check for location information
+            expect(screen.getByText('Tokyo')).toBeInTheDocument();
+            expect(screen.getByText('Osaka')).toBeInTheDocument();
+            expect(screen.getByText('Kyoto')).toBeInTheDocument();
+            
+            // Check for year information
+            expect(screen.getByText('1958')).toBeInTheDocument();
+            expect(screen.getByText('1583')).toBeInTheDocument();
+            expect(screen.getByText('1397')).toBeInTheDocument();
+          });
+          
+          it('displays loading state when loading prop is true', () => {
+            renderWithRouter(
+              <ArchitectureList 
+                architectures={[]}
+                loading={true}
+                onPageChange={() => {}}
+                totalItems={0}
+                page={1}
+                itemsPerPage={10}
+              />
+            );
+            
+            expect(screen.getByTestId('loading-indicator')).toBeInTheDocument();
+          });
+          
+          it('displays empty state when no architectures are provided', () => {
+            renderWithRouter(
+              <ArchitectureList 
+                architectures={[]}
+                loading={false}
+                onPageChange={() => {}}
+                totalItems={0}
+                page={1}
+                itemsPerPage={10}
+              />
+            );
+            
+            expect(screen.getByText(/no results found/i)).toBeInTheDocument();
+          });
+          
+          it('renders pagination when there are multiple pages', () => {
+            renderWithRouter(
+              <ArchitectureList 
+                architectures={mockArchitectures}
+                loading={false}
+                onPageChange={() => {}}
+                totalItems={25}
+                page={1}
+                itemsPerPage={10}
+              />
+            );
+            
+            const pagination = screen.getByRole('navigation');
+            expect(pagination).toBeInTheDocument();
+            
+            // Check for page numbers
+            const page1 = within(pagination).getByText('1');
+            expect(page1).toBeInTheDocument();
+            expect(page1).toHaveAttribute('aria-current', 'true');
+            
+            expect(within(pagination).getByText('2')).toBeInTheDocument();
+            expect(within(pagination).getByText('3')).toBeInTheDocument();
+          });
+          
+          it('calls onPageChange when a page is clicked', async () => {
+            const handlePageChange = vi.fn();
+            const user = userEvent.setup();
+            
+            renderWithRouter(
+              <ArchitectureList 
+                architectures={mockArchitectures}
+                loading={false}
+                onPageChange={handlePageChange}
+                totalItems={25}
+                page={1}
+                itemsPerPage={10}
+              />
+            );
+            
+            const pagination = screen.getByRole('navigation');
+            const page2Button = within(pagination).getByText('2');
+            
+            await user.click(page2Button);
+            
+            expect(handlePageChange).toHaveBeenCalledWith(2);
+          });
+          
+          it('has links to detail pages for each architecture', () => {
+            renderWithRouter(
+              <ArchitectureList 
+                architectures={mockArchitectures}
+                loading={false}
+                onPageChange={() => {}}
+                totalItems={3}
+                page={1}
+                itemsPerPage={10}
+              />
+            );
+            
+            const links = screen.getAllByRole('link');
+            
+            // Each architecture should have a link to its detail page
+            expect(links.length).toBeGreaterThanOrEqual(3);
+            
+            // Check first link attributes
+            expect(links[0]).toHaveAttribute('href', '/architecture/1');
+          });
+        });
+        ```
+    
+    - name: Map Component Tests
+      file: src/components/__tests__/Map.test.tsx
+      implementation: |
+        ```typescript
+        import { describe, it, expect, vi, beforeEach } from 'vitest';
+        import { render, screen } from '@testing-library/react';
+        import userEvent from '@testing-library/user-event';
+        import Map from '../Map';
+        
+        // Mock Leaflet
+        vi.mock('leaflet', () => {
+          const actualLeaflet = vi.importActual('leaflet');
+          return {
+            ...actualLeaflet,
+            map: vi.fn().mockReturnValue({
+              setView: vi.fn(),
+              on: vi.fn(),
+              remove: vi.fn(),
+              invalidateSize: vi.fn()
+            }),
+            marker: vi.fn().mockReturnValue({
+              addTo: vi.fn().mockReturnThis(),
+              bindPopup: vi.fn().mockReturnThis(),
+              openPopup: vi.fn(),
+              on: vi.fn()
+            }),
+            tileLayer: vi.fn().mockReturnValue({
+              addTo: vi.fn()
+            }),
+            popup: vi.fn().mockReturnValue({
+              setContent: vi.fn(),
+              setLatLng: vi.fn(),
+              openOn: vi.fn()
+            })
+          };
+        });
+        
+        // Mock React Leaflet components
+        vi.mock('react-leaflet', async () => {
+          const actual = await vi.importActual('react-leaflet');
+          return {
+            ...actual,
+            MapContainer: ({ children }: { children: React.ReactNode }) => (
+              <div data-testid="map-container">{children}</div>
+            ),
+            TileLayer: () => <div data-testid="tile-layer" />,
+            Marker: ({ children }: { children: React.ReactNode }) => (
+              <div data-testid="marker">{children}</div>
+            ),
+            Popup: ({ children }: { children: React.ReactNode }) => (
+              <div data-testid="popup">{children}</div>
+            )
+          };
+        });
+        
+        // Mock data
+        const mockLocations = [
+          { id: 1, name: 'Tokyo Tower', lat: 35.6586, lng: 139.7454 },
+          { id: 2, name: 'Osaka Castle', lat: 34.6873, lng: 135.5262 }
+        ];
+        
+        describe('Map Component', () => {
+          beforeEach(() => {
+            vi.clearAllMocks();
+          });
+          
+          it('renders the map container', () => {
+            render(<Map locations={mockLocations} />);
+            
+            expect(screen.getByTestId('map-container')).toBeInTheDocument();
+            expect(screen.getByTestId('tile-layer')).toBeInTheDocument();
+          });
+          
+          it('renders markers for each location', () => {
+            render(<Map locations={mockLocations} />);
+            
+            const markers = screen.getAllByTestId('marker');
+            expect(markers).toHaveLength(2);
+          });
+          
+          it('renders popups for each marker', () => {
+            render(<Map locations={mockLocations} />);
+            
+            const popups = screen.getAllByTestId('popup');
+            expect(popups).toHaveLength(2);
+            
+            // Check popup content
+            expect(screen.getByText('Tokyo Tower')).toBeInTheDocument();
+            expect(screen.getByText('Osaka Castle')).toBeInTheDocument();
+          });
+          
+          it('centers on selected location when provided', () => {
+            render(
+              <Map 
+                locations={mockLocations} 
+                selectedLocation={mockLocations[1]}
+              />
+            );
+            
+            // In a real implementation, we'd verify leaflet's setView was called
+            // with the correct coordinates, but that's covered by our mocks
+            expect(screen.getByTestId('map-container')).toBeInTheDocument();
+          });
+          
+          it('calls onMarkerClick when a marker is clicked', async () => {
+            const handleMarkerClick = vi.fn();
+            const user = userEvent.setup();
+            
+            render(
+              <Map 
+                locations={mockLocations} 
+                onMarkerClick={handleMarkerClick}
+              />
+            );
+            
+            const markers = screen.getAllByTestId('marker');
+            await user.click(markers[0]);
+            
+            // In a real test, we'd fire the Leaflet click event directly
+            // This is a simplified version for the mock
+            expect(handleMarkerClick).toHaveBeenCalled();
+          });
+        });
+        ```
+
+page_testing:
+  # Tests for page components
+  approach: |
+    Page testing focuses on integration of components and user flows:
+    1. Test page rendering and component composition
+    2. Test navigation and routing behavior
+    3. Test data fetching and error handling
+    4. Test user interactions across components
+  
+  pages:
+    - name: HomePage Tests
+      file: src/pages/__tests__/HomePage.test.tsx
+      implementation: |
+        ```typescript
+        import { describe, it, expect, vi, beforeEach } from 'vitest';
+        import { render, screen, waitFor } from '@testing-library/react';
+        import userEvent from '@testing-library/user-event';
+        import { MemoryRouter } from 'react-router-dom';
+        import { StaticDatabaseService } from '../../services/db/StaticDatabaseService';
+        import HomePage from '../HomePage';
+        
+        // Mock services
+        vi.mock('../../services/db/StaticDatabaseService', () => ({
+          StaticDatabaseService: {
+            getInstance: vi.fn().mockReturnValue({
+              initDatabase: vi.fn().mockResolvedValue({}),
+              getAllArchitectures: vi.fn().mockResolvedValue({
+                data: [
+                  { ZAA_ID: 1, ZAA_NAME: 'Tokyo Tower', ZAA_PREFECTURE: 'Tokyo' },
+                  { ZAA_ID: 2, ZAA_NAME: 'Osaka Castle', ZAA_PREFECTURE: 'Osaka' }
+                ],
+                total: 2
+              })
+            })
+          },
+          staticDbService: {
+            initDatabase: vi.fn().mockResolvedValue({}),
+            getAllArchitectures: vi.fn().mockResolvedValue({
+              data: [
+                { ZAA_ID: 1, ZAA_NAME: 'Tokyo Tower', ZAA_PREFECTURE: 'Tokyo' },
+                { ZAA_ID: 2, ZAA_NAME: 'Osaka Castle', ZAA_PREFECTURE: 'Osaka' }
+              ],
+              total: 2
+            })
+          }
+        }));
+        
+        // Mock components
+        vi.mock('../../components/Header', () => ({
+          default: () => <div data-testid="header">Header Component</div>
+        }));
+        
+        vi.mock('../../components/Footer', () => ({
+          default: () => <div data-testid="footer">Footer Component</div>
+        }));
+        
+        vi.mock('../../components/ArchitectureList', () => ({
+          default: ({ architectures, loading }: { architectures: any[], loading: boolean }) => (
+            <div data-testid="architecture-list">
+              {loading ? 'Loading...' : architectures.map(a => 
+                <div key={a.ZAA_ID}>{a.ZAA_NAME}</div>
+              )}
+            </div>
+          )
+        }));
+        
+        vi.mock('../../components/Map', () => ({
+          default: ({ locations }: { locations: any[] }) => (
+            <div data-testid="map">
+              Map Component with {locations.length} locations
+            </div>
+          )
+        }));
+        
+        vi.mock('../../components/ui/SearchBar', () => ({
+          default: ({ onSearch }: { onSearch: (term: string) => void }) => (
+            <div data-testid="search-bar">
+              <input 
+                data-testid="search-input" 
+                onChange={(e) => onSearch(e.target.value)}
+              />
+            </div>
+          )
+        }));
+        
+        const renderWithRouter = (ui: React.ReactElement) => {
+          return render(ui, { wrapper: MemoryRouter });
+        };
+        
+        describe('HomePage', () => {
+          beforeEach(() => {
+            vi.clearAllMocks();
+          });
+          
+          it('renders the page with all main components', async () => {
+            renderWithRouter(<HomePage />);
+            
+            // Header and footer should be present
+            expect(screen.getByTestId('header')).toBeInTheDocument();
+            expect(screen.getByTestId('footer')).toBeInTheDocument();
+            
+            // Search bar should be present
+            expect(screen.getByTestId('search-bar')).toBeInTheDocument();
+            
+            // Architecture list should be present (initially loading)
+            expect(screen.getByTestId('architecture-list')).toBeInTheDocument();
+            
+            // Map should be present
+            expect(screen.getByTestId('map')).toBeInTheDocument();
+            
+            // Wait for data loading
+            await waitFor(() => {
+              expect(screen.getByText('Tokyo Tower')).toBeInTheDocument();
+              expect(screen.getByText('Osaka Castle')).toBeInTheDocument();
+            });
+          });
+          
+          it('loads and displays featured architectures', async () => {
+            renderWithRouter(<HomePage />);
+            
+            // Initial loading state
+            expect(screen.getByTestId('architecture-list')).toHaveTextContent('Loading...');
+            
+            // Wait for data to load
+            await waitFor(() => {
+              expect(screen.getByText('Tokyo Tower')).toBeInTheDocument();
+              expect(screen.getByText('Osaka Castle')).toBeInTheDocument();
+            });
+            
+            // Map should have received the locations
+            expect(screen.getByTestId('map')).toHaveTextContent('2 locations');
+          });
+          
+          it('handles search input', async () => {
+            const mockGetAllArchitectures = vi.fn().mockResolvedValue({
+              data: [{ ZAA_ID: 1, ZAA_NAME: 'Tokyo Tower', ZAA_PREFECTURE: 'Tokyo' }],
+              total: 1
+            });
+            
+            vi.mocked(StaticDatabaseService.getInstance).mockReturnValue({
+              initDatabase: vi.fn().mockResolvedValue({}),
+              getAllArchitectures: mockGetAllArchitectures
+            } as any);
+            
+            const user = userEvent.setup();
+            renderWithRouter(<HomePage />);
+            
+            // Find the search input
+            const searchInput = screen.getByTestId('search-input');
+            
+            // Type in a search term
+            await user.type(searchInput, 'Tokyo');
+            
+            // Wait for search debounce
+            await waitFor(() => {
+              expect(mockGetAllArchitectures).toHaveBeenCalledWith(
+                expect.anything(),
+                expect.anything(),
+                'Tokyo',
+                expect.anything()
+              );
+            });
+          });
+        });
+        ```
+    
+    - name: ArchitectureSinglePage Tests
+      file: src/pages/__tests__/ArchitectureSinglePage.test.tsx
+      implementation: |
+        ```typescript
+        import { describe, it, expect, vi, beforeEach } from 'vitest';
+        import { render, screen, waitFor } from '@testing-library/react';
+        import { MemoryRouter, Routes, Route } from 'react-router-dom';
+        import { StaticDatabaseService } from '../../services/db/StaticDatabaseService';
+        import ArchitectureSinglePage from '../ArchitectureSinglePage';
+        
+        // Mock StaticDatabaseService
+        vi.mock('../../services/db/StaticDatabaseService', () => ({
+          StaticDatabaseService: {
+            getInstance: vi.fn().mockReturnValue({
+              initDatabase: vi.fn().mockResolvedValue({}),
+              executeQuery: vi.fn().mockImplementation((query) => {
+                if (query.includes('ZAA_ID = ?')) {
+                  return Promise.resolve([{
+                    columns: ['ZAA_ID', 'ZAA_NAME', 'ZAA_PREFECTURE', 'ZAA_CITY', 'ZAA_YEAR', 'ZAA_ARCHITECT_ID'],
+                    values: [[1, 'Tokyo Tower', 'Tokyo', 'Minato', 1958, 1]]
+                  }]);
+                }
+                
+                if (query.includes('ZAR_ID = ?')) {
+                  return Promise.resolve([{
+                    columns: ['ZAR_ID', 'ZAR_NAME'],
+                    values: [[1, 'Tachū Naitō']]
+                  }]);
+                }
+                
+                return Promise.resolve([]);
+              })
+            })
+          },
+          staticDbService: {
+            initDatabase: vi.fn().mockResolvedValue({}),
+            executeQuery: vi.fn()
+          }
+        }));
+        
+        // Mock components
+        vi.mock('../../components/Header', () => ({
+          default: () => <div data-testid="header">Header Component</div>
+        }));
+        
+        vi.mock('../../components/Footer', () => ({
+          default: () => <div data-testid="footer">Footer Component</div>
+        }));
+        
+        vi.mock('../../components/Map', () => ({
+          default: ({ locations }: { locations: any[] }) => (
+            <div data-testid="map">
+              Map Component with {locations.length} locations
+            </div>
+          )
+        }));
+        
+        const renderWithRouter = (ui: React.ReactElement, { route = '/architecture/1' } = {}) => {
+          return render(
+            <MemoryRouter initialEntries={[route]}>
+              <Routes>
+                <Route path="/architecture/:id" element={ui} />
+              </Routes>
+            </MemoryRouter>
+          );
+        };
+        
+        describe('ArchitectureSinglePage', () => {
+          beforeEach(() => {
+            vi.clearAllMocks();
+          });
+          
+          it('renders loading state initially', () => {
+            renderWithRouter(<ArchitectureSinglePage />);
+            
+            expect(screen.getByTestId('loading-indicator')).toBeInTheDocument();
+          });
+          
+          it('loads and displays architecture details', async () => {
+            renderWithRouter(<ArchitectureSinglePage />);
+            
+            // Wait for data to load
+            await waitFor(() => {
+              expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+            });
+            
+            // Architecture details should be displayed
+            expect(screen.getByText('Tokyo Tower')).toBeInTheDocument();
+            expect(screen.getByText('Tokyo')).toBeInTheDocument();
+            expect(screen.getByText('Minato')).toBeInTheDocument();
+            expect(screen.getByText('1958')).toBeInTheDocument();
+            
+            // Architect information should be displayed
+            expect(screen.getByText('Tachū Naitō')).toBeInTheDocument();
+          });
+          
+          it('displays map with architecture location', async () => {
+            renderWithRouter(<ArchitectureSinglePage />);
+            
+            // Wait for data to load
+            await waitFor(() => {
+              expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+            });
+            
+            // Map should be present with 1 location
+            expect(screen.getByTestId('map')).toHaveTextContent('1 locations');
+          });
+          
+          it('handles error when architecture is not found', async () => {
+            // Mock executeQuery to return empty result
+            vi.mocked(StaticDatabaseService.getInstance).mockReturnValue({
+              initDatabase: vi.fn().mockResolvedValue({}),
+              executeQuery: vi.fn().mockResolvedValue([])
+            } as any);
+            
+            renderWithRouter(<ArchitectureSinglePage />);
+            
+            // Wait for data loading attempt
+            await waitFor(() => {
+              expect(screen.queryByTestId('loading-indicator')).not.toBeInTheDocument();
+            });
+            
+            // Error message should be displayed
+            expect(screen.getByText(/architecture not found/i)).toBeInTheDocument();
+          });
+        });
+        ```
+
+e2e_testing:
+  # End-to-end test specifications with Playwright
+  tests:
+    - name: Basic Navigation
+      file: tests/e2e/navigation.spec.ts
+      implementation: |
+        ```typescript
+        import { test, expect } from '@playwright/test';
+        
+        test.describe('Navigation', () => {
+          test('should navigate between main pages', async ({ page }) => {
+            // Start at home page
+            await page.goto('/');
+            await expect(page).toHaveTitle(/Japanese Architecture Map/);
+            
+            // Navigate to Architecture page
+            await page.getByRole('link', { name: /architecture/i }).click();
+            await expect(page).toHaveURL(/.*\/architecture/);
+            await expect(page.getByRole('heading', { name: /architecture/i })).toBeVisible();
+            
+            // Navigate to Architects page
+            await page.getByRole('link', { name: /architects/i }).click();
+            await expect(page).toHaveURL(/.*\/architects/);
+            await expect(page.getByRole('heading', { name: /architects/i })).toBeVisible();
+            
+            // Navigate to Map page
+            await page.getByRole('link', { name: /map/i }).click();
+            await expect(page).toHaveURL(/.*\/map/);
+            await expect(page.getByTestId('map-container')).toBeVisible();
+            
+            // Navigate back to home
+            await page.getByRole('link', { name: /home/i }).click();
+            await expect(page).toHaveURL(/.*\/$/);
+          });
+          
+          test('should maintain state between page navigations', async ({ page }) => {
+            // Start at architecture page
+            await page.goto('/architecture');
+            
+            // Perform a search
+            await page.getByTestId('search-input').fill('Tokyo');
+            await page.getByTestId('search-button').click();
+            
+            // Wait for results
+            await page.waitForSelector('[data-testid="architecture-item"]');
+            
+            // Navigate to another page and back
+            await page.getByRole('link', { name: /map/i }).click();
+            await page.getByRole('link', { name: /architecture/i }).click();
+            
+            // Search term should be preserved
+            await expect(page.getByTestId('search-input')).toHaveValue('Tokyo');
+            
+            // Results should still be filtered
+            const items = await page.getByTestId('architecture-item').all();
+            for (const item of items) {
+              const text = await item.textContent();
+              expect(text?.includes('Tokyo')).toBeTruthy();
+            }
+          });
+          
+          test('should handle browser back/forward navigation', async ({ page }) => {
+            // Visit pages in sequence
+            await page.goto('/');
+            await page.getByRole('link', { name: /architecture/i }).click();
+            await expect(page).toHaveURL(/.*\/architecture/);
+            
+            await page.getByRole('link', { name: /architects/i }).click();
+            await expect(page).toHaveURL(/.*\/architects/);
+            
+            await page.getByRole('link', { name: /map/i }).click();
+            await expect(page).toHaveURL(/.*\/map/);
+            
+            // Go back through history
+            await page.goBack();
+            await expect(page).toHaveURL(/.*\/architects/);
+            
+            await page.goBack();
+            await expect(page).toHaveURL(/.*\/architecture/);
+            
+            await page.goBack();
+            await expect(page).toHaveURL(/.*\/$/);
+            
+            // Go forward
+            await page.goForward();
+            await expect(page).toHaveURL(/.*\/architecture/);
+          });
+        });
+        ```
+    
+    - name: Architecture Details Flow
+      file: tests/e2e/architecture-details.spec.ts
+      implementation: |
+        ```typescript
+        import { test, expect } from '@playwright/test';
+        
+        test.describe('Architecture Details', () => {
+          test('should navigate from list to details', async ({ page }) => {
+            // Go to architecture list page
+            await page.goto('/architecture');
+            
+            // Wait for the list to load
+            await page.waitForSelector('[data-testid="architecture-item"]');
+            
+            // Get the first architecture item text
+            const firstItemTitle = await page.getByTestId('architecture-item').first().getByRole('heading').textContent();
+            
+            // Click on the first item
+            await page.getByTestId('architecture-item').first().click();
+            
+            // Should navigate to detail page
+            await expect(page.url()).toContain('/architecture/');
+            
+            // Detail page should show the same architecture
+            await expect(page.getByRole('heading', { level: 1 })).toHaveText(firstItemTitle as string);
+          });
+          
+          test('should show details and map', async ({ page }) => {
+            // Go directly to a detail page
+            await page.goto('/architecture/1');
+            
+            // Wait for details to load
+            await page.waitForSelector('[data-testid="architecture-details"]');
+            
+            // Check for main information sections
+            await expect(page.getByTestId('architecture-name')).toBeVisible();
+            await expect(page.getByTestId('architecture-location')).toBeVisible();
+            await expect(page.getByTestId('architecture-year')).toBeVisible();
+            
+            // Check for architect information
+            await expect(page.getByTestId('architect-info')).toBeVisible();
+            
+            // Check for map
+            await expect(page.getByTestId('map-container')).toBeVisible();
+            
+            // Map should have a marker
+            await expect(page.getByTestId('map-marker')).toBeVisible();
+          });
+          
+          test('should navigate to architect details', async ({ page }) => {
+            // Go to architecture detail
+            await page.goto('/architecture/1');
+            
+            // Wait for details to load
+            await page.waitForSelector('[data-testid="architecture-details"]');
+            
+            // Get architect name
+            const architectName = await page.getByTestId('architect-name').textContent();
+            
+            // Click on architect name
+            await page.getByTestId('architect-name').click();
+            
+            // Should navigate to architect detail
+            await expect(page.url()).toContain('/architects/');
+            
+            // Architect page should show the same name
+            await expect(page.getByRole('heading', { level: 1 })).toHaveText(architectName as string);
+          });
+        });
+        ```
+    
+    - name: Search and Filter
+      file: tests/e2e/search.spec.ts
+      implementation: |
+        ```typescript
+        import { test, expect } from '@playwright/test';
+        
+        test.describe('Search and Filter', () => {
+          test('should filter architectures with search', async ({ page }) => {
+            // Go to architecture page
+            await page.goto('/architecture');
+            
+            // Wait for the list to load
+            await page.waitForSelector('[data-testid="architecture-item"]');
+            
+            // Count initial items
+            const initialCount = await page.getByTestId('architecture-item').count();
+            
+            // Search for "Tokyo"
+            await page.getByTestId('search-input').fill('Tokyo');
+            await page.getByTestId('search-button').click();
+            
+            // Wait for results to update
+            await page.waitForResponse(response => 
+              response.url().includes('/api/architecture') && 
+              response.status() === 200
+            );
+            
+            // Count filtered items
+            const filteredCount = await page.getByTestId('architecture-item').count();
+            
+            // Should have fewer items after filtering
+            expect(filteredCount).toBeLessThanOrEqual(initialCount);
+            
+            // All items should contain "Tokyo"
+            const items = await page.getByTestId('architecture-item').all();
+            for (const item of items) {
+              const text = await item.textContent();
+              expect(text?.includes('Tokyo')).toBeTruthy();
+            }
+          });
+          
+          test('should apply multiple filter criteria', async ({ page }) => {
+            // Go to architecture page
+            await page.goto('/architecture');
+            
+            // Wait for filters to load
+            await page.waitForSelector('[data-testid="filter-panel"]');
+            
+            // Open filter panel
+            await page.getByTestId('filter-toggle').click();
+            
+            // Select filters
+            await page.getByLabel('Prefecture').selectOption('Tokyo');
+            await page.getByLabel('Year from').fill('1950');
+            await page.getByLabel('Year to').fill('2000');
+            
+            // Apply filters
+            await page.getByRole('button', { name: /apply filters/i }).click();
+            
+            // Wait for results to update
+            await page.waitForResponse(response => 
+              response.url().includes('/api/architecture') && 
+              response.status() === 200
+            );
+            
+            // All items should be in Tokyo prefecture
+            const prefectures = await page.getByTestId('architecture-prefecture').all();
+            for (const prefecture of prefectures) {
+              await expect(prefecture).toHaveText('Tokyo');
+            }
+            
+            // All items should have year between 1950-2000
+            const years = await page.getByTestId('architecture-year').all();
+            for (const year of years) {
+              const yearText = await year.textContent();
+              const yearValue = parseInt(yearText as string);
+              expect(yearValue).toBeGreaterThanOrEqual(1950);
+              expect(yearValue).toBeLessThanOrEqual(2000);
+            }
+          });
+          
+          test('should show message when no results found', async ({ page }) => {
+            // Go to architecture page
+            await page.goto('/architecture');
+            
+            // Search for something unlikely to match
+            await page.getByTestId('search-input').fill('XYZ123');
+            await page.getByTestId('search-button').click();
+            
+            // Wait for results to update
+            await page.waitForResponse(response => 
+              response.url().includes('/api/architecture') && 
+              response.status() === 200
+            );
+            
+            // Should show no results message
+            await expect(page.getByText(/no results found/i)).toBeVisible();
+          });
+        });
+        ```
+
+test_implementation_priority:
+  # Priority for implementing tests
+  high:
+    - name: "Database Service Tests"
+      reason: "Critical for client-side database functionality on GitHub Pages"
+      files:
+        - "src/services/db/__tests__/StaticDatabaseService.test.ts"
+      
+    - name: "Basic Component Tests"
+      reason: "Verify core UI components work correctly"
+      files:
+        - "src/components/ui/__tests__/Button.test.tsx"
+        - "src/components/ui/__tests__/SearchBar.test.tsx"
+        - "src/components/ui/__tests__/Pagination.test.tsx"
+      
+    - name: "Navigation Flow Tests"
+      reason: "Ensure users can navigate the application"
+      files:
+        - "tests/e2e/navigation.spec.ts"
+      
+  medium:
+    - name: "Complex Component Tests"
+      reason: "Verify integration of components"
+      files:
+        - "src/components/__tests__/ArchitectureList.test.tsx"
+        - "src/components/__tests__/Map.test.tsx"
+      
+    - name: "Page Component Tests"
+      reason: "Verify page functionality"
+      files:
+        - "src/pages/__tests__/HomePage.test.tsx"
+        - "src/pages/__tests__/ArchitecturePage.test.tsx"
+      
+    - name: "Search and Filter Tests"
+      reason: "Verify core user interactions"
+      files:
+        - "tests/e2e/search.spec.ts"
+      
+  low:
+    - name: "Edge Case Handling"
+      reason: "Ensure proper error handling"
+      files:
+        - "src/services/db/__tests__/error-handling.test.ts"
+      
+    - name: "Performance Tests"
+      reason: "Verify application meets performance standards"
+      files:
+        - "tests/performance/database-performance.spec.ts"
+      
+    - name: "Accessibility Tests"
+      reason: "Ensure application is accessible to all users"
+      files:
+        - "tests/a11y/accessibility.spec.ts"
+
+test_workflow:
+  # Workflow for running tests
+  development:
+    description: |
+      During development, run tests in watch mode to get immediate feedback.
+      Use TDD approach: write tests first, then implement.
+    commands:
+      - command: "pnpm run test:watch"
+        purpose: "Run unit tests in watch mode during development"
+      
+      - command: "pnpm run test:unit src/components/ui/__tests__/Button.test.tsx"
+        purpose: "Run tests for a specific component"
+      
+      - command: "pnpm run storybook"
+        purpose: "Develop and visually test components in isolation"
+      
+  continuous_integration:
+    description: |
+      In CI, run all tests with coverage and generate reports.
+      Fail the build if coverage thresholds are not met.
+    commands:
+      - command: "pnpm run lint"
+        purpose: "Lint code for errors and style issues"
+      
+      - command: "pnpm run type-check"
+        purpose: "Verify TypeScript types"
+      
+      - command: "pnpm run test"
+        purpose: "Run all unit tests and generate coverage report"
+      
+      - command: "pnpm run test:e2e"
+        purpose: "Run end-to-end tests with Playwright"
+      
+  pre_release:
+    description: |
+      Before releasing, run comprehensive tests across browsers.
+      Verify visual regression tests pass.
+    commands:
+      - command: "pnpm run test:all"
+        purpose: "Run all tests (unit, integration, E2E)"
+      
+      - command: "pnpm run test:e2e --project=chromium --project=firefox --project=webkit"
+        purpose: "Run E2E tests in all browsers"
+      
+      - command: "pnpm run test:visual"
+        purpose: "Run visual regression tests"
