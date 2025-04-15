@@ -1,0 +1,584 @@
+name: Development Workflow
+
+description: |
+  This document outlines the comprehensive development workflow for the Archi-site project,
+  including environment setup, development practices, and collaboration guidelines.
+  It includes specific tools and commands relevant for 2025 practices.
+
+environment_setup:
+  prerequisites:
+    - name: "Node.js"
+      version: "20.12.1"
+      installation: |
+        Using nvm (recommended):
+        ```bash
+        # Install nvm if not already installed
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+        
+        # Install Node.js 20.12.1
+        nvm install 20.12.1
+        nvm use 20.12.1
+        ```
+        
+        Alternatively, download from nodejs.org:
+        https://nodejs.org/dist/v20.12.1/
+    
+    - name: "pnpm"
+      version: "10.5.0"
+      installation: |
+        ```bash
+        # Install pnpm globally
+        npm install -g pnpm@10.5.0
+        ```
+        
+        Alternatively, use Corepack (built into Node.js 20+):
+        ```bash
+        corepack enable
+        corepack prepare pnpm@10.5.0 --activate
+        ```
+    
+    - name: "Git"
+      version: "2.45.0+"
+      installation: |
+        macOS:
+        ```bash
+        brew install git
+        ```
+        
+        Ubuntu/Debian:
+        ```bash
+        sudo apt update
+        sudo apt install git
+        ```
+        
+        Windows:
+        Download from https://git-scm.com/download/win
+
+  project_setup:
+    - name: "Clone repository"
+      command: |
+        ```bash
+        git clone https://github.com/username/archi-site.git
+        cd archi-site
+        ```
+    
+    - name: "Install dependencies"
+      command: |
+        ```bash
+        pnpm install
+        ```
+    
+    - name: "Set up pre-commit hooks"
+      command: |
+        ```bash
+        pnpm run prepare
+        ```
+      notes: "This will set up husky pre-commit hooks for linting and type checking"
+    
+    - name: "Set up VS Code extensions"
+      notes: |
+        Install the following VS Code extensions:
+        1. ESLint (dbaeumer.vscode-eslint)
+        2. Prettier (esbenp.prettier-vscode)
+        3. TypeScript Error Translator (mattpocock.ts-error-translator)
+        4. SQLite Viewer (qwtel.sqlite-viewer)
+        5. Jest Runner (firsttris.vscode-jest-runner)
+        6. Playwright Test Explorer (ms-playwright.playwright)
+        
+        Configure VS Code:
+        1. Set TypeScript version to workspace version
+        2. Enable format on save with Prettier
+        3. Enable ESLint auto-fix on save
+
+development_workflow:
+  branches:
+    - name: "main"
+      description: "Production branch, protected from direct pushes"
+      
+    - name: "dev"
+      description: "Development branch, merged to main through PRs"
+      
+    - name: "feature/*"
+      description: "Feature branches, branched from dev, merged back to dev through PRs"
+      
+    - name: "bugfix/*"
+      description: "Bugfix branches, can branch from main for urgent fixes"
+      
+    - name: "release/*"
+      description: "Release branches, used for final testing before production"
+  
+  commit_guidelines:
+    prefix_types:
+      - "feat: New features"
+      - "fix: Bug fixes"
+      - "docs: Documentation changes"
+      - "style: Code style changes (formatting, indentation)"
+      - "refactor: Code refactoring without changing functionality"
+      - "test: Adding or updating tests"
+      - "chore: Changes to build process or tools"
+      - "perf: Performance improvements"
+    
+    structure: |
+      ```
+      <type>(<scope>): <short summary>
+      
+      <optional body>
+      
+      <optional footer>
+      ```
+      
+      Example:
+      ```
+      feat(map): add marker clustering for architecture locations
+      
+      - Implements MarkerClusterer from @googlemaps/markerclusterer
+      - Adds configuration options for cluster appearance
+      - Optimizes loading time for high-density areas
+      
+      Closes #123
+      ```
+    
+    commit_rules:
+      - "Keep commits small and focused on a single change"
+      - "Write descriptive commit messages"
+      - "Reference issue numbers when applicable"
+      - "Squash work-in-progress commits before merging"
+  
+  development_commands:
+    - name: "Start development server"
+      command: |
+        ```bash
+        pnpm run dev
+        ```
+      notes: "Starts Vite dev server with HMR at http://localhost:5173"
+    
+    - name: "Run TypeScript type checker in watch mode"
+      command: |
+        ```bash
+        pnpm run type-check:watch
+        ```
+      notes: "Runs TypeScript compiler in watch mode to catch type errors as you code"
+    
+    - name: "Run tests in watch mode"
+      command: |
+        ```bash
+        pnpm run test:watch
+        ```
+      notes: "Runs Vitest in watch mode for continuous testing during development"
+    
+    - name: "Run E2E tests"
+      command: |
+        ```bash
+        pnpm run test:e2e
+        ```
+      notes: "Runs Playwright E2E tests. Add --headed to see browser"
+    
+    - name: "Run database preparation"
+      command: |
+        ```bash
+        pnpm run prepare-db
+        ```
+      notes: "Prepares the SQLite database with sample data for development"
+    
+    - name: "Format code"
+      command: |
+        ```bash
+        pnpm run format
+        ```
+      notes: "Runs Prettier to format code according to project standards"
+    
+    - name: "Lint code"
+      command: |
+        ```bash
+        pnpm run lint
+        ```
+      notes: "Runs ESLint to check for code quality issues. Add --fix to auto-fix issues"
+    
+    - name: "Build for production"
+      command: |
+        ```bash
+        pnpm run build
+        ```
+      notes: "Builds optimized application for production deployment"
+    
+    - name: "Preview production build"
+      command: |
+        ```bash
+        pnpm run preview
+        ```
+      notes: "Serves the production build locally for testing"
+
+code_quality_tools:
+  linting:
+    - name: "ESLint"
+      version: "8.56.0"
+      configuration: ".eslintrc.js"
+      rules_documentation: "https://eslint.org/docs/latest/rules/"
+      command: |
+        ```bash
+        # Run ESLint
+        pnpm run lint
+        
+        # Fix automatically fixable issues
+        pnpm run lint:fix
+        ```
+      plugins:
+        - "@typescript-eslint/eslint-plugin"
+        - "eslint-plugin-react"
+        - "eslint-plugin-react-hooks"
+        - "eslint-plugin-jsx-a11y"
+        - "eslint-plugin-import"
+        - "eslint-plugin-vitest"
+  
+  formatting:
+    - name: "Prettier"
+      version: "3.2.5"
+      configuration: ".prettierrc.json"
+      command: |
+        ```bash
+        # Format all files
+        pnpm run format
+        
+        # Check formatting
+        pnpm run format:check
+        ```
+      vscode_integration: |
+        Add to .vscode/settings.json:
+        ```json
+        {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+          }
+        }
+        ```
+  
+  type_checking:
+    - name: "TypeScript"
+      version: "5.3.3"
+      configuration: "tsconfig.json"
+      command: |
+        ```bash
+        # Run type check
+        pnpm run type-check
+        
+        # Run type check in watch mode
+        pnpm run type-check:watch
+        ```
+      best_practices:
+        - "Use strict mode (strict: true)"
+        - "Enable strictNullChecks and noImplicitAny"
+        - "Use type inference when possible"
+        - "Define interfaces for Props and State"
+        - "Use generics for reusable components"
+        - "Use union types instead of enums"
+        - "Use type guards for runtime type checking"
+  
+  pre_commit_hooks:
+    - name: "Husky"
+      version: "9.0.11"
+      configuration: ".husky/pre-commit"
+      setup: |
+        ```bash
+        pnpm dlx husky-init && pnpm install
+        ```
+      hooks:
+        - "pre-commit: lint-staged"
+        - "commit-msg: commitlint"
+    
+    - name: "lint-staged"
+      version: "15.2.0"
+      configuration: "lint-staged.config.js"
+      setup: |
+        ```js
+        // lint-staged.config.js
+        module.exports = {
+          '*.{js,jsx,ts,tsx}': [
+            'eslint --fix',
+            'prettier --write',
+            'vitest related --run'
+          ],
+          '*.{json,css,scss,md}': ['prettier --write']
+        };
+        ```
+    
+    - name: "commitlint"
+      version: "18.2.0"
+      configuration: "commitlint.config.js"
+      setup: |
+        ```js
+        // commitlint.config.js
+        module.exports = {
+          extends: ['@commitlint/config-conventional'],
+          rules: {
+            'body-max-line-length': [0, 'always'],
+            'footer-max-line-length': [0, 'always']
+          }
+        };
+        ```
+
+testing_practices:
+  unit_testing:
+    - name: "Vitest"
+      version: "1.3.1"
+      configuration: "vitest.config.ts"
+      command: |
+        ```bash
+        # Run all tests
+        pnpm run test
+        
+        # Run tests in watch mode
+        pnpm run test:watch
+        
+        # Run tests with coverage
+        pnpm run test:coverage
+        ```
+      testing_guidelines:
+        - "Follow the AAA pattern (Arrange, Act, Assert)"
+        - "Test component rendering, props, and user interactions"
+        - "Use Testing Library for React component tests"
+        - "Use vi.mock() for service dependencies"
+        - "Aim for >80% code coverage"
+  
+  e2e_testing:
+    - name: "Playwright"
+      version: "1.41.2"
+      configuration: "playwright.config.ts"
+      command: |
+        ```bash
+        # Run all e2e tests
+        pnpm run test:e2e
+        
+        # Run e2e tests in headed mode
+        pnpm run test:e2e -- --headed
+        
+        # Run specific test file
+        pnpm run test:e2e tests/e2e/navigation.spec.ts
+        
+        # Debug tests
+        pnpm run test:e2e -- --debug
+        ```
+      testing_guidelines:
+        - "Focus on user flows rather than implementation details"
+        - "Test responsive behavior with multiple viewports"
+        - "Use page objects for reusable test components"
+        - "Test critical paths like search, navigation, and detail views"
+        - "Use snapshots sparingly and with clear intentions"
+
+database_development:
+  sqlite:
+    - name: "Setup local SQLite database"
+      command: |
+        ```bash
+        pnpm run prepare-db
+        ```
+      notes: "Creates a local SQLite database with sample data for development"
+    
+    - name: "View database with VS Code"
+      steps: |
+        1. Install the SQLite Viewer extension
+        2. Right-click on the .sqlite file
+        3. Select "Open Database"
+        4. Use the SQLite Explorer panel to browse tables
+    
+    - name: "Run database queries"
+      command: |
+        ```bash
+        # Using sqlite3 CLI (if installed)
+        sqlite3 Archimap_database.sqlite "SELECT * FROM ZCDARCHITECTURE LIMIT 10;"
+        
+        # Using Node.js script
+        node scripts/run-query.js "SELECT * FROM ZCDARCHITECTURE LIMIT 10;"
+        ```
+  
+  sql_js:
+    - name: "Using SQL.js for client-side database"
+      documentation: "https://github.com/sql-js/sql.js"
+      notes: |
+        For static hosting on GitHub Pages, we use SQL.js to access the SQLite database in the browser.
+        This approach allows the database to be loaded client-side without a server.
+        
+        Key components:
+        - sql.js-httpvfs: Extension of SQL.js for virtual file system
+        - Public database file served as static asset
+        - Worker thread for non-blocking database operations
+    
+    - name: "Prepare database for static deployment"
+      command: |
+        ```bash
+        pnpm run prepare-static-db
+        ```
+      notes: "Optimizes the SQLite database for client-side usage and copies it to the public folder"
+
+deployment:
+  github_pages:
+    - name: "Configure GitHub Pages"
+      steps: |
+        1. In the GitHub repository settings, go to Pages
+        2. Set source to GitHub Actions
+        3. Configure custom domain if needed
+    
+    - name: "Deploy manually"
+      command: |
+        ```bash
+        # Build the application
+        pnpm run build
+        
+        # Deploy using GitHub Actions
+        gh workflow run github-pages-deploy.yml
+        ```
+      notes: "This triggers the GitHub Pages deployment workflow manually"
+    
+    - name: "Automatic deployment"
+      notes: |
+        Pushes to main branch automatically trigger the GitHub Pages deployment workflow.
+        See .github/workflows/github-pages-deploy.yml for details.
+
+performance_optimization:
+  techniques:
+    - name: "Bundle size analysis"
+      command: |
+        ```bash
+        pnpm run analyze-bundle
+        ```
+      notes: "Runs rollup-plugin-visualizer to analyze bundle size"
+    
+    - name: "Code splitting"
+      implementation: |
+        Use dynamic imports for route-based code splitting:
+        ```typescript
+        const ArchitecturePage = React.lazy(() => import('./pages/ArchitecturePage'));
+        ```
+    
+    - name: "SQLite database optimization"
+      notes: |
+        - Create indexes on frequently queried columns
+        - Use prepared statements for parameterized queries
+        - Minimize database size by removing unused data
+      command: |
+        ```bash
+        # Optimize SQLite database
+        pnpm run optimize-db
+        ```
+    
+    - name: "React performance optimization"
+      notes: |
+        - Use React.memo for expensive components
+        - Implement useMemo and useCallback for computed values and callbacks
+        - Use virtualization for long lists (react-window or react-virtualized)
+        - Implement pagination for large data sets
+      example: |
+        ```tsx
+        const ArchitectList = React.memo(({ architects }) => {
+          const sortedArchitects = useMemo(() => 
+            [...architects].sort((a, b) => a.name.localeCompare(b.name)),
+            [architects]
+          );
+          
+          return (
+            <ul>
+              {sortedArchitects.map(architect => (
+                <li key={architect.id}>{architect.name}</li>
+              ))}
+            </ul>
+          );
+        });
+        ```
+
+collaboration:
+  pull_requests:
+    - name: "PR template"
+      location: ".github/PULL_REQUEST_TEMPLATE.md"
+      content: |
+        ## Description
+        [Describe the changes in this PR]
+        
+        ## Type of change
+        - [ ] Bug fix
+        - [ ] New feature
+        - [ ] Performance improvement
+        - [ ] Refactoring
+        - [ ] Documentation update
+        
+        ## How to test
+        [Provide steps to test the changes]
+        
+        ## Screenshots (if applicable)
+        
+        ## Checklist
+        - [ ] Tests added/updated
+        - [ ] Documentation updated
+        - [ ] Type definitions updated
+        - [ ] Responsive design verified
+        - [ ] Accessibility verified
+        - [ ] No regressions
+    
+    - name: "PR review guidelines"
+      guidelines:
+        - "Check code quality, readability, and maintainability"
+        - "Verify test coverage"
+        - "Test functionality locally before approving"
+        - "Provide constructive feedback"
+        - "Ensure changes follow project conventions"
+  
+  code_reviews:
+    - name: "Review checklist"
+      checklist:
+        - "Does the code follow project conventions?"
+        - "Are there appropriate tests?"
+        - "Is the code efficient and performant?"
+        - "Is the code secure?"
+        - "Is documentation updated?"
+        - "Are there any edge cases not handled?"
+    
+    - name: "Review etiquette"
+      guidelines:
+        - "Be respectful and constructive"
+        - "Focus on the code, not the person"
+        - "Explain why something should be changed"
+        - "Suggest alternatives"
+        - "Praise good work"
+
+resources:
+  documentation:
+    - name: "React"
+      url: "https://react.dev/reference/react"
+      notes: "Official React documentation"
+    
+    - name: "TypeScript"
+      url: "https://www.typescriptlang.org/docs/"
+      notes: "TypeScript documentation"
+    
+    - name: "Vite"
+      url: "https://vitejs.dev/guide/"
+      notes: "Vite documentation"
+    
+    - name: "Vitest"
+      url: "https://vitest.dev/guide/"
+      notes: "Vitest documentation"
+    
+    - name: "Playwright"
+      url: "https://playwright.dev/docs/intro"
+      notes: "Playwright documentation"
+    
+    - name: "SQL.js"
+      url: "https://github.com/sql-js/sql.js"
+      notes: "SQL.js documentation"
+    
+    - name: "GitHub Actions"
+      url: "https://docs.github.com/en/actions"
+      notes: "GitHub Actions documentation"
+  
+  learning_resources:
+    - name: "React TypeScript Cheatsheet"
+      url: "https://react-typescript-cheatsheet.netlify.app/"
+      notes: "Helpful patterns for React with TypeScript"
+    
+    - name: "Testing Library Cheatsheet"
+      url: "https://testing-library.com/docs/react-testing-library/cheatsheet"
+      notes: "Quick reference for Testing Library"
+    
+    - name: "SQLite Documentation"
+      url: "https://www.sqlite.org/docs.html"
+      notes: "Official SQLite documentation"

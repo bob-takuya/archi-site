@@ -1,0 +1,1264 @@
+name: GitHub Pages 静的サイト変換計画
+
+description: |
+  このドキュメントは、サーバーサイドロジックを持つReactアプリケーションを
+  GitHub Pagesで動作する静的サイトに変換するための詳細な実装手順です。
+  2025年4月時点での最新技術とベストプラクティスに基づいています。
+
+前提条件:
+  現状の課題:
+    - サーバーサイドのSQLiteデータベースアクセスがGitHub Pagesでは動作しない
+    - Express APIエンドポイントがGitHub Pagesでは利用できない
+    - クライアントサイドルーティングがGitHub Pagesと互換性がない
+  
+  目標:
+    - クライアントサイドだけで動作するアプリケーションへの変換
+    - SQLiteデータベースをブラウザ内でアクセス可能にする
+    - シングルページアプリケーション(SPA)のルーティングを保持
+    - パフォーマンスとユーザー体験の最適化
+
+静的サイト適応計画:
+  # GitHub Pages向けの具体的な変更内容
+  
+  インフラ変更:
+    # インフラストラクチャの変更
+    
+    - name: ビルドシステムの最適化
+      description: |
+        Webpackからより高速なViteへの移行を検討
+      tasks:
+        - task: Viteの依存関係追加
+          command: npm install -D vite @vitejs/plugin-react vite-tsconfig-paths
+          
+        - task: Vite設定ファイル作成
+          file: vite.config.ts
+          content: |
+            import { defineConfig } from 'vite';
+            import react from '@vitejs/plugin-react';
+            import tsconfigPaths from 'vite-tsconfig-paths';
+            import { resolve } from 'path';
+            
+            export default defineConfig({
+              plugins: [
+                react(),
+                tsconfigPaths(),
+              ],
+              build: {
+                outDir: 'dist',
+                sourcemap: true,
+                rollupOptions: {
+                  input: {
+                    main: resolve(__dirname, 'index.html'),
+                  },
+                  output: {
+                    manualChunks: {
+                      vendor: ['react', 'react-dom', 'react-router-dom'],
+                      map: ['leaflet', 'react-leaflet'],
+                      ui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+                      database: ['sql.js', 'sql.js-httpvfs'],
+                    },
+                  },
+                },
+                target: 'esnext',
+                assetsInlineLimit: 4096,
+              },
+              optimizeDeps: {
+                include: [
+                  'react', 
+                  'react-dom', 
+                  'react-router-dom',
+                  'leaflet',
+                  'react-leaflet',
+                  '@mui/material',
+                  '@mui/icons-material',
+                ],
+                exclude: ['sql.js', 'sql.js-httpvfs'],
+              },
+              resolve: {
+                alias: {
+                  '@': resolve(__dirname, 'src'),
+                },
+              },
+              server: {
+                port: 3000,
+                open: true,
+              },
+            });
+          
+        - task: package.jsonスクリプト更新
+          file: package.json
+          changes: |
+            "scripts": {
+              // ...existing code...
+              "dev": "vite",
+              "build": "vite build",
+              "preview": "vite preview",
+              "type-check": "tsc --noEmit",
+              "lint": "eslint . --ext ts,tsx --cache",
+              "lint:fix": "eslint . --ext ts,tsx --fix",
+              "analyze": "vite-bundle-analyzer",
+              // ...existing code...
+            }
+          
+        - task: tsconfig.json更新
+          file: tsconfig.json
+          changes: |
+            {
+              "compilerOptions": {
+                // ...existing code...
+                "target": "ESNext",
+                "useDefineForClassFields": true,
+                "lib": ["DOM", "DOM.Iterable", "ESNext"],
+                "module": "ESNext",
+                "jsx": "react-jsx",
+                "paths": {
+                  "@/*": ["./src/*"]
+                }
+              },
+              "include": ["src", "tests", "vite.config.ts"],
+              "references": [{ "path": "./tsconfig.node.json" }]
+            }
+          
+        - task: tsconfig.node.json作成
+          file: tsconfig.node.json
+          content: |
+            {
+              "compilerOptions": {
+                "composite": true,
+                "skipLibCheck": true,
+                "module": "ESNext",
+                "moduleResolution": "bundler",
+                "allowSyntheticDefaultImports": true
+              },
+              "include": ["vite.config.ts"]
+            }
+    
+    - name: 静的サイトホスティング設定
+      description: |
+        GitHub Pagesでの静的サイトホスティングに必要な設定を追加
+      tasks:
+        - task: 404.htmlリダイレクト作成
+          file: public/404.html
+          content: |
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Archi-site - リダイレクト中</title>
+              <script type="text/javascript">
+                // Single Page Apps for GitHub Pages
+                // https://github.com/rafgraph/spa-github-pages
+                var pathSegmentsToKeep = 1;
+                var l = window.location;
+                l.replace(
+                  l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                  l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?p=/' +
+                  l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+                  (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+                  l.hash
+                );
+              </script>
+            </head>
+            <body>
+              <h1>リダイレクト中...</h1>
+              <p>自動的にリダイレクトされない場合は、<a href="/">こちら</a>をクリックしてください。</p>
+            </body>
+            </html>
+          
+        - task: index.htmlリダイレクト処理追加
+          file: public/index.html
+          changes: |
+            <!DOCTYPE html>
+            <html lang="ja">
+            <head>
+              <meta charset="UTF-8" />
+              <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <title>日本の建築マップ</title>
+              <meta name="description" content="日本の建築作品のデータベースとマップ表示アプリケーション" />
+              
+              <!-- GitHub Pages用のSPAリダイレクト処理 -->
+              <script type="text/javascript">
+                // SPAリダイレクト処理
+                (function(l) {
+                  if (l.search[1] === '/' ) {
+                    var decoded = l.search.slice(1).split('&').map(function(s) { 
+                      return s.replace(/~and~/g, '&');
+                    }).join('?');
+                    window.history.replaceState(null, null,
+                      l.pathname.slice(0, -1) + decoded + l.hash
+                    );
+                  }
+                }(window.location));
+              </script>
+            </head>
+            <body>
+              <div id="root"></div>
+              <script type="module" src="/src/index.tsx"></script>
+            </body>
+            </html>
+        
+        - task: サイトマップ作成
+          file: public/sitemap.xml
+          content: |
+            <?xml version="1.0" encoding="UTF-8"?>
+            <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+              <url>
+                <loc>https://bob-takuya.github.io/archi-site/</loc>
+                <lastmod>2025-04-13</lastmod>
+                <changefreq>weekly</changefreq>
+                <priority>1.0</priority>
+              </url>
+              <url>
+                <loc>https://bob-takuya.github.io/archi-site/#/architects</loc>
+                <lastmod>2025-04-13</lastmod>
+                <changefreq>weekly</changefreq>
+                <priority>0.8</priority>
+              </url>
+              <url>
+                <loc>https://bob-takuya.github.io/archi-site/#/architecture</loc>
+                <lastmod>2025-04-13</lastmod>
+                <changefreq>weekly</changefreq>
+                <priority>0.8</priority>
+              </url>
+              <url>
+                <loc>https://bob-takuya.github.io/archi-site/#/map</loc>
+                <lastmod>2025-04-13</lastmod>
+                <changefreq>weekly</changefreq>
+                <priority>0.8</priority>
+              </url>
+            </urlset>
+        
+        - task: robots.txt作成
+          file: public/robots.txt
+          content: |
+            User-agent: *
+            Allow: /
+            
+            Sitemap: https://bob-takuya.github.io/archi-site/sitemap.xml
+  
+  データベース実装:
+    # クライアントサイドデータベース実装
+    
+    - name: SQL.js依存関係の追加
+      description: |
+        ブラウザ内SQLite実行のための依存関係を追加
+      command: npm install sql.js sql.js-httpvfs
+      
+    - name: 静的データベース準備スクリプト
+      description: |
+        GitHub Pages用の静的データベースファイルを準備するスクリプト
+      file: scripts/prepare-static-db.ts
+      content: |
+        import fs from 'fs';
+        import path from 'path';
+        import { Database } from 'sqlite3';
+        
+        console.log('GitHub Pages用の静的データベースを準備中...');
+        
+        // 出力ディレクトリの確認と作成
+        const outputDir = path.join(__dirname, '../public/db');
+        if (!fs.existsSync(outputDir)) {
+          fs.mkdirSync(outputDir, { recursive: true });
+        }
+        
+        // データベースファイルパス
+        const dbPath = path.join(__dirname, '../Archimap_database.sqlite');
+        const outputDbPath = path.join(outputDir, 'database.sqlite');
+        
+        // データベース接続とメタデータ取得
+        const db = new Database(dbPath, (err) => {
+          if (err) {
+            console.error('データベース接続エラー:', err.message);
+            process.exit(1);
+          }
+          console.log('データベースに接続しました。メタデータを取得します...');
+          
+          // テーブル情報の取得
+          db.all(`SELECT name FROM sqlite_master WHERE type='table'`, [], (err, tables) => {
+            if (err) {
+              console.error('テーブル一覧取得エラー:', err.message);
+              process.exit(1);
+            }
+            
+            console.log(`${tables.length}個のテーブルを検出しました。`);
+            
+            // 各テーブルのレコード数を取得
+            const countPromises = tables.map(table => {
+              return new Promise((resolve, reject) => {
+                db.get(`SELECT COUNT(*) as count FROM ${table.name}`, [], (err, result) => {
+                  if (err) {
+                    console.warn(`警告: ${table.name}のカウント中にエラー: ${err.message}`);
+                    resolve({ table: table.name, count: 'エラー' });
+                  } else {
+                    resolve({ table: table.name, count: result.count });
+                  }
+                });
+              });
+            });
+            
+            // すべてのカウントが完了したら結果を表示
+            Promise.all(countPromises).then(counts => {
+              console.log('テーブル統計:');
+              counts.forEach(item => {
+                console.log(`- ${item.table}: ${item.count}レコード`);
+              });
+              
+              // 出力ファイルにメタデータを保存
+              const metadata = {
+                generatedAt: new Date().toISOString(),
+                tables: counts,
+                totalTables: tables.length
+              };
+              
+              fs.writeFileSync(
+                path.join(outputDir, 'metadata.json'),
+                JSON.stringify(metadata, null, 2)
+              );
+              
+              // データベースファイルをコピー
+              fs.copyFileSync(dbPath, outputDbPath);
+              console.log(`データベースを ${outputDbPath} にコピーしました`);
+              
+              // データベース接続を閉じる
+              db.close(err => {
+                if (err) {
+                  console.error('データベース切断エラー:', err.message);
+                } else {
+                  console.log('静的データベース準備が完了しました');
+                }
+              });
+            });
+          });
+        });
+      
+    - name: クライアントサイドデータベースサービス
+      description: |
+        ブラウザ内SQLiteデータベースアクセスのためのクライアントサービス
+      file: src/services/db/ClientDatabaseService.ts
+      content: |
+        import { createDbWorker } from 'sql.js-httpvfs';
+        import type { Database, QueryExecResult } from 'sql.js';
+        
+        // データベース設定
+        const DB_CONFIG = {
+          from: 'cdn', // またはその他のソース
+          config: {
+            serverMode: 'full',
+            requestChunkSize: 4096,
+            url: './db/database.sqlite',
+          },
+        };
+        
+        // Worker URL
+        const WORKER_URL = './sql-wasm.js';
+        const WASM_URL = './sql-wasm.wasm';
+        
+        // シングルトンインスタンス
+        let dbWorker: any = null;
+        let isInitializing = false;
+        let initPromise: Promise<any> | null = null;
+        
+        /**
+         * データベース接続の状態
+         */
+        export enum DatabaseStatus {
+          NOT_INITIALIZED = 'not_initialized',
+          INITIALIZING = 'initializing',
+          READY = 'ready',
+          ERROR = 'error',
+        }
+        
+        /**
+         * データベース接続の現在の状態を返す
+         */
+        export const getDatabaseStatus = (): DatabaseStatus => {
+          if (dbWorker) {
+            return DatabaseStatus.READY;
+          }
+          if (isInitializing) {
+            return DatabaseStatus.INITIALIZING;
+          }
+          return DatabaseStatus.NOT_INITIALIZED;
+        };
+        
+        /**
+         * データベース接続を初期化する
+         * @returns データベースワーカーのインスタンス
+         */
+        export const initDatabase = async (): Promise<any> => {
+          // 既に初期化済みならそのインスタンスを返す
+          if (dbWorker) {
+            return dbWorker;
+          }
+          
+          // 初期化中なら既存のプロミスを返す
+          if (initPromise) {
+            return initPromise;
+          }
+          
+          // 初期化フラグを設定
+          isInitializing = true;
+          
+          try {
+            // 初期化プロミスを作成
+            initPromise = createDbWorker(
+              [DB_CONFIG as any],
+              WORKER_URL,
+              WASM_URL,
+              () => console.log('データベースワーカーの準備完了')
+            );
+            
+            // データベースワーカーを取得
+            dbWorker = await initPromise;
+            console.log('データベース接続を確立しました');
+            
+            // テスト用のシンプルなクエリを実行
+            const testResult = await dbWorker.db.exec('SELECT sqlite_version()');
+            console.log(`SQLite バージョン: ${testResult[0]?.values[0][0]}`);
+            
+            return dbWorker;
+          } catch (error) {
+            console.error('データベース初期化エラー:', error);
+            throw error;
+          } finally {
+            isInitializing = false;
+            initPromise = null;
+          }
+        };
+        
+        /**
+         * SQLクエリを実行する
+         * @param query 実行するSQLクエリ
+         * @param params バインドパラメータ（オプション）
+         * @returns クエリ結果
+         */
+        export const executeQuery = async <T = any>(
+          query: string,
+          params: any[] = []
+        ): Promise<QueryExecResult[]> => {
+          try {
+            // データベース初期化を確認
+            if (!dbWorker) {
+              await initDatabase();
+            }
+            
+            // クエリの実行
+            const result = await dbWorker.db.exec(query, params);
+            return result;
+          } catch (error) {
+            console.error('クエリ実行エラー:', error);
+            throw error;
+          }
+        };
+        
+        /**
+         * クエリ結果をJavaScriptオブジェクトの配列に変換する
+         * @param result クエリ実行結果
+         * @returns オブジェクトの配列
+         */
+        export const resultsToObjects = <T = Record<string, any>>(
+          result: QueryExecResult[]
+        ): T[] => {
+          if (!result || result.length === 0) {
+            return [];
+          }
+          
+          const { columns, values } = result[0];
+          
+          return values.map(row => {
+            const obj: Record<string, any> = {};
+            columns.forEach((col, i) => {
+              obj[col] = row[i];
+            });
+            return obj as T;
+          });
+        };
+        
+        /**
+         * 単一の結果オブジェクトを取得する
+         * @param query 実行するSQLクエリ
+         * @param params バインドパラメータ（オプション）
+         * @returns 単一のオブジェクト、または undefined
+         */
+        export const getSingleResult = async <T = Record<string, any>>(
+          query: string,
+          params: any[] = []
+        ): Promise<T | undefined> => {
+          const results = await executeQuery<T>(query, params);
+          const objects = resultsToObjects<T>(results);
+          return objects[0];
+        };
+        
+        /**
+         * 結果の配列を取得する
+         * @param query 実行するSQLクエリ
+         * @param params バインドパラメータ（オプション）
+         * @returns オブジェクトの配列
+         */
+        export const getResultsArray = async <T = Record<string, any>>(
+          query: string,
+          params: any[] = []
+        ): Promise<T[]> => {
+          const results = await executeQuery<T>(query, params);
+          return resultsToObjects<T>(results);
+        };
+      
+    - name: データベースローダーコンポーネント
+      description: |
+        アプリケーション起動時にデータベースを初期化するコンポーネント
+      file: src/components/DatabaseLoader.tsx
+      content: |
+        import React, { useEffect, useState } from 'react';
+        import { CircularProgress, Box, Typography, Alert } from '@mui/material';
+        import { initDatabase, DatabaseStatus, getDatabaseStatus } from '../services/db/ClientDatabaseService';
+        
+        interface DatabaseLoaderProps {
+          children: React.ReactNode;
+        }
+        
+        /**
+         * データベースの初期化と読み込み状態を管理するコンポーネント
+         */
+        export const DatabaseLoader: React.FC<DatabaseLoaderProps> = ({ children }) => {
+          const [status, setStatus] = useState<DatabaseStatus>(getDatabaseStatus());
+          const [error, setError] = useState<string | null>(null);
+          const [progress, setProgress] = useState<number>(0);
+          
+          useEffect(() => {
+            let isMounted = true;
+            let progressInterval: NodeJS.Timeout;
+            
+            const initDb = async () => {
+              // 既に接続が確立されている場合は処理不要
+              if (status === DatabaseStatus.READY) {
+                return;
+              }
+              
+              // 進捗表示のためのインターバル（実際の進捗を反映するにはイベントリスナーが必要）
+              progressInterval = setInterval(() => {
+                if (isMounted) {
+                  setProgress(prev => {
+                    // 95%まで徐々に増加（残りは実際の完了時に設定）
+                    const increment = (95 - prev) * 0.1;
+                    return Math.min(prev + increment, 95);
+                  });
+                }
+              }, 300);
+              
+              try {
+                await initDatabase();
+                
+                if (isMounted) {
+                  setProgress(100);
+                  setStatus(DatabaseStatus.READY);
+                }
+              } catch (err) {
+                if (isMounted) {
+                  setError(`データベースの初期化に失敗しました: ${err instanceof Error ? err.message : '不明なエラー'}`);
+                  setStatus(DatabaseStatus.ERROR);
+                }
+              } finally {
+                clearInterval(progressInterval);
+              }
+            };
+            
+            initDb();
+            
+            return () => {
+              isMounted = false;
+              clearInterval(progressInterval);
+            };
+          }, [status]);
+          
+          // 読み込み中の表示
+          if (status !== DatabaseStatus.READY) {
+            return (
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                height="100vh"
+                bgcolor="#f5f5f5"
+              >
+                <Box textAlign="center" maxWidth="600px" p={3}>
+                  <Typography variant="h4" gutterBottom>
+                    日本の建築マップ
+                  </Typography>
+                  
+                  {status === DatabaseStatus.ERROR ? (
+                    <Alert severity="error" sx={{ mt: 3, mb: 3 }}>
+                      {error || 'データベースの読み込み中にエラーが発生しました。再読み込みしてください。'}
+                    </Alert>
+                  ) : (
+                    <>
+                      <Typography variant="body1" sx={{ mb: 3 }}>
+                        データベースを読み込んでいます。しばらくお待ちください...
+                      </Typography>
+                      
+                      <CircularProgress 
+                        variant="determinate" 
+                        value={progress} 
+                        size={60} 
+                        thickness={4} 
+                      />
+                      
+                      <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                        {progress.toFixed(0)}% 完了
+                      </Typography>
+                    </>
+                  )}
+                  
+                  {status === DatabaseStatus.ERROR && (
+                    <Box mt={3}>
+                      <button
+                        onClick={() => {
+                          setError(null);
+                          setStatus(DatabaseStatus.NOT_INITIALIZED);
+                        }}
+                        style={{
+                          padding: '8px 16px',
+                          fontSize: '1rem',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        再試行
+                      </button>
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+            );
+          }
+          
+          // データベースの準備ができたら子コンポーネントを表示
+          return <>{children}</>;
+        };
+        
+        export default DatabaseLoader;
+    
+    - name: アプリケーションへのデータベースローダー統合
+      description: |
+        アプリケーションのエントリーポイントにデータベースローダーを追加
+      file: src/App.tsx
+      changes: |
+        import React from 'react';
+        import { HashRouter as Router } from 'react-router-dom';
+        import { ThemeProvider } from '@mui/material/styles';
+        import CssBaseline from '@mui/material/CssBaseline';
+        import Routes from './Routes';
+        import { AppProvider } from './context/AppContext';
+        import { theme } from './styles/theme';
+        import DatabaseLoader from './components/DatabaseLoader';
+        
+        const App: React.FC = () => {
+          return (
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <DatabaseLoader>
+                <AppProvider>
+                  <Router>
+                    <Routes />
+                  </Router>
+                </AppProvider>
+              </DatabaseLoader>
+            </ThemeProvider>
+          );
+        };
+        
+        export default App;
+  
+  ルーティング実装:
+    # SPAルーティングの実装
+    
+    - name: HashRouterへの変更
+      description: |
+        BrowserRouterからHashRouterへの変更でGitHub Pagesでの動作を確保
+      file: src/index.tsx
+      changes: |
+        import React from 'react';
+        import { createRoot } from 'react-dom/client';
+        import './index.css';
+        import App from './App';
+        
+        const container = document.getElementById('root');
+        if (!container) {
+          throw new Error('Failed to find the root element');
+        }
+        
+        const root = createRoot(container);
+        root.render(
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        );
+  
+  APIサービス変換:
+    # サーバーサイドAPIからクライアントサイド実装への変換
+    
+    - name: アーキテクトサービスのクライアントサイド化
+      description: |
+        サーバーサイドAPIの代わりにクライアントサイドで動作するサービスを実装
+      file: src/services/db/ArchitectService.ts
+      content: |
+        import { getResultsArray, getSingleResult } from './ClientDatabaseService';
+        import type { Architect, ArchitectsResponse, Tag } from '../../types/architect';
+        
+        /**
+         * IDによる建築家の取得
+         * @param id 建築家ID
+         * @returns 建築家情報
+         */
+        export const getArchitectById = async (id: number): Promise<Architect | undefined> => {
+          return getSingleResult<Architect>(
+            `SELECT * FROM ZCDARCHITECT WHERE ZAR_ID = ?`,
+            [id]
+          );
+        };
+        
+        /**
+         * 建築家一覧の取得（ページング付き）
+         * @param page ページ番号（1から開始）
+         * @param limit 1ページあたりの件数
+         * @param searchTerm 検索キーワード（オプション）
+         * @param tags タグフィルター（オプション）
+         * @param sortBy ソート項目（オプション）
+         * @param sortOrder ソート順（オプション）
+         * @param options その他のフィルターオプション
+         * @returns 建築家一覧と総件数
+         */
+        export const getAllArchitects = async (
+          page: number = 1,
+          limit: number = 12,
+          searchTerm: string = '',
+          tags: string[] = [],
+          sortBy: string = 'ZAR_NAME',
+          sortOrder: string = 'asc',
+          options: {
+            nationality?: string;
+            category?: string;
+            school?: string;
+            birthYearFrom?: number;
+            birthYearTo?: number;
+            deathYear?: number;
+          } = {}
+        ): Promise<ArchitectsResponse> => {
+          const offset = (page - 1) * limit;
+          
+          // 検索条件の構築
+          let whereClause = '1=1';
+          const params: any[] = [];
+          
+          // キーワード検索
+          if (searchTerm) {
+            whereClause += ' AND (ZAR_NAME LIKE ? OR ZAR_KANA LIKE ? OR ZAR_NAMEENG LIKE ?)';
+            params.push(`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`);
+          }
+          
+          // その他のフィルター条件
+          if (options.nationality) {
+            whereClause += ' AND ZAR_NATIONALITY = ?';
+            params.push(options.nationality);
+          }
+          
+          if (options.category) {
+            whereClause += ' AND ZAR_CATEGORY = ?';
+            params.push(options.category);
+          }
+          
+          if (options.school) {
+            whereClause += ' AND ZAR_SCHOOL = ?';
+            params.push(options.school);
+          }
+          
+          if (options.birthYearFrom) {
+            whereClause += ' AND ZAR_BIRTHYEAR >= ?';
+            params.push(options.birthYearFrom);
+          }
+          
+          if (options.birthYearTo) {
+            whereClause += ' AND ZAR_BIRTHYEAR <= ?';
+            params.push(options.birthYearTo);
+          }
+          
+          if (options.deathYear) {
+            whereClause += ' AND ZAR_DEATHYEAR = ?';
+            params.push(options.deathYear);
+          }
+          
+          // タグによるフィルタリング（INNER JOIN使用）
+          let joinClause = '';
+          if (tags && tags.length > 0) {
+            joinClause = `
+              INNER JOIN ZCDARCHITECT_TAG ON ZCDARCHITECT.ZAR_ID = ZCDARCHITECT_TAG.ARCHITECT_ID
+              INNER JOIN ZCDTAG ON ZCDARCHITECT_TAG.TAG_ID = ZCDTAG.TAG_ID
+            `;
+            whereClause += ' AND ZCDTAG.TAG_NAME IN (';
+            whereClause += tags.map(() => '?').join(',');
+            whereClause += ')';
+            params.push(...tags);
+          }
+          
+          // 総件数のクエリ
+          const countQuery = `
+            SELECT COUNT(DISTINCT ZCDARCHITECT.ZAR_ID) as total
+            FROM ZCDARCHITECT
+            ${joinClause}
+            WHERE ${whereClause}
+          `;
+          
+          // データ取得クエリ
+          const dataQuery = `
+            SELECT DISTINCT ZCDARCHITECT.*
+            FROM ZCDARCHITECT
+            ${joinClause}
+            WHERE ${whereClause}
+            ORDER BY ${sortBy} ${sortOrder === 'desc' ? 'DESC' : 'ASC'}
+            LIMIT ? OFFSET ?
+          `;
+          
+          // パラメータにLIMITとOFFSETを追加
+          const dataParams = [...params, limit, offset];
+          
+          try {
+            // 総件数取得
+            const countResult = await getSingleResult<{ total: number }>(countQuery, params);
+            const total = countResult?.total || 0;
+            
+            // データ取得
+            const architects = await getResultsArray<Architect>(dataQuery, dataParams);
+            
+            return {
+              results: architects,
+              total,
+              page,
+              limit,
+              totalPages: Math.ceil(total / limit)
+            };
+          } catch (error) {
+            console.error('建築家データ取得エラー:', error);
+            throw error;
+          }
+        };
+        
+        /**
+         * 建築家タグの取得
+         * @returns タグ一覧
+         */
+        export const getArchitectTags = async (): Promise<Tag[]> => {
+          return getResultsArray<Tag>(`
+            SELECT TAG_ID, TAG_NAME, COUNT(ARCHITECT_ID) as TAG_COUNT
+            FROM ZCDTAG
+            LEFT JOIN ZCDARCHITECT_TAG ON ZCDTAG.TAG_ID = ZCDARCHITECT_TAG.TAG_ID
+            GROUP BY ZCDTAG.TAG_ID, ZCDTAG.TAG_NAME
+            ORDER BY TAG_COUNT DESC, TAG_NAME
+          `);
+        };
+    
+    - name: 建築作品サービスのクライアントサイド化
+      description: |
+        建築作品データアクセスのクライアントサイド実装
+      file: src/services/db/ArchitectureService.ts
+      content: |
+        import { getResultsArray, getSingleResult } from './ClientDatabaseService';
+        import type { Architecture, ArchitectureResponse, Tag } from '../../types/architecture';
+        
+        /**
+         * IDによる建築作品の取得
+         * @param id 建築作品ID
+         * @returns 建築作品情報
+         */
+        export const getArchitectureById = async (id: number): Promise<Architecture | undefined> => {
+          return getSingleResult<Architecture>(
+            `SELECT * FROM ZCDARCHITECTURE WHERE ZAW_ID = ?`,
+            [id]
+          );
+        };
+        
+        /**
+         * 建築家による建築作品一覧の取得
+         * @param architectId 建築家ID
+         * @returns 建築作品一覧
+         */
+        export const getArchitecturesByArchitect = async (architectId: number): Promise<Architecture[]> => {
+          return getResultsArray<Architecture>(
+            `SELECT * FROM ZCDARCHITECTURE 
+             WHERE ZAW_ARCHITECT_ID = ? 
+             ORDER BY ZAW_YEAR DESC`,
+            [architectId]
+          );
+        };
+        
+        /**
+         * 建築作品一覧の取得（ページング付き）
+         * @param page ページ番号（1から開始）
+         * @param limit 1ページあたりの件数
+         * @param searchTerm 検索キーワード（オプション）
+         * @param sortBy ソート項目（オプション）
+         * @param sortOrder ソート順（オプション）
+         * @param options その他のフィルターオプション
+         * @returns 建築作品一覧と総件数
+         */
+        export const getAllArchitectures = async (
+          page: number = 1,
+          limit: number = 12,
+          searchTerm: string = '',
+          sortBy: string = 'ZAW_NAME',
+          sortOrder: string = 'asc',
+          options: {
+            tags?: string[];
+            architect?: string;
+            location?: string;
+            prefecture?: string;
+            yearFrom?: number;
+            yearTo?: number;
+          } = {}
+        ): Promise<ArchitectureResponse> => {
+          const offset = (page - 1) * limit;
+          
+          // 検索条件の構築
+          let whereClause = '1=1';
+          const params: any[] = [];
+          
+          // キーワード検索
+          if (searchTerm) {
+            whereClause += ' AND (ZAW_NAME LIKE ? OR ZAW_ADDRESS LIKE ? OR ZAW_DETAIL LIKE ?)';
+            params.push(`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`);
+          }
+          
+          // その他のフィルター条件
+          if (options.architect) {
+            whereClause += ' AND (ZAW_ARCHITECT LIKE ? OR a.ZAR_NAME LIKE ? OR a.ZAR_NAMEENG LIKE ?)';
+            params.push(`%${options.architect}%`, `%${options.architect}%`, `%${options.architect}%`);
+          }
+          
+          if (options.location) {
+            whereClause += ' AND ZAW_ADDRESS LIKE ?';
+            params.push(`%${options.location}%`);
+          }
+          
+          if (options.prefecture) {
+            whereClause += ' AND ZAW_PREFECTURE = ?';
+            params.push(options.prefecture);
+          }
+          
+          if (options.yearFrom) {
+            whereClause += ' AND ZAW_YEAR >= ?';
+            params.push(options.yearFrom);
+          }
+          
+          if (options.yearTo) {
+            whereClause += ' AND ZAW_YEAR <= ?';
+            params.push(options.yearTo);
+          }
+          
+          // タグによるフィルタリング
+          let joinClause = 'LEFT JOIN ZCDARCHITECT a ON ZCDARCHITECTURE.ZAW_ARCHITECT_ID = a.ZAR_ID';
+          if (options.tags && options.tags.length > 0) {
+            joinClause += `
+              INNER JOIN ZCDARCHITECTURE_TAG ON ZCDARCHITECTURE.ZAW_ID = ZCDARCHITECTURE_TAG.ARCHITECTURE_ID
+              INNER JOIN ZCDTAG ON ZCDARCHITECTURE_TAG.TAG_ID = ZCDTAG.TAG_ID
+            `;
+            whereClause += ' AND ZCDTAG.TAG_NAME IN (';
+            whereClause += options.tags.map(() => '?').join(',');
+            whereClause += ')';
+            params.push(...options.tags);
+          }
+          
+          // 総件数のクエリ
+          const countQuery = `
+            SELECT COUNT(DISTINCT ZCDARCHITECTURE.ZAW_ID) as total
+            FROM ZCDARCHITECTURE
+            ${joinClause}
+            WHERE ${whereClause}
+          `;
+          
+          // データ取得クエリ
+          const dataQuery = `
+            SELECT DISTINCT ZCDARCHITECTURE.*
+            FROM ZCDARCHITECTURE
+            ${joinClause}
+            WHERE ${whereClause}
+            ORDER BY ${sortBy} ${sortOrder === 'desc' ? 'DESC' : 'ASC'}
+            LIMIT ? OFFSET ?
+          `;
+          
+          // パラメータにLIMITとOFFSETを追加
+          const dataParams = [...params, limit, offset];
+          
+          try {
+            // 総件数取得
+            const countResult = await getSingleResult<{ total: number }>(countQuery, params);
+            const total = countResult?.total || 0;
+            
+            // データ取得
+            const architectures = await getResultsArray<Architecture>(dataQuery, dataParams);
+            
+            return {
+              results: architectures,
+              total,
+              page,
+              limit,
+              totalPages: Math.ceil(total / limit)
+            };
+          } catch (error) {
+            console.error('建築作品データ取得エラー:', error);
+            throw error;
+          }
+        };
+        
+        /**
+         * 建築作品タグの取得
+         * @returns タグ一覧
+         */
+        export const getAllTags = async (): Promise<Tag[]> => {
+          return getResultsArray<Tag>(`
+            SELECT TAG_ID, TAG_NAME, COUNT(ARCHITECTURE_ID) as TAG_COUNT
+            FROM ZCDTAG
+            LEFT JOIN ZCDARCHITECTURE_TAG ON ZCDTAG.TAG_ID = ZCDARCHITECTURE_TAG.TAG_ID
+            GROUP BY ZCDTAG.TAG_ID, ZCDTAG.TAG_NAME
+            ORDER BY TAG_COUNT DESC, TAG_NAME
+          `);
+        };
+        
+        /**
+         * 都道府県別の建築作品数の取得
+         * @returns 都道府県と建築作品数の一覧
+         */
+        export const getPrefectureCounts = async (): Promise<{ prefecture: string; count: number }[]> => {
+          return getResultsArray<{ prefecture: string; count: number }>(`
+            SELECT ZAW_PREFECTURE as prefecture, COUNT(*) as count
+            FROM ZCDARCHITECTURE
+            WHERE ZAW_PREFECTURE IS NOT NULL AND ZAW_PREFECTURE != ''
+            GROUP BY ZAW_PREFECTURE
+            ORDER BY count DESC
+          `);
+        };
+        
+        /**
+         * 地図表示用の建築作品データ取得
+         * @param bounds 地図の表示範囲（緯度・経度）
+         * @param filters フィルター条件
+         * @returns 地図表示用の建築作品一覧
+         */
+        export const getArchitectureForMap = async (
+          bounds: {
+            north: number;
+            south: number;
+            east: number;
+            west: number;
+          },
+          filters: {
+            tags?: string[];
+            architect?: string;
+            yearFrom?: number;
+            yearTo?: number;
+            searchTerm?: string;
+          } = {}
+        ): Promise<Architecture[]> => {
+          // 検索条件の構築
+          let whereClause = `
+            ZAW_LAT BETWEEN ? AND ?
+            AND ZAW_LNG BETWEEN ? AND ?
+            AND ZAW_LAT IS NOT NULL
+            AND ZAW_LNG IS NOT NULL
+          `;
+          
+          const params: any[] = [
+            bounds.south,
+            bounds.north,
+            bounds.west,
+            bounds.east
+          ];
+          
+          // その他のフィルター条件
+          if (filters.searchTerm) {
+            whereClause += ' AND (ZAW_NAME LIKE ? OR ZAW_ADDRESS LIKE ? OR ZAW_ARCHITECT LIKE ?)';
+            params.push(
+              `%${filters.searchTerm}%`,
+              `%${filters.searchTerm}%`,
+              `%${filters.searchTerm}%`
+            );
+          }
+          
+          if (filters.architect) {
+            whereClause += ' AND (ZAW_ARCHITECT LIKE ? OR a.ZAR_NAME LIKE ? OR a.ZAR_NAMEENG LIKE ?)';
+            params.push(
+              `%${filters.architect}%`,
+              `%${filters.architect}%`,
+              `%${filters.architect}%`
+            );
+          }
+          
+          if (filters.yearFrom) {
+            whereClause += ' AND ZAW_YEAR >= ?';
+            params.push(filters.yearFrom);
+          }
+          
+          if (filters.yearTo) {
+            whereClause += ' AND ZAW_YEAR <= ?';
+            params.push(filters.yearTo);
+          }
+          
+          // タグによるフィルタリング
+          let joinClause = 'LEFT JOIN ZCDARCHITECT a ON ZCDARCHITECTURE.ZAW_ARCHITECT_ID = a.ZAR_ID';
+          if (filters.tags && filters.tags.length > 0) {
+            joinClause += `
+              INNER JOIN ZCDARCHITECTURE_TAG ON ZCDARCHITECTURE.ZAW_ID = ZCDARCHITECTURE_TAG.ARCHITECTURE_ID
+              INNER JOIN ZCDTAG ON ZCDARCHITECTURE_TAG.TAG_ID = ZCDTAG.TAG_ID
+            `;
+            whereClause += ' AND ZCDTAG.TAG_NAME IN (';
+            whereClause += filters.tags.map(() => '?').join(',');
+            whereClause += ')';
+            params.push(...filters.tags);
+          }
+          
+          // 結果を最大500件に制限（パフォーマンス対策）
+          const query = `
+            SELECT DISTINCT ZCDARCHITECTURE.*
+            FROM ZCDARCHITECTURE
+            ${joinClause}
+            WHERE ${whereClause}
+            LIMIT 500
+          `;
+          
+          return getResultsArray<Architecture>(query, params);
+        };
+
+実装手順:
+  phase1:
+    name: セットアップとインフラ準備
+    steps:
+      - task: GitHub Actionsワークフローの設定
+        command: mkdir -p .github/workflows
+        description: "GitHub Actions用のディレクトリを作成する"
+      
+      - task: ESLintの設定
+        command: |
+          npm install -D eslint eslint-plugin-react eslint-plugin-react-hooks @typescript-eslint/eslint-plugin @typescript-eslint/parser
+          npm pkg set scripts.lint="eslint . --ext .ts,.tsx --cache"
+          npm pkg set scripts.lint:fix="eslint . --ext .ts,.tsx --fix"
+        description: "TypeScript/React用のESLint設定を追加する"
+      
+      - task: .eslintrc.js作成
+        file: .eslintrc.js
+        content: |
+          module.exports = {
+            root: true,
+            env: {
+              browser: true,
+              es2021: true,
+              node: true,
+            },
+            extends: [
+              'eslint:recommended',
+              'plugin:react/recommended',
+              'plugin:react-hooks/recommended',
+              'plugin:@typescript-eslint/recommended',
+            ],
+            parser: '@typescript-eslint/parser',
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
+              ecmaVersion: 'latest',
+              sourceType: 'module',
+            },
+            plugins: ['react', '@typescript-eslint'],
+            settings: {
+              react: {
+                version: 'detect',
+              },
+            },
+            rules: {
+              'react/react-in-jsx-scope': 'off',
+              '@typescript-eslint/no-explicit-any': 'warn',
+              '@typescript-eslint/explicit-module-boundary-types': 'off',
+              '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+            },
+          };
+      
+      - task: パッケージのインストール
+        command: |
+          npm install react-leaflet leaflet @mui/material @mui/icons-material @emotion/react @emotion/styled
+          npm install -D vite @vitejs/plugin-react vite-tsconfig-paths vite-bundle-analyzer
+        description: "必要なパッケージをインストールする"
+
+  phase2:
+    name: データベースアクセス実装
+    steps:
+      - task: sql.js依存関係のインストール
+        command: npm install sql.js sql.js-httpvfs
+        description: "ブラウザでのSQLite実行のための依存関係をインストールする"
+      
+      - task: 静的データベース処理スクリプトの設定
+        command: |
+          mkdir -p scripts
+          touch scripts/prepare-static-db.ts
+        description: "静的データベース準備用のスクリプトディレクトリを作成する"
+      
+      - task: クライアントサイドデータベースサービスの作成
+        command: |
+          mkdir -p src/services/db
+          touch src/services/db/ClientDatabaseService.ts
+        description: "クライアントサイドデータベースアクセス用のサービスを作成する"
+
+  phase3:
+    name: デプロイとテスト
+    steps:
+      - task: Playwrightのセットアップ
+        command: |
+          npm install -D @playwright/test
+          npx playwright install --with-deps chromium
+        description: "E2Eテスト用のPlaywrightをセットアップする"
+      
+      - task: Jestテスト環境の確認
+        command: |
+          npm install -D jest ts-jest @testing-library/react @testing-library/jest-dom @testing-library/user-event jest-environment-jsdom identity-obj-proxy
+        description: "ユニットテスト環境をセットアップする"
+      
+      - task: GitHub Pages向けの404.html作成
+        command: |
+          mkdir -p public
+          touch public/404.html
+        description: "GitHub PagesでのSPAルーティングのための404ページを作成する"
+
+参照資料:
+  ドキュメント:
+    - name: sql.js ドキュメント
+      url: https://github.com/sql-js/sql.js
+      description: "ブラウザ上でSQLiteを実行するためのJavaScriptライブラリ"
+    
+    - name: sql.js-httpvfs ドキュメント
+      url: https://github.com/phiresky/sql.js-httpvfs
+      description: "大規模SQLiteデータベースをブラウザで効率的に扱うためのライブラリ"
+    
+    - name: GitHub Pages デプロイガイド
+      url: https://docs.github.com/ja/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+      description: "GitHub Pagesのデプロイソース設定方法"
+    
+    - name: Vite 公式ドキュメント
+      url: https://vitejs.dev/guide/
+      description: "高速なフロントエンドビルドツール"
+    
+    - name: Single Page Apps on GitHub Pages
+      url: https://github.com/rafgraph/spa-github-pages
+      description: "GitHub Pages上でのSPAルーティングのためのガイド"
+    
+    - name: Playwright テストガイド
+      url: https://playwright.dev/docs/intro
+      description: "モダンなE2Eテストフレームワーク"
+    
+    - name: SQLite のブラウザ内使用パターン
+      url: https://stackoverflow.com/questions/3240980/using-sqlite-with-a-web-application
+      description: "Webアプリケーションでのクライアントサイドデータベース使用パターン"
+      
+  チュートリアル:
+    - name: React アプリを GitHub Pages にデプロイする方法
+      url: https://create-react-app.dev/docs/deployment/#github-pages
+      description: "React アプリケーションの GitHub Pages へのデプロイ手順"
+    
+    - name: sql.js-httpvfs チュートリアル
+      url: https://github.com/phiresky/sql.js-httpvfs/blob/master/examples/react/src/App.tsx
+      description: "sql.js-httpvfs を React アプリケーションで使用する例"

@@ -1,0 +1,29 @@
+{
+  "database": "archimap.sqlite",
+  "suffix": "archimap.sqlite.suffix",
+  "tables": [
+    "ZCDACCESS",
+    "ZCDARCHITECT",
+    "ZCDARCHITECTURE",
+    "ZCDSTATUS",
+    "ZCDUSERLISTS",
+    "ZCDUSERLISTSDETAIL",
+    "Z_PRIMARYKEY",
+    "Z_METADATA",
+    "Z_MODELCACHE",
+    "sqlite_stat1"
+  ],
+  "indexes": [
+    "idx_zcdarchitecture_year",
+    "idx_zcdarchitecture_prefecture",
+    "idx_zcdarchitecture_architect",
+    "idx_zcdarchitecture_title",
+    "idx_zcdarchitecture_tag",
+    "idx_zcdarchitecture_category",
+    "idx_zcdarchitecture_geo"
+  ],
+  "size": 11173888,
+  "chunkSize": 65536,
+  "chunks": 171,
+  "date": "2025-04-14T12:33:57.057Z"
+}

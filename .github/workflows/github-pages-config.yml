@@ -1,0 +1,262 @@
+name: GitHub Pages Configuration
+
+description: |
+  This document outlines the specific configurations needed to deploy
+  a React application with client-side database to GitHub Pages.
+
+static_site_adaptations:
+  # Changes needed to make the app work as a static site
+  database:
+    - name: Client-side database implementation
+      description: |
+        For GitHub Pages deployment, we need to convert from server-side SQLite
+        to client-side SQL.js with the pre-built database file.
+      tasks:
+        - "Install sql.js and sql.js-httpvfs packages"
+        - "Configure webpack to handle WebAssembly loading"
+        - "Implement client-side database initialization"
+        - "Create fallback mechanism for failed database loads"
+        
+    - name: Database file preparation
+      description: |
+        The SQLite database needs to be pre-processed for static serving.
+      tasks:
+        - "Optimize database size by removing unnecessary data"
+        - "Split database into chunks for faster loading"
+        - "Generate database index file"
+        - "Configure caching headers for database files"
+  
+  routing:
+    - name: Client-side routing for GitHub Pages
+      description: |
+        GitHub Pages doesn't natively support SPA routing with react-router.
+      solutions:
+        - option: HashRouter
+          description: "Use HashRouter instead of BrowserRouter to avoid 404s"
+          pros: "Simple to implement, works reliably"
+          cons: "Less clean URLs with hash (#) in the path"
+          
+        - option: Custom 404 redirect
+          description: "Create a custom 404.html that redirects to index.html with path in query string"
+          pros: "Cleaner URLs without hash"
+          cons: "More complex setup, slight delay on initial navigation"
+          
+        - option: basename configuration
+          description: "Configure react-router with correct basename for the GitHub Pages URL"
+          pros: "Works with BrowserRouter for cleaner URLs"
+          cons: "Repository-specific configuration needed"
+      
+      recommended: "Use HashRouter for simplicity and reliability"
+
+  api_handling:
+    - name: Replace server API calls
+      description: |
+        Since GitHub Pages can't run server-side code, API endpoints need to be replaced.
+      tasks:
+        - "Identify all server API calls in the codebase"
+        - "Create client-side service equivalents using SQL.js"
+        - "Implement caching for expensive queries"
+        - "Create service worker for offline support"
+
+implementation_steps:
+  # Step-by-step implementation for GitHub Pages
+  steps:
+    - name: Setup client-side database
+      tasks:
+        - "Add sql.js dependencies"
+        - task: Install required packages
+          code: |
+            npm install sql.js sql.js-httpvfs
+        
+        - task: Update webpack configuration
+          description: "Configure webpack to handle WebAssembly files"
+          file: webpack.config.js
+          changes: |
+            Add to module.exports:
+              experiments: {
+                syncWebAssembly: true,
+              },
+              resolve: {
+                fallback: {
+                  fs: false,
+                  path: require.resolve('path-browserify'),
+                },
+              }
+        
+        - task: Copy WebAssembly files to public directory
+          code: |
+            cp node_modules/sql.js/dist/sql-wasm.wasm public/
+            cp node_modules/sql.js/dist/sql-wasm.js public/
+    
+    - name: Create client-side database service
+      tasks:
+        - task: Create database loader component
+          file: src/services/db/StaticDatabaseService.ts
+          content: |
+            import { createDbWorker } from 'sql.js-httpvfs';
+            
+            const workerUrl = new URL('sqlite.worker.js', import.meta.url).toString();
+            const wasmUrl = new URL('sql-wasm.wasm', import.meta.url).toString();
+            
+            // Database worker configuration
+            const workerConfig = {
+              from: 'jsonconfig',
+              config: {
+                serverMode: 'full',
+                requestChunkSize: 4096,
+                url: './db/database.sqlite',
+              },
+            };
+            
+            let dbWorker: any = null;
+            
+            export const initDatabase = async () => {
+              if (dbWorker) return dbWorker;
+              
+              try {
+                dbWorker = await createDbWorker(
+                  [workerConfig],
+                  workerUrl,
+                  wasmUrl,
+                  () => console.log('Database worker ready')
+                );
+                return dbWorker;
+              } catch (err) {
+                console.error('Failed to initialize database:', err);
+                throw err;
+              }
+            };
+            
+            export const executeQuery = async (query: string, params: any[] = []) => {
+              if (!dbWorker) {
+                await initDatabase();
+              }
+              
+              try {
+                const result = await dbWorker.db.exec(query, params);
+                return result;
+              } catch (err) {
+                console.error('Query execution error:', err);
+                throw err;
+              }
+            };
+    
+    - name: Update routing for GitHub Pages
+      tasks:
+        - task: Change router implementation
+          file: src/index.tsx
+          changes: |
+            Replace BrowserRouter with HashRouter:
+            
+            import { HashRouter as Router } from 'react-router-dom';
+            
+            // In the render method:
+            <Router>
+              <App />
+            </Router>
+    
+    - name: Create database processing script
+      tasks:
+        - task: Create script to prepare database for static serving
+          file: scripts/prepare-static-db.js
+          content: |
+            const fs = require('fs');
+            const path = require('path');
+            const sqlite3 = require('sqlite3').verbose();
+            
+            console.log('Preparing database for static deployment...');
+            
+            // Ensure output directory exists
+            const outputDir = path.join(__dirname, '../public/db');
+            if (!fs.existsSync(outputDir)) {
+              fs.mkdirSync(outputDir, { recursive: true });
+            }
+            
+            // Open source database
+            const sourceDb = new sqlite3.Database('./Archimap_database.sqlite', (err) => {
+              if (err) {
+                console.error('Error opening source database:', err.message);
+                process.exit(1);
+              }
+              console.log('Source database opened successfully');
+            });
+            
+            // Copy database file
+            fs.copyFile(
+              path.join(__dirname, '../Archimap_database.sqlite'),
+              path.join(outputDir, 'database.sqlite'),
+              (err) => {
+                if (err) {
+                  console.error('Error copying database:', err);
+                  process.exit(1);
+                }
+                console.log('Database copied successfully');
+                
+                // Close database
+                sourceDb.close((err) => {
+                  if (err) {
+                    console.error('Error closing database:', err.message);
+                  }
+                  console.log('Database preparation complete');
+                });
+              }
+            );
+            
+        - task: Add script to package.json
+          file: package.json
+          changes: |
+            Add to scripts section:
+              "prepare-static-db": "node scripts/prepare-static-db.js",
+              "build:static": "npm run prepare-static-db && npm run build"
+    
+    - name: Create 404 redirect page
+      tasks:
+        - task: Create 404.html file for GitHub Pages
+          file: public/404.html
+          content: |
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Archi-site - Redirecting</title>
+              <script type="text/javascript">
+                // Single Page Apps for GitHub Pages
+                // https://github.com/rafgraph/spa-github-pages
+                var segmentCount = 1;
+                var l = window.location;
+                l.replace(
+                  l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                  l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+                  l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+                  (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+                  l.hash
+                );
+              </script>
+            </head>
+            <body>
+              <h1>Redirecting...</h1>
+              <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
+            </body>
+            </html>
+
+deployment_steps:
+  # Steps to deploy to GitHub Pages
+  steps:
+    - name: Set up GitHub Actions workflow
+      description: "Create GitHub Actions workflow for automated deployment"
+      file: .github/workflows/github-pages-deploy.yml
+    
+    - name: Configure custom domain (optional)
+      description: "Add CNAME file if using a custom domain"
+      task: |
+        Create public/CNAME with your domain (e.g., archimap.example.com)
+    
+    - name: Enable GitHub Pages in repository settings
+      description: |
+        Go to repository Settings > Pages
+        Set source to GitHub Actions
+    
+    - name: Run first deployment
+      description: |
+        Trigger deployment by pushing to main branch or
+        manually running the workflow from Actions tab

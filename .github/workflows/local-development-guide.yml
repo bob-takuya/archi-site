@@ -1,0 +1,485 @@
+name: ローカル開発ワークフロー詳細ガイド
+
+description: |
+  このドキュメントは、Archi-siteプロジェクトのローカル開発環境セットアップと
+  日々の開発作業のための詳細なステップバイステップガイドです。
+  2025年4月時点のベストプラクティスを取り入れています。
+
+環境要件:
+  必須ツール:
+    - Node.js: "v20.10.0以上"
+    - npm: "v10.2.3以上"
+    - Git: "2.40.0以上"
+    - Visual Studio Code: "1.90.0以上"
+    - Google Chrome: "最新版（開発者ツール使用のため）"
+    - Firefox: "最新版（クロスブラウザテスト用）"
+  
+  推奨拡張機能:
+    - vscode:
+      - ESLint (dbaeumer.vscode-eslint): "TypeScriptとJavaScriptの静的解析"
+      - Prettier (esbenp.prettier-vscode): "コードフォーマッティング"
+      - Better Comments (aaron-bond.better-comments): "コードコメントの視認性向上"
+      - GitHub Copilot (github.copilot): "AIコード支援"
+      - GitLens (eamodio.gitlens): "Gitリポジトリ管理の強化"
+      - SQLite Viewer (alexcvzz.vscode-sqlite): "SQLiteデータベースの閲覧・編集"
+      - Material Icon Theme (pkief.material-icon-theme): "ファイルアイコンの視認性向上"
+      - Path Intellisense (christian-kohler.path-intellisense): "ファイルパス補完"
+    
+    - ブラウザ:
+      - React Developer Tools: "Reactコンポーネント検査"
+      - Redux DevTools: "状態管理デバッグ"
+      - Axe DevTools: "アクセシビリティテスト"
+
+初期セットアップ:
+  # 新規開発者向けの初期セットアップ手順
+  手順:
+    - name: リポジトリのクローン
+      command: git clone https://github.com/bob-takuya/archi-site.git
+      description: "プロジェクトリポジトリをローカルにクローンします"
+      
+    - name: プロジェクトディレクトリへの移動
+      command: cd archi-site
+      
+    - name: Node.jsバージョン確認
+      command: node -v
+      description: "Node.jsのバージョンが要件を満たしているか確認します（v20.10.0以上推奨）"
+      
+    - name: 依存関係のインストール
+      command: npm install
+      description: "プロジェクトの依存パッケージをインストールします"
+
+    - name: 環境変数の設定
+      command: |
+        cp .env.example .env.local
+        code .env.local
+      description: |
+        環境変数ファイルをコピーして必要に応じて編集します。
+        参照: https://vitejs.dev/guide/env-and-mode.html
+      
+    - name: データベースの準備
+      command: npm run prepare-db
+      description: |
+        ローカル開発用のSQLiteデータベースを初期化します。
+        このコマンドはデータベースが存在しない場合、新しく作成し、
+        既に存在する場合は、最新のスキーマに更新します。
+        参照: https://sqlite.org/cli.html
+      
+    - name: 静的データベースの準備
+      command: npm run prepare-static-db
+      description: |
+        GitHub Pages用の静的サイトデータベースを準備します。
+        sql.js-httpvfsを使用して、ブラウザからアクセス可能なデータベースを生成します。
+        参照: https://github.com/phiresky/sql.js-httpvfs
+      
+    - name: VSCode拡張機能のインストール
+      command: |
+        code --install-extension dbaeumer.vscode-eslint
+        code --install-extension esbenp.prettier-vscode
+        code --install-extension aaron-bond.better-comments
+        code --install-extension eamodio.gitlens
+        code --install-extension alexcvzz.vscode-sqlite
+        code --install-extension pkief.material-icon-theme
+        code --install-extension christian-kohler.path-intellisense
+      description: "推奨VSCode拡張機能をインストールします"
+      
+    - name: Playwrightブラウザのインストール
+      command: npx playwright install --with-deps
+      description: |
+        E2Eテスト用のPlaywrightブラウザをインストールします。
+        参照: https://playwright.dev/docs/cli#install-browsers
+      
+    - name: Husky Git Hooksのセットアップ
+      command: npm run prepare
+      description: |
+        コミット前の自動リントとテストを実行するGit Hooksをセットアップします。
+        参照: https://typicode.github.io/husky/
+
+日常の開発作業:
+  # 日々の開発作業フロー
+  手順:
+    - name: 開発ブランチの作成
+      command: |
+        git checkout main
+        git pull
+        git checkout -b feature/my-new-feature
+      description: |
+        新機能開発用のブランチを作成します。
+        ブランチ命名規則:
+        - feature/* - 新機能
+        - bugfix/* - バグ修正
+        - refactor/* - リファクタリング
+        - docs/* - ドキュメント更新
+        参照: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+      
+    - name: 開発サーバーの起動
+      command: npm run dev
+      description: |
+        開発サーバーを起動します。デフォルトで http://localhost:3000 で利用できます。
+        開発中はホットリロードが有効になっており、コード変更時に自動的に反映されます。
+        参照: https://vitejs.dev/guide/features.html#hot-module-replacement
+      
+    - name: コードのリント
+      command: npm run lint
+      description: |
+        ESLintを使用してコードの品質チェックを実行します。
+        自動修正可能な問題を修正するには: npm run lint:fix
+        参照: https://eslint.org/docs/latest/use/command-line-interface
+      
+    - name: 型チェック
+      command: npm run type-check
+      description: |
+        TypeScriptコンパイラを使用して型チェックを実行します。
+        参照: https://www.typescriptlang.org/docs/handbook/compiler-options.html
+      
+    - name: ユニットテストの実行（ウォッチモード）
+      command: npm run test:watch
+      description: |
+        変更を監視しながらテストを実行します。変更があると自動的に関連テストが再実行されます。
+        テスト駆動開発（TDD）のワークフローに最適です。
+        参照: https://jestjs.io/docs/cli#--watch
+      
+    - name: 単一のテストファイルを実行
+      command: npm test -- src/components/Button.test.tsx
+      description: |
+        特定のテストファイルのみを実行します。
+        参照: https://jestjs.io/docs/cli#running-from-the-command-line
+      
+    - name: E2Eテストの実行
+      command: npm run test:e2e
+      description: |
+        Playwrightを使用したE2Eテストを実行します。
+        UIモードでテストを実行するには: npm run test:ui
+        参照: https://playwright.dev/docs/running-tests
+      
+    - name: ビルドプレビュー
+      command: |
+        npm run build
+        npm run preview
+      description: |
+        本番用ビルドを生成し、プレビューサーバーで確認します。
+        参照: https://vitejs.dev/guide/cli.html#vite-preview
+      
+    - name: 変更のコミット
+      command: |
+        git add .
+        git commit -m "feat: 実装した機能の説明"
+      description: |
+        変更をコミットします。
+        コミットメッセージは Conventional Commits 形式に従ってください:
+        - feat: 新機能
+        - fix: バグ修正
+        - refactor: リファクタリング
+        - docs: ドキュメント更新
+        - test: テスト追加/更新
+        - chore: その他の変更
+        参照: https://www.conventionalcommits.org/ja/v1.0.0/
+      
+    - name: 変更のプッシュ
+      command: git push origin feature/my-new-feature
+      description: "変更をリモートリポジトリにプッシュします"
+
+コンポーネント開発:
+  # コンポーネント開発のベストプラクティス
+  ファイル構造:
+    - ガイドライン: |
+        コンポーネントは以下の構造で作成します:
+        src/components/
+          ├── ComponentName/
+          │   ├── index.ts           # エクスポートファイル
+          │   ├── ComponentName.tsx  # メインコンポーネント
+          │   ├── ComponentName.test.tsx  # テストファイル
+          │   ├── ComponentName.styles.ts  # スタイルファイル (Emotion/styled-components)
+          │   └── ComponentName.types.ts   # 型定義
+      
+  テンプレート:
+    - コンポーネント: |
+        // ComponentName.tsx
+        import React from 'react';
+        import { useComponentLogic } from './useComponentLogic';
+        import { StyledComponent } from './ComponentName.styles';
+        import type { ComponentNameProps } from './ComponentName.types';
+        
+        export const ComponentName: React.FC<ComponentNameProps> = (props) => {
+          const { state, handlers } = useComponentLogic(props);
+          
+          return (
+            <StyledComponent>
+              {/* コンポーネントの内容 */}
+            </StyledComponent>
+          );
+        };
+      
+    - テスト: |
+        // ComponentName.test.tsx
+        import { render, screen, fireEvent } from '@testing-library/react';
+        import { ComponentName } from './ComponentName';
+        
+        describe('ComponentName', () => {
+          it('renders correctly', () => {
+            render(<ComponentName />);
+            // アサーション
+          });
+          
+          it('handles user interactions', () => {
+            render(<ComponentName />);
+            fireEvent.click(screen.getByRole('button'));
+            // アサーション
+          });
+        });
+      
+    - カスタムフック: |
+        // useComponentLogic.ts
+        import { useState, useCallback } from 'react';
+        import type { ComponentNameProps } from './ComponentName.types';
+        
+        export const useComponentLogic = (props: ComponentNameProps) => {
+          const [state, setState] = useState(initialState);
+          
+          const handleEvent = useCallback(() => {
+            // ロジック
+          }, [dependencies]);
+          
+          return {
+            state,
+            handlers: {
+              handleEvent,
+            },
+          };
+        };
+
+テスト駆動開発:
+  # TDDプロセスの詳細手順
+  手順:
+    - name: テスト要件の理解
+      description: |
+        機能の要件を理解し、テストケースを特定します。
+        ユーザーストーリーから受け入れ基準を確認します。
+    
+    - name: 失敗するテストの作成
+      command: |
+        code src/features/newFeature/NewComponent.test.tsx
+      description: |
+        まず、失敗するテストを作成します。
+        テストは機能の期待される動作を明確に定義すべきです。
+        参照: https://jestjs.io/docs/getting-started
+      code: |
+        import { render, screen } from '@testing-library/react';
+        import { NewComponent } from './NewComponent';
+        
+        describe('NewComponent', () => {
+          it('should render the correct title', () => {
+            render(<NewComponent title="Test Title" />);
+            expect(screen.getByText('Test Title')).toBeInTheDocument();
+          });
+          
+          it('should call onAction when button is clicked', () => {
+            const mockOnAction = jest.fn();
+            render(<NewComponent title="Test" onAction={mockOnAction} />);
+            fireEvent.click(screen.getByRole('button', { name: /action/i }));
+            expect(mockOnAction).toHaveBeenCalledTimes(1);
+          });
+        });
+    
+    - name: テストの実行（失敗確認）
+      command: npm test -- NewComponent
+      description: |
+        テストが期待通り失敗することを確認します。
+        これにより、テストが正しい条件をチェックしていることを確認できます。
+    
+    - name: 最小限の実装
+      command: code src/features/newFeature/NewComponent.tsx
+      description: |
+        テストを通過するための最小限のコードを実装します。
+      code: |
+        import React from 'react';
+        
+        interface NewComponentProps {
+          title: string;
+          onAction?: () => void;
+        }
+        
+        export const NewComponent: React.FC<NewComponentProps> = ({ 
+          title, 
+          onAction = () => {} 
+        }) => {
+          return (
+            <div>
+              <h2>{title}</h2>
+              <button onClick={onAction}>Action</button>
+            </div>
+          );
+        };
+    
+    - name: テストの再実行（成功確認）
+      command: npm test -- NewComponent
+      description: |
+        実装したコードでテストが通過することを確認します。
+    
+    - name: リファクタリング
+      description: |
+        コードの品質を向上させつつ、テストが引き続き成功することを確認します。
+        - コードの重複を排除
+        - 命名を改善
+        - パフォーマンスを最適化
+        - エラー処理を追加
+      
+    - name: テストの再実行（リファクタリング後）
+      command: npm test -- NewComponent
+      description: |
+        リファクタリング後もテストが成功することを確認します。
+    
+    - name: 繰り返し
+      description: |
+        新しい機能や動作のために、このプロセスを繰り返します。
+        小さな単位で繰り返すことが効果的です。
+
+デプロイ前チェックリスト:
+  # デプロイ前の最終確認事項
+  チェック項目:
+    - name: 全テスト実行
+      command: npm test
+      description: "すべてのユニットテストが成功することを確認します"
+    
+    - name: E2Eテスト実行
+      command: npm run test:e2e
+      description: "すべてのE2Eテストが成功することを確認します"
+    
+    - name: 型チェック
+      command: npm run type-check
+      description: "TypeScriptの型エラーがないことを確認します"
+    
+    - name: リント
+      command: npm run lint
+      description: "コードスタイルの問題がないことを確認します"
+    
+    - name: ビルド
+      command: npm run build
+      description: "本番用ビルドが正常に生成されることを確認します"
+    
+    - name: バンドルサイズ分析
+      command: npm run analyze
+      description: |
+        バンドルサイズを分析して最適化の余地がないか確認します。
+        参照: https://github.com/webpack-contrib/webpack-bundle-analyzer
+    
+    - name: アクセシビリティチェック
+      command: npm run test:a11y
+      description: |
+        WAI-ARIA準拠とアクセシビリティ問題をチェックします。
+        参照: https://www.w3.org/WAI/standards-guidelines/aria/
+    
+    - name: パフォーマンステスト
+      command: npm run test:perf
+      description: |
+        Lighthouse CLIを使用したパフォーマンステストを実行します。
+        参照: https://github.com/GoogleChrome/lighthouse-ci/blob/main/docs/getting-started.md
+    
+    - name: ブラウザ互換性テスト
+      description: |
+        主要ブラウザでの動作を確認します：
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        参照: https://browserstack.com
+
+GitHub Pagesへのデプロイ:
+  # デプロイプロセスの詳細
+  手順:
+    - name: main ブランチへのマージ
+      command: |
+        git checkout main
+        git pull
+        git merge --no-ff feature/my-new-feature
+        git push origin main
+      description: |
+        機能ブランチをmainブランチにマージします。
+        --no-ff オプションは、マージコミットを常に作成し、ブランチの履歴を保持します。
+      
+    - name: 手動デプロイトリガー（オプション）
+      description: |
+        GitHub Actions UI から手動でデプロイをトリガーする場合：
+        1. リポジトリページに移動
+        2. Actions タブをクリック
+        3. "Deploy to GitHub Pages" ワークフローを選択
+        4. "Run workflow" ボタンをクリック
+        5. main ブランチを選択して "Run workflow" をクリック
+      
+    - name: デプロイステータスの確認
+      description: |
+        GitHub Actions UI でデプロイのステータスを確認します：
+        1. リポジトリページに移動
+        2. Actions タブをクリック
+        3. 最新の "Deploy to GitHub Pages" ワークフローの実行を確認
+      
+    - name: デプロイされたサイトの確認
+      description: |
+        デプロイされたサイトを以下のURLで確認します：
+        https://bob-takuya.github.io/archi-site/
+        
+        以下の点を特に確認します：
+        - メインページの表示
+        - 検索機能
+        - データベースからのデータ読み込み
+        - 地図表示
+        - モバイル表示
+
+参照ドキュメント:
+  # 開発者向け参考リソース
+  技術ドキュメント:
+    - name: React 公式ドキュメント
+      url: https://react.dev/
+      description: "最新のReactフックとパターン"
+    
+    - name: TypeScript ハンドブック
+      url: https://www.typescriptlang.org/docs/handbook/intro.html
+      description: "TypeScriptの型システムの詳細ガイド"
+    
+    - name: Vite ガイド
+      url: https://vitejs.dev/guide/
+      description: "モダンなフロントエンドビルドツール"
+    
+    - name: Jest テスティングフレームワーク
+      url: https://jestjs.io/docs/getting-started
+      description: "JavaScriptテストフレームワーク"
+    
+    - name: React Testing Library
+      url: https://testing-library.com/docs/react-testing-library/intro/
+      description: "ユーザー中心のReactコンポーネントテスト"
+    
+    - name: Playwright E2Eテスト
+      url: https://playwright.dev/docs/intro
+      description: "モダンなブラウザE2Eテストフレームワーク"
+    
+    - name: SQL.js ドキュメント
+      url: https://github.com/sql-js/sql.js
+      description: "ブラウザ内SQLiteデータベース"
+    
+    - name: sql.js-httpvfs
+      url: https://github.com/phiresky/sql.js-httpvfs
+      description: "大規模SQLiteデータベースへのHTTPアクセス"
+    
+    - name: Leaflet マップライブラリ
+      url: https://leafletjs.com/reference.html
+      description: "インタラクティブマップのJavaScriptライブラリ"
+    
+    - name: React Leaflet 
+      url: https://react-leaflet.js.org/docs/start-introduction/
+      description: "LeafletのReactコンポーネント"
+    
+    - name: Material UI コンポーネント
+      url: https://mui.com/material-ui/getting-started/
+      description: "Reactコンポーネントライブラリ"
+    
+  コーディング規約:
+    - name: Airbnb JavaScript スタイルガイド
+      url: https://github.com/airbnb/javascript
+      description: "JavaScriptとReactのベストプラクティス"
+    
+    - name: TypeScript ESLint ルール
+      url: https://typescript-eslint.io/rules/
+      description: "TypeScript固有のリントルール"
+      
+    - name: Conventional Commits
+      url: https://www.conventionalcommits.org/ja/v1.0.0/
+      description: "構造化されたコミットメッセージ規約"

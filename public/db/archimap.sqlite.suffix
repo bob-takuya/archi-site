@@ -1,0 +1,8 @@
+{
+  "size": 11173888,
+  "pageSize": 4096,
+  "chunkSize": 65536,
+  "url": "archimap.sqlite",
+  "chunkCount": 171,
+  "version": 1
+}

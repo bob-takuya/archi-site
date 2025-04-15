@@ -1,0 +1,168 @@
+name: 継続的インテグレーション (CI)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 2 * * 1'  # 毎週月曜日の午前2時に実行
+
+jobs:
+  test:
+    name: テストとコード品質チェック
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    steps:
+      - name: リポジトリのチェックアウト
+        uses: actions/checkout@v4
+        
+      - name: Node.js ${{ matrix.node-version }} のセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          
+      - name: 依存関係のインストール
+        run: npm ci
+        
+      - name: ESLintによるコード品質チェック
+        run: npm run lint
+        
+      - name: TypeScript型チェック
+        run: npm run type-check
+        
+      - name: ユニットテストの実行
+        run: npm test -- --coverage
+        
+      - name: カバレッジレポートのアップロード
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage
+          fail_ci_if_error: false
+          
+  e2e-test:
+    name: E2Eテスト
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリのチェックアウト
+        uses: actions/checkout@v4
+        
+      - name: Node.jsのセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          
+      - name: 依存関係のインストール
+        run: npm ci
+        
+      - name: Playwrightブラウザのインストール
+        run: npx playwright install --with-deps chromium
+        
+      - name: 静的データベースの準備
+        run: |
+          mkdir -p public/db
+          npm run prepare-static-db
+        
+      - name: 開発サーバーの起動
+        run: npm run dev &
+        env:
+          PORT: 3000
+          
+      - name: サーバーの起動を待機
+        run: npx wait-on http://localhost:3000
+        
+      - name: E2Eテストの実行
+        run: npm run test:e2e
+        
+      - name: テスト結果のアップロード
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-results
+          path: |
+            playwright-report/
+            test-results/
+            
+  audit:
+    name: セキュリティと依存関係の監査
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリのチェックアウト
+        uses: actions/checkout@v4
+        
+      - name: Node.jsのセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          
+      - name: 依存関係のインストール
+        run: npm ci
+        
+      - name: npmパッケージの監査
+        run: npm audit --audit-level=high
+        continue-on-error: true
+        
+      - name: 未使用の依存関係のチェック
+        run: npx depcheck
+        continue-on-error: true
+        
+      - name: パッケージのバンドルサイズ分析
+        run: npm run analyze
+        continue-on-error: true
+        
+  performance:
+    name: パフォーマンス測定
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリのチェックアウト
+        uses: actions/checkout@v4
+        
+      - name: Node.jsのセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          
+      - name: 依存関係のインストール
+        run: npm ci
+        
+      - name: アプリケーションのビルド
+        run: npm run build
+        env:
+          NODE_ENV: production
+          
+      - name: Lighthouseの実行
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun
+        continue-on-error: true
+        
+  notify:
+    name: 結果通知
+    needs: [test, e2e-test, audit, performance]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: ワークフロー結果の通知
+        run: |
+          TEST_STATUS="${{ needs.test.result }}"
+          E2E_STATUS="${{ needs.e2e-test.result }}"
+          AUDIT_STATUS="${{ needs.audit.result }}"
+          PERF_STATUS="${{ needs.performance.result }}"
+          
+          if [[ "$TEST_STATUS" == "success" && "$E2E_STATUS" == "success" ]]; then
+            MESSAGE="✅ CI検証が成功しました！"
+          else
+            MESSAGE="❌ CI検証に問題があります。詳細を確認してください。"
+          fi
+          
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+          -H 'Content-Type: application/json' \
+          --data "{\"text\":\"${MESSAGE}\n\nテスト: ${TEST_STATUS}\nE2Eテスト: ${E2E_STATUS}\n監査: ${AUDIT_STATUS}\nパフォーマンス: ${PERF_STATUS}\n\nワークフロー: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"
+        continue-on-error: true
