@@ -31,6 +31,15 @@ console.log(`Created temporary database for optimization at ${OPTIMIZED_DB_PATH}
 // Open the temporary database for optimization
 const db = new sqlite3.Database(OPTIMIZED_DB_PATH);
 
+// Helper function for index creation error handling
+function handleIndexError(err) {
+  if (err) {
+    console.error('Error creating index:', err);
+    // Don't fail the entire process for a single index failure
+    // but log the error for debugging
+  }
+}
+
 // Add performance optimization function
 async function optimizeDatabase() {
   return new Promise((resolve, reject) => {
@@ -102,15 +111,6 @@ async function optimizeDatabase() {
           }
           console.log('Indexes created successfully');
           
-          // Helper function for index creation error handling
-          function handleIndexError(err) {
-            if (err) {
-              console.error('Error creating index:', err);
-              // Don't fail the entire process for a single index failure
-              // but log the error for debugging
-            }
-          }
-        
           // Final optimization
           db.run('PRAGMA optimize', (err) => {
             if (err) {

@@ -24,4 +24,6 @@ yarn-error.log*
 Thumbs.db
 
 # Backup files
-_backup/ 
+_backup/ public/db/temp_optimized.sqlite
+*.sqlite-shm
+*.sqlite-wal
