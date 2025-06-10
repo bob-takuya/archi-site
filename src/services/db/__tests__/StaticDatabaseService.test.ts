@@ -37,16 +37,18 @@ jest.mock('sql.js-httpvfs', () => ({
 describe('StaticDatabaseService', () => {
   let dbService;
   
-  beforeEach(() => {
-    // Reset mocks before each test
-    jest.clearAllMocks();
-    dbService = StaticDatabaseService.getInstance();
-  });
+beforeEach(() => {
+  // Reset mocks before each test
+  jest.clearAllMocks();
+  StaticDatabaseService.resetInstance();
+  dbService = StaticDatabaseService.getInstance();
+});
   
-  afterEach(() => {
-    // Clean up after each test
-    jest.restoreAllMocks();
-  });
+afterEach(() => {
+  // Clean up after each test
+  jest.restoreAllMocks();
+  StaticDatabaseService.resetInstance();
+});
   
   it('should be a singleton', () => {
     const instance1 = StaticDatabaseService.getInstance();
