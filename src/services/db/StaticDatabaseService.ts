@@ -46,6 +46,18 @@ export class StaticDatabaseService {
     }
     return StaticDatabaseService.instance;
   }
+
+  /**
+   * Reset the singleton instance (primarily for testing)
+   */
+  public static resetInstance(): void {
+    if (StaticDatabaseService.instance) {
+      StaticDatabaseService.instance.worker = null;
+      StaticDatabaseService.instance.dbWorkerPromise = null;
+    }
+    // @ts-ignore allow clearing private field
+    StaticDatabaseService.instance = undefined;
+  }
   
   /**
    * Initialize the database connection using SQL.js worker
