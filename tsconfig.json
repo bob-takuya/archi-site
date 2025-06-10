@@ -20,6 +20,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "types": ["vite/client"],
     "paths": {
       "@/*": ["./src/*"]
     }
@@ -27,6 +28,16 @@
   "include": [
     "src/**/*"
   ],
-  "exclude": ["node_modules", "dist", "backup", "_backup", "temp_preserved"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "backup",
+    "_backup",
+    "temp_preserved",
+    "tests",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/__tests__/**"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

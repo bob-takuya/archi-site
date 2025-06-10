@@ -81,9 +81,9 @@ export async function verifyDatabaseLoading(): Promise<boolean> {
     // Check if we're in production (GitHub Pages) environment
     const isProduction = import.meta.env.PROD;
     console.log(`📊 Environment: ${isProduction ? 'Production' : 'Development'}`);
-    
-    // Log base URL information
-    const baseUrl = isProduction ? '/archi-site' : '';
+
+    // Log base URL information using Vite's BASE_URL
+    const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     console.log(`🌐 Base URL: ${baseUrl}`);
     console.log(`🗄️ Expected database path: ${baseUrl}/db/archimap.sqlite`);
     console.log(`📑 Expected suffix path: ${baseUrl}/db/archimap.sqlite.suffix`);
