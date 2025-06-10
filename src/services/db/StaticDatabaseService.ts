@@ -13,11 +13,12 @@ type QueryResult = { columns: string[], values: any[][] };
 type DbQueryResult = QueryResult[];
 
 // Worker configuration for loading SQLite database over HTTP
+const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, '');
 const workerConfig = {
   from: "inline" as const,
   config: {
     serverMode: "full",
-    url: "/db/archimap.sqlite",
+    url: `${BASE_PATH}/db/archimap.sqlite`,
     requestChunkSize: 1024 * 1024
   }
 };
@@ -56,8 +57,8 @@ export class StaticDatabaseService {
       try {
         this.dbWorkerPromise = createDbWorker(
           [workerConfig],
-          "/sqlite.worker.js", 
-          "/sql-wasm.wasm"
+          `${BASE_PATH}/sqlite.worker.js`,
+          `${BASE_PATH}/sql-wasm.wasm`
         );
         console.log('DB worker initialized successfully');
       } catch (error) {
