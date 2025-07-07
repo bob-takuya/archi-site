@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-07-07T15:11:57.282Z",
+  "url": "https://bob-takuya.github.io/archi-site/",
+  "testResults": {
+    "pageLoaded": true,
+    "databaseFileAccessible": true,
+    "javascriptErrors": 0,
+    "totalConsoleMessages": 0,
+    "criticalErrors": 0
+  },
+  "performance": {
+    "testDuration": "30+ seconds",
+    "databaseLoadTime": "measured separately"
+  },
+  "functionalTests": {
+    "navigation": "tested",
+    "search": "tested",
+    "map": "tested",
+    "japaneseContent": "tested"
+  }
+}

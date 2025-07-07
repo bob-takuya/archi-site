@@ -148,18 +148,65 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
         throw new Error(`Worker files not accessible: ${accessError.message}`);
       }
       
+      // Load database info and detect actual served file size
+      let dbSize = 12730368; // Default size as fallback
+      let actualDbSize = dbSize; // Actual size served by the HTTP server
+      
+      try {
+        const dbInfoResponse = await fetch(`${BASE_PATH}/db/database-info.json`);
+        if (dbInfoResponse.ok) {
+          const dbInfo = await dbInfoResponse.json();
+          dbSize = dbInfo.size;
+          console.log(`📄 Database info loaded: ${(dbSize / 1024 / 1024).toFixed(2)} MB (uncompressed)`);
+        }
+      } catch (dbInfoError) {
+        console.warn('⚠️ Database info not available, using default size');
+      }
+      
+      // CRITICAL: Detect the actual file size as served by GitHub Pages
+      // GitHub Pages may compress the file, so we need the actual served size
+      try {
+        console.log('🔍 Detecting actual database file size from HTTP server...');
+        const sizeResponse = await fetch(DATABASE_URL, { method: 'HEAD' });
+        const contentLength = sizeResponse.headers.get('content-length');
+        const contentEncoding = sizeResponse.headers.get('content-encoding');
+        
+        if (contentLength) {
+          actualDbSize = parseInt(contentLength);
+          console.log(`📏 Actual served file size: ${(actualDbSize / 1024 / 1024).toFixed(2)} MB`);
+          
+          if (contentEncoding && contentEncoding !== 'identity') {
+            console.log(`⚠️ File is compressed with: ${contentEncoding}`);
+            console.log(`   Original size: ${(dbSize / 1024 / 1024).toFixed(2)} MB`);
+            console.log(`   Compressed size: ${(actualDbSize / 1024 / 1024).toFixed(2)} MB`);
+            console.log(`   Using compressed size for sql.js-httpvfs compatibility`);
+          }
+        } else {
+          console.warn('⚠️ Could not determine actual file size, using configured size');
+          actualDbSize = dbSize;
+        }
+      } catch (sizeError) {
+        console.warn('⚠️ Error detecting file size:', sizeError);
+        actualDbSize = dbSize;
+      }
+
       // Enhanced configuration for sql.js-httpvfs following the proper approach
       // from https://phiresky.github.io/blog/2021/hosting-sqlite-databases-on-github-pages/
-      // sql.js-httpvfs automatically handles HTTP range requests for efficient loading
+      // CRITICAL: GitHub Pages gzip compression issue requires special handling
       const config = {
         from: 'inline' as const,
         config: {
           serverMode: 'full' as const, // Use full mode with automatic HTTP range requests
           url: DATABASE_URL,
-          requestChunkSize: 1024, // 1KB chunks as recommended in the blog post
-          cacheSizeKiB: 1024, // 1MB cache
+          requestChunkSize: 4096, // 4KB chunks for better performance with compressed data
+          cacheSizeKiB: 2048, // 2MB cache
           filename: 'archimap.sqlite',
-          debug: import.meta.env.DEV // Enable debug in development
+          debug: import.meta.env.DEV, // Enable debug in development
+          // CRITICAL WORKAROUND: For GitHub Pages gzip issue, don't specify size
+          // Let sql.js-httpvfs auto-detect file size through actual range requests
+          // This avoids the HEAD request gzip confusion
+          // maxBytesToRead: actualDbSize,
+          // size: actualDbSize
         }
       };
       
@@ -170,8 +217,10 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
       console.log('  - serverMode:', config.config.serverMode);
       console.log('  - url:', config.config.url);  
       console.log('  - requestChunkSize:', config.config.requestChunkSize);
-      console.log('  - size:', config.config.size);
+      console.log('  - cacheSizeKiB:', config.config.cacheSizeKiB);
       console.log('  - filename:', config.config.filename);
+      console.log('  - size: AUTO-DETECT (GitHub Pages gzip workaround)');
+      console.log('  - detected compressed size:', actualDbSize, `(${(actualDbSize / 1024 / 1024).toFixed(2)} MB)`);
       
       // Create worker with timeout and limited bytes to read for initial test
       const workerInitTimeout = new Promise((_, reject) => 
