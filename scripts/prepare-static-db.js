@@ -150,23 +150,71 @@ async function optimizeDatabase() {
 }
 
 /**
- * Create a suffix file for the SQLite database
- * This implements the functionality needed by sql.js-httpvfs
+ * Split the SQLite database into chunks for sql.js-httpvfs
  * @param {string} dbPath Path to the SQLite database
- * @param {string} suffixPath Path to write the suffix file
- * @param {Object} options Options for suffix file creation
+ * @param {string} outputDir Directory to write chunks
+ * @param {Object} options Options for chunking
  * @param {number} options.chunkSize Size of each chunk in bytes
  */
-function createSuffixFile(dbPath, suffixPath, options = {}) {
-  console.log(`Creating suffix file for ${dbPath}...`);
+function splitDatabaseIntoChunks(dbPath, outputDir, options = {}) {
+  console.log(`Splitting database into chunks: ${dbPath}...`);
   
   const chunkSize = options.chunkSize || 1024 * 64; // Default 64KB
-  const dbSize = fs.statSync(dbPath).size;
+  const dbBuffer = fs.readFileSync(dbPath);
+  const dbSize = dbBuffer.length;
   const chunkCount = Math.ceil(dbSize / chunkSize);
   
   console.log(`Database size: ${(dbSize / 1024 / 1024).toFixed(2)} MB`);
   console.log(`Chunk size: ${(chunkSize / 1024).toFixed(2)} KB`);
   console.log(`Total chunks: ${chunkCount}`);
+  
+  // Create chunks directory
+  const chunksDir = path.join(outputDir, 'chunks');
+  if (!fs.existsSync(chunksDir)) {
+    fs.mkdirSync(chunksDir, { recursive: true });
+  }
+  
+  // Split database into chunks
+  const chunks = [];
+  for (let i = 0; i < chunkCount; i++) {
+    const start = i * chunkSize;
+    const end = Math.min(start + chunkSize, dbSize);
+    const chunk = dbBuffer.slice(start, end);
+    
+    const chunkPath = path.join(chunksDir, `chunk_${i.toString().padStart(6, '0')}.bin`);
+    fs.writeFileSync(chunkPath, chunk);
+    
+    chunks.push({
+      index: i,
+      size: chunk.length,
+      path: path.relative(outputDir, chunkPath),
+      start: start,
+      end: end
+    });
+    
+    if (i % 100 === 0) {
+      console.log(`Created chunk ${i + 1}/${chunkCount}`);
+    }
+  }
+  
+  console.log(`Successfully created ${chunks.length} chunks`);
+  return chunks;
+}
+
+/**
+ * Create a suffix file for the SQLite database
+ * This implements the functionality needed by sql.js-httpvfs
+ * @param {string} dbPath Path to the SQLite database
+ * @param {string} suffixPath Path to write the suffix file
+ * @param {Array} chunks Array of chunk information
+ * @param {Object} options Options for suffix file creation
+ * @param {number} options.chunkSize Size of each chunk in bytes
+ */
+function createSuffixFile(dbPath, suffixPath, chunks, options = {}) {
+  console.log(`Creating suffix file for ${dbPath}...`);
+  
+  const chunkSize = options.chunkSize || 1024 * 64; // Default 64KB
+  const dbSize = fs.statSync(dbPath).size;
   
   // Create a suffix file that contains metadata about the database
   // Format required by sql.js-httpvfs
@@ -180,9 +228,24 @@ function createSuffixFile(dbPath, suffixPath, options = {}) {
     // URL to the SQLite database (relative path for GitHub Pages)
     url: 'archimap.sqlite',
     // Total number of chunks
-    chunkCount: chunkCount,
+    chunkCount: chunks.length,
+    // Chunk information for sql.js-httpvfs
+    chunks: chunks.map(chunk => ({
+      index: chunk.index,
+      size: chunk.size,
+      url: chunk.path,
+      start: chunk.start,
+      end: chunk.end
+    })),
     // Version of the suffix file format
-    version: 1
+    version: 1,
+    // Additional metadata
+    metadata: {
+      created: new Date().toISOString(),
+      originalSize: dbSize,
+      totalChunks: chunks.length,
+      avgChunkSize: Math.round(dbSize / chunks.length)
+    }
   };
   
   // Write the suffix file
@@ -203,8 +266,13 @@ async function prepareDatabase() {
     
     console.log(`Optimized database size: ${(dbSize / 1024 / 1024).toFixed(2)} MB`);
     
-    // Generate optimized suffix file
-    createSuffixFile(DEST_DB_PATH, DEST_SUFFIX_PATH, {
+    // Split database into chunks for sql.js-httpvfs
+    const chunks = splitDatabaseIntoChunks(DEST_DB_PATH, path.dirname(DEST_DB_PATH), {
+      chunkSize: CHUNK_SIZE,
+    });
+    
+    // Generate optimized suffix file with chunk information
+    createSuffixFile(DEST_DB_PATH, DEST_SUFFIX_PATH, chunks, {
       chunkSize: CHUNK_SIZE,
     });
     
