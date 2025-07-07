@@ -1,78 +1,31 @@
-<testsuites id="" name="" tests="18" failures="0" skipped="0" errors="0" time="38.882441">
-<testsuite name="deployment-validation.spec.ts" timestamp="2025-07-07T05:08:18.408Z" hostname="chromium" tests="6" failures="0" skipped="0" time="6.736" errors="0">
-<testcase name="Archi Site Deployment Validation › site loads successfully" classname="deployment-validation.spec.ts" time="1.417">
-</testcase>
-<testcase name="Archi Site Deployment Validation › Japanese title displays correctly" classname="deployment-validation.spec.ts" time="1.337">
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="32.408516">
+<testsuite name="real-functionality-test.spec.ts" timestamp="2025-07-07T05:54:34.113Z" hostname="chromium" tests="3" failures="0" skipped="0" time="43.329" errors="0">
+<testcase name="Real Architecture Database Functionality › should load database and display real architecture data" classname="real-functionality-test.spec.ts" time="31.769">
 <system-out>
-<![CDATA[Page title: 日本の建築マップ | Architecture Map of Japan
+<![CDATA[🚀 Testing real database functionality...
+🖥️ Console: Emergency timeout: forcing app to render without database
+🖥️ Console: 建築作品の取得に失敗: Error: データベース接続がタイムアウトしました
+    at https://bob-takuya.github.io/archi-site/assets/index-CQOQf6w_.js:1:6447
+🖥️ Console: Found 3 elements with selector: .MuiCard-root
+📊 Architecture data found: true
+📝 Console messages: Emergency timeout: forcing app to render without database, 建築作品の取得に失敗: Error: データベース接続がタイムアウトしました
+    at https://bob-takuya.github.io/archi-site/assets/index-CQOQf6w_.js:1:6447, Found 3 elements with selector: .MuiCard-root
+🏗️ Page structure - Header: false, Main: true
 ]]>
 </system-out>
 </testcase>
-<testcase name="Archi Site Deployment Validation › React app is functioning" classname="deployment-validation.spec.ts" time="0.72">
-</testcase>
-<testcase name="Archi Site Deployment Validation › database content is accessible" classname="deployment-validation.spec.ts" time="1.44">
-</testcase>
-<testcase name="Archi Site Deployment Validation › basic navigation elements exist" classname="deployment-validation.spec.ts" time="0.741">
+<testcase name="Real Architecture Database Functionality › should test search functionality if available" classname="real-functionality-test.spec.ts" time="4.847">
 <system-out>
-<![CDATA[Navigation elements found: [33m11[39m
+<![CDATA[🔍 Testing search functionality...
+✅ Search input found
+🎯 Search results found: false
 ]]>
 </system-out>
 </testcase>
-<testcase name="Archi Site Deployment Validation › essential page elements are present" classname="deployment-validation.spec.ts" time="1.081">
+<testcase name="Real Architecture Database Functionality › should check map functionality" classname="real-functionality-test.spec.ts" time="6.713">
 <system-out>
-<![CDATA[Page structure - Header: [33mtrue[39m Main: [33mtrue[39m Footer: [33mtrue[39m
-]]>
-</system-out>
-</testcase>
-</testsuite>
-<testsuite name="deployment-validation.spec.ts" timestamp="2025-07-07T05:08:18.408Z" hostname="firefox" tests="6" failures="0" skipped="0" time="10.552" errors="0">
-<testcase name="Archi Site Deployment Validation › site loads successfully" classname="deployment-validation.spec.ts" time="1.799">
-</testcase>
-<testcase name="Archi Site Deployment Validation › Japanese title displays correctly" classname="deployment-validation.spec.ts" time="1.795">
-<system-out>
-<![CDATA[Page title: 日本の建築マップ | Architecture Map of Japan
-]]>
-</system-out>
-</testcase>
-<testcase name="Archi Site Deployment Validation › React app is functioning" classname="deployment-validation.spec.ts" time="1.589">
-</testcase>
-<testcase name="Archi Site Deployment Validation › database content is accessible" classname="deployment-validation.spec.ts" time="2.19">
-</testcase>
-<testcase name="Archi Site Deployment Validation › basic navigation elements exist" classname="deployment-validation.spec.ts" time="1.99">
-<system-out>
-<![CDATA[Navigation elements found: [33m11[39m
-]]>
-</system-out>
-</testcase>
-<testcase name="Archi Site Deployment Validation › essential page elements are present" classname="deployment-validation.spec.ts" time="1.189">
-<system-out>
-<![CDATA[Page structure - Header: [33mtrue[39m Main: [33mtrue[39m Footer: [33mtrue[39m
-]]>
-</system-out>
-</testcase>
-</testsuite>
-<testsuite name="deployment-validation.spec.ts" timestamp="2025-07-07T05:08:18.408Z" hostname="webkit" tests="6" failures="0" skipped="0" time="120.355" errors="0">
-<testcase name="Archi Site Deployment Validation › site loads successfully" classname="deployment-validation.spec.ts" time="28.501">
-</testcase>
-<testcase name="Archi Site Deployment Validation › Japanese title displays correctly" classname="deployment-validation.spec.ts" time="26.508">
-<system-out>
-<![CDATA[Page title: 日本の建築マップ | Architecture Map of Japan
-]]>
-</system-out>
-</testcase>
-<testcase name="Archi Site Deployment Validation › React app is functioning" classname="deployment-validation.spec.ts" time="8.293">
-</testcase>
-<testcase name="Archi Site Deployment Validation › database content is accessible" classname="deployment-validation.spec.ts" time="25.448">
-</testcase>
-<testcase name="Archi Site Deployment Validation › basic navigation elements exist" classname="deployment-validation.spec.ts" time="7.25">
-<system-out>
-<![CDATA[Navigation elements found: [33m11[39m
-]]>
-</system-out>
-</testcase>
-<testcase name="Archi Site Deployment Validation › essential page elements are present" classname="deployment-validation.spec.ts" time="24.355">
-<system-out>
-<![CDATA[Page structure - Header: [33mtrue[39m Main: [33mtrue[39m Footer: [33mtrue[39m
+<![CDATA[🗺️ Testing map functionality...
+🗺️ Map container found: false
 ]]>
 </system-out>
 </testcase>

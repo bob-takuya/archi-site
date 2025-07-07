@@ -1,28 +1,17 @@
-import { createDbWorker } from 'sql.js-httpvfs';
-import type { Database, QueryExecResult } from 'sql.js';
+import initSqlJs, { Database, QueryExecResult } from 'sql.js';
 
 // Determine the base path for assets
 const BASE_PATH = import.meta.env.PROD ? '/archi-site' : '';
 
-// データベース設定
-const DB_CONFIG = {
-  from: 'chunks', // Use chunks for better performance
-  config: {
-    serverMode: 'full',
-    requestChunkSize: 4 * 1024 * 1024, // 4MB chunks
-    url: `${BASE_PATH}/db/archimap.sqlite`,
-    suffixUrl: `${BASE_PATH}/db/archimap.sqlite.suffix`,
-  },
-};
-
-// Worker URL
-const WORKER_URL = `${BASE_PATH}/sqlite.worker.js`;
+// WASM and database URLs
 const WASM_URL = `${BASE_PATH}/sql-wasm.wasm`;
+const DATABASE_URL = `${BASE_PATH}/db/archimap.sqlite`;
 
 // シングルトンインスタンス
-let dbWorker: any = null;
+let database: Database | null = null;
+let sqlJs: any = null;
 let isInitializing = false;
-let initPromise: Promise<any> | null = null;
+let initPromise: Promise<Database> | null = null;
 
 /**
  * データベース接続の状態
@@ -38,7 +27,7 @@ export enum DatabaseStatus {
  * データベース接続の現在の状態を返す
  */
 export const getDatabaseStatus = (): DatabaseStatus => {
-  if (dbWorker) {
+  if (database) {
     return DatabaseStatus.READY;
   }
   if (isInitializing) {
@@ -48,13 +37,13 @@ export const getDatabaseStatus = (): DatabaseStatus => {
 };
 
 /**
- * データベース接続を初期化する
- * @returns データベースワーカーのインスタンス
+ * データベース接続を初期化する（完全ファイル読み込み方式）
+ * @returns データベースインスタンス
  */
-export const initDatabase = async (): Promise<any> => {
+export const initDatabase = async (): Promise<Database> => {
   // 既に初期化済みならそのインスタンスを返す
-  if (dbWorker) {
-    return dbWorker;
+  if (database) {
+    return database;
   }
   
   // 初期化中なら既存のプロミスを返す
@@ -65,59 +54,64 @@ export const initDatabase = async (): Promise<any> => {
   // 初期化フラグを設定
   isInitializing = true;
   
-  try {
-    // Get actual server response size (compressed if applicable)
+  // 初期化プロミスを作成
+  initPromise = (async () => {
     try {
-      const headResponse = await fetch(`${BASE_PATH}/db/archimap.sqlite`, { method: 'HEAD' });
-      if (headResponse.ok) {
-        const contentLength = headResponse.headers.get('content-length');
-        if (contentLength) {
-          console.log(`Database size from server headers: ${contentLength} bytes`);
-        }
+      console.log('🚀 データベース初期化を開始...');
+      
+      // SQL.js を初期化
+      if (!sqlJs) {
+        console.log('📦 SQL.js WASM を読み込み中...');
+        sqlJs = await initSqlJs({
+          locateFile: (file: string) => {
+            if (file.endsWith('.wasm')) {
+              return WASM_URL;
+            }
+            return file;
+          }
+        });
+        console.log('✅ SQL.js WASM 読み込み完了');
       }
       
-      const dbInfoResponse = await fetch(`${BASE_PATH}/db/database-info.json`);
-      if (dbInfoResponse.ok) {
-        const dbInfo = await dbInfoResponse.json();
-        console.log(`Database info - uncompressed size: ${dbInfo.size} bytes`);
+      // データベースファイルを直接読み込み
+      console.log('💾 データベースファイルを読み込み中...');
+      const response = await fetch(DATABASE_URL);
+      
+      if (!response.ok) {
+        throw new Error(`データベースファイルの読み込みに失敗: ${response.status} ${response.statusText}`);
       }
+      
+      const arrayBuffer = await response.arrayBuffer();
+      const uintArray = new Uint8Array(arrayBuffer);
+      
+      console.log(`📊 データベースファイル読み込み完了: ${Math.round(arrayBuffer.byteLength / 1024 / 1024 * 100) / 100} MB`);
+      
+      // データベースを作成
+      database = new sqlJs.Database(uintArray);
+      console.log('✅ データベース接続を確立しました');
+      
+      // テスト用のシンプルなクエリを実行
+      const testResult = database.exec('SELECT sqlite_version()');
+      console.log(`🔍 SQLite バージョン: ${testResult[0]?.values[0][0]}`);
+      
+      // 簡単なテーブル存在確認
+      const tablesResult = database.exec("SELECT name FROM sqlite_master WHERE type='table'");
+      if (tablesResult.length > 0) {
+        console.log(`📋 利用可能なテーブル数: ${tablesResult[0].values.length}`);
+      }
+      
+      return database;
     } catch (error) {
-      console.warn('Could not fetch database size info:', error);
+      console.error('❌ データベース初期化エラー:', error);
+      database = null;
+      throw error;
+    } finally {
+      isInitializing = false;
+      initPromise = null;
     }
-
-    // Use config without explicit size for compressed files
-    const configForCompressed = {
-      ...DB_CONFIG,
-      config: {
-        ...DB_CONFIG.config,
-        requestChunkSize: 1024 * 1024, // 1MB chunks for better compatibility
-        // Don't specify size - let sql.js-httpvfs handle compressed files
-      }
-    };
-
-    // 初期化プロミスを作成
-    initPromise = createDbWorker(
-      [configForCompressed as any],
-      WORKER_URL,
-      WASM_URL
-    );
-    
-    // データベースワーカーを取得
-    dbWorker = await initPromise;
-    console.log('データベース接続を確立しました');
-    
-    // テスト用のシンプルなクエリを実行
-    const testResult = await dbWorker.db.exec('SELECT sqlite_version()');
-    console.log(`SQLite バージョン: ${testResult[0]?.values[0][0]}`);
-    
-    return dbWorker;
-  } catch (error) {
-    console.error('データベース初期化エラー:', error);
-    throw error;
-  } finally {
-    isInitializing = false;
-    initPromise = null;
-  }
+  })();
+  
+  return initPromise;
 };
 
 /**
@@ -132,12 +126,16 @@ export const executeQuery = async <T = any>(
 ): Promise<QueryExecResult[]> => {
   try {
     // データベース初期化を確認
-    if (!dbWorker) {
+    if (!database) {
       await initDatabase();
     }
     
     // クエリの実行
-    const result = await dbWorker.db.exec(query, params);
+    if (!database) {
+      throw new Error('データベースが初期化されていません');
+    }
+    
+    const result = database.exec(query, params);
     return result;
   } catch (error) {
     console.error('クエリ実行エラー:', error);
