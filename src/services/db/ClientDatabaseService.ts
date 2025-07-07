@@ -37,6 +37,27 @@ export const getDatabaseStatus = (): DatabaseStatus => {
 };
 
 /**
+ * Connection speed detection for better error messages
+ */
+const detectConnectionSpeed = async (): Promise<'fast' | 'slow' | 'very-slow'> => {
+  try {
+    const startTime = Date.now();
+    const response = await fetch(`${BASE_PATH}/images/shinkenchiku-favicon.ico`, { 
+      method: 'HEAD',
+      cache: 'no-cache'
+    });
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+    
+    if (duration < 100) return 'fast';
+    if (duration < 500) return 'slow';
+    return 'very-slow';
+  } catch {
+    return 'very-slow';
+  }
+};
+
+/**
  * データベース接続を初期化する（完全ファイル読み込み方式）
  * @returns データベースインスタンス
  */
@@ -59,35 +80,150 @@ export const initDatabase = async (): Promise<Database> => {
     try {
       console.log('🚀 データベース初期化を開始...');
       
-      // SQL.js を初期化
+      // Check connection speed for better error messages
+      const connectionSpeed = await detectConnectionSpeed();
+      console.log(`🌐 Connection speed detected: ${connectionSpeed}`);
+      
+      // SQL.js を初期化（タイムアウト設定）
       if (!sqlJs) {
         console.log('📦 SQL.js WASM を読み込み中...');
-        sqlJs = await initSqlJs({
+        
+        const wasmInitTimeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('WASM initialization timeout after 45 seconds')), 45000)
+        );
+        
+        const wasmInit = initSqlJs({
           locateFile: (file: string) => {
+            console.log(`🔍 ファイル要求: ${file}`);
             if (file.endsWith('.wasm')) {
+              console.log(`📍 WASM URL: ${WASM_URL}`);
               return WASM_URL;
             }
             return file;
           }
         });
+        
+        sqlJs = await Promise.race([wasmInit, wasmInitTimeout]);
         console.log('✅ SQL.js WASM 読み込み完了');
       }
       
-      // データベースファイルを直接読み込み
+      // データベースファイルを段階的に読み込み
       console.log('💾 データベースファイルを読み込み中...');
-      const response = await fetch(DATABASE_URL);
+      console.log(`📍 Database URL: ${DATABASE_URL}`);
+      
+      // Extended timeout for large database download (12.7MB + 1.2MB WASM)
+      const dbFetchTimeout = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Database fetch timeout after 120 seconds - Large file download may take longer on slow connections')), 120000)
+      );
+      
+      // Implement exponential backoff retry logic
+      const fetchWithRetry = async (url: string, options: RequestInit, maxRetries = 3) => {
+        let lastError: Error | null = null;
+        
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+          try {
+            console.log(`🔄 Database fetch attempt ${attempt}/${maxRetries}`);
+            const response = await fetch(url, options);
+            if (response.ok) {
+              return response;
+            }
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          } catch (error) {
+            lastError = error as Error;
+            console.warn(`❌ Attempt ${attempt} failed:`, error);
+            
+            if (attempt < maxRetries) {
+              const delay = Math.pow(2, attempt - 1) * 1000; // Exponential backoff
+              console.log(`⏳ Retrying in ${delay}ms...`);
+              await new Promise(resolve => setTimeout(resolve, delay));
+            }
+          }
+        }
+        
+        throw lastError;
+      };
+      
+      const dbFetch = fetchWithRetry(DATABASE_URL, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
+      
+      const response = await Promise.race([dbFetch, dbFetchTimeout]);
       
       if (!response.ok) {
         throw new Error(`データベースファイルの読み込みに失敗: ${response.status} ${response.statusText}`);
       }
       
-      const arrayBuffer = await response.arrayBuffer();
-      const uintArray = new Uint8Array(arrayBuffer);
+      const contentLength = response.headers.get('content-length');
+      console.log(`📏 データベースサイズ: ${contentLength ? Math.round(parseInt(contentLength) / 1024 / 1024 * 100) / 100 : 'unknown'} MB`);
       
-      console.log(`📊 データベースファイル読み込み完了: ${Math.round(arrayBuffer.byteLength / 1024 / 1024 * 100) / 100} MB`);
+      // Enhanced progress reporting with time estimation
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('Response body reader not available');
+      }
+      
+      const chunks: Uint8Array[] = [];
+      let receivedLength = 0;
+      const totalLength = contentLength ? parseInt(contentLength) : 0;
+      const startTime = Date.now();
+      let lastProgressTime = startTime;
+      
+      // Dispatch progress events for UI updates
+      const dispatchProgress = (progress: number, speed: number, eta: number) => {
+        window.dispatchEvent(new CustomEvent('database-download-progress', {
+          detail: { progress, speed, eta, receivedLength, totalLength }
+        }));
+      };
+      
+      console.log(`📦 Starting database download: ${Math.round(totalLength / 1024 / 1024)} MB`);
+      
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        chunks.push(value);
+        receivedLength += value.length;
+        
+        if (totalLength > 0) {
+          const progress = Math.round((receivedLength / totalLength) * 100);
+          const currentTime = Date.now();
+          const elapsedTime = (currentTime - startTime) / 1000; // seconds
+          const speed = receivedLength / elapsedTime; // bytes per second
+          const remainingBytes = totalLength - receivedLength;
+          const eta = remainingBytes / speed; // estimated time remaining in seconds
+          
+          // Update progress every 500ms or every MB
+          if (currentTime - lastProgressTime > 500 || receivedLength % (1024 * 1024) < value.length) {
+            console.log(`📥 Download progress: ${progress}% (${Math.round(receivedLength / 1024 / 1024)} MB) - ${Math.round(speed / 1024)} KB/s - ETA: ${Math.round(eta)}s`);
+            dispatchProgress(progress, speed, eta);
+            lastProgressTime = currentTime;
+          }
+        }
+      }
+      
+      // Final progress update
+      if (totalLength > 0) {
+        dispatchProgress(100, 0, 0);
+      }
+      
+      // Combine chunks
+      const arrayBuffer = new Uint8Array(receivedLength);
+      let position = 0;
+      for (const chunk of chunks) {
+        arrayBuffer.set(chunk, position);
+        position += chunk.length;
+      }
+      
+      console.log(`📊 データベースファイル読み込み完了: ${Math.round(receivedLength / 1024 / 1024 * 100) / 100} MB`);
       
       // データベースを作成
-      database = new sqlJs.Database(uintArray);
+      console.log('🔧 SQLite データベースを初期化中...');
+      database = new sqlJs.Database(arrayBuffer);
       console.log('✅ データベース接続を確立しました');
       
       // テスト用のシンプルなクエリを実行
@@ -98,12 +234,43 @@ export const initDatabase = async (): Promise<Database> => {
       const tablesResult = database.exec("SELECT name FROM sqlite_master WHERE type='table'");
       if (tablesResult.length > 0) {
         console.log(`📋 利用可能なテーブル数: ${tablesResult[0].values.length}`);
+        
+        // 建築データの件数確認
+        try {
+          const countResult = database.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+          if (countResult.length > 0) {
+            console.log(`🏢 建築データ件数: ${countResult[0].values[0][0]} 件`);
+          }
+        } catch (e) {
+          console.log('📋 テーブル構造確認中...');
+        }
       }
       
       return database;
     } catch (error) {
       console.error('❌ データベース初期化エラー:', error);
       database = null;
+      
+      // Enhanced error messages based on connection speed and error type
+      if (error instanceof Error) {
+        const connectionSpeed = await detectConnectionSpeed().catch(() => 'unknown');
+        let enhancedMessage = error.message;
+        
+        if (error.message.includes('timeout')) {
+          if (connectionSpeed === 'very-slow') {
+            enhancedMessage += '\n\n📡 接続速度が非常に遅いため、ファイルのダウンロードに時間がかかっています。WiFiやより高速な接続をお試しください。';
+          } else if (connectionSpeed === 'slow') {
+            enhancedMessage += '\n\n📡 接続速度が遅いため、大きなファイルのダウンロードに時間がかかっています。';
+          }
+        } else if (error.message.includes('fetch') || error.message.includes('network')) {
+          enhancedMessage += '\n\n🌐 ネットワーク接続に問題があります。接続状態を確認してください。';
+        }
+        
+        const enhancedError = new Error(enhancedMessage);
+        enhancedError.name = error.name;
+        throw enhancedError;
+      }
+      
       throw error;
     } finally {
       isInitializing = false;

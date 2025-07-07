@@ -1,0 +1,124 @@
+{
+  "urlTests": [
+    {
+      "url": "http://localhost:8080",
+      "accessible": true,
+      "response": "HTTP/1.0 200 OK\r"
+    },
+    {
+      "url": "https://bob-takuya.github.io/archi-site/",
+      "accessible": true,
+      "response": "HTTP/2 200 \r"
+    }
+  ],
+  "databaseTests": [
+    {
+      "database": {
+        "url": "http://localhost:8080/db/archimap.sqlite",
+        "accessible": true,
+        "size": 12730368
+      },
+      "wasm": {
+        "url": "http://localhost:8080/sql-wasm.wasm",
+        "accessible": true,
+        "size": 1239572
+      }
+    },
+    {
+      "database": {
+        "url": "https://bob-takuya.github.io/archi-site//db/archimap.sqlite",
+        "accessible": true,
+        "size": 12730368
+      },
+      "wasm": {
+        "url": "https://bob-takuya.github.io/archi-site//sql-wasm.wasm",
+        "accessible": true,
+        "size": 1239572
+      }
+    }
+  ],
+  "pageTests": [
+    {
+      "url": "http://localhost:8080",
+      "success": true,
+      "checks": {
+        "hasTitle": true,
+        "hasJapanese": true,
+        "hasScript": true,
+        "hasReactRoot": true,
+        "hasDatabase": true,
+        "hasViteAssets": true,
+        "hasCSS": true,
+        "hasJS": true,
+        "contentLength": 1422
+      }
+    },
+    {
+      "url": "https://bob-takuya.github.io/archi-site/",
+      "success": true,
+      "checks": {
+        "hasTitle": true,
+        "hasJapanese": true,
+        "hasScript": true,
+        "hasReactRoot": true,
+        "hasDatabase": true,
+        "hasViteAssets": true,
+        "hasCSS": true,
+        "hasJS": true,
+        "contentLength": 1422
+      }
+    }
+  ],
+  "timeoutTests": [
+    {
+      "file": "src/services/db/ClientDatabaseService.ts",
+      "exists": true,
+      "timeouts": {
+        "has45seconds": true,
+        "has90seconds": false,
+        "has120seconds": true,
+        "has180seconds": false,
+        "has300seconds": false,
+        "hasProgressEvents": true,
+        "hasRetryLogic": true,
+        "hasConnectionSpeed": true
+      }
+    },
+    {
+      "file": "src/pages/HomePage.tsx",
+      "exists": true,
+      "timeouts": {
+        "has45seconds": false,
+        "has90seconds": true,
+        "has120seconds": false,
+        "has180seconds": true,
+        "has300seconds": false,
+        "hasProgressEvents": true,
+        "hasRetryLogic": true,
+        "hasConnectionSpeed": false
+      }
+    },
+    {
+      "file": "playwright.config.production.ts",
+      "exists": true,
+      "timeouts": {
+        "has45seconds": false,
+        "has90seconds": false,
+        "has120seconds": true,
+        "has180seconds": false,
+        "has300seconds": true,
+        "hasProgressEvents": false,
+        "hasRetryLogic": true,
+        "hasConnectionSpeed": false
+      }
+    }
+  ],
+  "summary": {
+    "accessibleUrls": 2,
+    "accessibleDatabases": 2,
+    "workingPages": 2,
+    "properTimeouts": 3,
+    "totalTests": 9,
+    "overallSuccess": true
+  }
+}
