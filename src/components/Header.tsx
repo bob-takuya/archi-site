@@ -54,12 +54,13 @@ const Header: React.FC = () => {
   };
 
   return (
-    <AppBar position="static" color="primary">
+    <AppBar position="static" color="primary" component="nav" role="navigation" aria-label="メインナビゲーション">
       <Toolbar>
         <Typography
           variant="h6"
           component={RouterLink}
           to="/"
+          data-testid="site-title"
           sx={{ 
             flexGrow: 1, 
             color: 'white',
@@ -76,6 +77,7 @@ const Header: React.FC = () => {
               edge="end"
               color="inherit"
               aria-label="menu"
+              data-testid="mobile-menu-button"
               onClick={toggleDrawer(true)}
             >
               <MenuIcon />
@@ -96,12 +98,14 @@ const Header: React.FC = () => {
                     <CloseIcon />
                   </IconButton>
                 </Box>
-                <List>
+                <List role="menu" aria-label="ナビゲーションメニュー">
                   {navLinks.map(({ title, path, icon }) => (
                     <ListItem
                       component={RouterLink}
                       to={path}
                       key={title}
+                      role="menuitem"
+                      data-testid={`nav-link-${title.toLowerCase()}`}
                       sx={{
                         color: pathname === path ? 'primary.main' : 'text.primary',
                         backgroundColor: pathname === path ? 'rgba(0, 0, 0, 0.08)' : 'transparent',
@@ -120,13 +124,15 @@ const Header: React.FC = () => {
             </Drawer>
           </>
         ) : (
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex' }} role="menubar" aria-label="デスクトップナビゲーション">
             {navLinks.map(({ title, path }) => (
               <Button
                 key={title}
                 component={RouterLink}
                 to={path}
                 color="inherit"
+                role="menuitem"
+                data-testid={`nav-link-${title.toLowerCase()}`}
                 sx={{
                   mx: 1,
                   fontWeight: pathname === path ? 'bold' : 'normal',

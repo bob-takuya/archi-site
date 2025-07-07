@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { HashRouter } from 'react-router-dom';
+// import { HashRouter } from 'react-router-dom'; // Moved to App.tsx
 import './index.css';
 import App from './App';
 
@@ -23,9 +23,7 @@ console.log('Using HashRouter for GitHub Pages compatibility');
 try {
   root.render(
     <React.StrictMode>
-      <HashRouter>
-        <App />
-      </HashRouter>
+      <App />
     </React.StrictMode>
   );
   console.log('React アプリケーションのレンダリングが成功しました');
