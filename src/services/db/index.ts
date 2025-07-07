@@ -3,7 +3,7 @@
  * Exports all database services and provides a common interface
  */
 
-import { DatabaseStatus, getDatabaseStatus, initDatabase } from './ClientDatabaseService';
+import { DatabaseStatus, getDatabaseStatus, initDatabase, getResultsArray } from './ClientDatabaseService';
 import * as ArchitectService from './ArchitectService';
 import * as ArchitectureService from './ArchitectureService';
 
@@ -13,6 +13,7 @@ export {
   DatabaseStatus,
   getDatabaseStatus,
   initDatabase,
+  getResultsArray,
   
   // Architecture services
   ArchitectureService,

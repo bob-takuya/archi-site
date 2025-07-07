@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Quality Gate" tests="1" failures="1" time="0">
+  <testcase name="E2E Test Pass Rate Quality Gate" classname="QualityGate">
+    <failure message="Pass rate 0.0% below required 90%">
+      Quality gate failed: Only 0/0 tests passed (0.0%)
+      Required: 90% pass rate for production deployment
+      </failure>
+  </testcase>
+</testsuite>

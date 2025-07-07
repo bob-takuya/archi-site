@@ -23,7 +23,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import WikipediaIcon from '@mui/icons-material/LanguageOutlined';
-import { getArchitectureById } from '../services/DbService';
+import { getArchitectureById } from '../services/db/ArchitectureService';
 import MapComponent from '../components/Map';
 
 const ArchitectureSinglePage = () => {

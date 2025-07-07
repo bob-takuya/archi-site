@@ -18,6 +18,7 @@ export * from './db';
 import { createDbWorker } from 'sql.js-httpvfs';
 import type { SqliteWorker, WorkerHttpvfs } from 'sql.js-httpvfs/dist/sqlite.worker';
 import type { QueryResult, QueryParameter, DbConfig } from '../types/db';
+import CacheService from './CacheService';
 
 // Database configuration
 const DB_CONFIG: DbConfig = {
@@ -36,9 +37,11 @@ class DbService {
   private worker: SqliteWorker<WorkerHttpvfs> | null = null;
   private initPromise: Promise<void> | null = null;
   private isInitializing = false;
+  private cache: CacheService;
 
   private constructor() {
     // Private constructor for singleton
+    this.cache = CacheService.getInstance();
   }
 
   /**
@@ -102,12 +105,39 @@ class DbService {
   }
 
   /**
-   * Execute a query against the database
+   * Execute a query against the database with caching
+   * @param query SQL query string
+   * @param params Query parameters
+   * @param useCache Whether to use cache for this query
+   * @returns Promise with query results
+   */
+  public async executeQuery<T = any>(
+    query: string,
+    params: QueryParameter[] = [],
+    useCache: boolean = true
+  ): Promise<QueryResult<T>> {
+    // For read-only queries, try cache first
+    const isReadQuery = query.trim().toLowerCase().startsWith('select');
+    
+    if (useCache && isReadQuery) {
+      return this.cache.cachedQuery(
+        query,
+        () => this.executeQueryDirect<T>(query, params),
+        params,
+        5 * 60 * 1000 // 5 minutes TTL
+      );
+    }
+    
+    return this.executeQueryDirect<T>(query, params);
+  }
+
+  /**
+   * Execute a query directly against the database (bypassing cache)
    * @param query SQL query string
    * @param params Query parameters
    * @returns Promise with query results
    */
-  public async executeQuery<T = any>(
+  private async executeQueryDirect<T = any>(
     query: string,
     params: QueryParameter[] = []
   ): Promise<QueryResult<T>> {
@@ -195,6 +225,21 @@ class DbService {
   }
 
   /**
+   * Clear cache for better memory management
+   */
+  public clearCache(): void {
+    this.cache.clear();
+    console.log('[DbService] Cache cleared');
+  }
+
+  /**
+   * Get cache statistics
+   */
+  public getCacheStats() {
+    return this.cache.getStats();
+  }
+
+  /**
    * Close the database connection when the application is unloaded
    */
   public async close(): Promise<void> {
@@ -203,6 +248,9 @@ class DbService {
       // this.worker.terminate();
       this.worker = null;
     }
+    
+    // Clear cache on close
+    this.clearCache();
   }
 }
 

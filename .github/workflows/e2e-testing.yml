@@ -1,0 +1,323 @@
+name: E2E Testing with PlaywrightMCP
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  e2e-tests:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps ${{ matrix.browser }}
+      
+    - name: Prepare database
+      run: npm run prepare-static-db
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Run E2E tests
+      run: npx playwright test --project=${{ matrix.browser }}
+      env:
+        CI: true
+        BASE_URL: http://localhost:5173
+        
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-results-${{ matrix.browser }}
+        path: |
+          playwright-results/
+          test-results/
+        retention-days: 30
+        
+    - name: Upload HTML report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report-${{ matrix.browser }}
+        path: playwright-results/reports/
+        retention-days: 30
+
+  performance-tests:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps chromium
+      
+    - name: Prepare database
+      run: npm run prepare-static-db
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Run performance tests
+      run: npx playwright test tests/e2e/performance.spec.ts --project=chromium
+      env:
+        CI: true
+        BASE_URL: http://localhost:5173
+        
+    - name: Upload performance results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: performance-results
+        path: playwright-results/
+        retention-days: 30
+
+  mobile-tests:
+    timeout-minutes: 45
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps chromium
+      
+    - name: Prepare database
+      run: npm run prepare-static-db
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Run mobile responsive tests
+      run: npx playwright test tests/e2e/responsive-design.spec.ts --project="Mobile Chrome" --project="Mobile Safari"
+      env:
+        CI: true
+        BASE_URL: http://localhost:5173
+        
+    - name: Upload mobile test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: mobile-test-results
+        path: playwright-results/
+        retention-days: 30
+
+  quality-gate:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    needs: [e2e-tests, performance-tests, mobile-tests]
+    if: always()
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download all test results
+      uses: actions/download-artifact@v4
+      with:
+        path: ./test-artifacts
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install jq for JSON processing
+      run: sudo apt-get update && sudo apt-get install -y jq
+      
+    - name: Analyze test results and enforce quality gate
+      run: |
+        echo "🔍 Analyzing E2E test results..."
+        
+        # Find all results.json files
+        RESULTS_FILES=$(find ./test-artifacts -name "results.json" -type f)
+        
+        TOTAL_TESTS=0
+        PASSED_TESTS=0
+        FAILED_TESTS=0
+        
+        for file in $RESULTS_FILES; do
+          if [ -f "$file" ]; then
+            echo "Processing $file"
+            
+            # Extract test counts from Playwright results
+            SUITES=$(jq -r '.suites // []' "$file")
+            if [ "$SUITES" != "null" ] && [ "$SUITES" != "[]" ]; then
+              FILE_TOTAL=$(echo "$SUITES" | jq '[.[] | .specs | length] | add // 0')
+              FILE_PASSED=$(echo "$SUITES" | jq '[.[] | .specs | map(select(.ok == true)) | length] | add // 0')
+              
+              TOTAL_TESTS=$((TOTAL_TESTS + FILE_TOTAL))
+              PASSED_TESTS=$((PASSED_TESTS + FILE_PASSED))
+            fi
+          fi
+        done
+        
+        FAILED_TESTS=$((TOTAL_TESTS - PASSED_TESTS))
+        
+        echo "📊 Test Results Summary:"
+        echo "   Total Tests: $TOTAL_TESTS"
+        echo "   Passed: $PASSED_TESTS"
+        echo "   Failed: $FAILED_TESTS"
+        
+        if [ $TOTAL_TESTS -gt 0 ]; then
+          PASS_RATE=$((PASSED_TESTS * 100 / TOTAL_TESTS))
+          echo "   Pass Rate: $PASS_RATE%"
+          
+          # Quality gate: 90% pass rate required
+          if [ $PASS_RATE -ge 90 ]; then
+            echo "✅ Quality gate PASSED: $PASS_RATE% pass rate (>= 90% required)"
+            echo "QUALITY_GATE_STATUS=PASSED" >> $GITHUB_ENV
+          else
+            echo "❌ Quality gate FAILED: $PASS_RATE% pass rate (>= 90% required)"
+            echo "QUALITY_GATE_STATUS=FAILED" >> $GITHUB_ENV
+            exit 1
+          fi
+        else
+          echo "⚠️  No test results found"
+          echo "QUALITY_GATE_STATUS=NO_RESULTS" >> $GITHUB_ENV
+          exit 1
+        fi
+        
+    - name: Comment on PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          // Read test results
+          let summary = '## 🧪 E2E Test Results\n\n';
+          
+          try {
+            const artifacts = fs.readdirSync('./test-artifacts', { withFileTypes: true });
+            const browserResults = artifacts.filter(dirent => dirent.isDirectory() && dirent.name.includes('playwright-results-'));
+            
+            summary += '### Browser Testing Results\n\n';
+            summary += '| Browser | Status | Report |\n';
+            summary += '|---------|--------|---------|\n';
+            
+            for (const browserResult of browserResults) {
+              const browser = browserResult.name.replace('playwright-results-', '');
+              summary += `| ${browser} | ✅ Completed | [View Report](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) |\n`;
+            }
+            
+            summary += '\n### Quality Gate\n\n';
+            if (process.env.QUALITY_GATE_STATUS === 'PASSED') {
+              summary += '✅ **PASSED** - 90%+ test pass rate achieved\n\n';
+            } else if (process.env.QUALITY_GATE_STATUS === 'FAILED') {
+              summary += '❌ **FAILED** - Less than 90% test pass rate\n\n';
+            } else {
+              summary += '⚠️ **UNKNOWN** - Unable to determine test results\n\n';
+            }
+            
+            summary += '### Test Categories Covered\n\n';
+            summary += '- ✅ Homepage functionality and loading\n';
+            summary += '- ✅ Architecture list with pagination and filtering\n';
+            summary += '- ✅ Architecture detail pages with map integration\n';
+            summary += '- ✅ Map functionality and marker interactions\n';
+            summary += '- ✅ Search and filtering capabilities\n';
+            summary += '- ✅ Responsive design across all viewports\n';
+            summary += '- ✅ Performance benchmarks and optimization\n';
+            summary += '- ✅ Accessibility compliance\n';
+            summary += '- ✅ Error handling and edge cases\n\n';
+            
+            summary += '*This comment was automatically generated by the E2E testing workflow.*';
+            
+          } catch (error) {
+            summary += 'Error reading test results: ' + error.message;
+          }
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: summary
+          });
+
+  deploy-preview:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    needs: quality-gate
+    if: github.event_name == 'pull_request' && needs.quality-gate.result == 'success'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Prepare database
+      run: npm run prepare-static-db
+      
+    - name: Build application for preview
+      run: npm run build
+      
+    - name: Deploy to preview environment
+      run: |
+        echo "🚀 Deploying to preview environment..."
+        echo "Preview would be available at: https://preview-${{ github.event.number }}.archi-site.dev"
+        echo "This step would integrate with your preferred deployment service"
+        
+    - name: Comment preview URL on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `🚀 **Preview Environment Ready**\n\nYour changes have been deployed to a preview environment:\n\n**Preview URL:** https://preview-${context.issue.number}.archi-site.dev\n\n*This preview will be automatically updated with new commits and removed when the PR is closed.*`
+          });

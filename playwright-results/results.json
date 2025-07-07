@@ -1,7 +1,7 @@
 {
   "config": {
-    "configFile": "/Users/takuyaitabashi/Documents/private_matters/20250413Archi-site/playwright.config.ts",
-    "rootDir": "/Users/takuyaitabashi/Documents/private_matters/20250413Archi-site/tests",
+    "configFile": "/Users/homeserver/ai-creative-team/archi-site/playwright.config.ts",
+    "rootDir": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e",
     "forbidOnly": false,
     "fullyParallel": true,
     "globalSetup": null,
@@ -10,13 +10,16 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {},
+    "metadata": {
+      "actualWorkers": 5
+    },
     "preserveOutput": "always",
     "reporter": [
       [
         "html",
         {
-          "outputFolder": "playwright-results/reports"
+          "outputFolder": "playwright-results/reports",
+          "open": "never"
         }
       ],
       [
@@ -24,6 +27,20 @@
         {
           "outputFile": "playwright-results/results.json"
         }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "playwright-results/junit.xml"
+        }
+      ],
+      [
+        "list",
+        null
+      ],
+      [
+        "github",
+        null
       ]
     ],
     "reportSlowTests": {
@@ -33,48 +50,1102 @@
     "quiet": false,
     "projects": [
       {
-        "outputDir": "/Users/takuyaitabashi/Documents/private_matters/20250413Archi-site/playwright-results/artifacts",
+        "outputDir": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts",
         "repeatEach": 1,
-        "retries": 0,
-        "metadata": {},
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
         "id": "chromium",
         "name": "chromium",
-        "testDir": "/Users/takuyaitabashi/Documents/private_matters/20250413Archi-site/tests",
+        "testDir": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e",
         "testIgnore": [
           "**/unit/**/*.test.ts",
           "**/unit/**/*.test.tsx"
         ],
         "testMatch": [
-          "*.test.ts"
+          "**/*.spec.ts"
         ],
-        "timeout": 30000
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e",
+        "testIgnore": [
+          "**/unit/**/*.test.ts",
+          "**/unit/**/*.test.tsx"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e",
+        "testIgnore": [
+          "**/unit/**/*.test.ts",
+          "**/unit/**/*.test.tsx"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e",
+        "testIgnore": [
+          "**/unit/**/*.test.ts",
+          "**/unit/**/*.test.tsx"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e",
+        "testIgnore": [
+          "**/unit/**/*.test.ts",
+          "**/unit/**/*.test.tsx"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "Tablet",
+        "name": "Tablet",
+        "testDir": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e",
+        "testIgnore": [
+          "**/unit/**/*.test.ts",
+          "**/unit/**/*.test.tsx"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 60000
       }
     ],
     "shard": null,
     "updateSnapshots": "missing",
     "updateSourceMethod": "patch",
     "version": "1.51.1",
-    "workers": 4,
+    "workers": 5,
     "webServer": {
-      "command": "npm run client",
-      "port": 8080,
+      "command": "npm run preview",
+      "port": 4173,
       "reuseExistingServer": true,
-      "timeout": 120000
+      "timeout": 60000,
+      "env": {
+        "NODE_ENV": "test"
+      }
     }
   },
-  "suites": [],
-  "errors": [
+  "suites": [
     {
-      "message": "Error: Process from config.webServer was not able to start. Exit code: 2",
-      "stack": "Error: Process from config.webServer was not able to start. Exit code: 2"
+      "title": "homepage.spec.ts",
+      "file": "homepage.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Homepage",
+          "file": "homepage.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load homepage with all essential elements",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 11374,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:13:59",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for getByRole('heading', { level: 1 })"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 59,
+                          "line": 13
+                        },
+                        "snippet": "  11 |     \n  12 |     // Check hero section\n> 13 |     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();\n     |                                                           ^\n  14 |     \n  15 |     // Check navigation menu\n  16 |     await expect(page.getByRole('navigation')).toBeVisible();"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 59,
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\n\n  11 |     \n  12 |     // Check hero section\n> 13 |     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();\n     |                                                           ^\n  14 |     \n  15 |     // Check navigation menu\n  16 |     await expect(page.getByRole('navigation')).toBeVisible();\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:13:59"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T01:16:16.097Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgbG9hZCBob21lcGFnZSB3aXRoIGFsbCBlc3NlbnRpYWwgZWxlbWVudHMKLSBMb2NhdGlvbjogL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9ob21lcGFnZS5zcGVjLnRzOjg6NwoKIyBFcnJvciBkZXRhaWxzCgpgYGAKRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCgpMb2NhdG9yOiBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IGxldmVsOiAxIH0pCkV4cGVjdGVkOiB2aXNpYmxlClJlY2VpdmVkOiA8ZWxlbWVudChzKSBub3QgZm91bmQ+CkNhbGwgbG9nOgogIC0gZXhwZWN0LnRvQmVWaXNpYmxlIHdpdGggdGltZW91dCAxMDAwMG1zCiAgLSB3YWl0aW5nIGZvciBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IGxldmVsOiAxIH0pCgogICAgYXQgL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9ob21lcGFnZS5zcGVjLnRzOjEzOjU5CmBgYAoKIyBQYWdlIHNuYXBzaG90CgpgYGB5YW1sCi0gaGVhZGluZyAi5pel5pys44Gu5bu656+J44Oe44OD44OXIiBbbGV2ZWw9NF0KLSBhbGVydDogIuODh+ODvOOCv+ODmeODvOOCueOBruWIneacn+WMluOBq+WkseaVl+OBl+OBvuOBl+OBnzogRmFpbGVkIHRvIGV4ZWN1dGUgJ3Bvc3RNZXNzYWdlJyBvbiAnV29ya2VyJzogKCk9PmNvbnNvbGUubG9nKFwi44OH44O844K/44OZ44O844K544Ov44O844Kr44O844Gu5rqW5YKZ5a6M5LqGXCIpIGNvdWxkIG5vdCBiZSBjbG9uZWQuIgotIGJ1dHRvbiAi5YaN6Kmm6KGMIgpgYGAKCiMgVGVzdCBzb3VyY2UKCmBgYHRzCiAgIDEgfCBpbXBvcnQgeyB0ZXN0LCBleHBlY3QgfSBmcm9tICdAcGxheXdyaWdodC90ZXN0JzsKICAgMiB8CiAgIDMgfCB0ZXN0LmRlc2NyaWJlKCdIb21lcGFnZScsICgpID0+IHsKICAgNCB8ICAgdGVzdC5iZWZvcmVFYWNoKGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA1IHwgICAgIGF3YWl0IHBhZ2UuZ290bygnLycpOwogICA2IHwgICB9KTsKICAgNyB8CiAgIDggfCAgIHRlc3QoJ3Nob3VsZCBsb2FkIGhvbWVwYWdlIHdpdGggYWxsIGVzc2VudGlhbCBlbGVtZW50cycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA5IHwgICAgIC8vIENoZWNrIHBhZ2UgdGl0bGUKICAgMTAgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVRpdGxlKC9KYXBhbmVzZSBBcmNoaXRlY3R1cmUgTWFwfOaXpeacrOOBruW7uuevieODnuODg+ODly8pOwogICAxMSB8ICAgICAKICAgMTIgfCAgICAgLy8gQ2hlY2sgaGVybyBzZWN0aW9uCj4gIDEzIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnaGVhZGluZycsIHsgbGV2ZWw6IDEgfSkpLnRvQmVWaXNpYmxlKCk7CiAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4gRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCiAgIDE0IHwgICAgIAogICAxNSB8ICAgICAvLyBDaGVjayBuYXZpZ2F0aW9uIG1lbnUKICAgMTYgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCduYXZpZ2F0aW9uJykpLnRvQmVWaXNpYmxlKCk7CiAgIDE3IHwgICAgIAogICAxOCB8ICAgICAvLyBDaGVjayBtYWluIG5hdmlnYXRpb24gbGlua3MKICAgMTkgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdsaW5rJywgeyBuYW1lOiAvYXJjaGl0ZWN0dXJlfOW7uueviS9pIH0pKS50b0JlVmlzaWJsZSgpOwogICAyMCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9hcmNoaXRlY3RzfOW7uuevieWuti9pIH0pKS50b0JlVmlzaWJsZSgpOwogICAyMSB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9tYXB844Oe44OD44OXL2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIyIHwgICAgIAogICAyMyB8ICAgICAvLyBDaGVjayBzZWFyY2ggZnVuY3Rpb25hbGl0eQogICAyNCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ3NlYXJjaGJveCcpKS50b0JlVmlzaWJsZSgpOwogICAyNSB8ICAgICAKICAgMjYgfCAgICAgLy8gQ2hlY2sgZm9vdGVyCiAgIDI3IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnY29udGVudGluZm8nKSkudG9CZVZpc2libGUoKTsKICAgMjggfCAgIH0pOwogICAyOSB8CiAgIDMwIHwgICB0ZXN0KCdzaG91bGQgaGF2ZSB3b3JraW5nIHNlYXJjaCBmdW5jdGlvbmFsaXR5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDMxIHwgICAgIC8vIExvY2F0ZSBzZWFyY2ggaW5wdXQKICAgMzIgfCAgICAgY29uc3Qgc2VhcmNoSW5wdXQgPSBwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94Jyk7CiAgIDMzIHwgICAgIGF3YWl0IGV4cGVjdChzZWFyY2hJbnB1dCkudG9CZVZpc2libGUoKTsKICAgMzQgfCAgICAgCiAgIDM1IHwgICAgIC8vIEVudGVyIHNlYXJjaCB0ZXJtCiAgIDM2IHwgICAgIGF3YWl0IHNlYXJjaElucHV0LmZpbGwoJ1Rva3lvJyk7CiAgIDM3IHwgICAgIAogICAzOCB8ICAgICAvLyBTdWJtaXQgc2VhcmNoIChsb29rIGZvciBzZWFyY2ggYnV0dG9uIG9yIHByZXNzIEVudGVyKQogICAzOSB8ICAgICBjb25zdCBzZWFyY2hCdXR0b24gPSBwYWdlLmdldEJ5Um9sZSgnYnV0dG9uJywgeyBuYW1lOiAvc2VhcmNofOaknOe0oi9pIH0pOwogICA0MCB8ICAgICBpZiAoYXdhaXQgc2VhcmNoQnV0dG9uLmlzVmlzaWJsZSgpKSB7CiAgIDQxIHwgICAgICAgYXdhaXQgc2VhcmNoQnV0dG9uLmNsaWNrKCk7CiAgIDQyIHwgICAgIH0gZWxzZSB7CiAgIDQzIHwgICAgICAgYXdhaXQgc2VhcmNoSW5wdXQucHJlc3MoJ0VudGVyJyk7CiAgIDQ0IHwgICAgIH0KICAgNDUgfCAgICAgCiAgIDQ2IHwgICAgIC8vIFNob3VsZCBuYXZpZ2F0ZSB0byBzZWFyY2ggcmVzdWx0cyBvciB1cGRhdGUgY3VycmVudCBwYWdlCiAgIDQ3IHwgICAgIGF3YWl0IHBhZ2Uud2FpdEZvckxvYWRTdGF0ZSgnbmV0d29ya2lkbGUnKTsKICAgNDggfCAgICAgCiAgIDQ5IHwgICAgIC8vIENoZWNrIHRoYXQgd2UgZWl0aGVyIG5hdmlnYXRlZCB0byByZXN1bHRzIG9yIHJlc3VsdHMgYXJlIHNob3duCiAgIDUwIHwgICAgIGNvbnN0IGhhc05hdmlnYXRlZCA9IHBhZ2UudXJsKCkuaW5jbHVkZXMoJy9hcmNoaXRlY3R1cmUnKSB8fCBwYWdlLnVybCgpLmluY2x1ZGVzKCcvc2VhcmNoJyk7CiAgIDUxIHwgICAgIGNvbnN0IGhhc1Jlc3VsdHMgPSBhd2FpdCBwYWdlLmxvY2F0b3IoJ1tkYXRhLXRlc3RpZD0iYXJjaGl0ZWN0dXJlLWl0ZW0iXScpLmNvdW50KCkgPiAwOwogICA1MiB8ICAgICBjb25zdCBoYXNOb1Jlc3VsdHMgPSBhd2FpdCBwYWdlLmdldEJ5VGV4dCgvbm8gcmVzdWx0c3zntZDmnpzjgYzopovjgaTjgYvjgorjgb7jgZvjgpMvaSkuaXNWaXNpYmxlKCk7CiAgIDUzIHwgICAgIAogICA1NCB8ICAgICBleHBlY3QoaGFzTmF2aWdhdGVkIHx8IGhhc1Jlc3VsdHMgfHwgaGFzTm9SZXN1bHRzKS50b0JlVHJ1dGh5KCk7CiAgIDU1IHwgICB9KTsKICAgNTYgfAogICA1NyB8ICAgdGVzdCgnc2hvdWxkIGRpc3BsYXkgZmVhdHVyZSBjYXJkcyBvciBzZWN0aW9ucycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA1OCB8ICAgICAvLyBMb29rIGZvciBmZWF0dXJlIGNhcmRzLCBzZWN0aW9ucywgb3Igc2ltaWxhciBjb250ZW50CiAgIDU5IHwgICAgIGNvbnN0IGZlYXR1cmVTZWxlY3RvcnMgPSBbCiAgIDYwIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0iZmVhdHVyZS1jYXJkIl0nLAogICA2MSB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImZlYXR1cmUtc2VjdGlvbiJdJywKICAgNjIgfCAgICAgICAnLmZlYXR1cmUtY2FyZCcsCiAgIDYzIHwgICAgICAgJy5mZWF0dXJlLXNlY3Rpb24nLAogICA2NCB8ICAgICAgICdbcm9sZT0iYXJ0aWNsZSJdJwogICA2NSB8ICAgICBdOwogICA2NiB8ICAgICAKICAgNjcgfCAgICAgbGV0IGZlYXR1cmVzRm91bmQgPSBmYWxzZTsKICAgNjggfCAgICAgZm9yIChjb25zdCBzZWxlY3RvciBvZiBmZWF0dXJlU2VsZWN0b3JzKSB7CiAgIDY5IHwgICAgICAgY29uc3QgZWxlbWVudHMgPSBwYWdlLmxvY2F0b3Ioc2VsZWN0b3IpOwogICA3MCB8ICAgICAgIGlmIChhd2FpdCBlbGVtZW50cy5jb3VudCgpID4gMCkgewogICA3MSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGVsZW1lbnRzLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgIDcyIHwgICAgICAgICBmZWF0dXJlc0ZvdW5kID0gdHJ1ZTsKICAgNzMgfCAgICAgICAgIGJyZWFrOwogICA3NCB8ICAgICAgIH0KICAgNzUgfCAgICAgfQogICA3NiB8ICAgICAKICAgNzcgfCAgICAgLy8gSWYgbm8gc3BlY2lmaWMgZmVhdHVyZSBjYXJkcywgY2hlY2sgZm9yIGdlbmVyYWwgY29udGVudCBzZWN0aW9ucwogICA3OCB8ICAgICBpZiAoIWZlYXR1cmVzRm91bmQpIHsKICAgNzkgfCAgICAgICBjb25zdCBjb250ZW50U2VjdGlvbnMgPSBwYWdlLmxvY2F0b3IoJ21haW4gc2VjdGlvbiwgLmNvbnRlbnQtc2VjdGlvbiwgLmhlcm8tc2VjdGlvbicpOwogICA4MCB8ICAgICAgIGlmIChhd2FpdCBjb250ZW50U2VjdGlvbnMuY291bnQoKSA+IDApIHsKICAgODEgfCAgICAgICAgIGF3YWl0IGV4cGVjdChjb250ZW50U2VjdGlvbnMuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAgODIgfCAgICAgICB9CiAgIDgzIHwgICAgIH0KICAgODQgfCAgIH0pOwogICA4NSB8CiAgIDg2IHwgICB0ZXN0KCdzaG91bGQgYmUgcmVzcG9uc2l2ZSBvbiBtb2JpbGUgZGV2aWNlcycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA4NyB8ICAgICAvLyBTZXQgbW9iaWxlIHZpZXdwb3J0CiAgIDg4IHwgICAgIGF3YWl0IHBhZ2Uuc2V0Vmlld3BvcnRTaXplKHsgd2lkdGg6IDM3NSwgaGVpZ2h0OiA2NjcgfSk7CiAgIDg5IHwgICAgIAogICA5MCB8ICAgICAvLyBDaGVjayB0aGF0IG5hdmlnYXRpb24gaXMgbW9iaWxlLWZyaWVuZGx5CiAgIDkxIHwgICAgIGNvbnN0IG5hdiA9IHBhZ2UuZ2V0QnlSb2xlKCduYXZpZ2F0aW9uJyk7CiAgIDkyIHwgICAgIGF3YWl0IGV4cGVjdChuYXYpLnRvQmVWaXNpYmxlKCk7CiAgIDkzIHwgICAgIAogICA5NCB8ICAgICAvLyBDaGVjayBmb3IgbW9iaWxlIG1lbnUgdG9nZ2xlIGlmIGl0IGV4aXN0cwogICA5NSB8ICAgICBjb25zdCBtb2JpbGVNZW51VG9nZ2xlID0gcGFnZS5nZXRCeVJvbGUoJ2J1dHRvbicsIHsgbmFtZTogL21lbnV844Oh44OL44Ol44O8L2kgfSk7CiAgIDk2IHwgICAgIGlmIChhd2FpdCBtb2JpbGVNZW51VG9nZ2xlLmlzVmlzaWJsZSgpKSB7CiAgIDk3IHwgICAgICAgYXdhaXQgbW9iaWxlTWVudVRvZ2dsZS5jbGljaygpOwogICA5OCB8ICAgICAgIC8vIE1lbnUgc2hvdWxkIGV4cGFuZAogICA5OSB8ICAgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbWVudScpKS50b0JlVmlzaWJsZSgpOwogIDEwMCB8ICAgICB9CiAgMTAxIHwgICAgIAogIDEwMiB8ICAgICAvLyBDaGVjayB0aGF0IHNlYXJjaCBpcyBhY2Nlc3NpYmxlIG9uIG1vYmlsZQogIDEwMyB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ3NlYXJjaGJveCcpKS50b0JlVmlzaWJsZSgpOwogIDEwNCB8ICAgICAKICAxMDUgfCAgICAgLy8gQ2hlY2sgdGhhdCBtYWluIGNvbnRlbnQgaXMgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgMTA2IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJ21haW4nKSkudG9CZVZpc2libGUoKTsKICAxMDcgfCAgIH0pOwogIDEwOCB8CiAgMTA5IHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIHNsb3cgbG9hZGluZyBncmFjZWZ1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTEwIHwgICAgIC8vIFNpbXVsYXRlIHNsb3cgbmV0d29yawogIDExMSB8ICAgICBhd2FpdCBwYWdlLnJvdXRlKCcqKi8qJywgcm91dGUgPT4gewogIDExMiB8ICAgICAgIHNldFRpbWVvdXQoKCkgPT4gcm91dGUuY29udGludWUoKSwgMTAwKTsKICAxMTMgfCAgICAgfSk7CmBgYA=="
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 59,
+                        "line": 13
+                      }
+                    },
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10473,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:13:59",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for getByRole('heading', { level: 1 })"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 59,
+                          "line": 13
+                        },
+                        "snippet": "  11 |     \n  12 |     // Check hero section\n> 13 |     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();\n     |                                                           ^\n  14 |     \n  15 |     // Check navigation menu\n  16 |     await expect(page.getByRole('navigation')).toBeVisible();"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 59,
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\n\n  11 |     \n  12 |     // Check hero section\n> 13 |     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();\n     |                                                           ^\n  14 |     \n  15 |     // Check navigation menu\n  16 |     await expect(page.getByRole('navigation')).toBeVisible();\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:13:59"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-07-07T01:16:29.674Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgbG9hZCBob21lcGFnZSB3aXRoIGFsbCBlc3NlbnRpYWwgZWxlbWVudHMKLSBMb2NhdGlvbjogL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9ob21lcGFnZS5zcGVjLnRzOjg6NwoKIyBFcnJvciBkZXRhaWxzCgpgYGAKRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCgpMb2NhdG9yOiBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IGxldmVsOiAxIH0pCkV4cGVjdGVkOiB2aXNpYmxlClJlY2VpdmVkOiA8ZWxlbWVudChzKSBub3QgZm91bmQ+CkNhbGwgbG9nOgogIC0gZXhwZWN0LnRvQmVWaXNpYmxlIHdpdGggdGltZW91dCAxMDAwMG1zCiAgLSB3YWl0aW5nIGZvciBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IGxldmVsOiAxIH0pCgogICAgYXQgL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9ob21lcGFnZS5zcGVjLnRzOjEzOjU5CmBgYAoKIyBQYWdlIHNuYXBzaG90CgpgYGB5YW1sCi0gaGVhZGluZyAi5pel5pys44Gu5bu656+J44Oe44OD44OXIiBbbGV2ZWw9NF0KLSBhbGVydDogIuODh+ODvOOCv+ODmeODvOOCueOBruWIneacn+WMluOBq+WkseaVl+OBl+OBvuOBl+OBnzogRmFpbGVkIHRvIGV4ZWN1dGUgJ3Bvc3RNZXNzYWdlJyBvbiAnV29ya2VyJzogKCk9PmNvbnNvbGUubG9nKFwi44OH44O844K/44OZ44O844K544Ov44O844Kr44O844Gu5rqW5YKZ5a6M5LqGXCIpIGNvdWxkIG5vdCBiZSBjbG9uZWQuIgotIGJ1dHRvbiAi5YaN6Kmm6KGMIgpgYGAKCiMgVGVzdCBzb3VyY2UKCmBgYHRzCiAgIDEgfCBpbXBvcnQgeyB0ZXN0LCBleHBlY3QgfSBmcm9tICdAcGxheXdyaWdodC90ZXN0JzsKICAgMiB8CiAgIDMgfCB0ZXN0LmRlc2NyaWJlKCdIb21lcGFnZScsICgpID0+IHsKICAgNCB8ICAgdGVzdC5iZWZvcmVFYWNoKGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA1IHwgICAgIGF3YWl0IHBhZ2UuZ290bygnLycpOwogICA2IHwgICB9KTsKICAgNyB8CiAgIDggfCAgIHRlc3QoJ3Nob3VsZCBsb2FkIGhvbWVwYWdlIHdpdGggYWxsIGVzc2VudGlhbCBlbGVtZW50cycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA5IHwgICAgIC8vIENoZWNrIHBhZ2UgdGl0bGUKICAgMTAgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVRpdGxlKC9KYXBhbmVzZSBBcmNoaXRlY3R1cmUgTWFwfOaXpeacrOOBruW7uuevieODnuODg+ODly8pOwogICAxMSB8ICAgICAKICAgMTIgfCAgICAgLy8gQ2hlY2sgaGVybyBzZWN0aW9uCj4gIDEzIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnaGVhZGluZycsIHsgbGV2ZWw6IDEgfSkpLnRvQmVWaXNpYmxlKCk7CiAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4gRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCiAgIDE0IHwgICAgIAogICAxNSB8ICAgICAvLyBDaGVjayBuYXZpZ2F0aW9uIG1lbnUKICAgMTYgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCduYXZpZ2F0aW9uJykpLnRvQmVWaXNpYmxlKCk7CiAgIDE3IHwgICAgIAogICAxOCB8ICAgICAvLyBDaGVjayBtYWluIG5hdmlnYXRpb24gbGlua3MKICAgMTkgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdsaW5rJywgeyBuYW1lOiAvYXJjaGl0ZWN0dXJlfOW7uueviS9pIH0pKS50b0JlVmlzaWJsZSgpOwogICAyMCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9hcmNoaXRlY3RzfOW7uuevieWuti9pIH0pKS50b0JlVmlzaWJsZSgpOwogICAyMSB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9tYXB844Oe44OD44OXL2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIyIHwgICAgIAogICAyMyB8ICAgICAvLyBDaGVjayBzZWFyY2ggZnVuY3Rpb25hbGl0eQogICAyNCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ3NlYXJjaGJveCcpKS50b0JlVmlzaWJsZSgpOwogICAyNSB8ICAgICAKICAgMjYgfCAgICAgLy8gQ2hlY2sgZm9vdGVyCiAgIDI3IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnY29udGVudGluZm8nKSkudG9CZVZpc2libGUoKTsKICAgMjggfCAgIH0pOwogICAyOSB8CiAgIDMwIHwgICB0ZXN0KCdzaG91bGQgaGF2ZSB3b3JraW5nIHNlYXJjaCBmdW5jdGlvbmFsaXR5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDMxIHwgICAgIC8vIExvY2F0ZSBzZWFyY2ggaW5wdXQKICAgMzIgfCAgICAgY29uc3Qgc2VhcmNoSW5wdXQgPSBwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94Jyk7CiAgIDMzIHwgICAgIGF3YWl0IGV4cGVjdChzZWFyY2hJbnB1dCkudG9CZVZpc2libGUoKTsKICAgMzQgfCAgICAgCiAgIDM1IHwgICAgIC8vIEVudGVyIHNlYXJjaCB0ZXJtCiAgIDM2IHwgICAgIGF3YWl0IHNlYXJjaElucHV0LmZpbGwoJ1Rva3lvJyk7CiAgIDM3IHwgICAgIAogICAzOCB8ICAgICAvLyBTdWJtaXQgc2VhcmNoIChsb29rIGZvciBzZWFyY2ggYnV0dG9uIG9yIHByZXNzIEVudGVyKQogICAzOSB8ICAgICBjb25zdCBzZWFyY2hCdXR0b24gPSBwYWdlLmdldEJ5Um9sZSgnYnV0dG9uJywgeyBuYW1lOiAvc2VhcmNofOaknOe0oi9pIH0pOwogICA0MCB8ICAgICBpZiAoYXdhaXQgc2VhcmNoQnV0dG9uLmlzVmlzaWJsZSgpKSB7CiAgIDQxIHwgICAgICAgYXdhaXQgc2VhcmNoQnV0dG9uLmNsaWNrKCk7CiAgIDQyIHwgICAgIH0gZWxzZSB7CiAgIDQzIHwgICAgICAgYXdhaXQgc2VhcmNoSW5wdXQucHJlc3MoJ0VudGVyJyk7CiAgIDQ0IHwgICAgIH0KICAgNDUgfCAgICAgCiAgIDQ2IHwgICAgIC8vIFNob3VsZCBuYXZpZ2F0ZSB0byBzZWFyY2ggcmVzdWx0cyBvciB1cGRhdGUgY3VycmVudCBwYWdlCiAgIDQ3IHwgICAgIGF3YWl0IHBhZ2Uud2FpdEZvckxvYWRTdGF0ZSgnbmV0d29ya2lkbGUnKTsKICAgNDggfCAgICAgCiAgIDQ5IHwgICAgIC8vIENoZWNrIHRoYXQgd2UgZWl0aGVyIG5hdmlnYXRlZCB0byByZXN1bHRzIG9yIHJlc3VsdHMgYXJlIHNob3duCiAgIDUwIHwgICAgIGNvbnN0IGhhc05hdmlnYXRlZCA9IHBhZ2UudXJsKCkuaW5jbHVkZXMoJy9hcmNoaXRlY3R1cmUnKSB8fCBwYWdlLnVybCgpLmluY2x1ZGVzKCcvc2VhcmNoJyk7CiAgIDUxIHwgICAgIGNvbnN0IGhhc1Jlc3VsdHMgPSBhd2FpdCBwYWdlLmxvY2F0b3IoJ1tkYXRhLXRlc3RpZD0iYXJjaGl0ZWN0dXJlLWl0ZW0iXScpLmNvdW50KCkgPiAwOwogICA1MiB8ICAgICBjb25zdCBoYXNOb1Jlc3VsdHMgPSBhd2FpdCBwYWdlLmdldEJ5VGV4dCgvbm8gcmVzdWx0c3zntZDmnpzjgYzopovjgaTjgYvjgorjgb7jgZvjgpMvaSkuaXNWaXNpYmxlKCk7CiAgIDUzIHwgICAgIAogICA1NCB8ICAgICBleHBlY3QoaGFzTmF2aWdhdGVkIHx8IGhhc1Jlc3VsdHMgfHwgaGFzTm9SZXN1bHRzKS50b0JlVHJ1dGh5KCk7CiAgIDU1IHwgICB9KTsKICAgNTYgfAogICA1NyB8ICAgdGVzdCgnc2hvdWxkIGRpc3BsYXkgZmVhdHVyZSBjYXJkcyBvciBzZWN0aW9ucycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA1OCB8ICAgICAvLyBMb29rIGZvciBmZWF0dXJlIGNhcmRzLCBzZWN0aW9ucywgb3Igc2ltaWxhciBjb250ZW50CiAgIDU5IHwgICAgIGNvbnN0IGZlYXR1cmVTZWxlY3RvcnMgPSBbCiAgIDYwIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0iZmVhdHVyZS1jYXJkIl0nLAogICA2MSB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImZlYXR1cmUtc2VjdGlvbiJdJywKICAgNjIgfCAgICAgICAnLmZlYXR1cmUtY2FyZCcsCiAgIDYzIHwgICAgICAgJy5mZWF0dXJlLXNlY3Rpb24nLAogICA2NCB8ICAgICAgICdbcm9sZT0iYXJ0aWNsZSJdJwogICA2NSB8ICAgICBdOwogICA2NiB8ICAgICAKICAgNjcgfCAgICAgbGV0IGZlYXR1cmVzRm91bmQgPSBmYWxzZTsKICAgNjggfCAgICAgZm9yIChjb25zdCBzZWxlY3RvciBvZiBmZWF0dXJlU2VsZWN0b3JzKSB7CiAgIDY5IHwgICAgICAgY29uc3QgZWxlbWVudHMgPSBwYWdlLmxvY2F0b3Ioc2VsZWN0b3IpOwogICA3MCB8ICAgICAgIGlmIChhd2FpdCBlbGVtZW50cy5jb3VudCgpID4gMCkgewogICA3MSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGVsZW1lbnRzLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgIDcyIHwgICAgICAgICBmZWF0dXJlc0ZvdW5kID0gdHJ1ZTsKICAgNzMgfCAgICAgICAgIGJyZWFrOwogICA3NCB8ICAgICAgIH0KICAgNzUgfCAgICAgfQogICA3NiB8ICAgICAKICAgNzcgfCAgICAgLy8gSWYgbm8gc3BlY2lmaWMgZmVhdHVyZSBjYXJkcywgY2hlY2sgZm9yIGdlbmVyYWwgY29udGVudCBzZWN0aW9ucwogICA3OCB8ICAgICBpZiAoIWZlYXR1cmVzRm91bmQpIHsKICAgNzkgfCAgICAgICBjb25zdCBjb250ZW50U2VjdGlvbnMgPSBwYWdlLmxvY2F0b3IoJ21haW4gc2VjdGlvbiwgLmNvbnRlbnQtc2VjdGlvbiwgLmhlcm8tc2VjdGlvbicpOwogICA4MCB8ICAgICAgIGlmIChhd2FpdCBjb250ZW50U2VjdGlvbnMuY291bnQoKSA+IDApIHsKICAgODEgfCAgICAgICAgIGF3YWl0IGV4cGVjdChjb250ZW50U2VjdGlvbnMuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAgODIgfCAgICAgICB9CiAgIDgzIHwgICAgIH0KICAgODQgfCAgIH0pOwogICA4NSB8CiAgIDg2IHwgICB0ZXN0KCdzaG91bGQgYmUgcmVzcG9uc2l2ZSBvbiBtb2JpbGUgZGV2aWNlcycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA4NyB8ICAgICAvLyBTZXQgbW9iaWxlIHZpZXdwb3J0CiAgIDg4IHwgICAgIGF3YWl0IHBhZ2Uuc2V0Vmlld3BvcnRTaXplKHsgd2lkdGg6IDM3NSwgaGVpZ2h0OiA2NjcgfSk7CiAgIDg5IHwgICAgIAogICA5MCB8ICAgICAvLyBDaGVjayB0aGF0IG5hdmlnYXRpb24gaXMgbW9iaWxlLWZyaWVuZGx5CiAgIDkxIHwgICAgIGNvbnN0IG5hdiA9IHBhZ2UuZ2V0QnlSb2xlKCduYXZpZ2F0aW9uJyk7CiAgIDkyIHwgICAgIGF3YWl0IGV4cGVjdChuYXYpLnRvQmVWaXNpYmxlKCk7CiAgIDkzIHwgICAgIAogICA5NCB8ICAgICAvLyBDaGVjayBmb3IgbW9iaWxlIG1lbnUgdG9nZ2xlIGlmIGl0IGV4aXN0cwogICA5NSB8ICAgICBjb25zdCBtb2JpbGVNZW51VG9nZ2xlID0gcGFnZS5nZXRCeVJvbGUoJ2J1dHRvbicsIHsgbmFtZTogL21lbnV844Oh44OL44Ol44O8L2kgfSk7CiAgIDk2IHwgICAgIGlmIChhd2FpdCBtb2JpbGVNZW51VG9nZ2xlLmlzVmlzaWJsZSgpKSB7CiAgIDk3IHwgICAgICAgYXdhaXQgbW9iaWxlTWVudVRvZ2dsZS5jbGljaygpOwogICA5OCB8ICAgICAgIC8vIE1lbnUgc2hvdWxkIGV4cGFuZAogICA5OSB8ICAgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbWVudScpKS50b0JlVmlzaWJsZSgpOwogIDEwMCB8ICAgICB9CiAgMTAxIHwgICAgIAogIDEwMiB8ICAgICAvLyBDaGVjayB0aGF0IHNlYXJjaCBpcyBhY2Nlc3NpYmxlIG9uIG1vYmlsZQogIDEwMyB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ3NlYXJjaGJveCcpKS50b0JlVmlzaWJsZSgpOwogIDEwNCB8ICAgICAKICAxMDUgfCAgICAgLy8gQ2hlY2sgdGhhdCBtYWluIGNvbnRlbnQgaXMgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgMTA2IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJ21haW4nKSkudG9CZVZpc2libGUoKTsKICAxMDcgfCAgIH0pOwogIDEwOCB8CiAgMTA5IHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIHNsb3cgbG9hZGluZyBncmFjZWZ1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTEwIHwgICAgIC8vIFNpbXVsYXRlIHNsb3cgbmV0d29yawogIDExMSB8ICAgICBhd2FpdCBwYWdlLnJvdXRlKCcqKi8qJywgcm91dGUgPT4gewogIDExMiB8ICAgICAgIHNldFRpbWVvdXQoKCkgPT4gcm91dGUuY29udGludWUoKSwgMTAwKTsKICAxMTMgfCAgICAgfSk7CmBgYA=="
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 59,
+                        "line": 13
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "84e7eb052e8cbae1c9f0-29aafc612799d2698c7e",
+              "file": "homepage.spec.ts",
+              "line": 8,
+              "column": 7
+            },
+            {
+              "title": "should have working search functionality",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 11794,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('searchbox')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox')\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('searchbox')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox')\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:33:31",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('searchbox')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox')\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for getByRole('searchbox')"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 31,
+                          "line": 33
+                        },
+                        "snippet": "  31 |     // Locate search input\n  32 |     const searchInput = page.getByRole('searchbox');\n> 33 |     await expect(searchInput).toBeVisible();\n     |                               ^\n  34 |     \n  35 |     // Enter search term\n  36 |     await searchInput.fill('Tokyo');"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 31,
+                            "line": 33
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('searchbox')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox')\u001b[22m\n\n\n  31 |     // Locate search input\n  32 |     const searchInput = page.getByRole('searchbox');\n> 33 |     await expect(searchInput).toBeVisible();\n     |                               ^\n  34 |     \n  35 |     // Enter search term\n  36 |     await searchInput.fill('Tokyo');\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:33:31"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T01:16:16.095Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgaGF2ZSB3b3JraW5nIHNlYXJjaCBmdW5jdGlvbmFsaXR5Ci0gTG9jYXRpb246IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czozMDo3CgojIEVycm9yIGRldGFpbHMKCmBgYApFcnJvcjogVGltZWQgb3V0IDEwMDAwbXMgd2FpdGluZyBmb3IgZXhwZWN0KGxvY2F0b3IpLnRvQmVWaXNpYmxlKCkKCkxvY2F0b3I6IGdldEJ5Um9sZSgnc2VhcmNoYm94JykKRXhwZWN0ZWQ6IHZpc2libGUKUmVjZWl2ZWQ6IDxlbGVtZW50KHMpIG5vdCBmb3VuZD4KQ2FsbCBsb2c6CiAgLSBleHBlY3QudG9CZVZpc2libGUgd2l0aCB0aW1lb3V0IDEwMDAwbXMKICAtIHdhaXRpbmcgZm9yIGdldEJ5Um9sZSgnc2VhcmNoYm94JykKCiAgICBhdCAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL2hvbWVwYWdlLnNwZWMudHM6MzM6MzEKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgMSB8IGltcG9ydCB7IHRlc3QsIGV4cGVjdCB9IGZyb20gJ0BwbGF5d3JpZ2h0L3Rlc3QnOwogICAyIHwKICAgMyB8IHRlc3QuZGVzY3JpYmUoJ0hvbWVwYWdlJywgKCkgPT4gewogICA0IHwgICB0ZXN0LmJlZm9yZUVhY2goYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvJyk7CiAgIDYgfCAgIH0pOwogICA3IHwKICAgOCB8ICAgdGVzdCgnc2hvdWxkIGxvYWQgaG9tZXBhZ2Ugd2l0aCBhbGwgZXNzZW50aWFsIGVsZW1lbnRzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDkgfCAgICAgLy8gQ2hlY2sgcGFnZSB0aXRsZQogICAxMCB8ICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVGl0bGUoL0phcGFuZXNlIEFyY2hpdGVjdHVyZSBNYXB85pel5pys44Gu5bu656+J44Oe44OD44OXLyk7CiAgIDExIHwgICAgIAogICAxMiB8ICAgICAvLyBDaGVjayBoZXJvIHNlY3Rpb24KICAgMTMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KSkudG9CZVZpc2libGUoKTsKICAgMTQgfCAgICAgCiAgIDE1IHwgICAgIC8vIENoZWNrIG5hdmlnYXRpb24gbWVudQogICAxNiB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ25hdmlnYXRpb24nKSkudG9CZVZpc2libGUoKTsKICAgMTcgfCAgICAgCiAgIDE4IHwgICAgIC8vIENoZWNrIG1haW4gbmF2aWdhdGlvbiBsaW5rcwogICAxOSB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9hcmNoaXRlY3R1cmV85bu656+JL2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIwIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL2FyY2hpdGVjdHN85bu656+J5a62L2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIxIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL21hcHzjg57jg4Pjg5cvaSB9KSkudG9CZVZpc2libGUoKTsKICAgMjIgfCAgICAgCiAgIDIzIHwgICAgIC8vIENoZWNrIHNlYXJjaCBmdW5jdGlvbmFsaXR5CiAgIDI0IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94JykpLnRvQmVWaXNpYmxlKCk7CiAgIDI1IHwgICAgIAogICAyNiB8ICAgICAvLyBDaGVjayBmb290ZXIKICAgMjcgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdjb250ZW50aW5mbycpKS50b0JlVmlzaWJsZSgpOwogICAyOCB8ICAgfSk7CiAgIDI5IHwKICAgMzAgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHdvcmtpbmcgc2VhcmNoIGZ1bmN0aW9uYWxpdHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgMzEgfCAgICAgLy8gTG9jYXRlIHNlYXJjaCBpbnB1dAogICAzMiB8ICAgICBjb25zdCBzZWFyY2hJbnB1dCA9IHBhZ2UuZ2V0QnlSb2xlKCdzZWFyY2hib3gnKTsKPiAgMzMgfCAgICAgYXdhaXQgZXhwZWN0KHNlYXJjaElucHV0KS50b0JlVmlzaWJsZSgpOwogICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4gRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCiAgIDM0IHwgICAgIAogICAzNSB8ICAgICAvLyBFbnRlciBzZWFyY2ggdGVybQogICAzNiB8ICAgICBhd2FpdCBzZWFyY2hJbnB1dC5maWxsKCdUb2t5bycpOwogICAzNyB8ICAgICAKICAgMzggfCAgICAgLy8gU3VibWl0IHNlYXJjaCAobG9vayBmb3Igc2VhcmNoIGJ1dHRvbiBvciBwcmVzcyBFbnRlcikKICAgMzkgfCAgICAgY29uc3Qgc2VhcmNoQnV0dG9uID0gcGFnZS5nZXRCeVJvbGUoJ2J1dHRvbicsIHsgbmFtZTogL3NlYXJjaHzmpJzntKIvaSB9KTsKICAgNDAgfCAgICAgaWYgKGF3YWl0IHNlYXJjaEJ1dHRvbi5pc1Zpc2libGUoKSkgewogICA0MSB8ICAgICAgIGF3YWl0IHNlYXJjaEJ1dHRvbi5jbGljaygpOwogICA0MiB8ICAgICB9IGVsc2UgewogICA0MyB8ICAgICAgIGF3YWl0IHNlYXJjaElucHV0LnByZXNzKCdFbnRlcicpOwogICA0NCB8ICAgICB9CiAgIDQ1IHwgICAgIAogICA0NiB8ICAgICAvLyBTaG91bGQgbmF2aWdhdGUgdG8gc2VhcmNoIHJlc3VsdHMgb3IgdXBkYXRlIGN1cnJlbnQgcGFnZQogICA0NyB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JMb2FkU3RhdGUoJ25ldHdvcmtpZGxlJyk7CiAgIDQ4IHwgICAgIAogICA0OSB8ICAgICAvLyBDaGVjayB0aGF0IHdlIGVpdGhlciBuYXZpZ2F0ZWQgdG8gcmVzdWx0cyBvciByZXN1bHRzIGFyZSBzaG93bgogICA1MCB8ICAgICBjb25zdCBoYXNOYXZpZ2F0ZWQgPSBwYWdlLnVybCgpLmluY2x1ZGVzKCcvYXJjaGl0ZWN0dXJlJykgfHwgcGFnZS51cmwoKS5pbmNsdWRlcygnL3NlYXJjaCcpOwogICA1MSB8ICAgICBjb25zdCBoYXNSZXN1bHRzID0gYXdhaXQgcGFnZS5sb2NhdG9yKCdbZGF0YS10ZXN0aWQ9ImFyY2hpdGVjdHVyZS1pdGVtIl0nKS5jb3VudCgpID4gMDsKICAgNTIgfCAgICAgY29uc3QgaGFzTm9SZXN1bHRzID0gYXdhaXQgcGFnZS5nZXRCeVRleHQoL25vIHJlc3VsdHN857WQ5p6c44GM6KaL44Gk44GL44KK44G+44Gb44KTL2kpLmlzVmlzaWJsZSgpOwogICA1MyB8ICAgICAKICAgNTQgfCAgICAgZXhwZWN0KGhhc05hdmlnYXRlZCB8fCBoYXNSZXN1bHRzIHx8IGhhc05vUmVzdWx0cykudG9CZVRydXRoeSgpOwogICA1NSB8ICAgfSk7CiAgIDU2IHwKICAgNTcgfCAgIHRlc3QoJ3Nob3VsZCBkaXNwbGF5IGZlYXR1cmUgY2FyZHMgb3Igc2VjdGlvbnMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgNTggfCAgICAgLy8gTG9vayBmb3IgZmVhdHVyZSBjYXJkcywgc2VjdGlvbnMsIG9yIHNpbWlsYXIgY29udGVudAogICA1OSB8ICAgICBjb25zdCBmZWF0dXJlU2VsZWN0b3JzID0gWwogICA2MCB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImZlYXR1cmUtY2FyZCJdJywKICAgNjEgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJmZWF0dXJlLXNlY3Rpb24iXScsCiAgIDYyIHwgICAgICAgJy5mZWF0dXJlLWNhcmQnLAogICA2MyB8ICAgICAgICcuZmVhdHVyZS1zZWN0aW9uJywKICAgNjQgfCAgICAgICAnW3JvbGU9ImFydGljbGUiXScKICAgNjUgfCAgICAgXTsKICAgNjYgfCAgICAgCiAgIDY3IHwgICAgIGxldCBmZWF0dXJlc0ZvdW5kID0gZmFsc2U7CiAgIDY4IHwgICAgIGZvciAoY29uc3Qgc2VsZWN0b3Igb2YgZmVhdHVyZVNlbGVjdG9ycykgewogICA2OSB8ICAgICAgIGNvbnN0IGVsZW1lbnRzID0gcGFnZS5sb2NhdG9yKHNlbGVjdG9yKTsKICAgNzAgfCAgICAgICBpZiAoYXdhaXQgZWxlbWVudHMuY291bnQoKSA+IDApIHsKICAgNzEgfCAgICAgICAgIGF3YWl0IGV4cGVjdChlbGVtZW50cy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogICA3MiB8ICAgICAgICAgZmVhdHVyZXNGb3VuZCA9IHRydWU7CiAgIDczIHwgICAgICAgICBicmVhazsKICAgNzQgfCAgICAgICB9CiAgIDc1IHwgICAgIH0KICAgNzYgfCAgICAgCiAgIDc3IHwgICAgIC8vIElmIG5vIHNwZWNpZmljIGZlYXR1cmUgY2FyZHMsIGNoZWNrIGZvciBnZW5lcmFsIGNvbnRlbnQgc2VjdGlvbnMKICAgNzggfCAgICAgaWYgKCFmZWF0dXJlc0ZvdW5kKSB7CiAgIDc5IHwgICAgICAgY29uc3QgY29udGVudFNlY3Rpb25zID0gcGFnZS5sb2NhdG9yKCdtYWluIHNlY3Rpb24sIC5jb250ZW50LXNlY3Rpb24sIC5oZXJvLXNlY3Rpb24nKTsKICAgODAgfCAgICAgICBpZiAoYXdhaXQgY29udGVudFNlY3Rpb25zLmNvdW50KCkgPiAwKSB7CiAgIDgxIHwgICAgICAgICBhd2FpdCBleHBlY3QoY29udGVudFNlY3Rpb25zLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgIDgyIHwgICAgICAgfQogICA4MyB8ICAgICB9CiAgIDg0IHwgICB9KTsKICAgODUgfAogICA4NiB8ICAgdGVzdCgnc2hvdWxkIGJlIHJlc3BvbnNpdmUgb24gbW9iaWxlIGRldmljZXMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgODcgfCAgICAgLy8gU2V0IG1vYmlsZSB2aWV3cG9ydAogICA4OCB8ICAgICBhd2FpdCBwYWdlLnNldFZpZXdwb3J0U2l6ZSh7IHdpZHRoOiAzNzUsIGhlaWdodDogNjY3IH0pOwogICA4OSB8ICAgICAKICAgOTAgfCAgICAgLy8gQ2hlY2sgdGhhdCBuYXZpZ2F0aW9uIGlzIG1vYmlsZS1mcmllbmRseQogICA5MSB8ICAgICBjb25zdCBuYXYgPSBwYWdlLmdldEJ5Um9sZSgnbmF2aWdhdGlvbicpOwogICA5MiB8ICAgICBhd2FpdCBleHBlY3QobmF2KS50b0JlVmlzaWJsZSgpOwogICA5MyB8ICAgICAKICAgOTQgfCAgICAgLy8gQ2hlY2sgZm9yIG1vYmlsZSBtZW51IHRvZ2dsZSBpZiBpdCBleGlzdHMKICAgOTUgfCAgICAgY29uc3QgbW9iaWxlTWVudVRvZ2dsZSA9IHBhZ2UuZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6IC9tZW51fOODoeODi+ODpeODvC9pIH0pOwogICA5NiB8ICAgICBpZiAoYXdhaXQgbW9iaWxlTWVudVRvZ2dsZS5pc1Zpc2libGUoKSkgewogICA5NyB8ICAgICAgIGF3YWl0IG1vYmlsZU1lbnVUb2dnbGUuY2xpY2soKTsKICAgOTggfCAgICAgICAvLyBNZW51IHNob3VsZCBleHBhbmQKICAgOTkgfCAgICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ21lbnUnKSkudG9CZVZpc2libGUoKTsKICAxMDAgfCAgICAgfQogIDEwMSB8ICAgICAKICAxMDIgfCAgICAgLy8gQ2hlY2sgdGhhdCBzZWFyY2ggaXMgYWNjZXNzaWJsZSBvbiBtb2JpbGUKICAxMDMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdzZWFyY2hib3gnKSkudG9CZVZpc2libGUoKTsKICAxMDQgfCAgICAgCiAgMTA1IHwgICAgIC8vIENoZWNrIHRoYXQgbWFpbiBjb250ZW50IGlzIHZpc2libGUgYW5kIHByb3Blcmx5IHNjYWxlZAogIDEwNiB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdtYWluJykpLnRvQmVWaXNpYmxlKCk7CiAgMTA3IHwgICB9KTsKICAxMDggfAogIDEwOSB8ICAgdGVzdCgnc2hvdWxkIGhhbmRsZSBzbG93IGxvYWRpbmcgZ3JhY2VmdWxseScsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDExMCB8ICAgICAvLyBTaW11bGF0ZSBzbG93IG5ldHdvcmsKICAxMTEgfCAgICAgYXdhaXQgcGFnZS5yb3V0ZSgnKiovKicsIHJvdXRlID0+IHsKICAxMTIgfCAgICAgICBzZXRUaW1lb3V0KCgpID0+IHJvdXRlLmNvbnRpbnVlKCksIDEwMCk7CiAgMTEzIHwgICAgIH0pOwogIDExNCB8ICAgICAKICAxMTUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvJyk7CiAgMTE2IHwgICAgIAogIDExNyB8ICAgICAvLyBDaGVjayBmb3IgbG9hZGluZyBpbmRpY2F0b3JzCiAgMTE4IHwgICAgIGNvbnN0IGxvYWRpbmdJbmRpY2F0b3JzID0gWwogIDExOSB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImxvYWRpbmctc2tlbGV0b24iXScsCiAgMTIwIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0ibG9hZGluZy1zcGlubmVyIl0nLAogIDEyMSB8ICAgICAgICcubG9hZGluZycsCiAgMTIyIHwgICAgICAgJy5za2VsZXRvbicKICAxMjMgfCAgICAgXTsKICAxMjQgfCAgICAgCiAgMTI1IHwgICAgIGZvciAoY29uc3Qgc2VsZWN0b3Igb2YgbG9hZGluZ0luZGljYXRvcnMpIHsKICAxMjYgfCAgICAgICBjb25zdCBsb2FkaW5nID0gcGFnZS5sb2NhdG9yKHNlbGVjdG9yKTsKICAxMjcgfCAgICAgICBpZiAoYXdhaXQgbG9hZGluZy5jb3VudCgpID4gMCkgewogIDEyOCB8ICAgICAgICAgLy8gTG9hZGluZyBpbmRpY2F0b3Igc2hvdWxkIGJlIHZpc2libGUgaW5pdGlhbGx5CiAgMTI5IHwgICAgICAgICBhd2FpdCBleHBlY3QobG9hZGluZy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogIDEzMCB8ICAgICAgICAgYnJlYWs7CiAgMTMxIHwgICAgICAgfQogIDEzMiB8ICAgICB9CiAgMTMzIHwgICAgIApgYGA="
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 31,
+                        "line": 33
+                      }
+                    },
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 10552,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('searchbox')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox')\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('searchbox')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox')\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:33:31",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('searchbox')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox')\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for getByRole('searchbox')"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 31,
+                          "line": 33
+                        },
+                        "snippet": "  31 |     // Locate search input\n  32 |     const searchInput = page.getByRole('searchbox');\n> 33 |     await expect(searchInput).toBeVisible();\n     |                               ^\n  34 |     \n  35 |     // Enter search term\n  36 |     await searchInput.fill('Tokyo');"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 31,
+                            "line": 33
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('searchbox')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox')\u001b[22m\n\n\n  31 |     // Locate search input\n  32 |     const searchInput = page.getByRole('searchbox');\n> 33 |     await expect(searchInput).toBeVisible();\n     |                               ^\n  34 |     \n  35 |     // Enter search term\n  36 |     await searchInput.fill('Tokyo');\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:33:31"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-07-07T01:16:30.207Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgaGF2ZSB3b3JraW5nIHNlYXJjaCBmdW5jdGlvbmFsaXR5Ci0gTG9jYXRpb246IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czozMDo3CgojIEVycm9yIGRldGFpbHMKCmBgYApFcnJvcjogVGltZWQgb3V0IDEwMDAwbXMgd2FpdGluZyBmb3IgZXhwZWN0KGxvY2F0b3IpLnRvQmVWaXNpYmxlKCkKCkxvY2F0b3I6IGdldEJ5Um9sZSgnc2VhcmNoYm94JykKRXhwZWN0ZWQ6IHZpc2libGUKUmVjZWl2ZWQ6IDxlbGVtZW50KHMpIG5vdCBmb3VuZD4KQ2FsbCBsb2c6CiAgLSBleHBlY3QudG9CZVZpc2libGUgd2l0aCB0aW1lb3V0IDEwMDAwbXMKICAtIHdhaXRpbmcgZm9yIGdldEJ5Um9sZSgnc2VhcmNoYm94JykKCiAgICBhdCAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL2hvbWVwYWdlLnNwZWMudHM6MzM6MzEKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgMSB8IGltcG9ydCB7IHRlc3QsIGV4cGVjdCB9IGZyb20gJ0BwbGF5d3JpZ2h0L3Rlc3QnOwogICAyIHwKICAgMyB8IHRlc3QuZGVzY3JpYmUoJ0hvbWVwYWdlJywgKCkgPT4gewogICA0IHwgICB0ZXN0LmJlZm9yZUVhY2goYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvJyk7CiAgIDYgfCAgIH0pOwogICA3IHwKICAgOCB8ICAgdGVzdCgnc2hvdWxkIGxvYWQgaG9tZXBhZ2Ugd2l0aCBhbGwgZXNzZW50aWFsIGVsZW1lbnRzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDkgfCAgICAgLy8gQ2hlY2sgcGFnZSB0aXRsZQogICAxMCB8ICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVGl0bGUoL0phcGFuZXNlIEFyY2hpdGVjdHVyZSBNYXB85pel5pys44Gu5bu656+J44Oe44OD44OXLyk7CiAgIDExIHwgICAgIAogICAxMiB8ICAgICAvLyBDaGVjayBoZXJvIHNlY3Rpb24KICAgMTMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KSkudG9CZVZpc2libGUoKTsKICAgMTQgfCAgICAgCiAgIDE1IHwgICAgIC8vIENoZWNrIG5hdmlnYXRpb24gbWVudQogICAxNiB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ25hdmlnYXRpb24nKSkudG9CZVZpc2libGUoKTsKICAgMTcgfCAgICAgCiAgIDE4IHwgICAgIC8vIENoZWNrIG1haW4gbmF2aWdhdGlvbiBsaW5rcwogICAxOSB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9hcmNoaXRlY3R1cmV85bu656+JL2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIwIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL2FyY2hpdGVjdHN85bu656+J5a62L2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIxIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL21hcHzjg57jg4Pjg5cvaSB9KSkudG9CZVZpc2libGUoKTsKICAgMjIgfCAgICAgCiAgIDIzIHwgICAgIC8vIENoZWNrIHNlYXJjaCBmdW5jdGlvbmFsaXR5CiAgIDI0IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94JykpLnRvQmVWaXNpYmxlKCk7CiAgIDI1IHwgICAgIAogICAyNiB8ICAgICAvLyBDaGVjayBmb290ZXIKICAgMjcgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdjb250ZW50aW5mbycpKS50b0JlVmlzaWJsZSgpOwogICAyOCB8ICAgfSk7CiAgIDI5IHwKICAgMzAgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHdvcmtpbmcgc2VhcmNoIGZ1bmN0aW9uYWxpdHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgMzEgfCAgICAgLy8gTG9jYXRlIHNlYXJjaCBpbnB1dAogICAzMiB8ICAgICBjb25zdCBzZWFyY2hJbnB1dCA9IHBhZ2UuZ2V0QnlSb2xlKCdzZWFyY2hib3gnKTsKPiAgMzMgfCAgICAgYXdhaXQgZXhwZWN0KHNlYXJjaElucHV0KS50b0JlVmlzaWJsZSgpOwogICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4gRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCiAgIDM0IHwgICAgIAogICAzNSB8ICAgICAvLyBFbnRlciBzZWFyY2ggdGVybQogICAzNiB8ICAgICBhd2FpdCBzZWFyY2hJbnB1dC5maWxsKCdUb2t5bycpOwogICAzNyB8ICAgICAKICAgMzggfCAgICAgLy8gU3VibWl0IHNlYXJjaCAobG9vayBmb3Igc2VhcmNoIGJ1dHRvbiBvciBwcmVzcyBFbnRlcikKICAgMzkgfCAgICAgY29uc3Qgc2VhcmNoQnV0dG9uID0gcGFnZS5nZXRCeVJvbGUoJ2J1dHRvbicsIHsgbmFtZTogL3NlYXJjaHzmpJzntKIvaSB9KTsKICAgNDAgfCAgICAgaWYgKGF3YWl0IHNlYXJjaEJ1dHRvbi5pc1Zpc2libGUoKSkgewogICA0MSB8ICAgICAgIGF3YWl0IHNlYXJjaEJ1dHRvbi5jbGljaygpOwogICA0MiB8ICAgICB9IGVsc2UgewogICA0MyB8ICAgICAgIGF3YWl0IHNlYXJjaElucHV0LnByZXNzKCdFbnRlcicpOwogICA0NCB8ICAgICB9CiAgIDQ1IHwgICAgIAogICA0NiB8ICAgICAvLyBTaG91bGQgbmF2aWdhdGUgdG8gc2VhcmNoIHJlc3VsdHMgb3IgdXBkYXRlIGN1cnJlbnQgcGFnZQogICA0NyB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JMb2FkU3RhdGUoJ25ldHdvcmtpZGxlJyk7CiAgIDQ4IHwgICAgIAogICA0OSB8ICAgICAvLyBDaGVjayB0aGF0IHdlIGVpdGhlciBuYXZpZ2F0ZWQgdG8gcmVzdWx0cyBvciByZXN1bHRzIGFyZSBzaG93bgogICA1MCB8ICAgICBjb25zdCBoYXNOYXZpZ2F0ZWQgPSBwYWdlLnVybCgpLmluY2x1ZGVzKCcvYXJjaGl0ZWN0dXJlJykgfHwgcGFnZS51cmwoKS5pbmNsdWRlcygnL3NlYXJjaCcpOwogICA1MSB8ICAgICBjb25zdCBoYXNSZXN1bHRzID0gYXdhaXQgcGFnZS5sb2NhdG9yKCdbZGF0YS10ZXN0aWQ9ImFyY2hpdGVjdHVyZS1pdGVtIl0nKS5jb3VudCgpID4gMDsKICAgNTIgfCAgICAgY29uc3QgaGFzTm9SZXN1bHRzID0gYXdhaXQgcGFnZS5nZXRCeVRleHQoL25vIHJlc3VsdHN857WQ5p6c44GM6KaL44Gk44GL44KK44G+44Gb44KTL2kpLmlzVmlzaWJsZSgpOwogICA1MyB8ICAgICAKICAgNTQgfCAgICAgZXhwZWN0KGhhc05hdmlnYXRlZCB8fCBoYXNSZXN1bHRzIHx8IGhhc05vUmVzdWx0cykudG9CZVRydXRoeSgpOwogICA1NSB8ICAgfSk7CiAgIDU2IHwKICAgNTcgfCAgIHRlc3QoJ3Nob3VsZCBkaXNwbGF5IGZlYXR1cmUgY2FyZHMgb3Igc2VjdGlvbnMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgNTggfCAgICAgLy8gTG9vayBmb3IgZmVhdHVyZSBjYXJkcywgc2VjdGlvbnMsIG9yIHNpbWlsYXIgY29udGVudAogICA1OSB8ICAgICBjb25zdCBmZWF0dXJlU2VsZWN0b3JzID0gWwogICA2MCB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImZlYXR1cmUtY2FyZCJdJywKICAgNjEgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJmZWF0dXJlLXNlY3Rpb24iXScsCiAgIDYyIHwgICAgICAgJy5mZWF0dXJlLWNhcmQnLAogICA2MyB8ICAgICAgICcuZmVhdHVyZS1zZWN0aW9uJywKICAgNjQgfCAgICAgICAnW3JvbGU9ImFydGljbGUiXScKICAgNjUgfCAgICAgXTsKICAgNjYgfCAgICAgCiAgIDY3IHwgICAgIGxldCBmZWF0dXJlc0ZvdW5kID0gZmFsc2U7CiAgIDY4IHwgICAgIGZvciAoY29uc3Qgc2VsZWN0b3Igb2YgZmVhdHVyZVNlbGVjdG9ycykgewogICA2OSB8ICAgICAgIGNvbnN0IGVsZW1lbnRzID0gcGFnZS5sb2NhdG9yKHNlbGVjdG9yKTsKICAgNzAgfCAgICAgICBpZiAoYXdhaXQgZWxlbWVudHMuY291bnQoKSA+IDApIHsKICAgNzEgfCAgICAgICAgIGF3YWl0IGV4cGVjdChlbGVtZW50cy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogICA3MiB8ICAgICAgICAgZmVhdHVyZXNGb3VuZCA9IHRydWU7CiAgIDczIHwgICAgICAgICBicmVhazsKICAgNzQgfCAgICAgICB9CiAgIDc1IHwgICAgIH0KICAgNzYgfCAgICAgCiAgIDc3IHwgICAgIC8vIElmIG5vIHNwZWNpZmljIGZlYXR1cmUgY2FyZHMsIGNoZWNrIGZvciBnZW5lcmFsIGNvbnRlbnQgc2VjdGlvbnMKICAgNzggfCAgICAgaWYgKCFmZWF0dXJlc0ZvdW5kKSB7CiAgIDc5IHwgICAgICAgY29uc3QgY29udGVudFNlY3Rpb25zID0gcGFnZS5sb2NhdG9yKCdtYWluIHNlY3Rpb24sIC5jb250ZW50LXNlY3Rpb24sIC5oZXJvLXNlY3Rpb24nKTsKICAgODAgfCAgICAgICBpZiAoYXdhaXQgY29udGVudFNlY3Rpb25zLmNvdW50KCkgPiAwKSB7CiAgIDgxIHwgICAgICAgICBhd2FpdCBleHBlY3QoY29udGVudFNlY3Rpb25zLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgIDgyIHwgICAgICAgfQogICA4MyB8ICAgICB9CiAgIDg0IHwgICB9KTsKICAgODUgfAogICA4NiB8ICAgdGVzdCgnc2hvdWxkIGJlIHJlc3BvbnNpdmUgb24gbW9iaWxlIGRldmljZXMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgODcgfCAgICAgLy8gU2V0IG1vYmlsZSB2aWV3cG9ydAogICA4OCB8ICAgICBhd2FpdCBwYWdlLnNldFZpZXdwb3J0U2l6ZSh7IHdpZHRoOiAzNzUsIGhlaWdodDogNjY3IH0pOwogICA4OSB8ICAgICAKICAgOTAgfCAgICAgLy8gQ2hlY2sgdGhhdCBuYXZpZ2F0aW9uIGlzIG1vYmlsZS1mcmllbmRseQogICA5MSB8ICAgICBjb25zdCBuYXYgPSBwYWdlLmdldEJ5Um9sZSgnbmF2aWdhdGlvbicpOwogICA5MiB8ICAgICBhd2FpdCBleHBlY3QobmF2KS50b0JlVmlzaWJsZSgpOwogICA5MyB8ICAgICAKICAgOTQgfCAgICAgLy8gQ2hlY2sgZm9yIG1vYmlsZSBtZW51IHRvZ2dsZSBpZiBpdCBleGlzdHMKICAgOTUgfCAgICAgY29uc3QgbW9iaWxlTWVudVRvZ2dsZSA9IHBhZ2UuZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6IC9tZW51fOODoeODi+ODpeODvC9pIH0pOwogICA5NiB8ICAgICBpZiAoYXdhaXQgbW9iaWxlTWVudVRvZ2dsZS5pc1Zpc2libGUoKSkgewogICA5NyB8ICAgICAgIGF3YWl0IG1vYmlsZU1lbnVUb2dnbGUuY2xpY2soKTsKICAgOTggfCAgICAgICAvLyBNZW51IHNob3VsZCBleHBhbmQKICAgOTkgfCAgICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ21lbnUnKSkudG9CZVZpc2libGUoKTsKICAxMDAgfCAgICAgfQogIDEwMSB8ICAgICAKICAxMDIgfCAgICAgLy8gQ2hlY2sgdGhhdCBzZWFyY2ggaXMgYWNjZXNzaWJsZSBvbiBtb2JpbGUKICAxMDMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdzZWFyY2hib3gnKSkudG9CZVZpc2libGUoKTsKICAxMDQgfCAgICAgCiAgMTA1IHwgICAgIC8vIENoZWNrIHRoYXQgbWFpbiBjb250ZW50IGlzIHZpc2libGUgYW5kIHByb3Blcmx5IHNjYWxlZAogIDEwNiB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdtYWluJykpLnRvQmVWaXNpYmxlKCk7CiAgMTA3IHwgICB9KTsKICAxMDggfAogIDEwOSB8ICAgdGVzdCgnc2hvdWxkIGhhbmRsZSBzbG93IGxvYWRpbmcgZ3JhY2VmdWxseScsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDExMCB8ICAgICAvLyBTaW11bGF0ZSBzbG93IG5ldHdvcmsKICAxMTEgfCAgICAgYXdhaXQgcGFnZS5yb3V0ZSgnKiovKicsIHJvdXRlID0+IHsKICAxMTIgfCAgICAgICBzZXRUaW1lb3V0KCgpID0+IHJvdXRlLmNvbnRpbnVlKCksIDEwMCk7CiAgMTEzIHwgICAgIH0pOwogIDExNCB8ICAgICAKICAxMTUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvJyk7CiAgMTE2IHwgICAgIAogIDExNyB8ICAgICAvLyBDaGVjayBmb3IgbG9hZGluZyBpbmRpY2F0b3JzCiAgMTE4IHwgICAgIGNvbnN0IGxvYWRpbmdJbmRpY2F0b3JzID0gWwogIDExOSB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImxvYWRpbmctc2tlbGV0b24iXScsCiAgMTIwIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0ibG9hZGluZy1zcGlubmVyIl0nLAogIDEyMSB8ICAgICAgICcubG9hZGluZycsCiAgMTIyIHwgICAgICAgJy5za2VsZXRvbicKICAxMjMgfCAgICAgXTsKICAxMjQgfCAgICAgCiAgMTI1IHwgICAgIGZvciAoY29uc3Qgc2VsZWN0b3Igb2YgbG9hZGluZ0luZGljYXRvcnMpIHsKICAxMjYgfCAgICAgICBjb25zdCBsb2FkaW5nID0gcGFnZS5sb2NhdG9yKHNlbGVjdG9yKTsKICAxMjcgfCAgICAgICBpZiAoYXdhaXQgbG9hZGluZy5jb3VudCgpID4gMCkgewogIDEyOCB8ICAgICAgICAgLy8gTG9hZGluZyBpbmRpY2F0b3Igc2hvdWxkIGJlIHZpc2libGUgaW5pdGlhbGx5CiAgMTI5IHwgICAgICAgICBhd2FpdCBleHBlY3QobG9hZGluZy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogIDEzMCB8ICAgICAgICAgYnJlYWs7CiAgMTMxIHwgICAgICAgfQogIDEzMiB8ICAgICB9CiAgMTMzIHwgICAgIApgYGA="
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 31,
+                        "line": 33
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "84e7eb052e8cbae1c9f0-67b04b67a1d96052cb7d",
+              "file": "homepage.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "should display feature cards or sections",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2179,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T01:16:16.096Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "84e7eb052e8cbae1c9f0-499e5455966f91615638",
+              "file": "homepage.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "should be responsive on mobile devices",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 12466,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('navigation')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation')\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('navigation')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation')\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:92:23",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('navigation')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation')\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for getByRole('navigation')"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 23,
+                          "line": 92
+                        },
+                        "snippet": "  90 |     // Check that navigation is mobile-friendly\n  91 |     const nav = page.getByRole('navigation');\n> 92 |     await expect(nav).toBeVisible();\n     |                       ^\n  93 |     \n  94 |     // Check for mobile menu toggle if it exists\n  95 |     const mobileMenuToggle = page.getByRole('button', { name: /menu|メニュー/i });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 23,
+                            "line": 92
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('navigation')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation')\u001b[22m\n\n\n  90 |     // Check that navigation is mobile-friendly\n  91 |     const nav = page.getByRole('navigation');\n> 92 |     await expect(nav).toBeVisible();\n     |                       ^\n  93 |     \n  94 |     // Check for mobile menu toggle if it exists\n  95 |     const mobileMenuToggle = page.getByRole('button', { name: /menu|メニュー/i });\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:92:23"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T01:16:16.084Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgYmUgcmVzcG9uc2l2ZSBvbiBtb2JpbGUgZGV2aWNlcwotIExvY2F0aW9uOiAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL2hvbWVwYWdlLnNwZWMudHM6ODY6NwoKIyBFcnJvciBkZXRhaWxzCgpgYGAKRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCgpMb2NhdG9yOiBnZXRCeVJvbGUoJ25hdmlnYXRpb24nKQpFeHBlY3RlZDogdmlzaWJsZQpSZWNlaXZlZDogPGVsZW1lbnQocykgbm90IGZvdW5kPgpDYWxsIGxvZzoKICAtIGV4cGVjdC50b0JlVmlzaWJsZSB3aXRoIHRpbWVvdXQgMTAwMDBtcwogIC0gd2FpdGluZyBmb3IgZ2V0QnlSb2xlKCduYXZpZ2F0aW9uJykKCiAgICBhdCAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL2hvbWVwYWdlLnNwZWMudHM6OTI6MjMKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgMSB8IGltcG9ydCB7IHRlc3QsIGV4cGVjdCB9IGZyb20gJ0BwbGF5d3JpZ2h0L3Rlc3QnOwogICAyIHwKICAgMyB8IHRlc3QuZGVzY3JpYmUoJ0hvbWVwYWdlJywgKCkgPT4gewogICA0IHwgICB0ZXN0LmJlZm9yZUVhY2goYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvJyk7CiAgIDYgfCAgIH0pOwogICA3IHwKICAgOCB8ICAgdGVzdCgnc2hvdWxkIGxvYWQgaG9tZXBhZ2Ugd2l0aCBhbGwgZXNzZW50aWFsIGVsZW1lbnRzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDkgfCAgICAgLy8gQ2hlY2sgcGFnZSB0aXRsZQogICAxMCB8ICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVGl0bGUoL0phcGFuZXNlIEFyY2hpdGVjdHVyZSBNYXB85pel5pys44Gu5bu656+J44Oe44OD44OXLyk7CiAgIDExIHwgICAgIAogICAxMiB8ICAgICAvLyBDaGVjayBoZXJvIHNlY3Rpb24KICAgMTMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KSkudG9CZVZpc2libGUoKTsKICAgMTQgfCAgICAgCiAgIDE1IHwgICAgIC8vIENoZWNrIG5hdmlnYXRpb24gbWVudQogICAxNiB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ25hdmlnYXRpb24nKSkudG9CZVZpc2libGUoKTsKICAgMTcgfCAgICAgCiAgIDE4IHwgICAgIC8vIENoZWNrIG1haW4gbmF2aWdhdGlvbiBsaW5rcwogICAxOSB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9hcmNoaXRlY3R1cmV85bu656+JL2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIwIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL2FyY2hpdGVjdHN85bu656+J5a62L2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIxIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL21hcHzjg57jg4Pjg5cvaSB9KSkudG9CZVZpc2libGUoKTsKICAgMjIgfCAgICAgCiAgIDIzIHwgICAgIC8vIENoZWNrIHNlYXJjaCBmdW5jdGlvbmFsaXR5CiAgIDI0IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94JykpLnRvQmVWaXNpYmxlKCk7CiAgIDI1IHwgICAgIAogICAyNiB8ICAgICAvLyBDaGVjayBmb290ZXIKICAgMjcgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdjb250ZW50aW5mbycpKS50b0JlVmlzaWJsZSgpOwogICAyOCB8ICAgfSk7CiAgIDI5IHwKICAgMzAgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHdvcmtpbmcgc2VhcmNoIGZ1bmN0aW9uYWxpdHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgMzEgfCAgICAgLy8gTG9jYXRlIHNlYXJjaCBpbnB1dAogICAzMiB8ICAgICBjb25zdCBzZWFyY2hJbnB1dCA9IHBhZ2UuZ2V0QnlSb2xlKCdzZWFyY2hib3gnKTsKICAgMzMgfCAgICAgYXdhaXQgZXhwZWN0KHNlYXJjaElucHV0KS50b0JlVmlzaWJsZSgpOwogICAzNCB8ICAgICAKICAgMzUgfCAgICAgLy8gRW50ZXIgc2VhcmNoIHRlcm0KICAgMzYgfCAgICAgYXdhaXQgc2VhcmNoSW5wdXQuZmlsbCgnVG9reW8nKTsKICAgMzcgfCAgICAgCiAgIDM4IHwgICAgIC8vIFN1Ym1pdCBzZWFyY2ggKGxvb2sgZm9yIHNlYXJjaCBidXR0b24gb3IgcHJlc3MgRW50ZXIpCiAgIDM5IHwgICAgIGNvbnN0IHNlYXJjaEJ1dHRvbiA9IHBhZ2UuZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6IC9zZWFyY2h85qSc57SiL2kgfSk7CiAgIDQwIHwgICAgIGlmIChhd2FpdCBzZWFyY2hCdXR0b24uaXNWaXNpYmxlKCkpIHsKICAgNDEgfCAgICAgICBhd2FpdCBzZWFyY2hCdXR0b24uY2xpY2soKTsKICAgNDIgfCAgICAgfSBlbHNlIHsKICAgNDMgfCAgICAgICBhd2FpdCBzZWFyY2hJbnB1dC5wcmVzcygnRW50ZXInKTsKICAgNDQgfCAgICAgfQogICA0NSB8ICAgICAKICAgNDYgfCAgICAgLy8gU2hvdWxkIG5hdmlnYXRlIHRvIHNlYXJjaCByZXN1bHRzIG9yIHVwZGF0ZSBjdXJyZW50IHBhZ2UKICAgNDcgfCAgICAgYXdhaXQgcGFnZS53YWl0Rm9yTG9hZFN0YXRlKCduZXR3b3JraWRsZScpOwogICA0OCB8ICAgICAKICAgNDkgfCAgICAgLy8gQ2hlY2sgdGhhdCB3ZSBlaXRoZXIgbmF2aWdhdGVkIHRvIHJlc3VsdHMgb3IgcmVzdWx0cyBhcmUgc2hvd24KICAgNTAgfCAgICAgY29uc3QgaGFzTmF2aWdhdGVkID0gcGFnZS51cmwoKS5pbmNsdWRlcygnL2FyY2hpdGVjdHVyZScpIHx8IHBhZ2UudXJsKCkuaW5jbHVkZXMoJy9zZWFyY2gnKTsKICAgNTEgfCAgICAgY29uc3QgaGFzUmVzdWx0cyA9IGF3YWl0IHBhZ2UubG9jYXRvcignW2RhdGEtdGVzdGlkPSJhcmNoaXRlY3R1cmUtaXRlbSJdJykuY291bnQoKSA+IDA7CiAgIDUyIHwgICAgIGNvbnN0IGhhc05vUmVzdWx0cyA9IGF3YWl0IHBhZ2UuZ2V0QnlUZXh0KC9ubyByZXN1bHRzfOe1kOaenOOBjOimi+OBpOOBi+OCiuOBvuOBm+OCky9pKS5pc1Zpc2libGUoKTsKICAgNTMgfCAgICAgCiAgIDU0IHwgICAgIGV4cGVjdChoYXNOYXZpZ2F0ZWQgfHwgaGFzUmVzdWx0cyB8fCBoYXNOb1Jlc3VsdHMpLnRvQmVUcnV0aHkoKTsKICAgNTUgfCAgIH0pOwogICA1NiB8CiAgIDU3IHwgICB0ZXN0KCdzaG91bGQgZGlzcGxheSBmZWF0dXJlIGNhcmRzIG9yIHNlY3Rpb25zJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDU4IHwgICAgIC8vIExvb2sgZm9yIGZlYXR1cmUgY2FyZHMsIHNlY3Rpb25zLCBvciBzaW1pbGFyIGNvbnRlbnQKICAgNTkgfCAgICAgY29uc3QgZmVhdHVyZVNlbGVjdG9ycyA9IFsKICAgNjAgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJmZWF0dXJlLWNhcmQiXScsCiAgIDYxIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0iZmVhdHVyZS1zZWN0aW9uIl0nLAogICA2MiB8ICAgICAgICcuZmVhdHVyZS1jYXJkJywKICAgNjMgfCAgICAgICAnLmZlYXR1cmUtc2VjdGlvbicsCiAgIDY0IHwgICAgICAgJ1tyb2xlPSJhcnRpY2xlIl0nCiAgIDY1IHwgICAgIF07CiAgIDY2IHwgICAgIAogICA2NyB8ICAgICBsZXQgZmVhdHVyZXNGb3VuZCA9IGZhbHNlOwogICA2OCB8ICAgICBmb3IgKGNvbnN0IHNlbGVjdG9yIG9mIGZlYXR1cmVTZWxlY3RvcnMpIHsKICAgNjkgfCAgICAgICBjb25zdCBlbGVtZW50cyA9IHBhZ2UubG9jYXRvcihzZWxlY3Rvcik7CiAgIDcwIHwgICAgICAgaWYgKGF3YWl0IGVsZW1lbnRzLmNvdW50KCkgPiAwKSB7CiAgIDcxIHwgICAgICAgICBhd2FpdCBleHBlY3QoZWxlbWVudHMuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAgNzIgfCAgICAgICAgIGZlYXR1cmVzRm91bmQgPSB0cnVlOwogICA3MyB8ICAgICAgICAgYnJlYWs7CiAgIDc0IHwgICAgICAgfQogICA3NSB8ICAgICB9CiAgIDc2IHwgICAgIAogICA3NyB8ICAgICAvLyBJZiBubyBzcGVjaWZpYyBmZWF0dXJlIGNhcmRzLCBjaGVjayBmb3IgZ2VuZXJhbCBjb250ZW50IHNlY3Rpb25zCiAgIDc4IHwgICAgIGlmICghZmVhdHVyZXNGb3VuZCkgewogICA3OSB8ICAgICAgIGNvbnN0IGNvbnRlbnRTZWN0aW9ucyA9IHBhZ2UubG9jYXRvcignbWFpbiBzZWN0aW9uLCAuY29udGVudC1zZWN0aW9uLCAuaGVyby1zZWN0aW9uJyk7CiAgIDgwIHwgICAgICAgaWYgKGF3YWl0IGNvbnRlbnRTZWN0aW9ucy5jb3VudCgpID4gMCkgewogICA4MSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGNvbnRlbnRTZWN0aW9ucy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogICA4MiB8ICAgICAgIH0KICAgODMgfCAgICAgfQogICA4NCB8ICAgfSk7CiAgIDg1IHwKICAgODYgfCAgIHRlc3QoJ3Nob3VsZCBiZSByZXNwb25zaXZlIG9uIG1vYmlsZSBkZXZpY2VzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDg3IHwgICAgIC8vIFNldCBtb2JpbGUgdmlld3BvcnQKICAgODggfCAgICAgYXdhaXQgcGFnZS5zZXRWaWV3cG9ydFNpemUoeyB3aWR0aDogMzc1LCBoZWlnaHQ6IDY2NyB9KTsKICAgODkgfCAgICAgCiAgIDkwIHwgICAgIC8vIENoZWNrIHRoYXQgbmF2aWdhdGlvbiBpcyBtb2JpbGUtZnJpZW5kbHkKICAgOTEgfCAgICAgY29uc3QgbmF2ID0gcGFnZS5nZXRCeVJvbGUoJ25hdmlnYXRpb24nKTsKPiAgOTIgfCAgICAgYXdhaXQgZXhwZWN0KG5hdikudG9CZVZpc2libGUoKTsKICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgXiBFcnJvcjogVGltZWQgb3V0IDEwMDAwbXMgd2FpdGluZyBmb3IgZXhwZWN0KGxvY2F0b3IpLnRvQmVWaXNpYmxlKCkKICAgOTMgfCAgICAgCiAgIDk0IHwgICAgIC8vIENoZWNrIGZvciBtb2JpbGUgbWVudSB0b2dnbGUgaWYgaXQgZXhpc3RzCiAgIDk1IHwgICAgIGNvbnN0IG1vYmlsZU1lbnVUb2dnbGUgPSBwYWdlLmdldEJ5Um9sZSgnYnV0dG9uJywgeyBuYW1lOiAvbWVudXzjg6Hjg4vjg6Xjg7wvaSB9KTsKICAgOTYgfCAgICAgaWYgKGF3YWl0IG1vYmlsZU1lbnVUb2dnbGUuaXNWaXNpYmxlKCkpIHsKICAgOTcgfCAgICAgICBhd2FpdCBtb2JpbGVNZW51VG9nZ2xlLmNsaWNrKCk7CiAgIDk4IHwgICAgICAgLy8gTWVudSBzaG91bGQgZXhwYW5kCiAgIDk5IHwgICAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdtZW51JykpLnRvQmVWaXNpYmxlKCk7CiAgMTAwIHwgICAgIH0KICAxMDEgfCAgICAgCiAgMTAyIHwgICAgIC8vIENoZWNrIHRoYXQgc2VhcmNoIGlzIGFjY2Vzc2libGUgb24gbW9iaWxlCiAgMTAzIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94JykpLnRvQmVWaXNpYmxlKCk7CiAgMTA0IHwgICAgIAogIDEwNSB8ICAgICAvLyBDaGVjayB0aGF0IG1haW4gY29udGVudCBpcyB2aXNpYmxlIGFuZCBwcm9wZXJseSBzY2FsZWQKICAxMDYgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UubG9jYXRvcignbWFpbicpKS50b0JlVmlzaWJsZSgpOwogIDEwNyB8ICAgfSk7CiAgMTA4IHwKICAxMDkgfCAgIHRlc3QoJ3Nob3VsZCBoYW5kbGUgc2xvdyBsb2FkaW5nIGdyYWNlZnVsbHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxMTAgfCAgICAgLy8gU2ltdWxhdGUgc2xvdyBuZXR3b3JrCiAgMTExIHwgICAgIGF3YWl0IHBhZ2Uucm91dGUoJyoqLyonLCByb3V0ZSA9PiB7CiAgMTEyIHwgICAgICAgc2V0VGltZW91dCgoKSA9PiByb3V0ZS5jb250aW51ZSgpLCAxMDApOwogIDExMyB8ICAgICB9KTsKICAxMTQgfCAgICAgCiAgMTE1IHwgICAgIGF3YWl0IHBhZ2UuZ290bygnLycpOwogIDExNiB8ICAgICAKICAxMTcgfCAgICAgLy8gQ2hlY2sgZm9yIGxvYWRpbmcgaW5kaWNhdG9ycwogIDExOCB8ICAgICBjb25zdCBsb2FkaW5nSW5kaWNhdG9ycyA9IFsKICAxMTkgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJsb2FkaW5nLXNrZWxldG9uIl0nLAogIDEyMCB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImxvYWRpbmctc3Bpbm5lciJdJywKICAxMjEgfCAgICAgICAnLmxvYWRpbmcnLAogIDEyMiB8ICAgICAgICcuc2tlbGV0b24nCiAgMTIzIHwgICAgIF07CiAgMTI0IHwgICAgIAogIDEyNSB8ICAgICBmb3IgKGNvbnN0IHNlbGVjdG9yIG9mIGxvYWRpbmdJbmRpY2F0b3JzKSB7CiAgMTI2IHwgICAgICAgY29uc3QgbG9hZGluZyA9IHBhZ2UubG9jYXRvcihzZWxlY3Rvcik7CiAgMTI3IHwgICAgICAgaWYgKGF3YWl0IGxvYWRpbmcuY291bnQoKSA+IDApIHsKICAxMjggfCAgICAgICAgIC8vIExvYWRpbmcgaW5kaWNhdG9yIHNob3VsZCBiZSB2aXNpYmxlIGluaXRpYWxseQogIDEyOSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGxvYWRpbmcuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAxMzAgfCAgICAgICAgIGJyZWFrOwogIDEzMSB8ICAgICAgIH0KICAxMzIgfCAgICAgfQogIDEzMyB8ICAgICAKICAxMzQgfCAgICAgLy8gV2FpdCBmb3IgY29udGVudCB0byBsb2FkCiAgMTM1IHwgICAgIGF3YWl0IHBhZ2Uud2FpdEZvckxvYWRTdGF0ZSgnbmV0d29ya2lkbGUnKTsKICAxMzYgfCAgICAgCiAgMTM3IHwgICAgIC8vIENoZWNrIHRoYXQgbWFpbiBjb250ZW50IGlzIGV2ZW50dWFsbHkgdmlzaWJsZQogIDEzOCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdtYWluJykpLnRvQmVWaXNpYmxlKCk7CiAgMTM5IHwgICB9KTsKICAxNDAgfAogIDE0MSB8ICAgdGVzdCgnc2hvdWxkIGhhdmUgcHJvcGVyIGFjY2Vzc2liaWxpdHkgZmVhdHVyZXMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxNDIgfCAgICAgLy8gQ2hlY2sgZm9yIHNraXAgbGlua3MKICAxNDMgfCAgICAgY29uc3Qgc2tpcExpbmtzID0gcGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9za2lwIHRvIG1haW4gY29udGVudHxza2lwIHRvIGNvbnRlbnQvaSB9KTsKICAxNDQgfCAgICAgaWYgKGF3YWl0IHNraXBMaW5rcy5jb3VudCgpID4gMCkgewogIDE0NSB8ICAgICAgIGF3YWl0IGV4cGVjdChza2lwTGlua3MuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAxNDYgfCAgICAgfQogIDE0NyB8ICAgICAKICAxNDggfCAgICAgLy8gQ2hlY2sgZm9yIHByb3BlciBoZWFkaW5nIGhpZXJhcmNoeQogIDE0OSB8ICAgICBjb25zdCBoMSA9IHBhZ2UuZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KTsKICAxNTAgfCAgICAgYXdhaXQgZXhwZWN0KGgxKS50b0JlVmlzaWJsZSgpOwogIDE1MSB8ICAgICAKICAxNTIgfCAgICAgLy8gQ2hlY2sgZm9yIGFsdCB0ZXh0IG9uIGltYWdlcwogIDE1MyB8ICAgICBjb25zdCBpbWFnZXMgPSBwYWdlLmxvY2F0b3IoJ2ltZycpOwogIDE1NCB8ICAgICBjb25zdCBpbWFnZUNvdW50ID0gYXdhaXQgaW1hZ2VzLmNvdW50KCk7CiAgMTU1IHwgICAgIAogIDE1NiB8ICAgICBpZiAoaW1hZ2VDb3VudCA+IDApIHsKICAxNTcgfCAgICAgICBmb3IgKGxldCBpID0gMDsgaSA8IE1hdGgubWluKGltYWdlQ291bnQsIDUpOyBpKyspIHsKICAxNTggfCAgICAgICAgIGNvbnN0IGltZyA9IGltYWdlcy5udGgoaSk7CiAgMTU5IHwgICAgICAgICBjb25zdCBhbHQgPSBhd2FpdCBpbWcuZ2V0QXR0cmlidXRlKCdhbHQnKTsKICAxNjAgfCAgICAgICAgIGNvbnN0IGFyaWFMYWJlbCA9IGF3YWl0IGltZy5nZXRBdHRyaWJ1dGUoJ2FyaWEtbGFiZWwnKTsKICAxNjEgfCAgICAgICAgIAogIDE2MiB8ICAgICAgICAgLy8gSW1hZ2VzIHNob3VsZCBoYXZlIGFsdCB0ZXh0IG9yIGFyaWEtbGFiZWwKICAxNjMgfCAgICAgICAgIGV4cGVjdChhbHQgIT09IG51bGwgfHwgYXJpYUxhYmVsICE9PSBudWxsKS50b0JlVHJ1dGh5KCk7CiAgMTY0IHwgICAgICAgfQogIDE2NSB8ICAgICB9CiAgMTY2IHwgICAgIAogIDE2NyB8ICAgICAvLyBDaGVjayBmb3IgcHJvcGVyIGZvY3VzIG1hbmFnZW1lbnQKICAxNjggfCAgICAgYXdhaXQgcGFnZS5rZXlib2FyZC5wcmVzcygnVGFiJyk7CiAgMTY5IHwgICAgIGNvbnN0IGZvY3VzZWRFbGVtZW50ID0gcGFnZS5sb2NhdG9yKCc6Zm9jdXMnKTsKICAxNzAgfCAgICAgYXdhaXQgZXhwZWN0KGZvY3VzZWRFbGVtZW50KS50b0JlVmlzaWJsZSgpOwogIDE3MSB8ICAgfSk7CiAgMTcyIHwKICAxNzMgfCAgIHRlc3QoJ3Nob3VsZCBoYW5kbGUgZXJyb3JzIGdyYWNlZnVsbHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxNzQgfCAgICAgLy8gVGVzdCB3aGF0IGhhcHBlbnMgd2hlbiB3ZSB0cnkgdG8gYWNjZXNzIGEgbm9uLWV4aXN0ZW50IHJvdXRlCiAgMTc1IHwgICAgIGF3YWl0IHBhZ2UuZ290bygnL25vbi1leGlzdGVudC1wYWdlJyk7CiAgMTc2IHwgICAgIAogIDE3NyB8ICAgICAvLyBTaG91bGQgc2hvdyA0MDQgcGFnZSBvciByZWRpcmVjdCB0byBob21lCiAgMTc4IHwgICAgIGNvbnN0IGlzNDA0ID0gcGFnZS51cmwoKS5pbmNsdWRlcygnNDA0JykgfHwgCiAgMTc5IHwgICAgICAgICAgICAgICAgICAgYXdhaXQgcGFnZS5nZXRCeVRleHQoLzQwNHxub3QgZm91bmR86KaL44Gk44GL44KK44G+44Gb44KTL2kpLmlzVmlzaWJsZSgpOwogIDE4MCB8ICAgICBjb25zdCBpc0hvbWUgPSBwYWdlLnVybCgpLmVuZHNXaXRoKCcvJykgfHwgcGFnZS51cmwoKS5lbmRzV2l0aCgnL2luZGV4Lmh0bWwnKTsKICAxODEgfCAgICAgCiAgMTgyIHwgICAgIGV4cGVjdChpczQwNCB8fCBpc0hvbWUpLnRvQmVUcnV0aHkoKTsKICAxODMgfCAgICAgCiAgMTg0IHwgICAgIC8vIElmIGl0J3MgYSA0MDQsIGNoZWNrIHRoYXQgbmF2aWdhdGlvbiBzdGlsbCB3b3JrcwogIDE4NSB8ICAgICBpZiAoaXM0MDQpIHsKICAxODYgfCAgICAgICBjb25zdCBob21lTGluayA9IHBhZ2UuZ2V0QnlSb2xlKCdsaW5rJywgeyBuYW1lOiAvaG9tZXzjg5vjg7zjg6AvaSB9KTsKICAxODcgfCAgICAgICBpZiAoYXdhaXQgaG9tZUxpbmsuaXNWaXNpYmxlKCkpIHsKICAxODggfCAgICAgICAgIGF3YWl0IGhvbWVMaW5rLmNsaWNrKCk7CiAgMTg5IHwgICAgICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVVJMKCcvJyk7CiAgMTkwIHwgICAgICAgfQogIDE5MSB8ICAgICB9CiAgMTkyIHwgICB9KTsKYGBg"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 23,
+                        "line": 92
+                      }
+                    },
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 10601,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('navigation')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation')\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('navigation')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation')\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:92:23",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('navigation')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation')\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for getByRole('navigation')"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 23,
+                          "line": 92
+                        },
+                        "snippet": "  90 |     // Check that navigation is mobile-friendly\n  91 |     const nav = page.getByRole('navigation');\n> 92 |     await expect(nav).toBeVisible();\n     |                       ^\n  93 |     \n  94 |     // Check for mobile menu toggle if it exists\n  95 |     const mobileMenuToggle = page.getByRole('button', { name: /menu|メニュー/i });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 23,
+                            "line": 92
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('navigation')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation')\u001b[22m\n\n\n  90 |     // Check that navigation is mobile-friendly\n  91 |     const nav = page.getByRole('navigation');\n> 92 |     await expect(nav).toBeVisible();\n     |                       ^\n  93 |     \n  94 |     // Check for mobile menu toggle if it exists\n  95 |     const mobileMenuToggle = page.getByRole('button', { name: /menu|メニュー/i });\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:92:23"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-07-07T01:16:30.905Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgYmUgcmVzcG9uc2l2ZSBvbiBtb2JpbGUgZGV2aWNlcwotIExvY2F0aW9uOiAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL2hvbWVwYWdlLnNwZWMudHM6ODY6NwoKIyBFcnJvciBkZXRhaWxzCgpgYGAKRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCgpMb2NhdG9yOiBnZXRCeVJvbGUoJ25hdmlnYXRpb24nKQpFeHBlY3RlZDogdmlzaWJsZQpSZWNlaXZlZDogPGVsZW1lbnQocykgbm90IGZvdW5kPgpDYWxsIGxvZzoKICAtIGV4cGVjdC50b0JlVmlzaWJsZSB3aXRoIHRpbWVvdXQgMTAwMDBtcwogIC0gd2FpdGluZyBmb3IgZ2V0QnlSb2xlKCduYXZpZ2F0aW9uJykKCiAgICBhdCAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL2hvbWVwYWdlLnNwZWMudHM6OTI6MjMKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgMSB8IGltcG9ydCB7IHRlc3QsIGV4cGVjdCB9IGZyb20gJ0BwbGF5d3JpZ2h0L3Rlc3QnOwogICAyIHwKICAgMyB8IHRlc3QuZGVzY3JpYmUoJ0hvbWVwYWdlJywgKCkgPT4gewogICA0IHwgICB0ZXN0LmJlZm9yZUVhY2goYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvJyk7CiAgIDYgfCAgIH0pOwogICA3IHwKICAgOCB8ICAgdGVzdCgnc2hvdWxkIGxvYWQgaG9tZXBhZ2Ugd2l0aCBhbGwgZXNzZW50aWFsIGVsZW1lbnRzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDkgfCAgICAgLy8gQ2hlY2sgcGFnZSB0aXRsZQogICAxMCB8ICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVGl0bGUoL0phcGFuZXNlIEFyY2hpdGVjdHVyZSBNYXB85pel5pys44Gu5bu656+J44Oe44OD44OXLyk7CiAgIDExIHwgICAgIAogICAxMiB8ICAgICAvLyBDaGVjayBoZXJvIHNlY3Rpb24KICAgMTMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KSkudG9CZVZpc2libGUoKTsKICAgMTQgfCAgICAgCiAgIDE1IHwgICAgIC8vIENoZWNrIG5hdmlnYXRpb24gbWVudQogICAxNiB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ25hdmlnYXRpb24nKSkudG9CZVZpc2libGUoKTsKICAgMTcgfCAgICAgCiAgIDE4IHwgICAgIC8vIENoZWNrIG1haW4gbmF2aWdhdGlvbiBsaW5rcwogICAxOSB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9hcmNoaXRlY3R1cmV85bu656+JL2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIwIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL2FyY2hpdGVjdHN85bu656+J5a62L2kgfSkpLnRvQmVWaXNpYmxlKCk7CiAgIDIxIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL21hcHzjg57jg4Pjg5cvaSB9KSkudG9CZVZpc2libGUoKTsKICAgMjIgfCAgICAgCiAgIDIzIHwgICAgIC8vIENoZWNrIHNlYXJjaCBmdW5jdGlvbmFsaXR5CiAgIDI0IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94JykpLnRvQmVWaXNpYmxlKCk7CiAgIDI1IHwgICAgIAogICAyNiB8ICAgICAvLyBDaGVjayBmb290ZXIKICAgMjcgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdjb250ZW50aW5mbycpKS50b0JlVmlzaWJsZSgpOwogICAyOCB8ICAgfSk7CiAgIDI5IHwKICAgMzAgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHdvcmtpbmcgc2VhcmNoIGZ1bmN0aW9uYWxpdHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgMzEgfCAgICAgLy8gTG9jYXRlIHNlYXJjaCBpbnB1dAogICAzMiB8ICAgICBjb25zdCBzZWFyY2hJbnB1dCA9IHBhZ2UuZ2V0QnlSb2xlKCdzZWFyY2hib3gnKTsKICAgMzMgfCAgICAgYXdhaXQgZXhwZWN0KHNlYXJjaElucHV0KS50b0JlVmlzaWJsZSgpOwogICAzNCB8ICAgICAKICAgMzUgfCAgICAgLy8gRW50ZXIgc2VhcmNoIHRlcm0KICAgMzYgfCAgICAgYXdhaXQgc2VhcmNoSW5wdXQuZmlsbCgnVG9reW8nKTsKICAgMzcgfCAgICAgCiAgIDM4IHwgICAgIC8vIFN1Ym1pdCBzZWFyY2ggKGxvb2sgZm9yIHNlYXJjaCBidXR0b24gb3IgcHJlc3MgRW50ZXIpCiAgIDM5IHwgICAgIGNvbnN0IHNlYXJjaEJ1dHRvbiA9IHBhZ2UuZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6IC9zZWFyY2h85qSc57SiL2kgfSk7CiAgIDQwIHwgICAgIGlmIChhd2FpdCBzZWFyY2hCdXR0b24uaXNWaXNpYmxlKCkpIHsKICAgNDEgfCAgICAgICBhd2FpdCBzZWFyY2hCdXR0b24uY2xpY2soKTsKICAgNDIgfCAgICAgfSBlbHNlIHsKICAgNDMgfCAgICAgICBhd2FpdCBzZWFyY2hJbnB1dC5wcmVzcygnRW50ZXInKTsKICAgNDQgfCAgICAgfQogICA0NSB8ICAgICAKICAgNDYgfCAgICAgLy8gU2hvdWxkIG5hdmlnYXRlIHRvIHNlYXJjaCByZXN1bHRzIG9yIHVwZGF0ZSBjdXJyZW50IHBhZ2UKICAgNDcgfCAgICAgYXdhaXQgcGFnZS53YWl0Rm9yTG9hZFN0YXRlKCduZXR3b3JraWRsZScpOwogICA0OCB8ICAgICAKICAgNDkgfCAgICAgLy8gQ2hlY2sgdGhhdCB3ZSBlaXRoZXIgbmF2aWdhdGVkIHRvIHJlc3VsdHMgb3IgcmVzdWx0cyBhcmUgc2hvd24KICAgNTAgfCAgICAgY29uc3QgaGFzTmF2aWdhdGVkID0gcGFnZS51cmwoKS5pbmNsdWRlcygnL2FyY2hpdGVjdHVyZScpIHx8IHBhZ2UudXJsKCkuaW5jbHVkZXMoJy9zZWFyY2gnKTsKICAgNTEgfCAgICAgY29uc3QgaGFzUmVzdWx0cyA9IGF3YWl0IHBhZ2UubG9jYXRvcignW2RhdGEtdGVzdGlkPSJhcmNoaXRlY3R1cmUtaXRlbSJdJykuY291bnQoKSA+IDA7CiAgIDUyIHwgICAgIGNvbnN0IGhhc05vUmVzdWx0cyA9IGF3YWl0IHBhZ2UuZ2V0QnlUZXh0KC9ubyByZXN1bHRzfOe1kOaenOOBjOimi+OBpOOBi+OCiuOBvuOBm+OCky9pKS5pc1Zpc2libGUoKTsKICAgNTMgfCAgICAgCiAgIDU0IHwgICAgIGV4cGVjdChoYXNOYXZpZ2F0ZWQgfHwgaGFzUmVzdWx0cyB8fCBoYXNOb1Jlc3VsdHMpLnRvQmVUcnV0aHkoKTsKICAgNTUgfCAgIH0pOwogICA1NiB8CiAgIDU3IHwgICB0ZXN0KCdzaG91bGQgZGlzcGxheSBmZWF0dXJlIGNhcmRzIG9yIHNlY3Rpb25zJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDU4IHwgICAgIC8vIExvb2sgZm9yIGZlYXR1cmUgY2FyZHMsIHNlY3Rpb25zLCBvciBzaW1pbGFyIGNvbnRlbnQKICAgNTkgfCAgICAgY29uc3QgZmVhdHVyZVNlbGVjdG9ycyA9IFsKICAgNjAgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJmZWF0dXJlLWNhcmQiXScsCiAgIDYxIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0iZmVhdHVyZS1zZWN0aW9uIl0nLAogICA2MiB8ICAgICAgICcuZmVhdHVyZS1jYXJkJywKICAgNjMgfCAgICAgICAnLmZlYXR1cmUtc2VjdGlvbicsCiAgIDY0IHwgICAgICAgJ1tyb2xlPSJhcnRpY2xlIl0nCiAgIDY1IHwgICAgIF07CiAgIDY2IHwgICAgIAogICA2NyB8ICAgICBsZXQgZmVhdHVyZXNGb3VuZCA9IGZhbHNlOwogICA2OCB8ICAgICBmb3IgKGNvbnN0IHNlbGVjdG9yIG9mIGZlYXR1cmVTZWxlY3RvcnMpIHsKICAgNjkgfCAgICAgICBjb25zdCBlbGVtZW50cyA9IHBhZ2UubG9jYXRvcihzZWxlY3Rvcik7CiAgIDcwIHwgICAgICAgaWYgKGF3YWl0IGVsZW1lbnRzLmNvdW50KCkgPiAwKSB7CiAgIDcxIHwgICAgICAgICBhd2FpdCBleHBlY3QoZWxlbWVudHMuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAgNzIgfCAgICAgICAgIGZlYXR1cmVzRm91bmQgPSB0cnVlOwogICA3MyB8ICAgICAgICAgYnJlYWs7CiAgIDc0IHwgICAgICAgfQogICA3NSB8ICAgICB9CiAgIDc2IHwgICAgIAogICA3NyB8ICAgICAvLyBJZiBubyBzcGVjaWZpYyBmZWF0dXJlIGNhcmRzLCBjaGVjayBmb3IgZ2VuZXJhbCBjb250ZW50IHNlY3Rpb25zCiAgIDc4IHwgICAgIGlmICghZmVhdHVyZXNGb3VuZCkgewogICA3OSB8ICAgICAgIGNvbnN0IGNvbnRlbnRTZWN0aW9ucyA9IHBhZ2UubG9jYXRvcignbWFpbiBzZWN0aW9uLCAuY29udGVudC1zZWN0aW9uLCAuaGVyby1zZWN0aW9uJyk7CiAgIDgwIHwgICAgICAgaWYgKGF3YWl0IGNvbnRlbnRTZWN0aW9ucy5jb3VudCgpID4gMCkgewogICA4MSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGNvbnRlbnRTZWN0aW9ucy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogICA4MiB8ICAgICAgIH0KICAgODMgfCAgICAgfQogICA4NCB8ICAgfSk7CiAgIDg1IHwKICAgODYgfCAgIHRlc3QoJ3Nob3VsZCBiZSByZXNwb25zaXZlIG9uIG1vYmlsZSBkZXZpY2VzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDg3IHwgICAgIC8vIFNldCBtb2JpbGUgdmlld3BvcnQKICAgODggfCAgICAgYXdhaXQgcGFnZS5zZXRWaWV3cG9ydFNpemUoeyB3aWR0aDogMzc1LCBoZWlnaHQ6IDY2NyB9KTsKICAgODkgfCAgICAgCiAgIDkwIHwgICAgIC8vIENoZWNrIHRoYXQgbmF2aWdhdGlvbiBpcyBtb2JpbGUtZnJpZW5kbHkKICAgOTEgfCAgICAgY29uc3QgbmF2ID0gcGFnZS5nZXRCeVJvbGUoJ25hdmlnYXRpb24nKTsKPiAgOTIgfCAgICAgYXdhaXQgZXhwZWN0KG5hdikudG9CZVZpc2libGUoKTsKICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgXiBFcnJvcjogVGltZWQgb3V0IDEwMDAwbXMgd2FpdGluZyBmb3IgZXhwZWN0KGxvY2F0b3IpLnRvQmVWaXNpYmxlKCkKICAgOTMgfCAgICAgCiAgIDk0IHwgICAgIC8vIENoZWNrIGZvciBtb2JpbGUgbWVudSB0b2dnbGUgaWYgaXQgZXhpc3RzCiAgIDk1IHwgICAgIGNvbnN0IG1vYmlsZU1lbnVUb2dnbGUgPSBwYWdlLmdldEJ5Um9sZSgnYnV0dG9uJywgeyBuYW1lOiAvbWVudXzjg6Hjg4vjg6Xjg7wvaSB9KTsKICAgOTYgfCAgICAgaWYgKGF3YWl0IG1vYmlsZU1lbnVUb2dnbGUuaXNWaXNpYmxlKCkpIHsKICAgOTcgfCAgICAgICBhd2FpdCBtb2JpbGVNZW51VG9nZ2xlLmNsaWNrKCk7CiAgIDk4IHwgICAgICAgLy8gTWVudSBzaG91bGQgZXhwYW5kCiAgIDk5IHwgICAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdtZW51JykpLnRvQmVWaXNpYmxlKCk7CiAgMTAwIHwgICAgIH0KICAxMDEgfCAgICAgCiAgMTAyIHwgICAgIC8vIENoZWNrIHRoYXQgc2VhcmNoIGlzIGFjY2Vzc2libGUgb24gbW9iaWxlCiAgMTAzIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94JykpLnRvQmVWaXNpYmxlKCk7CiAgMTA0IHwgICAgIAogIDEwNSB8ICAgICAvLyBDaGVjayB0aGF0IG1haW4gY29udGVudCBpcyB2aXNpYmxlIGFuZCBwcm9wZXJseSBzY2FsZWQKICAxMDYgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UubG9jYXRvcignbWFpbicpKS50b0JlVmlzaWJsZSgpOwogIDEwNyB8ICAgfSk7CiAgMTA4IHwKICAxMDkgfCAgIHRlc3QoJ3Nob3VsZCBoYW5kbGUgc2xvdyBsb2FkaW5nIGdyYWNlZnVsbHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxMTAgfCAgICAgLy8gU2ltdWxhdGUgc2xvdyBuZXR3b3JrCiAgMTExIHwgICAgIGF3YWl0IHBhZ2Uucm91dGUoJyoqLyonLCByb3V0ZSA9PiB7CiAgMTEyIHwgICAgICAgc2V0VGltZW91dCgoKSA9PiByb3V0ZS5jb250aW51ZSgpLCAxMDApOwogIDExMyB8ICAgICB9KTsKICAxMTQgfCAgICAgCiAgMTE1IHwgICAgIGF3YWl0IHBhZ2UuZ290bygnLycpOwogIDExNiB8ICAgICAKICAxMTcgfCAgICAgLy8gQ2hlY2sgZm9yIGxvYWRpbmcgaW5kaWNhdG9ycwogIDExOCB8ICAgICBjb25zdCBsb2FkaW5nSW5kaWNhdG9ycyA9IFsKICAxMTkgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJsb2FkaW5nLXNrZWxldG9uIl0nLAogIDEyMCB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImxvYWRpbmctc3Bpbm5lciJdJywKICAxMjEgfCAgICAgICAnLmxvYWRpbmcnLAogIDEyMiB8ICAgICAgICcuc2tlbGV0b24nCiAgMTIzIHwgICAgIF07CiAgMTI0IHwgICAgIAogIDEyNSB8ICAgICBmb3IgKGNvbnN0IHNlbGVjdG9yIG9mIGxvYWRpbmdJbmRpY2F0b3JzKSB7CiAgMTI2IHwgICAgICAgY29uc3QgbG9hZGluZyA9IHBhZ2UubG9jYXRvcihzZWxlY3Rvcik7CiAgMTI3IHwgICAgICAgaWYgKGF3YWl0IGxvYWRpbmcuY291bnQoKSA+IDApIHsKICAxMjggfCAgICAgICAgIC8vIExvYWRpbmcgaW5kaWNhdG9yIHNob3VsZCBiZSB2aXNpYmxlIGluaXRpYWxseQogIDEyOSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGxvYWRpbmcuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAxMzAgfCAgICAgICAgIGJyZWFrOwogIDEzMSB8ICAgICAgIH0KICAxMzIgfCAgICAgfQogIDEzMyB8ICAgICAKICAxMzQgfCAgICAgLy8gV2FpdCBmb3IgY29udGVudCB0byBsb2FkCiAgMTM1IHwgICAgIGF3YWl0IHBhZ2Uud2FpdEZvckxvYWRTdGF0ZSgnbmV0d29ya2lkbGUnKTsKICAxMzYgfCAgICAgCiAgMTM3IHwgICAgIC8vIENoZWNrIHRoYXQgbWFpbiBjb250ZW50IGlzIGV2ZW50dWFsbHkgdmlzaWJsZQogIDEzOCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdtYWluJykpLnRvQmVWaXNpYmxlKCk7CiAgMTM5IHwgICB9KTsKICAxNDAgfAogIDE0MSB8ICAgdGVzdCgnc2hvdWxkIGhhdmUgcHJvcGVyIGFjY2Vzc2liaWxpdHkgZmVhdHVyZXMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxNDIgfCAgICAgLy8gQ2hlY2sgZm9yIHNraXAgbGlua3MKICAxNDMgfCAgICAgY29uc3Qgc2tpcExpbmtzID0gcGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9za2lwIHRvIG1haW4gY29udGVudHxza2lwIHRvIGNvbnRlbnQvaSB9KTsKICAxNDQgfCAgICAgaWYgKGF3YWl0IHNraXBMaW5rcy5jb3VudCgpID4gMCkgewogIDE0NSB8ICAgICAgIGF3YWl0IGV4cGVjdChza2lwTGlua3MuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAxNDYgfCAgICAgfQogIDE0NyB8ICAgICAKICAxNDggfCAgICAgLy8gQ2hlY2sgZm9yIHByb3BlciBoZWFkaW5nIGhpZXJhcmNoeQogIDE0OSB8ICAgICBjb25zdCBoMSA9IHBhZ2UuZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KTsKICAxNTAgfCAgICAgYXdhaXQgZXhwZWN0KGgxKS50b0JlVmlzaWJsZSgpOwogIDE1MSB8ICAgICAKICAxNTIgfCAgICAgLy8gQ2hlY2sgZm9yIGFsdCB0ZXh0IG9uIGltYWdlcwogIDE1MyB8ICAgICBjb25zdCBpbWFnZXMgPSBwYWdlLmxvY2F0b3IoJ2ltZycpOwogIDE1NCB8ICAgICBjb25zdCBpbWFnZUNvdW50ID0gYXdhaXQgaW1hZ2VzLmNvdW50KCk7CiAgMTU1IHwgICAgIAogIDE1NiB8ICAgICBpZiAoaW1hZ2VDb3VudCA+IDApIHsKICAxNTcgfCAgICAgICBmb3IgKGxldCBpID0gMDsgaSA8IE1hdGgubWluKGltYWdlQ291bnQsIDUpOyBpKyspIHsKICAxNTggfCAgICAgICAgIGNvbnN0IGltZyA9IGltYWdlcy5udGgoaSk7CiAgMTU5IHwgICAgICAgICBjb25zdCBhbHQgPSBhd2FpdCBpbWcuZ2V0QXR0cmlidXRlKCdhbHQnKTsKICAxNjAgfCAgICAgICAgIGNvbnN0IGFyaWFMYWJlbCA9IGF3YWl0IGltZy5nZXRBdHRyaWJ1dGUoJ2FyaWEtbGFiZWwnKTsKICAxNjEgfCAgICAgICAgIAogIDE2MiB8ICAgICAgICAgLy8gSW1hZ2VzIHNob3VsZCBoYXZlIGFsdCB0ZXh0IG9yIGFyaWEtbGFiZWwKICAxNjMgfCAgICAgICAgIGV4cGVjdChhbHQgIT09IG51bGwgfHwgYXJpYUxhYmVsICE9PSBudWxsKS50b0JlVHJ1dGh5KCk7CiAgMTY0IHwgICAgICAgfQogIDE2NSB8ICAgICB9CiAgMTY2IHwgICAgIAogIDE2NyB8ICAgICAvLyBDaGVjayBmb3IgcHJvcGVyIGZvY3VzIG1hbmFnZW1lbnQKICAxNjggfCAgICAgYXdhaXQgcGFnZS5rZXlib2FyZC5wcmVzcygnVGFiJyk7CiAgMTY5IHwgICAgIGNvbnN0IGZvY3VzZWRFbGVtZW50ID0gcGFnZS5sb2NhdG9yKCc6Zm9jdXMnKTsKICAxNzAgfCAgICAgYXdhaXQgZXhwZWN0KGZvY3VzZWRFbGVtZW50KS50b0JlVmlzaWJsZSgpOwogIDE3MSB8ICAgfSk7CiAgMTcyIHwKICAxNzMgfCAgIHRlc3QoJ3Nob3VsZCBoYW5kbGUgZXJyb3JzIGdyYWNlZnVsbHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxNzQgfCAgICAgLy8gVGVzdCB3aGF0IGhhcHBlbnMgd2hlbiB3ZSB0cnkgdG8gYWNjZXNzIGEgbm9uLWV4aXN0ZW50IHJvdXRlCiAgMTc1IHwgICAgIGF3YWl0IHBhZ2UuZ290bygnL25vbi1leGlzdGVudC1wYWdlJyk7CiAgMTc2IHwgICAgIAogIDE3NyB8ICAgICAvLyBTaG91bGQgc2hvdyA0MDQgcGFnZSBvciByZWRpcmVjdCB0byBob21lCiAgMTc4IHwgICAgIGNvbnN0IGlzNDA0ID0gcGFnZS51cmwoKS5pbmNsdWRlcygnNDA0JykgfHwgCiAgMTc5IHwgICAgICAgICAgICAgICAgICAgYXdhaXQgcGFnZS5nZXRCeVRleHQoLzQwNHxub3QgZm91bmR86KaL44Gk44GL44KK44G+44Gb44KTL2kpLmlzVmlzaWJsZSgpOwogIDE4MCB8ICAgICBjb25zdCBpc0hvbWUgPSBwYWdlLnVybCgpLmVuZHNXaXRoKCcvJykgfHwgcGFnZS51cmwoKS5lbmRzV2l0aCgnL2luZGV4Lmh0bWwnKTsKICAxODEgfCAgICAgCiAgMTgyIHwgICAgIGV4cGVjdChpczQwNCB8fCBpc0hvbWUpLnRvQmVUcnV0aHkoKTsKICAxODMgfCAgICAgCiAgMTg0IHwgICAgIC8vIElmIGl0J3MgYSA0MDQsIGNoZWNrIHRoYXQgbmF2aWdhdGlvbiBzdGlsbCB3b3JrcwogIDE4NSB8ICAgICBpZiAoaXM0MDQpIHsKICAxODYgfCAgICAgICBjb25zdCBob21lTGluayA9IHBhZ2UuZ2V0QnlSb2xlKCdsaW5rJywgeyBuYW1lOiAvaG9tZXzjg5vjg7zjg6AvaSB9KTsKICAxODcgfCAgICAgICBpZiAoYXdhaXQgaG9tZUxpbmsuaXNWaXNpYmxlKCkpIHsKICAxODggfCAgICAgICAgIGF3YWl0IGhvbWVMaW5rLmNsaWNrKCk7CiAgMTg5IHwgICAgICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVVJMKCcvJyk7CiAgMTkwIHwgICAgICAgfQogIDE5MSB8ICAgICB9CiAgMTkyIHwgICB9KTsKYGBg"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 23,
+                        "line": 92
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "84e7eb052e8cbae1c9f0-44a7cc4315b65ee17151",
+              "file": "homepage.spec.ts",
+              "line": 86,
+              "column": 7
+            },
+            {
+              "title": "should handle slow loading gracefully",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 12758,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('main')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('main')\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('main')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('main')\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:138:40",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('main')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('main')\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for locator('main')"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 40,
+                          "line": 138
+                        },
+                        "snippet": "  136 |     \n  137 |     // Check that main content is eventually visible\n> 138 |     await expect(page.locator('main')).toBeVisible();\n      |                                        ^\n  139 |   });\n  140 |\n  141 |   test('should have proper accessibility features', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 40,
+                            "line": 138
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('main')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('main')\u001b[22m\n\n\n  136 |     \n  137 |     // Check that main content is eventually visible\n> 138 |     await expect(page.locator('main')).toBeVisible();\n      |                                        ^\n  139 |   });\n  140 |\n  141 |   test('should have proper accessibility features', async ({ page }) => {\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:138:40"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T01:16:16.083Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgaGFuZGxlIHNsb3cgbG9hZGluZyBncmFjZWZ1bGx5Ci0gTG9jYXRpb246IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxMDk6NwoKIyBFcnJvciBkZXRhaWxzCgpgYGAKRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCgpMb2NhdG9yOiBsb2NhdG9yKCdtYWluJykKRXhwZWN0ZWQ6IHZpc2libGUKUmVjZWl2ZWQ6IDxlbGVtZW50KHMpIG5vdCBmb3VuZD4KQ2FsbCBsb2c6CiAgLSBleHBlY3QudG9CZVZpc2libGUgd2l0aCB0aW1lb3V0IDEwMDAwbXMKICAtIHdhaXRpbmcgZm9yIGxvY2F0b3IoJ21haW4nKQoKICAgIGF0IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxMzg6NDAKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgMzggfCAgICAgLy8gU3VibWl0IHNlYXJjaCAobG9vayBmb3Igc2VhcmNoIGJ1dHRvbiBvciBwcmVzcyBFbnRlcikKICAgMzkgfCAgICAgY29uc3Qgc2VhcmNoQnV0dG9uID0gcGFnZS5nZXRCeVJvbGUoJ2J1dHRvbicsIHsgbmFtZTogL3NlYXJjaHzmpJzntKIvaSB9KTsKICAgNDAgfCAgICAgaWYgKGF3YWl0IHNlYXJjaEJ1dHRvbi5pc1Zpc2libGUoKSkgewogICA0MSB8ICAgICAgIGF3YWl0IHNlYXJjaEJ1dHRvbi5jbGljaygpOwogICA0MiB8ICAgICB9IGVsc2UgewogICA0MyB8ICAgICAgIGF3YWl0IHNlYXJjaElucHV0LnByZXNzKCdFbnRlcicpOwogICA0NCB8ICAgICB9CiAgIDQ1IHwgICAgIAogICA0NiB8ICAgICAvLyBTaG91bGQgbmF2aWdhdGUgdG8gc2VhcmNoIHJlc3VsdHMgb3IgdXBkYXRlIGN1cnJlbnQgcGFnZQogICA0NyB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JMb2FkU3RhdGUoJ25ldHdvcmtpZGxlJyk7CiAgIDQ4IHwgICAgIAogICA0OSB8ICAgICAvLyBDaGVjayB0aGF0IHdlIGVpdGhlciBuYXZpZ2F0ZWQgdG8gcmVzdWx0cyBvciByZXN1bHRzIGFyZSBzaG93bgogICA1MCB8ICAgICBjb25zdCBoYXNOYXZpZ2F0ZWQgPSBwYWdlLnVybCgpLmluY2x1ZGVzKCcvYXJjaGl0ZWN0dXJlJykgfHwgcGFnZS51cmwoKS5pbmNsdWRlcygnL3NlYXJjaCcpOwogICA1MSB8ICAgICBjb25zdCBoYXNSZXN1bHRzID0gYXdhaXQgcGFnZS5sb2NhdG9yKCdbZGF0YS10ZXN0aWQ9ImFyY2hpdGVjdHVyZS1pdGVtIl0nKS5jb3VudCgpID4gMDsKICAgNTIgfCAgICAgY29uc3QgaGFzTm9SZXN1bHRzID0gYXdhaXQgcGFnZS5nZXRCeVRleHQoL25vIHJlc3VsdHN857WQ5p6c44GM6KaL44Gk44GL44KK44G+44Gb44KTL2kpLmlzVmlzaWJsZSgpOwogICA1MyB8ICAgICAKICAgNTQgfCAgICAgZXhwZWN0KGhhc05hdmlnYXRlZCB8fCBoYXNSZXN1bHRzIHx8IGhhc05vUmVzdWx0cykudG9CZVRydXRoeSgpOwogICA1NSB8ICAgfSk7CiAgIDU2IHwKICAgNTcgfCAgIHRlc3QoJ3Nob3VsZCBkaXNwbGF5IGZlYXR1cmUgY2FyZHMgb3Igc2VjdGlvbnMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgNTggfCAgICAgLy8gTG9vayBmb3IgZmVhdHVyZSBjYXJkcywgc2VjdGlvbnMsIG9yIHNpbWlsYXIgY29udGVudAogICA1OSB8ICAgICBjb25zdCBmZWF0dXJlU2VsZWN0b3JzID0gWwogICA2MCB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImZlYXR1cmUtY2FyZCJdJywKICAgNjEgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJmZWF0dXJlLXNlY3Rpb24iXScsCiAgIDYyIHwgICAgICAgJy5mZWF0dXJlLWNhcmQnLAogICA2MyB8ICAgICAgICcuZmVhdHVyZS1zZWN0aW9uJywKICAgNjQgfCAgICAgICAnW3JvbGU9ImFydGljbGUiXScKICAgNjUgfCAgICAgXTsKICAgNjYgfCAgICAgCiAgIDY3IHwgICAgIGxldCBmZWF0dXJlc0ZvdW5kID0gZmFsc2U7CiAgIDY4IHwgICAgIGZvciAoY29uc3Qgc2VsZWN0b3Igb2YgZmVhdHVyZVNlbGVjdG9ycykgewogICA2OSB8ICAgICAgIGNvbnN0IGVsZW1lbnRzID0gcGFnZS5sb2NhdG9yKHNlbGVjdG9yKTsKICAgNzAgfCAgICAgICBpZiAoYXdhaXQgZWxlbWVudHMuY291bnQoKSA+IDApIHsKICAgNzEgfCAgICAgICAgIGF3YWl0IGV4cGVjdChlbGVtZW50cy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogICA3MiB8ICAgICAgICAgZmVhdHVyZXNGb3VuZCA9IHRydWU7CiAgIDczIHwgICAgICAgICBicmVhazsKICAgNzQgfCAgICAgICB9CiAgIDc1IHwgICAgIH0KICAgNzYgfCAgICAgCiAgIDc3IHwgICAgIC8vIElmIG5vIHNwZWNpZmljIGZlYXR1cmUgY2FyZHMsIGNoZWNrIGZvciBnZW5lcmFsIGNvbnRlbnQgc2VjdGlvbnMKICAgNzggfCAgICAgaWYgKCFmZWF0dXJlc0ZvdW5kKSB7CiAgIDc5IHwgICAgICAgY29uc3QgY29udGVudFNlY3Rpb25zID0gcGFnZS5sb2NhdG9yKCdtYWluIHNlY3Rpb24sIC5jb250ZW50LXNlY3Rpb24sIC5oZXJvLXNlY3Rpb24nKTsKICAgODAgfCAgICAgICBpZiAoYXdhaXQgY29udGVudFNlY3Rpb25zLmNvdW50KCkgPiAwKSB7CiAgIDgxIHwgICAgICAgICBhd2FpdCBleHBlY3QoY29udGVudFNlY3Rpb25zLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgIDgyIHwgICAgICAgfQogICA4MyB8ICAgICB9CiAgIDg0IHwgICB9KTsKICAgODUgfAogICA4NiB8ICAgdGVzdCgnc2hvdWxkIGJlIHJlc3BvbnNpdmUgb24gbW9iaWxlIGRldmljZXMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgODcgfCAgICAgLy8gU2V0IG1vYmlsZSB2aWV3cG9ydAogICA4OCB8ICAgICBhd2FpdCBwYWdlLnNldFZpZXdwb3J0U2l6ZSh7IHdpZHRoOiAzNzUsIGhlaWdodDogNjY3IH0pOwogICA4OSB8ICAgICAKICAgOTAgfCAgICAgLy8gQ2hlY2sgdGhhdCBuYXZpZ2F0aW9uIGlzIG1vYmlsZS1mcmllbmRseQogICA5MSB8ICAgICBjb25zdCBuYXYgPSBwYWdlLmdldEJ5Um9sZSgnbmF2aWdhdGlvbicpOwogICA5MiB8ICAgICBhd2FpdCBleHBlY3QobmF2KS50b0JlVmlzaWJsZSgpOwogICA5MyB8ICAgICAKICAgOTQgfCAgICAgLy8gQ2hlY2sgZm9yIG1vYmlsZSBtZW51IHRvZ2dsZSBpZiBpdCBleGlzdHMKICAgOTUgfCAgICAgY29uc3QgbW9iaWxlTWVudVRvZ2dsZSA9IHBhZ2UuZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6IC9tZW51fOODoeODi+ODpeODvC9pIH0pOwogICA5NiB8ICAgICBpZiAoYXdhaXQgbW9iaWxlTWVudVRvZ2dsZS5pc1Zpc2libGUoKSkgewogICA5NyB8ICAgICAgIGF3YWl0IG1vYmlsZU1lbnVUb2dnbGUuY2xpY2soKTsKICAgOTggfCAgICAgICAvLyBNZW51IHNob3VsZCBleHBhbmQKICAgOTkgfCAgICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ21lbnUnKSkudG9CZVZpc2libGUoKTsKICAxMDAgfCAgICAgfQogIDEwMSB8ICAgICAKICAxMDIgfCAgICAgLy8gQ2hlY2sgdGhhdCBzZWFyY2ggaXMgYWNjZXNzaWJsZSBvbiBtb2JpbGUKICAxMDMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdzZWFyY2hib3gnKSkudG9CZVZpc2libGUoKTsKICAxMDQgfCAgICAgCiAgMTA1IHwgICAgIC8vIENoZWNrIHRoYXQgbWFpbiBjb250ZW50IGlzIHZpc2libGUgYW5kIHByb3Blcmx5IHNjYWxlZAogIDEwNiB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdtYWluJykpLnRvQmVWaXNpYmxlKCk7CiAgMTA3IHwgICB9KTsKICAxMDggfAogIDEwOSB8ICAgdGVzdCgnc2hvdWxkIGhhbmRsZSBzbG93IGxvYWRpbmcgZ3JhY2VmdWxseScsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDExMCB8ICAgICAvLyBTaW11bGF0ZSBzbG93IG5ldHdvcmsKICAxMTEgfCAgICAgYXdhaXQgcGFnZS5yb3V0ZSgnKiovKicsIHJvdXRlID0+IHsKICAxMTIgfCAgICAgICBzZXRUaW1lb3V0KCgpID0+IHJvdXRlLmNvbnRpbnVlKCksIDEwMCk7CiAgMTEzIHwgICAgIH0pOwogIDExNCB8ICAgICAKICAxMTUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvJyk7CiAgMTE2IHwgICAgIAogIDExNyB8ICAgICAvLyBDaGVjayBmb3IgbG9hZGluZyBpbmRpY2F0b3JzCiAgMTE4IHwgICAgIGNvbnN0IGxvYWRpbmdJbmRpY2F0b3JzID0gWwogIDExOSB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImxvYWRpbmctc2tlbGV0b24iXScsCiAgMTIwIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0ibG9hZGluZy1zcGlubmVyIl0nLAogIDEyMSB8ICAgICAgICcubG9hZGluZycsCiAgMTIyIHwgICAgICAgJy5za2VsZXRvbicKICAxMjMgfCAgICAgXTsKICAxMjQgfCAgICAgCiAgMTI1IHwgICAgIGZvciAoY29uc3Qgc2VsZWN0b3Igb2YgbG9hZGluZ0luZGljYXRvcnMpIHsKICAxMjYgfCAgICAgICBjb25zdCBsb2FkaW5nID0gcGFnZS5sb2NhdG9yKHNlbGVjdG9yKTsKICAxMjcgfCAgICAgICBpZiAoYXdhaXQgbG9hZGluZy5jb3VudCgpID4gMCkgewogIDEyOCB8ICAgICAgICAgLy8gTG9hZGluZyBpbmRpY2F0b3Igc2hvdWxkIGJlIHZpc2libGUgaW5pdGlhbGx5CiAgMTI5IHwgICAgICAgICBhd2FpdCBleHBlY3QobG9hZGluZy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogIDEzMCB8ICAgICAgICAgYnJlYWs7CiAgMTMxIHwgICAgICAgfQogIDEzMiB8ICAgICB9CiAgMTMzIHwgICAgIAogIDEzNCB8ICAgICAvLyBXYWl0IGZvciBjb250ZW50IHRvIGxvYWQKICAxMzUgfCAgICAgYXdhaXQgcGFnZS53YWl0Rm9yTG9hZFN0YXRlKCduZXR3b3JraWRsZScpOwogIDEzNiB8ICAgICAKICAxMzcgfCAgICAgLy8gQ2hlY2sgdGhhdCBtYWluIGNvbnRlbnQgaXMgZXZlbnR1YWxseSB2aXNpYmxlCj4gMTM4IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJ21haW4nKSkudG9CZVZpc2libGUoKTsKICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeIEVycm9yOiBUaW1lZCBvdXQgMTAwMDBtcyB3YWl0aW5nIGZvciBleHBlY3QobG9jYXRvcikudG9CZVZpc2libGUoKQogIDEzOSB8ICAgfSk7CiAgMTQwIHwKICAxNDEgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHByb3BlciBhY2Nlc3NpYmlsaXR5IGZlYXR1cmVzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTQyIHwgICAgIC8vIENoZWNrIGZvciBza2lwIGxpbmtzCiAgMTQzIHwgICAgIGNvbnN0IHNraXBMaW5rcyA9IHBhZ2UuZ2V0QnlSb2xlKCdsaW5rJywgeyBuYW1lOiAvc2tpcCB0byBtYWluIGNvbnRlbnR8c2tpcCB0byBjb250ZW50L2kgfSk7CiAgMTQ0IHwgICAgIGlmIChhd2FpdCBza2lwTGlua3MuY291bnQoKSA+IDApIHsKICAxNDUgfCAgICAgICBhd2FpdCBleHBlY3Qoc2tpcExpbmtzLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgMTQ2IHwgICAgIH0KICAxNDcgfCAgICAgCiAgMTQ4IHwgICAgIC8vIENoZWNrIGZvciBwcm9wZXIgaGVhZGluZyBoaWVyYXJjaHkKICAxNDkgfCAgICAgY29uc3QgaDEgPSBwYWdlLmdldEJ5Um9sZSgnaGVhZGluZycsIHsgbGV2ZWw6IDEgfSk7CiAgMTUwIHwgICAgIGF3YWl0IGV4cGVjdChoMSkudG9CZVZpc2libGUoKTsKICAxNTEgfCAgICAgCiAgMTUyIHwgICAgIC8vIENoZWNrIGZvciBhbHQgdGV4dCBvbiBpbWFnZXMKICAxNTMgfCAgICAgY29uc3QgaW1hZ2VzID0gcGFnZS5sb2NhdG9yKCdpbWcnKTsKICAxNTQgfCAgICAgY29uc3QgaW1hZ2VDb3VudCA9IGF3YWl0IGltYWdlcy5jb3VudCgpOwogIDE1NSB8ICAgICAKICAxNTYgfCAgICAgaWYgKGltYWdlQ291bnQgPiAwKSB7CiAgMTU3IHwgICAgICAgZm9yIChsZXQgaSA9IDA7IGkgPCBNYXRoLm1pbihpbWFnZUNvdW50LCA1KTsgaSsrKSB7CiAgMTU4IHwgICAgICAgICBjb25zdCBpbWcgPSBpbWFnZXMubnRoKGkpOwogIDE1OSB8ICAgICAgICAgY29uc3QgYWx0ID0gYXdhaXQgaW1nLmdldEF0dHJpYnV0ZSgnYWx0Jyk7CiAgMTYwIHwgICAgICAgICBjb25zdCBhcmlhTGFiZWwgPSBhd2FpdCBpbWcuZ2V0QXR0cmlidXRlKCdhcmlhLWxhYmVsJyk7CiAgMTYxIHwgICAgICAgICAKICAxNjIgfCAgICAgICAgIC8vIEltYWdlcyBzaG91bGQgaGF2ZSBhbHQgdGV4dCBvciBhcmlhLWxhYmVsCiAgMTYzIHwgICAgICAgICBleHBlY3QoYWx0ICE9PSBudWxsIHx8IGFyaWFMYWJlbCAhPT0gbnVsbCkudG9CZVRydXRoeSgpOwogIDE2NCB8ICAgICAgIH0KICAxNjUgfCAgICAgfQogIDE2NiB8ICAgICAKICAxNjcgfCAgICAgLy8gQ2hlY2sgZm9yIHByb3BlciBmb2N1cyBtYW5hZ2VtZW50CiAgMTY4IHwgICAgIGF3YWl0IHBhZ2Uua2V5Ym9hcmQucHJlc3MoJ1RhYicpOwogIDE2OSB8ICAgICBjb25zdCBmb2N1c2VkRWxlbWVudCA9IHBhZ2UubG9jYXRvcignOmZvY3VzJyk7CiAgMTcwIHwgICAgIGF3YWl0IGV4cGVjdChmb2N1c2VkRWxlbWVudCkudG9CZVZpc2libGUoKTsKICAxNzEgfCAgIH0pOwogIDE3MiB8CiAgMTczIHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIGVycm9ycyBncmFjZWZ1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTc0IHwgICAgIC8vIFRlc3Qgd2hhdCBoYXBwZW5zIHdoZW4gd2UgdHJ5IHRvIGFjY2VzcyBhIG5vbi1leGlzdGVudCByb3V0ZQogIDE3NSB8ICAgICBhd2FpdCBwYWdlLmdvdG8oJy9ub24tZXhpc3RlbnQtcGFnZScpOwogIDE3NiB8ICAgICAKICAxNzcgfCAgICAgLy8gU2hvdWxkIHNob3cgNDA0IHBhZ2Ugb3IgcmVkaXJlY3QgdG8gaG9tZQogIDE3OCB8ICAgICBjb25zdCBpczQwNCA9IHBhZ2UudXJsKCkuaW5jbHVkZXMoJzQwNCcpIHx8IAogIDE3OSB8ICAgICAgICAgICAgICAgICAgIGF3YWl0IHBhZ2UuZ2V0QnlUZXh0KC80MDR8bm90IGZvdW5kfOimi+OBpOOBi+OCiuOBvuOBm+OCky9pKS5pc1Zpc2libGUoKTsKICAxODAgfCAgICAgY29uc3QgaXNIb21lID0gcGFnZS51cmwoKS5lbmRzV2l0aCgnLycpIHx8IHBhZ2UudXJsKCkuZW5kc1dpdGgoJy9pbmRleC5odG1sJyk7CiAgMTgxIHwgICAgIAogIDE4MiB8ICAgICBleHBlY3QoaXM0MDQgfHwgaXNIb21lKS50b0JlVHJ1dGh5KCk7CiAgMTgzIHwgICAgIAogIDE4NCB8ICAgICAvLyBJZiBpdCdzIGEgNDA0LCBjaGVjayB0aGF0IG5hdmlnYXRpb24gc3RpbGwgd29ya3MKICAxODUgfCAgICAgaWYgKGlzNDA0KSB7CiAgMTg2IHwgICAgICAgY29uc3QgaG9tZUxpbmsgPSBwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL2hvbWV844Ob44O844OgL2kgfSk7CiAgMTg3IHwgICAgICAgaWYgKGF3YWl0IGhvbWVMaW5rLmlzVmlzaWJsZSgpKSB7CiAgMTg4IHwgICAgICAgICBhd2FpdCBob21lTGluay5jbGljaygpOwogIDE4OSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVVSTCgnLycpOwogIDE5MCB8ICAgICAgIH0KICAxOTEgfCAgICAgfQogIDE5MiB8ICAgfSk7CiAgMTkzIHwgfSk7CmBgYA=="
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 40,
+                        "line": 138
+                      }
+                    },
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 11368,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('main')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('main')\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('main')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('main')\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:138:40",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('main')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('main')\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for locator('main')"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 40,
+                          "line": 138
+                        },
+                        "snippet": "  136 |     \n  137 |     // Check that main content is eventually visible\n> 138 |     await expect(page.locator('main')).toBeVisible();\n      |                                        ^\n  139 |   });\n  140 |\n  141 |   test('should have proper accessibility features', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 40,
+                            "line": 138
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('main')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('main')\u001b[22m\n\n\n  136 |     \n  137 |     // Check that main content is eventually visible\n> 138 |     await expect(page.locator('main')).toBeVisible();\n      |                                        ^\n  139 |   });\n  140 |\n  141 |   test('should have proper accessibility features', async ({ page }) => {\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:138:40"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-07-07T01:16:31.161Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgaGFuZGxlIHNsb3cgbG9hZGluZyBncmFjZWZ1bGx5Ci0gTG9jYXRpb246IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxMDk6NwoKIyBFcnJvciBkZXRhaWxzCgpgYGAKRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCgpMb2NhdG9yOiBsb2NhdG9yKCdtYWluJykKRXhwZWN0ZWQ6IHZpc2libGUKUmVjZWl2ZWQ6IDxlbGVtZW50KHMpIG5vdCBmb3VuZD4KQ2FsbCBsb2c6CiAgLSBleHBlY3QudG9CZVZpc2libGUgd2l0aCB0aW1lb3V0IDEwMDAwbXMKICAtIHdhaXRpbmcgZm9yIGxvY2F0b3IoJ21haW4nKQoKICAgIGF0IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxMzg6NDAKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgMzggfCAgICAgLy8gU3VibWl0IHNlYXJjaCAobG9vayBmb3Igc2VhcmNoIGJ1dHRvbiBvciBwcmVzcyBFbnRlcikKICAgMzkgfCAgICAgY29uc3Qgc2VhcmNoQnV0dG9uID0gcGFnZS5nZXRCeVJvbGUoJ2J1dHRvbicsIHsgbmFtZTogL3NlYXJjaHzmpJzntKIvaSB9KTsKICAgNDAgfCAgICAgaWYgKGF3YWl0IHNlYXJjaEJ1dHRvbi5pc1Zpc2libGUoKSkgewogICA0MSB8ICAgICAgIGF3YWl0IHNlYXJjaEJ1dHRvbi5jbGljaygpOwogICA0MiB8ICAgICB9IGVsc2UgewogICA0MyB8ICAgICAgIGF3YWl0IHNlYXJjaElucHV0LnByZXNzKCdFbnRlcicpOwogICA0NCB8ICAgICB9CiAgIDQ1IHwgICAgIAogICA0NiB8ICAgICAvLyBTaG91bGQgbmF2aWdhdGUgdG8gc2VhcmNoIHJlc3VsdHMgb3IgdXBkYXRlIGN1cnJlbnQgcGFnZQogICA0NyB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JMb2FkU3RhdGUoJ25ldHdvcmtpZGxlJyk7CiAgIDQ4IHwgICAgIAogICA0OSB8ICAgICAvLyBDaGVjayB0aGF0IHdlIGVpdGhlciBuYXZpZ2F0ZWQgdG8gcmVzdWx0cyBvciByZXN1bHRzIGFyZSBzaG93bgogICA1MCB8ICAgICBjb25zdCBoYXNOYXZpZ2F0ZWQgPSBwYWdlLnVybCgpLmluY2x1ZGVzKCcvYXJjaGl0ZWN0dXJlJykgfHwgcGFnZS51cmwoKS5pbmNsdWRlcygnL3NlYXJjaCcpOwogICA1MSB8ICAgICBjb25zdCBoYXNSZXN1bHRzID0gYXdhaXQgcGFnZS5sb2NhdG9yKCdbZGF0YS10ZXN0aWQ9ImFyY2hpdGVjdHVyZS1pdGVtIl0nKS5jb3VudCgpID4gMDsKICAgNTIgfCAgICAgY29uc3QgaGFzTm9SZXN1bHRzID0gYXdhaXQgcGFnZS5nZXRCeVRleHQoL25vIHJlc3VsdHN857WQ5p6c44GM6KaL44Gk44GL44KK44G+44Gb44KTL2kpLmlzVmlzaWJsZSgpOwogICA1MyB8ICAgICAKICAgNTQgfCAgICAgZXhwZWN0KGhhc05hdmlnYXRlZCB8fCBoYXNSZXN1bHRzIHx8IGhhc05vUmVzdWx0cykudG9CZVRydXRoeSgpOwogICA1NSB8ICAgfSk7CiAgIDU2IHwKICAgNTcgfCAgIHRlc3QoJ3Nob3VsZCBkaXNwbGF5IGZlYXR1cmUgY2FyZHMgb3Igc2VjdGlvbnMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgNTggfCAgICAgLy8gTG9vayBmb3IgZmVhdHVyZSBjYXJkcywgc2VjdGlvbnMsIG9yIHNpbWlsYXIgY29udGVudAogICA1OSB8ICAgICBjb25zdCBmZWF0dXJlU2VsZWN0b3JzID0gWwogICA2MCB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImZlYXR1cmUtY2FyZCJdJywKICAgNjEgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJmZWF0dXJlLXNlY3Rpb24iXScsCiAgIDYyIHwgICAgICAgJy5mZWF0dXJlLWNhcmQnLAogICA2MyB8ICAgICAgICcuZmVhdHVyZS1zZWN0aW9uJywKICAgNjQgfCAgICAgICAnW3JvbGU9ImFydGljbGUiXScKICAgNjUgfCAgICAgXTsKICAgNjYgfCAgICAgCiAgIDY3IHwgICAgIGxldCBmZWF0dXJlc0ZvdW5kID0gZmFsc2U7CiAgIDY4IHwgICAgIGZvciAoY29uc3Qgc2VsZWN0b3Igb2YgZmVhdHVyZVNlbGVjdG9ycykgewogICA2OSB8ICAgICAgIGNvbnN0IGVsZW1lbnRzID0gcGFnZS5sb2NhdG9yKHNlbGVjdG9yKTsKICAgNzAgfCAgICAgICBpZiAoYXdhaXQgZWxlbWVudHMuY291bnQoKSA+IDApIHsKICAgNzEgfCAgICAgICAgIGF3YWl0IGV4cGVjdChlbGVtZW50cy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogICA3MiB8ICAgICAgICAgZmVhdHVyZXNGb3VuZCA9IHRydWU7CiAgIDczIHwgICAgICAgICBicmVhazsKICAgNzQgfCAgICAgICB9CiAgIDc1IHwgICAgIH0KICAgNzYgfCAgICAgCiAgIDc3IHwgICAgIC8vIElmIG5vIHNwZWNpZmljIGZlYXR1cmUgY2FyZHMsIGNoZWNrIGZvciBnZW5lcmFsIGNvbnRlbnQgc2VjdGlvbnMKICAgNzggfCAgICAgaWYgKCFmZWF0dXJlc0ZvdW5kKSB7CiAgIDc5IHwgICAgICAgY29uc3QgY29udGVudFNlY3Rpb25zID0gcGFnZS5sb2NhdG9yKCdtYWluIHNlY3Rpb24sIC5jb250ZW50LXNlY3Rpb24sIC5oZXJvLXNlY3Rpb24nKTsKICAgODAgfCAgICAgICBpZiAoYXdhaXQgY29udGVudFNlY3Rpb25zLmNvdW50KCkgPiAwKSB7CiAgIDgxIHwgICAgICAgICBhd2FpdCBleHBlY3QoY29udGVudFNlY3Rpb25zLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgIDgyIHwgICAgICAgfQogICA4MyB8ICAgICB9CiAgIDg0IHwgICB9KTsKICAgODUgfAogICA4NiB8ICAgdGVzdCgnc2hvdWxkIGJlIHJlc3BvbnNpdmUgb24gbW9iaWxlIGRldmljZXMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgODcgfCAgICAgLy8gU2V0IG1vYmlsZSB2aWV3cG9ydAogICA4OCB8ICAgICBhd2FpdCBwYWdlLnNldFZpZXdwb3J0U2l6ZSh7IHdpZHRoOiAzNzUsIGhlaWdodDogNjY3IH0pOwogICA4OSB8ICAgICAKICAgOTAgfCAgICAgLy8gQ2hlY2sgdGhhdCBuYXZpZ2F0aW9uIGlzIG1vYmlsZS1mcmllbmRseQogICA5MSB8ICAgICBjb25zdCBuYXYgPSBwYWdlLmdldEJ5Um9sZSgnbmF2aWdhdGlvbicpOwogICA5MiB8ICAgICBhd2FpdCBleHBlY3QobmF2KS50b0JlVmlzaWJsZSgpOwogICA5MyB8ICAgICAKICAgOTQgfCAgICAgLy8gQ2hlY2sgZm9yIG1vYmlsZSBtZW51IHRvZ2dsZSBpZiBpdCBleGlzdHMKICAgOTUgfCAgICAgY29uc3QgbW9iaWxlTWVudVRvZ2dsZSA9IHBhZ2UuZ2V0QnlSb2xlKCdidXR0b24nLCB7IG5hbWU6IC9tZW51fOODoeODi+ODpeODvC9pIH0pOwogICA5NiB8ICAgICBpZiAoYXdhaXQgbW9iaWxlTWVudVRvZ2dsZS5pc1Zpc2libGUoKSkgewogICA5NyB8ICAgICAgIGF3YWl0IG1vYmlsZU1lbnVUb2dnbGUuY2xpY2soKTsKICAgOTggfCAgICAgICAvLyBNZW51IHNob3VsZCBleHBhbmQKICAgOTkgfCAgICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ21lbnUnKSkudG9CZVZpc2libGUoKTsKICAxMDAgfCAgICAgfQogIDEwMSB8ICAgICAKICAxMDIgfCAgICAgLy8gQ2hlY2sgdGhhdCBzZWFyY2ggaXMgYWNjZXNzaWJsZSBvbiBtb2JpbGUKICAxMDMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdzZWFyY2hib3gnKSkudG9CZVZpc2libGUoKTsKICAxMDQgfCAgICAgCiAgMTA1IHwgICAgIC8vIENoZWNrIHRoYXQgbWFpbiBjb250ZW50IGlzIHZpc2libGUgYW5kIHByb3Blcmx5IHNjYWxlZAogIDEwNiB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdtYWluJykpLnRvQmVWaXNpYmxlKCk7CiAgMTA3IHwgICB9KTsKICAxMDggfAogIDEwOSB8ICAgdGVzdCgnc2hvdWxkIGhhbmRsZSBzbG93IGxvYWRpbmcgZ3JhY2VmdWxseScsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDExMCB8ICAgICAvLyBTaW11bGF0ZSBzbG93IG5ldHdvcmsKICAxMTEgfCAgICAgYXdhaXQgcGFnZS5yb3V0ZSgnKiovKicsIHJvdXRlID0+IHsKICAxMTIgfCAgICAgICBzZXRUaW1lb3V0KCgpID0+IHJvdXRlLmNvbnRpbnVlKCksIDEwMCk7CiAgMTEzIHwgICAgIH0pOwogIDExNCB8ICAgICAKICAxMTUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvJyk7CiAgMTE2IHwgICAgIAogIDExNyB8ICAgICAvLyBDaGVjayBmb3IgbG9hZGluZyBpbmRpY2F0b3JzCiAgMTE4IHwgICAgIGNvbnN0IGxvYWRpbmdJbmRpY2F0b3JzID0gWwogIDExOSB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImxvYWRpbmctc2tlbGV0b24iXScsCiAgMTIwIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0ibG9hZGluZy1zcGlubmVyIl0nLAogIDEyMSB8ICAgICAgICcubG9hZGluZycsCiAgMTIyIHwgICAgICAgJy5za2VsZXRvbicKICAxMjMgfCAgICAgXTsKICAxMjQgfCAgICAgCiAgMTI1IHwgICAgIGZvciAoY29uc3Qgc2VsZWN0b3Igb2YgbG9hZGluZ0luZGljYXRvcnMpIHsKICAxMjYgfCAgICAgICBjb25zdCBsb2FkaW5nID0gcGFnZS5sb2NhdG9yKHNlbGVjdG9yKTsKICAxMjcgfCAgICAgICBpZiAoYXdhaXQgbG9hZGluZy5jb3VudCgpID4gMCkgewogIDEyOCB8ICAgICAgICAgLy8gTG9hZGluZyBpbmRpY2F0b3Igc2hvdWxkIGJlIHZpc2libGUgaW5pdGlhbGx5CiAgMTI5IHwgICAgICAgICBhd2FpdCBleHBlY3QobG9hZGluZy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogIDEzMCB8ICAgICAgICAgYnJlYWs7CiAgMTMxIHwgICAgICAgfQogIDEzMiB8ICAgICB9CiAgMTMzIHwgICAgIAogIDEzNCB8ICAgICAvLyBXYWl0IGZvciBjb250ZW50IHRvIGxvYWQKICAxMzUgfCAgICAgYXdhaXQgcGFnZS53YWl0Rm9yTG9hZFN0YXRlKCduZXR3b3JraWRsZScpOwogIDEzNiB8ICAgICAKICAxMzcgfCAgICAgLy8gQ2hlY2sgdGhhdCBtYWluIGNvbnRlbnQgaXMgZXZlbnR1YWxseSB2aXNpYmxlCj4gMTM4IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJ21haW4nKSkudG9CZVZpc2libGUoKTsKICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeIEVycm9yOiBUaW1lZCBvdXQgMTAwMDBtcyB3YWl0aW5nIGZvciBleHBlY3QobG9jYXRvcikudG9CZVZpc2libGUoKQogIDEzOSB8ICAgfSk7CiAgMTQwIHwKICAxNDEgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHByb3BlciBhY2Nlc3NpYmlsaXR5IGZlYXR1cmVzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTQyIHwgICAgIC8vIENoZWNrIGZvciBza2lwIGxpbmtzCiAgMTQzIHwgICAgIGNvbnN0IHNraXBMaW5rcyA9IHBhZ2UuZ2V0QnlSb2xlKCdsaW5rJywgeyBuYW1lOiAvc2tpcCB0byBtYWluIGNvbnRlbnR8c2tpcCB0byBjb250ZW50L2kgfSk7CiAgMTQ0IHwgICAgIGlmIChhd2FpdCBza2lwTGlua3MuY291bnQoKSA+IDApIHsKICAxNDUgfCAgICAgICBhd2FpdCBleHBlY3Qoc2tpcExpbmtzLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgMTQ2IHwgICAgIH0KICAxNDcgfCAgICAgCiAgMTQ4IHwgICAgIC8vIENoZWNrIGZvciBwcm9wZXIgaGVhZGluZyBoaWVyYXJjaHkKICAxNDkgfCAgICAgY29uc3QgaDEgPSBwYWdlLmdldEJ5Um9sZSgnaGVhZGluZycsIHsgbGV2ZWw6IDEgfSk7CiAgMTUwIHwgICAgIGF3YWl0IGV4cGVjdChoMSkudG9CZVZpc2libGUoKTsKICAxNTEgfCAgICAgCiAgMTUyIHwgICAgIC8vIENoZWNrIGZvciBhbHQgdGV4dCBvbiBpbWFnZXMKICAxNTMgfCAgICAgY29uc3QgaW1hZ2VzID0gcGFnZS5sb2NhdG9yKCdpbWcnKTsKICAxNTQgfCAgICAgY29uc3QgaW1hZ2VDb3VudCA9IGF3YWl0IGltYWdlcy5jb3VudCgpOwogIDE1NSB8ICAgICAKICAxNTYgfCAgICAgaWYgKGltYWdlQ291bnQgPiAwKSB7CiAgMTU3IHwgICAgICAgZm9yIChsZXQgaSA9IDA7IGkgPCBNYXRoLm1pbihpbWFnZUNvdW50LCA1KTsgaSsrKSB7CiAgMTU4IHwgICAgICAgICBjb25zdCBpbWcgPSBpbWFnZXMubnRoKGkpOwogIDE1OSB8ICAgICAgICAgY29uc3QgYWx0ID0gYXdhaXQgaW1nLmdldEF0dHJpYnV0ZSgnYWx0Jyk7CiAgMTYwIHwgICAgICAgICBjb25zdCBhcmlhTGFiZWwgPSBhd2FpdCBpbWcuZ2V0QXR0cmlidXRlKCdhcmlhLWxhYmVsJyk7CiAgMTYxIHwgICAgICAgICAKICAxNjIgfCAgICAgICAgIC8vIEltYWdlcyBzaG91bGQgaGF2ZSBhbHQgdGV4dCBvciBhcmlhLWxhYmVsCiAgMTYzIHwgICAgICAgICBleHBlY3QoYWx0ICE9PSBudWxsIHx8IGFyaWFMYWJlbCAhPT0gbnVsbCkudG9CZVRydXRoeSgpOwogIDE2NCB8ICAgICAgIH0KICAxNjUgfCAgICAgfQogIDE2NiB8ICAgICAKICAxNjcgfCAgICAgLy8gQ2hlY2sgZm9yIHByb3BlciBmb2N1cyBtYW5hZ2VtZW50CiAgMTY4IHwgICAgIGF3YWl0IHBhZ2Uua2V5Ym9hcmQucHJlc3MoJ1RhYicpOwogIDE2OSB8ICAgICBjb25zdCBmb2N1c2VkRWxlbWVudCA9IHBhZ2UubG9jYXRvcignOmZvY3VzJyk7CiAgMTcwIHwgICAgIGF3YWl0IGV4cGVjdChmb2N1c2VkRWxlbWVudCkudG9CZVZpc2libGUoKTsKICAxNzEgfCAgIH0pOwogIDE3MiB8CiAgMTczIHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIGVycm9ycyBncmFjZWZ1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTc0IHwgICAgIC8vIFRlc3Qgd2hhdCBoYXBwZW5zIHdoZW4gd2UgdHJ5IHRvIGFjY2VzcyBhIG5vbi1leGlzdGVudCByb3V0ZQogIDE3NSB8ICAgICBhd2FpdCBwYWdlLmdvdG8oJy9ub24tZXhpc3RlbnQtcGFnZScpOwogIDE3NiB8ICAgICAKICAxNzcgfCAgICAgLy8gU2hvdWxkIHNob3cgNDA0IHBhZ2Ugb3IgcmVkaXJlY3QgdG8gaG9tZQogIDE3OCB8ICAgICBjb25zdCBpczQwNCA9IHBhZ2UudXJsKCkuaW5jbHVkZXMoJzQwNCcpIHx8IAogIDE3OSB8ICAgICAgICAgICAgICAgICAgIGF3YWl0IHBhZ2UuZ2V0QnlUZXh0KC80MDR8bm90IGZvdW5kfOimi+OBpOOBi+OCiuOBvuOBm+OCky9pKS5pc1Zpc2libGUoKTsKICAxODAgfCAgICAgY29uc3QgaXNIb21lID0gcGFnZS51cmwoKS5lbmRzV2l0aCgnLycpIHx8IHBhZ2UudXJsKCkuZW5kc1dpdGgoJy9pbmRleC5odG1sJyk7CiAgMTgxIHwgICAgIAogIDE4MiB8ICAgICBleHBlY3QoaXM0MDQgfHwgaXNIb21lKS50b0JlVHJ1dGh5KCk7CiAgMTgzIHwgICAgIAogIDE4NCB8ICAgICAvLyBJZiBpdCdzIGEgNDA0LCBjaGVjayB0aGF0IG5hdmlnYXRpb24gc3RpbGwgd29ya3MKICAxODUgfCAgICAgaWYgKGlzNDA0KSB7CiAgMTg2IHwgICAgICAgY29uc3QgaG9tZUxpbmsgPSBwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL2hvbWV844Ob44O844OgL2kgfSk7CiAgMTg3IHwgICAgICAgaWYgKGF3YWl0IGhvbWVMaW5rLmlzVmlzaWJsZSgpKSB7CiAgMTg4IHwgICAgICAgICBhd2FpdCBob21lTGluay5jbGljaygpOwogIDE4OSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVVSTCgnLycpOwogIDE5MCB8ICAgICAgIH0KICAxOTEgfCAgICAgfQogIDE5MiB8ICAgfSk7CiAgMTkzIHwgfSk7CmBgYA=="
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 40,
+                        "line": 138
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "84e7eb052e8cbae1c9f0-7d1e56201163f5154495",
+              "file": "homepage.spec.ts",
+              "line": 109,
+              "column": 7
+            },
+            {
+              "title": "should have proper accessibility features",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 10562,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:150:22",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for getByRole('heading', { level: 1 })"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 22,
+                          "line": 150
+                        },
+                        "snippet": "  148 |     // Check for proper heading hierarchy\n  149 |     const h1 = page.getByRole('heading', { level: 1 });\n> 150 |     await expect(h1).toBeVisible();\n      |                      ^\n  151 |     \n  152 |     // Check for alt text on images\n  153 |     const images = page.locator('img');"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 22,
+                            "line": 150
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\n\n  148 |     // Check for proper heading hierarchy\n  149 |     const h1 = page.getByRole('heading', { level: 1 });\n> 150 |     await expect(h1).toBeVisible();\n      |                      ^\n  151 |     \n  152 |     // Check for alt text on images\n  153 |     const images = page.locator('img');\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:150:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T01:16:20.158Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgaGF2ZSBwcm9wZXIgYWNjZXNzaWJpbGl0eSBmZWF0dXJlcwotIExvY2F0aW9uOiAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL2hvbWVwYWdlLnNwZWMudHM6MTQxOjcKCiMgRXJyb3IgZGV0YWlscwoKYGBgCkVycm9yOiBUaW1lZCBvdXQgMTAwMDBtcyB3YWl0aW5nIGZvciBleHBlY3QobG9jYXRvcikudG9CZVZpc2libGUoKQoKTG9jYXRvcjogZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KQpFeHBlY3RlZDogdmlzaWJsZQpSZWNlaXZlZDogPGVsZW1lbnQocykgbm90IGZvdW5kPgpDYWxsIGxvZzoKICAtIGV4cGVjdC50b0JlVmlzaWJsZSB3aXRoIHRpbWVvdXQgMTAwMDBtcwogIC0gd2FpdGluZyBmb3IgZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KQoKICAgIGF0IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxNTA6MjIKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgNTAgfCAgICAgY29uc3QgaGFzTmF2aWdhdGVkID0gcGFnZS51cmwoKS5pbmNsdWRlcygnL2FyY2hpdGVjdHVyZScpIHx8IHBhZ2UudXJsKCkuaW5jbHVkZXMoJy9zZWFyY2gnKTsKICAgNTEgfCAgICAgY29uc3QgaGFzUmVzdWx0cyA9IGF3YWl0IHBhZ2UubG9jYXRvcignW2RhdGEtdGVzdGlkPSJhcmNoaXRlY3R1cmUtaXRlbSJdJykuY291bnQoKSA+IDA7CiAgIDUyIHwgICAgIGNvbnN0IGhhc05vUmVzdWx0cyA9IGF3YWl0IHBhZ2UuZ2V0QnlUZXh0KC9ubyByZXN1bHRzfOe1kOaenOOBjOimi+OBpOOBi+OCiuOBvuOBm+OCky9pKS5pc1Zpc2libGUoKTsKICAgNTMgfCAgICAgCiAgIDU0IHwgICAgIGV4cGVjdChoYXNOYXZpZ2F0ZWQgfHwgaGFzUmVzdWx0cyB8fCBoYXNOb1Jlc3VsdHMpLnRvQmVUcnV0aHkoKTsKICAgNTUgfCAgIH0pOwogICA1NiB8CiAgIDU3IHwgICB0ZXN0KCdzaG91bGQgZGlzcGxheSBmZWF0dXJlIGNhcmRzIG9yIHNlY3Rpb25zJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDU4IHwgICAgIC8vIExvb2sgZm9yIGZlYXR1cmUgY2FyZHMsIHNlY3Rpb25zLCBvciBzaW1pbGFyIGNvbnRlbnQKICAgNTkgfCAgICAgY29uc3QgZmVhdHVyZVNlbGVjdG9ycyA9IFsKICAgNjAgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJmZWF0dXJlLWNhcmQiXScsCiAgIDYxIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0iZmVhdHVyZS1zZWN0aW9uIl0nLAogICA2MiB8ICAgICAgICcuZmVhdHVyZS1jYXJkJywKICAgNjMgfCAgICAgICAnLmZlYXR1cmUtc2VjdGlvbicsCiAgIDY0IHwgICAgICAgJ1tyb2xlPSJhcnRpY2xlIl0nCiAgIDY1IHwgICAgIF07CiAgIDY2IHwgICAgIAogICA2NyB8ICAgICBsZXQgZmVhdHVyZXNGb3VuZCA9IGZhbHNlOwogICA2OCB8ICAgICBmb3IgKGNvbnN0IHNlbGVjdG9yIG9mIGZlYXR1cmVTZWxlY3RvcnMpIHsKICAgNjkgfCAgICAgICBjb25zdCBlbGVtZW50cyA9IHBhZ2UubG9jYXRvcihzZWxlY3Rvcik7CiAgIDcwIHwgICAgICAgaWYgKGF3YWl0IGVsZW1lbnRzLmNvdW50KCkgPiAwKSB7CiAgIDcxIHwgICAgICAgICBhd2FpdCBleHBlY3QoZWxlbWVudHMuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAgNzIgfCAgICAgICAgIGZlYXR1cmVzRm91bmQgPSB0cnVlOwogICA3MyB8ICAgICAgICAgYnJlYWs7CiAgIDc0IHwgICAgICAgfQogICA3NSB8ICAgICB9CiAgIDc2IHwgICAgIAogICA3NyB8ICAgICAvLyBJZiBubyBzcGVjaWZpYyBmZWF0dXJlIGNhcmRzLCBjaGVjayBmb3IgZ2VuZXJhbCBjb250ZW50IHNlY3Rpb25zCiAgIDc4IHwgICAgIGlmICghZmVhdHVyZXNGb3VuZCkgewogICA3OSB8ICAgICAgIGNvbnN0IGNvbnRlbnRTZWN0aW9ucyA9IHBhZ2UubG9jYXRvcignbWFpbiBzZWN0aW9uLCAuY29udGVudC1zZWN0aW9uLCAuaGVyby1zZWN0aW9uJyk7CiAgIDgwIHwgICAgICAgaWYgKGF3YWl0IGNvbnRlbnRTZWN0aW9ucy5jb3VudCgpID4gMCkgewogICA4MSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGNvbnRlbnRTZWN0aW9ucy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogICA4MiB8ICAgICAgIH0KICAgODMgfCAgICAgfQogICA4NCB8ICAgfSk7CiAgIDg1IHwKICAgODYgfCAgIHRlc3QoJ3Nob3VsZCBiZSByZXNwb25zaXZlIG9uIG1vYmlsZSBkZXZpY2VzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDg3IHwgICAgIC8vIFNldCBtb2JpbGUgdmlld3BvcnQKICAgODggfCAgICAgYXdhaXQgcGFnZS5zZXRWaWV3cG9ydFNpemUoeyB3aWR0aDogMzc1LCBoZWlnaHQ6IDY2NyB9KTsKICAgODkgfCAgICAgCiAgIDkwIHwgICAgIC8vIENoZWNrIHRoYXQgbmF2aWdhdGlvbiBpcyBtb2JpbGUtZnJpZW5kbHkKICAgOTEgfCAgICAgY29uc3QgbmF2ID0gcGFnZS5nZXRCeVJvbGUoJ25hdmlnYXRpb24nKTsKICAgOTIgfCAgICAgYXdhaXQgZXhwZWN0KG5hdikudG9CZVZpc2libGUoKTsKICAgOTMgfCAgICAgCiAgIDk0IHwgICAgIC8vIENoZWNrIGZvciBtb2JpbGUgbWVudSB0b2dnbGUgaWYgaXQgZXhpc3RzCiAgIDk1IHwgICAgIGNvbnN0IG1vYmlsZU1lbnVUb2dnbGUgPSBwYWdlLmdldEJ5Um9sZSgnYnV0dG9uJywgeyBuYW1lOiAvbWVudXzjg6Hjg4vjg6Xjg7wvaSB9KTsKICAgOTYgfCAgICAgaWYgKGF3YWl0IG1vYmlsZU1lbnVUb2dnbGUuaXNWaXNpYmxlKCkpIHsKICAgOTcgfCAgICAgICBhd2FpdCBtb2JpbGVNZW51VG9nZ2xlLmNsaWNrKCk7CiAgIDk4IHwgICAgICAgLy8gTWVudSBzaG91bGQgZXhwYW5kCiAgIDk5IHwgICAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdtZW51JykpLnRvQmVWaXNpYmxlKCk7CiAgMTAwIHwgICAgIH0KICAxMDEgfCAgICAgCiAgMTAyIHwgICAgIC8vIENoZWNrIHRoYXQgc2VhcmNoIGlzIGFjY2Vzc2libGUgb24gbW9iaWxlCiAgMTAzIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94JykpLnRvQmVWaXNpYmxlKCk7CiAgMTA0IHwgICAgIAogIDEwNSB8ICAgICAvLyBDaGVjayB0aGF0IG1haW4gY29udGVudCBpcyB2aXNpYmxlIGFuZCBwcm9wZXJseSBzY2FsZWQKICAxMDYgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UubG9jYXRvcignbWFpbicpKS50b0JlVmlzaWJsZSgpOwogIDEwNyB8ICAgfSk7CiAgMTA4IHwKICAxMDkgfCAgIHRlc3QoJ3Nob3VsZCBoYW5kbGUgc2xvdyBsb2FkaW5nIGdyYWNlZnVsbHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxMTAgfCAgICAgLy8gU2ltdWxhdGUgc2xvdyBuZXR3b3JrCiAgMTExIHwgICAgIGF3YWl0IHBhZ2Uucm91dGUoJyoqLyonLCByb3V0ZSA9PiB7CiAgMTEyIHwgICAgICAgc2V0VGltZW91dCgoKSA9PiByb3V0ZS5jb250aW51ZSgpLCAxMDApOwogIDExMyB8ICAgICB9KTsKICAxMTQgfCAgICAgCiAgMTE1IHwgICAgIGF3YWl0IHBhZ2UuZ290bygnLycpOwogIDExNiB8ICAgICAKICAxMTcgfCAgICAgLy8gQ2hlY2sgZm9yIGxvYWRpbmcgaW5kaWNhdG9ycwogIDExOCB8ICAgICBjb25zdCBsb2FkaW5nSW5kaWNhdG9ycyA9IFsKICAxMTkgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJsb2FkaW5nLXNrZWxldG9uIl0nLAogIDEyMCB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImxvYWRpbmctc3Bpbm5lciJdJywKICAxMjEgfCAgICAgICAnLmxvYWRpbmcnLAogIDEyMiB8ICAgICAgICcuc2tlbGV0b24nCiAgMTIzIHwgICAgIF07CiAgMTI0IHwgICAgIAogIDEyNSB8ICAgICBmb3IgKGNvbnN0IHNlbGVjdG9yIG9mIGxvYWRpbmdJbmRpY2F0b3JzKSB7CiAgMTI2IHwgICAgICAgY29uc3QgbG9hZGluZyA9IHBhZ2UubG9jYXRvcihzZWxlY3Rvcik7CiAgMTI3IHwgICAgICAgaWYgKGF3YWl0IGxvYWRpbmcuY291bnQoKSA+IDApIHsKICAxMjggfCAgICAgICAgIC8vIExvYWRpbmcgaW5kaWNhdG9yIHNob3VsZCBiZSB2aXNpYmxlIGluaXRpYWxseQogIDEyOSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGxvYWRpbmcuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAxMzAgfCAgICAgICAgIGJyZWFrOwogIDEzMSB8ICAgICAgIH0KICAxMzIgfCAgICAgfQogIDEzMyB8ICAgICAKICAxMzQgfCAgICAgLy8gV2FpdCBmb3IgY29udGVudCB0byBsb2FkCiAgMTM1IHwgICAgIGF3YWl0IHBhZ2Uud2FpdEZvckxvYWRTdGF0ZSgnbmV0d29ya2lkbGUnKTsKICAxMzYgfCAgICAgCiAgMTM3IHwgICAgIC8vIENoZWNrIHRoYXQgbWFpbiBjb250ZW50IGlzIGV2ZW50dWFsbHkgdmlzaWJsZQogIDEzOCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdtYWluJykpLnRvQmVWaXNpYmxlKCk7CiAgMTM5IHwgICB9KTsKICAxNDAgfAogIDE0MSB8ICAgdGVzdCgnc2hvdWxkIGhhdmUgcHJvcGVyIGFjY2Vzc2liaWxpdHkgZmVhdHVyZXMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxNDIgfCAgICAgLy8gQ2hlY2sgZm9yIHNraXAgbGlua3MKICAxNDMgfCAgICAgY29uc3Qgc2tpcExpbmtzID0gcGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9za2lwIHRvIG1haW4gY29udGVudHxza2lwIHRvIGNvbnRlbnQvaSB9KTsKICAxNDQgfCAgICAgaWYgKGF3YWl0IHNraXBMaW5rcy5jb3VudCgpID4gMCkgewogIDE0NSB8ICAgICAgIGF3YWl0IGV4cGVjdChza2lwTGlua3MuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAxNDYgfCAgICAgfQogIDE0NyB8ICAgICAKICAxNDggfCAgICAgLy8gQ2hlY2sgZm9yIHByb3BlciBoZWFkaW5nIGhpZXJhcmNoeQogIDE0OSB8ICAgICBjb25zdCBoMSA9IHBhZ2UuZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KTsKPiAxNTAgfCAgICAgYXdhaXQgZXhwZWN0KGgxKS50b0JlVmlzaWJsZSgpOwogICAgICB8ICAgICAgICAgICAgICAgICAgICAgIF4gRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCiAgMTUxIHwgICAgIAogIDE1MiB8ICAgICAvLyBDaGVjayBmb3IgYWx0IHRleHQgb24gaW1hZ2VzCiAgMTUzIHwgICAgIGNvbnN0IGltYWdlcyA9IHBhZ2UubG9jYXRvcignaW1nJyk7CiAgMTU0IHwgICAgIGNvbnN0IGltYWdlQ291bnQgPSBhd2FpdCBpbWFnZXMuY291bnQoKTsKICAxNTUgfCAgICAgCiAgMTU2IHwgICAgIGlmIChpbWFnZUNvdW50ID4gMCkgewogIDE1NyB8ICAgICAgIGZvciAobGV0IGkgPSAwOyBpIDwgTWF0aC5taW4oaW1hZ2VDb3VudCwgNSk7IGkrKykgewogIDE1OCB8ICAgICAgICAgY29uc3QgaW1nID0gaW1hZ2VzLm50aChpKTsKICAxNTkgfCAgICAgICAgIGNvbnN0IGFsdCA9IGF3YWl0IGltZy5nZXRBdHRyaWJ1dGUoJ2FsdCcpOwogIDE2MCB8ICAgICAgICAgY29uc3QgYXJpYUxhYmVsID0gYXdhaXQgaW1nLmdldEF0dHJpYnV0ZSgnYXJpYS1sYWJlbCcpOwogIDE2MSB8ICAgICAgICAgCiAgMTYyIHwgICAgICAgICAvLyBJbWFnZXMgc2hvdWxkIGhhdmUgYWx0IHRleHQgb3IgYXJpYS1sYWJlbAogIDE2MyB8ICAgICAgICAgZXhwZWN0KGFsdCAhPT0gbnVsbCB8fCBhcmlhTGFiZWwgIT09IG51bGwpLnRvQmVUcnV0aHkoKTsKICAxNjQgfCAgICAgICB9CiAgMTY1IHwgICAgIH0KICAxNjYgfCAgICAgCiAgMTY3IHwgICAgIC8vIENoZWNrIGZvciBwcm9wZXIgZm9jdXMgbWFuYWdlbWVudAogIDE2OCB8ICAgICBhd2FpdCBwYWdlLmtleWJvYXJkLnByZXNzKCdUYWInKTsKICAxNjkgfCAgICAgY29uc3QgZm9jdXNlZEVsZW1lbnQgPSBwYWdlLmxvY2F0b3IoJzpmb2N1cycpOwogIDE3MCB8ICAgICBhd2FpdCBleHBlY3QoZm9jdXNlZEVsZW1lbnQpLnRvQmVWaXNpYmxlKCk7CiAgMTcxIHwgICB9KTsKICAxNzIgfAogIDE3MyB8ICAgdGVzdCgnc2hvdWxkIGhhbmRsZSBlcnJvcnMgZ3JhY2VmdWxseScsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDE3NCB8ICAgICAvLyBUZXN0IHdoYXQgaGFwcGVucyB3aGVuIHdlIHRyeSB0byBhY2Nlc3MgYSBub24tZXhpc3RlbnQgcm91dGUKICAxNzUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvbm9uLWV4aXN0ZW50LXBhZ2UnKTsKICAxNzYgfCAgICAgCiAgMTc3IHwgICAgIC8vIFNob3VsZCBzaG93IDQwNCBwYWdlIG9yIHJlZGlyZWN0IHRvIGhvbWUKICAxNzggfCAgICAgY29uc3QgaXM0MDQgPSBwYWdlLnVybCgpLmluY2x1ZGVzKCc0MDQnKSB8fCAKICAxNzkgfCAgICAgICAgICAgICAgICAgICBhd2FpdCBwYWdlLmdldEJ5VGV4dCgvNDA0fG5vdCBmb3VuZHzopovjgaTjgYvjgorjgb7jgZvjgpMvaSkuaXNWaXNpYmxlKCk7CiAgMTgwIHwgICAgIGNvbnN0IGlzSG9tZSA9IHBhZ2UudXJsKCkuZW5kc1dpdGgoJy8nKSB8fCBwYWdlLnVybCgpLmVuZHNXaXRoKCcvaW5kZXguaHRtbCcpOwogIDE4MSB8ICAgICAKICAxODIgfCAgICAgZXhwZWN0KGlzNDA0IHx8IGlzSG9tZSkudG9CZVRydXRoeSgpOwogIDE4MyB8ICAgICAKICAxODQgfCAgICAgLy8gSWYgaXQncyBhIDQwNCwgY2hlY2sgdGhhdCBuYXZpZ2F0aW9uIHN0aWxsIHdvcmtzCiAgMTg1IHwgICAgIGlmIChpczQwNCkgewogIDE4NiB8ICAgICAgIGNvbnN0IGhvbWVMaW5rID0gcGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9ob21lfOODm+ODvOODoC9pIH0pOwogIDE4NyB8ICAgICAgIGlmIChhd2FpdCBob21lTGluay5pc1Zpc2libGUoKSkgewogIDE4OCB8ICAgICAgICAgYXdhaXQgaG9tZUxpbmsuY2xpY2soKTsKICAxODkgfCAgICAgICAgIGF3YWl0IGV4cGVjdChwYWdlKS50b0hhdmVVUkwoJy8nKTsKICAxOTAgfCAgICAgICB9CiAgMTkxIHwgICAgIH0KICAxOTIgfCAgIH0pOwogIDE5MyB8IH0pOwpgYGA="
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 22,
+                        "line": 150
+                      }
+                    },
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 10600,
+                      "error": {
+                        "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n",
+                        "stack": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:150:22",
+                        "matcherResult": {
+                          "message": "\u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n",
+                          "pass": false,
+                          "actual": "<element(s) not found>",
+                          "name": "toBeVisible",
+                          "expected": "visible",
+                          "log": [
+                            "  - expect.toBeVisible with timeout 10000ms",
+                            "  - waiting for getByRole('heading', { level: 1 })"
+                          ],
+                          "timeout": 10000
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 22,
+                          "line": 150
+                        },
+                        "snippet": "  148 |     // Check for proper heading hierarchy\n  149 |     const h1 = page.getByRole('heading', { level: 1 });\n> 150 |     await expect(h1).toBeVisible();\n      |                      ^\n  151 |     \n  152 |     // Check for alt text on images\n  153 |     const images = page.locator('img');"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 22,
+                            "line": 150
+                          },
+                          "message": "Error: \u001b[31mTimed out 10000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { level: 1 })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { level: 1 })\u001b[22m\n\n\n  148 |     // Check for proper heading hierarchy\n  149 |     const h1 = page.getByRole('heading', { level: 1 });\n> 150 |     await expect(h1).toBeVisible();\n      |                      ^\n  151 |     \n  152 |     // Check for alt text on images\n  153 |     const images = page.locator('img');\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:150:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-07-07T01:16:31.140Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgaGF2ZSBwcm9wZXIgYWNjZXNzaWJpbGl0eSBmZWF0dXJlcwotIExvY2F0aW9uOiAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL2hvbWVwYWdlLnNwZWMudHM6MTQxOjcKCiMgRXJyb3IgZGV0YWlscwoKYGBgCkVycm9yOiBUaW1lZCBvdXQgMTAwMDBtcyB3YWl0aW5nIGZvciBleHBlY3QobG9jYXRvcikudG9CZVZpc2libGUoKQoKTG9jYXRvcjogZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KQpFeHBlY3RlZDogdmlzaWJsZQpSZWNlaXZlZDogPGVsZW1lbnQocykgbm90IGZvdW5kPgpDYWxsIGxvZzoKICAtIGV4cGVjdC50b0JlVmlzaWJsZSB3aXRoIHRpbWVvdXQgMTAwMDBtcwogIC0gd2FpdGluZyBmb3IgZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KQoKICAgIGF0IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxNTA6MjIKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgNTAgfCAgICAgY29uc3QgaGFzTmF2aWdhdGVkID0gcGFnZS51cmwoKS5pbmNsdWRlcygnL2FyY2hpdGVjdHVyZScpIHx8IHBhZ2UudXJsKCkuaW5jbHVkZXMoJy9zZWFyY2gnKTsKICAgNTEgfCAgICAgY29uc3QgaGFzUmVzdWx0cyA9IGF3YWl0IHBhZ2UubG9jYXRvcignW2RhdGEtdGVzdGlkPSJhcmNoaXRlY3R1cmUtaXRlbSJdJykuY291bnQoKSA+IDA7CiAgIDUyIHwgICAgIGNvbnN0IGhhc05vUmVzdWx0cyA9IGF3YWl0IHBhZ2UuZ2V0QnlUZXh0KC9ubyByZXN1bHRzfOe1kOaenOOBjOimi+OBpOOBi+OCiuOBvuOBm+OCky9pKS5pc1Zpc2libGUoKTsKICAgNTMgfCAgICAgCiAgIDU0IHwgICAgIGV4cGVjdChoYXNOYXZpZ2F0ZWQgfHwgaGFzUmVzdWx0cyB8fCBoYXNOb1Jlc3VsdHMpLnRvQmVUcnV0aHkoKTsKICAgNTUgfCAgIH0pOwogICA1NiB8CiAgIDU3IHwgICB0ZXN0KCdzaG91bGQgZGlzcGxheSBmZWF0dXJlIGNhcmRzIG9yIHNlY3Rpb25zJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDU4IHwgICAgIC8vIExvb2sgZm9yIGZlYXR1cmUgY2FyZHMsIHNlY3Rpb25zLCBvciBzaW1pbGFyIGNvbnRlbnQKICAgNTkgfCAgICAgY29uc3QgZmVhdHVyZVNlbGVjdG9ycyA9IFsKICAgNjAgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJmZWF0dXJlLWNhcmQiXScsCiAgIDYxIHwgICAgICAgJ1tkYXRhLXRlc3RpZD0iZmVhdHVyZS1zZWN0aW9uIl0nLAogICA2MiB8ICAgICAgICcuZmVhdHVyZS1jYXJkJywKICAgNjMgfCAgICAgICAnLmZlYXR1cmUtc2VjdGlvbicsCiAgIDY0IHwgICAgICAgJ1tyb2xlPSJhcnRpY2xlIl0nCiAgIDY1IHwgICAgIF07CiAgIDY2IHwgICAgIAogICA2NyB8ICAgICBsZXQgZmVhdHVyZXNGb3VuZCA9IGZhbHNlOwogICA2OCB8ICAgICBmb3IgKGNvbnN0IHNlbGVjdG9yIG9mIGZlYXR1cmVTZWxlY3RvcnMpIHsKICAgNjkgfCAgICAgICBjb25zdCBlbGVtZW50cyA9IHBhZ2UubG9jYXRvcihzZWxlY3Rvcik7CiAgIDcwIHwgICAgICAgaWYgKGF3YWl0IGVsZW1lbnRzLmNvdW50KCkgPiAwKSB7CiAgIDcxIHwgICAgICAgICBhd2FpdCBleHBlY3QoZWxlbWVudHMuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAgNzIgfCAgICAgICAgIGZlYXR1cmVzRm91bmQgPSB0cnVlOwogICA3MyB8ICAgICAgICAgYnJlYWs7CiAgIDc0IHwgICAgICAgfQogICA3NSB8ICAgICB9CiAgIDc2IHwgICAgIAogICA3NyB8ICAgICAvLyBJZiBubyBzcGVjaWZpYyBmZWF0dXJlIGNhcmRzLCBjaGVjayBmb3IgZ2VuZXJhbCBjb250ZW50IHNlY3Rpb25zCiAgIDc4IHwgICAgIGlmICghZmVhdHVyZXNGb3VuZCkgewogICA3OSB8ICAgICAgIGNvbnN0IGNvbnRlbnRTZWN0aW9ucyA9IHBhZ2UubG9jYXRvcignbWFpbiBzZWN0aW9uLCAuY29udGVudC1zZWN0aW9uLCAuaGVyby1zZWN0aW9uJyk7CiAgIDgwIHwgICAgICAgaWYgKGF3YWl0IGNvbnRlbnRTZWN0aW9ucy5jb3VudCgpID4gMCkgewogICA4MSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGNvbnRlbnRTZWN0aW9ucy5maXJzdCgpKS50b0JlVmlzaWJsZSgpOwogICA4MiB8ICAgICAgIH0KICAgODMgfCAgICAgfQogICA4NCB8ICAgfSk7CiAgIDg1IHwKICAgODYgfCAgIHRlc3QoJ3Nob3VsZCBiZSByZXNwb25zaXZlIG9uIG1vYmlsZSBkZXZpY2VzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgIDg3IHwgICAgIC8vIFNldCBtb2JpbGUgdmlld3BvcnQKICAgODggfCAgICAgYXdhaXQgcGFnZS5zZXRWaWV3cG9ydFNpemUoeyB3aWR0aDogMzc1LCBoZWlnaHQ6IDY2NyB9KTsKICAgODkgfCAgICAgCiAgIDkwIHwgICAgIC8vIENoZWNrIHRoYXQgbmF2aWdhdGlvbiBpcyBtb2JpbGUtZnJpZW5kbHkKICAgOTEgfCAgICAgY29uc3QgbmF2ID0gcGFnZS5nZXRCeVJvbGUoJ25hdmlnYXRpb24nKTsKICAgOTIgfCAgICAgYXdhaXQgZXhwZWN0KG5hdikudG9CZVZpc2libGUoKTsKICAgOTMgfCAgICAgCiAgIDk0IHwgICAgIC8vIENoZWNrIGZvciBtb2JpbGUgbWVudSB0b2dnbGUgaWYgaXQgZXhpc3RzCiAgIDk1IHwgICAgIGNvbnN0IG1vYmlsZU1lbnVUb2dnbGUgPSBwYWdlLmdldEJ5Um9sZSgnYnV0dG9uJywgeyBuYW1lOiAvbWVudXzjg6Hjg4vjg6Xjg7wvaSB9KTsKICAgOTYgfCAgICAgaWYgKGF3YWl0IG1vYmlsZU1lbnVUb2dnbGUuaXNWaXNpYmxlKCkpIHsKICAgOTcgfCAgICAgICBhd2FpdCBtb2JpbGVNZW51VG9nZ2xlLmNsaWNrKCk7CiAgIDk4IHwgICAgICAgLy8gTWVudSBzaG91bGQgZXhwYW5kCiAgIDk5IHwgICAgICAgYXdhaXQgZXhwZWN0KHBhZ2UuZ2V0QnlSb2xlKCdtZW51JykpLnRvQmVWaXNpYmxlKCk7CiAgMTAwIHwgICAgIH0KICAxMDEgfCAgICAgCiAgMTAyIHwgICAgIC8vIENoZWNrIHRoYXQgc2VhcmNoIGlzIGFjY2Vzc2libGUgb24gbW9iaWxlCiAgMTAzIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnc2VhcmNoYm94JykpLnRvQmVWaXNpYmxlKCk7CiAgMTA0IHwgICAgIAogIDEwNSB8ICAgICAvLyBDaGVjayB0aGF0IG1haW4gY29udGVudCBpcyB2aXNpYmxlIGFuZCBwcm9wZXJseSBzY2FsZWQKICAxMDYgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UubG9jYXRvcignbWFpbicpKS50b0JlVmlzaWJsZSgpOwogIDEwNyB8ICAgfSk7CiAgMTA4IHwKICAxMDkgfCAgIHRlc3QoJ3Nob3VsZCBoYW5kbGUgc2xvdyBsb2FkaW5nIGdyYWNlZnVsbHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxMTAgfCAgICAgLy8gU2ltdWxhdGUgc2xvdyBuZXR3b3JrCiAgMTExIHwgICAgIGF3YWl0IHBhZ2Uucm91dGUoJyoqLyonLCByb3V0ZSA9PiB7CiAgMTEyIHwgICAgICAgc2V0VGltZW91dCgoKSA9PiByb3V0ZS5jb250aW51ZSgpLCAxMDApOwogIDExMyB8ICAgICB9KTsKICAxMTQgfCAgICAgCiAgMTE1IHwgICAgIGF3YWl0IHBhZ2UuZ290bygnLycpOwogIDExNiB8ICAgICAKICAxMTcgfCAgICAgLy8gQ2hlY2sgZm9yIGxvYWRpbmcgaW5kaWNhdG9ycwogIDExOCB8ICAgICBjb25zdCBsb2FkaW5nSW5kaWNhdG9ycyA9IFsKICAxMTkgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJsb2FkaW5nLXNrZWxldG9uIl0nLAogIDEyMCB8ICAgICAgICdbZGF0YS10ZXN0aWQ9ImxvYWRpbmctc3Bpbm5lciJdJywKICAxMjEgfCAgICAgICAnLmxvYWRpbmcnLAogIDEyMiB8ICAgICAgICcuc2tlbGV0b24nCiAgMTIzIHwgICAgIF07CiAgMTI0IHwgICAgIAogIDEyNSB8ICAgICBmb3IgKGNvbnN0IHNlbGVjdG9yIG9mIGxvYWRpbmdJbmRpY2F0b3JzKSB7CiAgMTI2IHwgICAgICAgY29uc3QgbG9hZGluZyA9IHBhZ2UubG9jYXRvcihzZWxlY3Rvcik7CiAgMTI3IHwgICAgICAgaWYgKGF3YWl0IGxvYWRpbmcuY291bnQoKSA+IDApIHsKICAxMjggfCAgICAgICAgIC8vIExvYWRpbmcgaW5kaWNhdG9yIHNob3VsZCBiZSB2aXNpYmxlIGluaXRpYWxseQogIDEyOSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KGxvYWRpbmcuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAxMzAgfCAgICAgICAgIGJyZWFrOwogIDEzMSB8ICAgICAgIH0KICAxMzIgfCAgICAgfQogIDEzMyB8ICAgICAKICAxMzQgfCAgICAgLy8gV2FpdCBmb3IgY29udGVudCB0byBsb2FkCiAgMTM1IHwgICAgIGF3YWl0IHBhZ2Uud2FpdEZvckxvYWRTdGF0ZSgnbmV0d29ya2lkbGUnKTsKICAxMzYgfCAgICAgCiAgMTM3IHwgICAgIC8vIENoZWNrIHRoYXQgbWFpbiBjb250ZW50IGlzIGV2ZW50dWFsbHkgdmlzaWJsZQogIDEzOCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdtYWluJykpLnRvQmVWaXNpYmxlKCk7CiAgMTM5IHwgICB9KTsKICAxNDAgfAogIDE0MSB8ICAgdGVzdCgnc2hvdWxkIGhhdmUgcHJvcGVyIGFjY2Vzc2liaWxpdHkgZmVhdHVyZXMnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxNDIgfCAgICAgLy8gQ2hlY2sgZm9yIHNraXAgbGlua3MKICAxNDMgfCAgICAgY29uc3Qgc2tpcExpbmtzID0gcGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9za2lwIHRvIG1haW4gY29udGVudHxza2lwIHRvIGNvbnRlbnQvaSB9KTsKICAxNDQgfCAgICAgaWYgKGF3YWl0IHNraXBMaW5rcy5jb3VudCgpID4gMCkgewogIDE0NSB8ICAgICAgIGF3YWl0IGV4cGVjdChza2lwTGlua3MuZmlyc3QoKSkudG9CZVZpc2libGUoKTsKICAxNDYgfCAgICAgfQogIDE0NyB8ICAgICAKICAxNDggfCAgICAgLy8gQ2hlY2sgZm9yIHByb3BlciBoZWFkaW5nIGhpZXJhcmNoeQogIDE0OSB8ICAgICBjb25zdCBoMSA9IHBhZ2UuZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBsZXZlbDogMSB9KTsKPiAxNTAgfCAgICAgYXdhaXQgZXhwZWN0KGgxKS50b0JlVmlzaWJsZSgpOwogICAgICB8ICAgICAgICAgICAgICAgICAgICAgIF4gRXJyb3I6IFRpbWVkIG91dCAxMDAwMG1zIHdhaXRpbmcgZm9yIGV4cGVjdChsb2NhdG9yKS50b0JlVmlzaWJsZSgpCiAgMTUxIHwgICAgIAogIDE1MiB8ICAgICAvLyBDaGVjayBmb3IgYWx0IHRleHQgb24gaW1hZ2VzCiAgMTUzIHwgICAgIGNvbnN0IGltYWdlcyA9IHBhZ2UubG9jYXRvcignaW1nJyk7CiAgMTU0IHwgICAgIGNvbnN0IGltYWdlQ291bnQgPSBhd2FpdCBpbWFnZXMuY291bnQoKTsKICAxNTUgfCAgICAgCiAgMTU2IHwgICAgIGlmIChpbWFnZUNvdW50ID4gMCkgewogIDE1NyB8ICAgICAgIGZvciAobGV0IGkgPSAwOyBpIDwgTWF0aC5taW4oaW1hZ2VDb3VudCwgNSk7IGkrKykgewogIDE1OCB8ICAgICAgICAgY29uc3QgaW1nID0gaW1hZ2VzLm50aChpKTsKICAxNTkgfCAgICAgICAgIGNvbnN0IGFsdCA9IGF3YWl0IGltZy5nZXRBdHRyaWJ1dGUoJ2FsdCcpOwogIDE2MCB8ICAgICAgICAgY29uc3QgYXJpYUxhYmVsID0gYXdhaXQgaW1nLmdldEF0dHJpYnV0ZSgnYXJpYS1sYWJlbCcpOwogIDE2MSB8ICAgICAgICAgCiAgMTYyIHwgICAgICAgICAvLyBJbWFnZXMgc2hvdWxkIGhhdmUgYWx0IHRleHQgb3IgYXJpYS1sYWJlbAogIDE2MyB8ICAgICAgICAgZXhwZWN0KGFsdCAhPT0gbnVsbCB8fCBhcmlhTGFiZWwgIT09IG51bGwpLnRvQmVUcnV0aHkoKTsKICAxNjQgfCAgICAgICB9CiAgMTY1IHwgICAgIH0KICAxNjYgfCAgICAgCiAgMTY3IHwgICAgIC8vIENoZWNrIGZvciBwcm9wZXIgZm9jdXMgbWFuYWdlbWVudAogIDE2OCB8ICAgICBhd2FpdCBwYWdlLmtleWJvYXJkLnByZXNzKCdUYWInKTsKICAxNjkgfCAgICAgY29uc3QgZm9jdXNlZEVsZW1lbnQgPSBwYWdlLmxvY2F0b3IoJzpmb2N1cycpOwogIDE3MCB8ICAgICBhd2FpdCBleHBlY3QoZm9jdXNlZEVsZW1lbnQpLnRvQmVWaXNpYmxlKCk7CiAgMTcxIHwgICB9KTsKICAxNzIgfAogIDE3MyB8ICAgdGVzdCgnc2hvdWxkIGhhbmRsZSBlcnJvcnMgZ3JhY2VmdWxseScsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDE3NCB8ICAgICAvLyBUZXN0IHdoYXQgaGFwcGVucyB3aGVuIHdlIHRyeSB0byBhY2Nlc3MgYSBub24tZXhpc3RlbnQgcm91dGUKICAxNzUgfCAgICAgYXdhaXQgcGFnZS5nb3RvKCcvbm9uLWV4aXN0ZW50LXBhZ2UnKTsKICAxNzYgfCAgICAgCiAgMTc3IHwgICAgIC8vIFNob3VsZCBzaG93IDQwNCBwYWdlIG9yIHJlZGlyZWN0IHRvIGhvbWUKICAxNzggfCAgICAgY29uc3QgaXM0MDQgPSBwYWdlLnVybCgpLmluY2x1ZGVzKCc0MDQnKSB8fCAKICAxNzkgfCAgICAgICAgICAgICAgICAgICBhd2FpdCBwYWdlLmdldEJ5VGV4dCgvNDA0fG5vdCBmb3VuZHzopovjgaTjgYvjgorjgb7jgZvjgpMvaSkuaXNWaXNpYmxlKCk7CiAgMTgwIHwgICAgIGNvbnN0IGlzSG9tZSA9IHBhZ2UudXJsKCkuZW5kc1dpdGgoJy8nKSB8fCBwYWdlLnVybCgpLmVuZHNXaXRoKCcvaW5kZXguaHRtbCcpOwogIDE4MSB8ICAgICAKICAxODIgfCAgICAgZXhwZWN0KGlzNDA0IHx8IGlzSG9tZSkudG9CZVRydXRoeSgpOwogIDE4MyB8ICAgICAKICAxODQgfCAgICAgLy8gSWYgaXQncyBhIDQwNCwgY2hlY2sgdGhhdCBuYXZpZ2F0aW9uIHN0aWxsIHdvcmtzCiAgMTg1IHwgICAgIGlmIChpczQwNCkgewogIDE4NiB8ICAgICAgIGNvbnN0IGhvbWVMaW5rID0gcGFnZS5nZXRCeVJvbGUoJ2xpbmsnLCB7IG5hbWU6IC9ob21lfOODm+ODvOODoC9pIH0pOwogIDE4NyB8ICAgICAgIGlmIChhd2FpdCBob21lTGluay5pc1Zpc2libGUoKSkgewogIDE4OCB8ICAgICAgICAgYXdhaXQgaG9tZUxpbmsuY2xpY2soKTsKICAxODkgfCAgICAgICAgIGF3YWl0IGV4cGVjdChwYWdlKS50b0hhdmVVUkwoJy8nKTsKICAxOTAgfCAgICAgICB9CiAgMTkxIHwgICAgIH0KICAxOTIgfCAgIH0pOwogIDE5MyB8IH0pOwpgYGA="
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 22,
+                        "line": 150
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "84e7eb052e8cbae1c9f0-2aed7dd06d371efc3c12",
+              "file": "homepage.spec.ts",
+              "line": 141,
+              "column": 7
+            },
+            {
+              "title": "should handle errors gracefully",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 240,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:182:29",
+                        "matcherResult": {
+                          "message": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                          "pass": false
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 29,
+                          "line": 182
+                        },
+                        "snippet": "  180 |     const isHome = page.url().endsWith('/') || page.url().endsWith('/index.html');\n  181 |     \n> 182 |     expect(is404 || isHome).toBeTruthy();\n      |                             ^\n  183 |     \n  184 |     // If it's a 404, check that navigation still works\n  185 |     if (is404) {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 29,
+                            "line": 182
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n  180 |     const isHome = page.url().endsWith('/') || page.url().endsWith('/index.html');\n  181 |     \n> 182 |     expect(is404 || isHome).toBeTruthy();\n      |                             ^\n  183 |     \n  184 |     // If it's a 404, check that navigation still works\n  185 |     if (is404) {\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:182:29"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T01:16:40.683Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgaGFuZGxlIGVycm9ycyBncmFjZWZ1bGx5Ci0gTG9jYXRpb246IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxNzM6NwoKIyBFcnJvciBkZXRhaWxzCgpgYGAKRXJyb3I6IGV4cGVjdChyZWNlaXZlZCkudG9CZVRydXRoeSgpCgpSZWNlaXZlZDogZmFsc2UKICAgIGF0IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxODI6MjkKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgODIgfCAgICAgICB9CiAgIDgzIHwgICAgIH0KICAgODQgfCAgIH0pOwogICA4NSB8CiAgIDg2IHwgICB0ZXN0KCdzaG91bGQgYmUgcmVzcG9uc2l2ZSBvbiBtb2JpbGUgZGV2aWNlcycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA4NyB8ICAgICAvLyBTZXQgbW9iaWxlIHZpZXdwb3J0CiAgIDg4IHwgICAgIGF3YWl0IHBhZ2Uuc2V0Vmlld3BvcnRTaXplKHsgd2lkdGg6IDM3NSwgaGVpZ2h0OiA2NjcgfSk7CiAgIDg5IHwgICAgIAogICA5MCB8ICAgICAvLyBDaGVjayB0aGF0IG5hdmlnYXRpb24gaXMgbW9iaWxlLWZyaWVuZGx5CiAgIDkxIHwgICAgIGNvbnN0IG5hdiA9IHBhZ2UuZ2V0QnlSb2xlKCduYXZpZ2F0aW9uJyk7CiAgIDkyIHwgICAgIGF3YWl0IGV4cGVjdChuYXYpLnRvQmVWaXNpYmxlKCk7CiAgIDkzIHwgICAgIAogICA5NCB8ICAgICAvLyBDaGVjayBmb3IgbW9iaWxlIG1lbnUgdG9nZ2xlIGlmIGl0IGV4aXN0cwogICA5NSB8ICAgICBjb25zdCBtb2JpbGVNZW51VG9nZ2xlID0gcGFnZS5nZXRCeVJvbGUoJ2J1dHRvbicsIHsgbmFtZTogL21lbnV844Oh44OL44Ol44O8L2kgfSk7CiAgIDk2IHwgICAgIGlmIChhd2FpdCBtb2JpbGVNZW51VG9nZ2xlLmlzVmlzaWJsZSgpKSB7CiAgIDk3IHwgICAgICAgYXdhaXQgbW9iaWxlTWVudVRvZ2dsZS5jbGljaygpOwogICA5OCB8ICAgICAgIC8vIE1lbnUgc2hvdWxkIGV4cGFuZAogICA5OSB8ICAgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbWVudScpKS50b0JlVmlzaWJsZSgpOwogIDEwMCB8ICAgICB9CiAgMTAxIHwgICAgIAogIDEwMiB8ICAgICAvLyBDaGVjayB0aGF0IHNlYXJjaCBpcyBhY2Nlc3NpYmxlIG9uIG1vYmlsZQogIDEwMyB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ3NlYXJjaGJveCcpKS50b0JlVmlzaWJsZSgpOwogIDEwNCB8ICAgICAKICAxMDUgfCAgICAgLy8gQ2hlY2sgdGhhdCBtYWluIGNvbnRlbnQgaXMgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgMTA2IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJ21haW4nKSkudG9CZVZpc2libGUoKTsKICAxMDcgfCAgIH0pOwogIDEwOCB8CiAgMTA5IHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIHNsb3cgbG9hZGluZyBncmFjZWZ1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTEwIHwgICAgIC8vIFNpbXVsYXRlIHNsb3cgbmV0d29yawogIDExMSB8ICAgICBhd2FpdCBwYWdlLnJvdXRlKCcqKi8qJywgcm91dGUgPT4gewogIDExMiB8ICAgICAgIHNldFRpbWVvdXQoKCkgPT4gcm91dGUuY29udGludWUoKSwgMTAwKTsKICAxMTMgfCAgICAgfSk7CiAgMTE0IHwgICAgIAogIDExNSB8ICAgICBhd2FpdCBwYWdlLmdvdG8oJy8nKTsKICAxMTYgfCAgICAgCiAgMTE3IHwgICAgIC8vIENoZWNrIGZvciBsb2FkaW5nIGluZGljYXRvcnMKICAxMTggfCAgICAgY29uc3QgbG9hZGluZ0luZGljYXRvcnMgPSBbCiAgMTE5IHwgICAgICAgJ1tkYXRhLXRlc3RpZD0ibG9hZGluZy1za2VsZXRvbiJdJywKICAxMjAgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJsb2FkaW5nLXNwaW5uZXIiXScsCiAgMTIxIHwgICAgICAgJy5sb2FkaW5nJywKICAxMjIgfCAgICAgICAnLnNrZWxldG9uJwogIDEyMyB8ICAgICBdOwogIDEyNCB8ICAgICAKICAxMjUgfCAgICAgZm9yIChjb25zdCBzZWxlY3RvciBvZiBsb2FkaW5nSW5kaWNhdG9ycykgewogIDEyNiB8ICAgICAgIGNvbnN0IGxvYWRpbmcgPSBwYWdlLmxvY2F0b3Ioc2VsZWN0b3IpOwogIDEyNyB8ICAgICAgIGlmIChhd2FpdCBsb2FkaW5nLmNvdW50KCkgPiAwKSB7CiAgMTI4IHwgICAgICAgICAvLyBMb2FkaW5nIGluZGljYXRvciBzaG91bGQgYmUgdmlzaWJsZSBpbml0aWFsbHkKICAxMjkgfCAgICAgICAgIGF3YWl0IGV4cGVjdChsb2FkaW5nLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgMTMwIHwgICAgICAgICBicmVhazsKICAxMzEgfCAgICAgICB9CiAgMTMyIHwgICAgIH0KICAxMzMgfCAgICAgCiAgMTM0IHwgICAgIC8vIFdhaXQgZm9yIGNvbnRlbnQgdG8gbG9hZAogIDEzNSB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JMb2FkU3RhdGUoJ25ldHdvcmtpZGxlJyk7CiAgMTM2IHwgICAgIAogIDEzNyB8ICAgICAvLyBDaGVjayB0aGF0IG1haW4gY29udGVudCBpcyBldmVudHVhbGx5IHZpc2libGUKICAxMzggfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UubG9jYXRvcignbWFpbicpKS50b0JlVmlzaWJsZSgpOwogIDEzOSB8ICAgfSk7CiAgMTQwIHwKICAxNDEgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHByb3BlciBhY2Nlc3NpYmlsaXR5IGZlYXR1cmVzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTQyIHwgICAgIC8vIENoZWNrIGZvciBza2lwIGxpbmtzCiAgMTQzIHwgICAgIGNvbnN0IHNraXBMaW5rcyA9IHBhZ2UuZ2V0QnlSb2xlKCdsaW5rJywgeyBuYW1lOiAvc2tpcCB0byBtYWluIGNvbnRlbnR8c2tpcCB0byBjb250ZW50L2kgfSk7CiAgMTQ0IHwgICAgIGlmIChhd2FpdCBza2lwTGlua3MuY291bnQoKSA+IDApIHsKICAxNDUgfCAgICAgICBhd2FpdCBleHBlY3Qoc2tpcExpbmtzLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgMTQ2IHwgICAgIH0KICAxNDcgfCAgICAgCiAgMTQ4IHwgICAgIC8vIENoZWNrIGZvciBwcm9wZXIgaGVhZGluZyBoaWVyYXJjaHkKICAxNDkgfCAgICAgY29uc3QgaDEgPSBwYWdlLmdldEJ5Um9sZSgnaGVhZGluZycsIHsgbGV2ZWw6IDEgfSk7CiAgMTUwIHwgICAgIGF3YWl0IGV4cGVjdChoMSkudG9CZVZpc2libGUoKTsKICAxNTEgfCAgICAgCiAgMTUyIHwgICAgIC8vIENoZWNrIGZvciBhbHQgdGV4dCBvbiBpbWFnZXMKICAxNTMgfCAgICAgY29uc3QgaW1hZ2VzID0gcGFnZS5sb2NhdG9yKCdpbWcnKTsKICAxNTQgfCAgICAgY29uc3QgaW1hZ2VDb3VudCA9IGF3YWl0IGltYWdlcy5jb3VudCgpOwogIDE1NSB8ICAgICAKICAxNTYgfCAgICAgaWYgKGltYWdlQ291bnQgPiAwKSB7CiAgMTU3IHwgICAgICAgZm9yIChsZXQgaSA9IDA7IGkgPCBNYXRoLm1pbihpbWFnZUNvdW50LCA1KTsgaSsrKSB7CiAgMTU4IHwgICAgICAgICBjb25zdCBpbWcgPSBpbWFnZXMubnRoKGkpOwogIDE1OSB8ICAgICAgICAgY29uc3QgYWx0ID0gYXdhaXQgaW1nLmdldEF0dHJpYnV0ZSgnYWx0Jyk7CiAgMTYwIHwgICAgICAgICBjb25zdCBhcmlhTGFiZWwgPSBhd2FpdCBpbWcuZ2V0QXR0cmlidXRlKCdhcmlhLWxhYmVsJyk7CiAgMTYxIHwgICAgICAgICAKICAxNjIgfCAgICAgICAgIC8vIEltYWdlcyBzaG91bGQgaGF2ZSBhbHQgdGV4dCBvciBhcmlhLWxhYmVsCiAgMTYzIHwgICAgICAgICBleHBlY3QoYWx0ICE9PSBudWxsIHx8IGFyaWFMYWJlbCAhPT0gbnVsbCkudG9CZVRydXRoeSgpOwogIDE2NCB8ICAgICAgIH0KICAxNjUgfCAgICAgfQogIDE2NiB8ICAgICAKICAxNjcgfCAgICAgLy8gQ2hlY2sgZm9yIHByb3BlciBmb2N1cyBtYW5hZ2VtZW50CiAgMTY4IHwgICAgIGF3YWl0IHBhZ2Uua2V5Ym9hcmQucHJlc3MoJ1RhYicpOwogIDE2OSB8ICAgICBjb25zdCBmb2N1c2VkRWxlbWVudCA9IHBhZ2UubG9jYXRvcignOmZvY3VzJyk7CiAgMTcwIHwgICAgIGF3YWl0IGV4cGVjdChmb2N1c2VkRWxlbWVudCkudG9CZVZpc2libGUoKTsKICAxNzEgfCAgIH0pOwogIDE3MiB8CiAgMTczIHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIGVycm9ycyBncmFjZWZ1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTc0IHwgICAgIC8vIFRlc3Qgd2hhdCBoYXBwZW5zIHdoZW4gd2UgdHJ5IHRvIGFjY2VzcyBhIG5vbi1leGlzdGVudCByb3V0ZQogIDE3NSB8ICAgICBhd2FpdCBwYWdlLmdvdG8oJy9ub24tZXhpc3RlbnQtcGFnZScpOwogIDE3NiB8ICAgICAKICAxNzcgfCAgICAgLy8gU2hvdWxkIHNob3cgNDA0IHBhZ2Ugb3IgcmVkaXJlY3QgdG8gaG9tZQogIDE3OCB8ICAgICBjb25zdCBpczQwNCA9IHBhZ2UudXJsKCkuaW5jbHVkZXMoJzQwNCcpIHx8IAogIDE3OSB8ICAgICAgICAgICAgICAgICAgIGF3YWl0IHBhZ2UuZ2V0QnlUZXh0KC80MDR8bm90IGZvdW5kfOimi+OBpOOBi+OCiuOBvuOBm+OCky9pKS5pc1Zpc2libGUoKTsKICAxODAgfCAgICAgY29uc3QgaXNIb21lID0gcGFnZS51cmwoKS5lbmRzV2l0aCgnLycpIHx8IHBhZ2UudXJsKCkuZW5kc1dpdGgoJy9pbmRleC5odG1sJyk7CiAgMTgxIHwgICAgIAo+IDE4MiB8ICAgICBleHBlY3QoaXM0MDQgfHwgaXNIb21lKS50b0JlVHJ1dGh5KCk7CiAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4gRXJyb3I6IGV4cGVjdChyZWNlaXZlZCkudG9CZVRydXRoeSgpCiAgMTgzIHwgICAgIAogIDE4NCB8ICAgICAvLyBJZiBpdCdzIGEgNDA0LCBjaGVjayB0aGF0IG5hdmlnYXRpb24gc3RpbGwgd29ya3MKICAxODUgfCAgICAgaWYgKGlzNDA0KSB7CiAgMTg2IHwgICAgICAgY29uc3QgaG9tZUxpbmsgPSBwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL2hvbWV844Ob44O844OgL2kgfSk7CiAgMTg3IHwgICAgICAgaWYgKGF3YWl0IGhvbWVMaW5rLmlzVmlzaWJsZSgpKSB7CiAgMTg4IHwgICAgICAgICBhd2FpdCBob21lTGluay5jbGljaygpOwogIDE4OSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVVSTCgnLycpOwogIDE5MCB8ICAgICAgIH0KICAxOTEgfCAgICAgfQogIDE5MiB8ICAgfSk7CiAgMTkzIHwgfSk7CmBgYA=="
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 29,
+                        "line": 182
+                      }
+                    },
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 282,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:182:29",
+                        "matcherResult": {
+                          "message": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                          "pass": false
+                        },
+                        "location": {
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                          "column": 29,
+                          "line": 182
+                        },
+                        "snippet": "  180 |     const isHome = page.url().endsWith('/') || page.url().endsWith('/index.html');\n  181 |     \n> 182 |     expect(is404 || isHome).toBeTruthy();\n      |                             ^\n  183 |     \n  184 |     // If it's a 404, check that navigation still works\n  185 |     if (is404) {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                            "column": 29,
+                            "line": 182
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n  180 |     const isHome = page.url().endsWith('/') || page.url().endsWith('/index.html');\n  181 |     \n> 182 |     expect(is404 || isHome).toBeTruthy();\n      |                             ^\n  183 |     \n  184 |     // If it's a 404, check that navigation still works\n  185 |     if (is404) {\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:182:29"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-07-07T01:16:41.426Z",
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/video.webm"
+                        },
+                        {
+                          "name": "_prompt-0",
+                          "contentType": "text/markdown",
+                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBIb21lcGFnZSA+PiBzaG91bGQgaGFuZGxlIGVycm9ycyBncmFjZWZ1bGx5Ci0gTG9jYXRpb246IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxNzM6NwoKIyBFcnJvciBkZXRhaWxzCgpgYGAKRXJyb3I6IGV4cGVjdChyZWNlaXZlZCkudG9CZVRydXRoeSgpCgpSZWNlaXZlZDogZmFsc2UKICAgIGF0IC9Vc2Vycy9ob21lc2VydmVyL2FpLWNyZWF0aXZlLXRlYW0vYXJjaGktc2l0ZS90ZXN0cy9lMmUvaG9tZXBhZ2Uuc3BlYy50czoxODI6MjkKYGBgCgojIFBhZ2Ugc25hcHNob3QKCmBgYHlhbWwKLSBoZWFkaW5nICLml6XmnKzjga7lu7rnr4njg57jg4Pjg5ciIFtsZXZlbD00XQotIGFsZXJ0OiAi44OH44O844K/44OZ44O844K544Gu5Yid5pyf5YyW44Gr5aSx5pWX44GX44G+44GX44GfOiBGYWlsZWQgdG8gZXhlY3V0ZSAncG9zdE1lc3NhZ2UnIG9uICdXb3JrZXInOiAoKT0+Y29uc29sZS5sb2coXCLjg4fjg7zjgr/jg5njg7zjgrnjg6/jg7zjgqvjg7zjga7mupblgpnlrozkuoZcIikgY291bGQgbm90IGJlIGNsb25lZC4iCi0gYnV0dG9uICLlho3oqabooYwiCmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgODIgfCAgICAgICB9CiAgIDgzIHwgICAgIH0KICAgODQgfCAgIH0pOwogICA4NSB8CiAgIDg2IHwgICB0ZXN0KCdzaG91bGQgYmUgcmVzcG9uc2l2ZSBvbiBtb2JpbGUgZGV2aWNlcycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA4NyB8ICAgICAvLyBTZXQgbW9iaWxlIHZpZXdwb3J0CiAgIDg4IHwgICAgIGF3YWl0IHBhZ2Uuc2V0Vmlld3BvcnRTaXplKHsgd2lkdGg6IDM3NSwgaGVpZ2h0OiA2NjcgfSk7CiAgIDg5IHwgICAgIAogICA5MCB8ICAgICAvLyBDaGVjayB0aGF0IG5hdmlnYXRpb24gaXMgbW9iaWxlLWZyaWVuZGx5CiAgIDkxIHwgICAgIGNvbnN0IG5hdiA9IHBhZ2UuZ2V0QnlSb2xlKCduYXZpZ2F0aW9uJyk7CiAgIDkyIHwgICAgIGF3YWl0IGV4cGVjdChuYXYpLnRvQmVWaXNpYmxlKCk7CiAgIDkzIHwgICAgIAogICA5NCB8ICAgICAvLyBDaGVjayBmb3IgbW9iaWxlIG1lbnUgdG9nZ2xlIGlmIGl0IGV4aXN0cwogICA5NSB8ICAgICBjb25zdCBtb2JpbGVNZW51VG9nZ2xlID0gcGFnZS5nZXRCeVJvbGUoJ2J1dHRvbicsIHsgbmFtZTogL21lbnV844Oh44OL44Ol44O8L2kgfSk7CiAgIDk2IHwgICAgIGlmIChhd2FpdCBtb2JpbGVNZW51VG9nZ2xlLmlzVmlzaWJsZSgpKSB7CiAgIDk3IHwgICAgICAgYXdhaXQgbW9iaWxlTWVudVRvZ2dsZS5jbGljaygpOwogICA5OCB8ICAgICAgIC8vIE1lbnUgc2hvdWxkIGV4cGFuZAogICA5OSB8ICAgICAgIGF3YWl0IGV4cGVjdChwYWdlLmdldEJ5Um9sZSgnbWVudScpKS50b0JlVmlzaWJsZSgpOwogIDEwMCB8ICAgICB9CiAgMTAxIHwgICAgIAogIDEwMiB8ICAgICAvLyBDaGVjayB0aGF0IHNlYXJjaCBpcyBhY2Nlc3NpYmxlIG9uIG1vYmlsZQogIDEwMyB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5nZXRCeVJvbGUoJ3NlYXJjaGJveCcpKS50b0JlVmlzaWJsZSgpOwogIDEwNCB8ICAgICAKICAxMDUgfCAgICAgLy8gQ2hlY2sgdGhhdCBtYWluIGNvbnRlbnQgaXMgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgMTA2IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJ21haW4nKSkudG9CZVZpc2libGUoKTsKICAxMDcgfCAgIH0pOwogIDEwOCB8CiAgMTA5IHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIHNsb3cgbG9hZGluZyBncmFjZWZ1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTEwIHwgICAgIC8vIFNpbXVsYXRlIHNsb3cgbmV0d29yawogIDExMSB8ICAgICBhd2FpdCBwYWdlLnJvdXRlKCcqKi8qJywgcm91dGUgPT4gewogIDExMiB8ICAgICAgIHNldFRpbWVvdXQoKCkgPT4gcm91dGUuY29udGludWUoKSwgMTAwKTsKICAxMTMgfCAgICAgfSk7CiAgMTE0IHwgICAgIAogIDExNSB8ICAgICBhd2FpdCBwYWdlLmdvdG8oJy8nKTsKICAxMTYgfCAgICAgCiAgMTE3IHwgICAgIC8vIENoZWNrIGZvciBsb2FkaW5nIGluZGljYXRvcnMKICAxMTggfCAgICAgY29uc3QgbG9hZGluZ0luZGljYXRvcnMgPSBbCiAgMTE5IHwgICAgICAgJ1tkYXRhLXRlc3RpZD0ibG9hZGluZy1za2VsZXRvbiJdJywKICAxMjAgfCAgICAgICAnW2RhdGEtdGVzdGlkPSJsb2FkaW5nLXNwaW5uZXIiXScsCiAgMTIxIHwgICAgICAgJy5sb2FkaW5nJywKICAxMjIgfCAgICAgICAnLnNrZWxldG9uJwogIDEyMyB8ICAgICBdOwogIDEyNCB8ICAgICAKICAxMjUgfCAgICAgZm9yIChjb25zdCBzZWxlY3RvciBvZiBsb2FkaW5nSW5kaWNhdG9ycykgewogIDEyNiB8ICAgICAgIGNvbnN0IGxvYWRpbmcgPSBwYWdlLmxvY2F0b3Ioc2VsZWN0b3IpOwogIDEyNyB8ICAgICAgIGlmIChhd2FpdCBsb2FkaW5nLmNvdW50KCkgPiAwKSB7CiAgMTI4IHwgICAgICAgICAvLyBMb2FkaW5nIGluZGljYXRvciBzaG91bGQgYmUgdmlzaWJsZSBpbml0aWFsbHkKICAxMjkgfCAgICAgICAgIGF3YWl0IGV4cGVjdChsb2FkaW5nLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgMTMwIHwgICAgICAgICBicmVhazsKICAxMzEgfCAgICAgICB9CiAgMTMyIHwgICAgIH0KICAxMzMgfCAgICAgCiAgMTM0IHwgICAgIC8vIFdhaXQgZm9yIGNvbnRlbnQgdG8gbG9hZAogIDEzNSB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JMb2FkU3RhdGUoJ25ldHdvcmtpZGxlJyk7CiAgMTM2IHwgICAgIAogIDEzNyB8ICAgICAvLyBDaGVjayB0aGF0IG1haW4gY29udGVudCBpcyBldmVudHVhbGx5IHZpc2libGUKICAxMzggfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UubG9jYXRvcignbWFpbicpKS50b0JlVmlzaWJsZSgpOwogIDEzOSB8ICAgfSk7CiAgMTQwIHwKICAxNDEgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHByb3BlciBhY2Nlc3NpYmlsaXR5IGZlYXR1cmVzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTQyIHwgICAgIC8vIENoZWNrIGZvciBza2lwIGxpbmtzCiAgMTQzIHwgICAgIGNvbnN0IHNraXBMaW5rcyA9IHBhZ2UuZ2V0QnlSb2xlKCdsaW5rJywgeyBuYW1lOiAvc2tpcCB0byBtYWluIGNvbnRlbnR8c2tpcCB0byBjb250ZW50L2kgfSk7CiAgMTQ0IHwgICAgIGlmIChhd2FpdCBza2lwTGlua3MuY291bnQoKSA+IDApIHsKICAxNDUgfCAgICAgICBhd2FpdCBleHBlY3Qoc2tpcExpbmtzLmZpcnN0KCkpLnRvQmVWaXNpYmxlKCk7CiAgMTQ2IHwgICAgIH0KICAxNDcgfCAgICAgCiAgMTQ4IHwgICAgIC8vIENoZWNrIGZvciBwcm9wZXIgaGVhZGluZyBoaWVyYXJjaHkKICAxNDkgfCAgICAgY29uc3QgaDEgPSBwYWdlLmdldEJ5Um9sZSgnaGVhZGluZycsIHsgbGV2ZWw6IDEgfSk7CiAgMTUwIHwgICAgIGF3YWl0IGV4cGVjdChoMSkudG9CZVZpc2libGUoKTsKICAxNTEgfCAgICAgCiAgMTUyIHwgICAgIC8vIENoZWNrIGZvciBhbHQgdGV4dCBvbiBpbWFnZXMKICAxNTMgfCAgICAgY29uc3QgaW1hZ2VzID0gcGFnZS5sb2NhdG9yKCdpbWcnKTsKICAxNTQgfCAgICAgY29uc3QgaW1hZ2VDb3VudCA9IGF3YWl0IGltYWdlcy5jb3VudCgpOwogIDE1NSB8ICAgICAKICAxNTYgfCAgICAgaWYgKGltYWdlQ291bnQgPiAwKSB7CiAgMTU3IHwgICAgICAgZm9yIChsZXQgaSA9IDA7IGkgPCBNYXRoLm1pbihpbWFnZUNvdW50LCA1KTsgaSsrKSB7CiAgMTU4IHwgICAgICAgICBjb25zdCBpbWcgPSBpbWFnZXMubnRoKGkpOwogIDE1OSB8ICAgICAgICAgY29uc3QgYWx0ID0gYXdhaXQgaW1nLmdldEF0dHJpYnV0ZSgnYWx0Jyk7CiAgMTYwIHwgICAgICAgICBjb25zdCBhcmlhTGFiZWwgPSBhd2FpdCBpbWcuZ2V0QXR0cmlidXRlKCdhcmlhLWxhYmVsJyk7CiAgMTYxIHwgICAgICAgICAKICAxNjIgfCAgICAgICAgIC8vIEltYWdlcyBzaG91bGQgaGF2ZSBhbHQgdGV4dCBvciBhcmlhLWxhYmVsCiAgMTYzIHwgICAgICAgICBleHBlY3QoYWx0ICE9PSBudWxsIHx8IGFyaWFMYWJlbCAhPT0gbnVsbCkudG9CZVRydXRoeSgpOwogIDE2NCB8ICAgICAgIH0KICAxNjUgfCAgICAgfQogIDE2NiB8ICAgICAKICAxNjcgfCAgICAgLy8gQ2hlY2sgZm9yIHByb3BlciBmb2N1cyBtYW5hZ2VtZW50CiAgMTY4IHwgICAgIGF3YWl0IHBhZ2Uua2V5Ym9hcmQucHJlc3MoJ1RhYicpOwogIDE2OSB8ICAgICBjb25zdCBmb2N1c2VkRWxlbWVudCA9IHBhZ2UubG9jYXRvcignOmZvY3VzJyk7CiAgMTcwIHwgICAgIGF3YWl0IGV4cGVjdChmb2N1c2VkRWxlbWVudCkudG9CZVZpc2libGUoKTsKICAxNzEgfCAgIH0pOwogIDE3MiB8CiAgMTczIHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIGVycm9ycyBncmFjZWZ1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTc0IHwgICAgIC8vIFRlc3Qgd2hhdCBoYXBwZW5zIHdoZW4gd2UgdHJ5IHRvIGFjY2VzcyBhIG5vbi1leGlzdGVudCByb3V0ZQogIDE3NSB8ICAgICBhd2FpdCBwYWdlLmdvdG8oJy9ub24tZXhpc3RlbnQtcGFnZScpOwogIDE3NiB8ICAgICAKICAxNzcgfCAgICAgLy8gU2hvdWxkIHNob3cgNDA0IHBhZ2Ugb3IgcmVkaXJlY3QgdG8gaG9tZQogIDE3OCB8ICAgICBjb25zdCBpczQwNCA9IHBhZ2UudXJsKCkuaW5jbHVkZXMoJzQwNCcpIHx8IAogIDE3OSB8ICAgICAgICAgICAgICAgICAgIGF3YWl0IHBhZ2UuZ2V0QnlUZXh0KC80MDR8bm90IGZvdW5kfOimi+OBpOOBi+OCiuOBvuOBm+OCky9pKS5pc1Zpc2libGUoKTsKICAxODAgfCAgICAgY29uc3QgaXNIb21lID0gcGFnZS51cmwoKS5lbmRzV2l0aCgnLycpIHx8IHBhZ2UudXJsKCkuZW5kc1dpdGgoJy9pbmRleC5odG1sJyk7CiAgMTgxIHwgICAgIAo+IDE4MiB8ICAgICBleHBlY3QoaXM0MDQgfHwgaXNIb21lKS50b0JlVHJ1dGh5KCk7CiAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4gRXJyb3I6IGV4cGVjdChyZWNlaXZlZCkudG9CZVRydXRoeSgpCiAgMTgzIHwgICAgIAogIDE4NCB8ICAgICAvLyBJZiBpdCdzIGEgNDA0LCBjaGVjayB0aGF0IG5hdmlnYXRpb24gc3RpbGwgd29ya3MKICAxODUgfCAgICAgaWYgKGlzNDA0KSB7CiAgMTg2IHwgICAgICAgY29uc3QgaG9tZUxpbmsgPSBwYWdlLmdldEJ5Um9sZSgnbGluaycsIHsgbmFtZTogL2hvbWV844Ob44O844OgL2kgfSk7CiAgMTg3IHwgICAgICAgaWYgKGF3YWl0IGhvbWVMaW5rLmlzVmlzaWJsZSgpKSB7CiAgMTg4IHwgICAgICAgICBhd2FpdCBob21lTGluay5jbGljaygpOwogIDE4OSB8ICAgICAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVVSTCgnLycpOwogIDE5MCB8ICAgICAgIH0KICAxOTEgfCAgICAgfQogIDE5MiB8ICAgfSk7CiAgMTkzIHwgfSk7CmBgYA=="
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts",
+                        "column": 29,
+                        "line": 182
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "84e7eb052e8cbae1c9f0-5393e16097adb5a60641",
+              "file": "homepage.spec.ts",
+              "line": 173,
+              "column": 7
+            }
+          ]
+        }
+      ]
     }
   ],
+  "errors": [],
   "stats": {
-    "startTime": "2025-04-13T10:33:22.843Z",
-    "duration": 219.34000000000003,
-    "expected": 0,
+    "startTime": "2025-07-07T01:16:15.723Z",
+    "duration": 27097.715,
+    "expected": 1,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 6,
     "flaky": 0
   }
 }
