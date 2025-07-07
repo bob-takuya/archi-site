@@ -26,7 +26,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import MapIcon from '@mui/icons-material/Map';
-import { getMapArchitectures } from '../services/DbService';
+import { ArchitectureService } from '../services/db';
 import MapComponent from '../components/Map';
 
 interface Work {
@@ -98,7 +98,7 @@ const MapPage: React.FC = () => {
     setLoading(true);
     try {
       // ブラウザ内SQLiteを使用してデータを取得
-      const data = await getMapArchitectures();
+      const data = await ArchitectureService.getArchitectureForMap();
       setAllWorks(data);
       
       // 初回読み込み時はランダムな年代フィルターを適用

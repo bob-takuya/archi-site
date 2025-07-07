@@ -29,7 +29,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import SortIcon from '@mui/icons-material/Sort';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { getAllArchitectures, getAllTags, getYearsForTag } from '../services/DbService';
+import { getAllArchitectures } from '../services/db/ArchitectureService';
+// TODO: Import getAllTags and getYearsForTag when available
 
 const ArchitecturePage = () => {
   const [architectures, setArchitectures] = useState([]);
@@ -54,7 +55,8 @@ const ArchitecturePage = () => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const allTags = await getAllTags();
+        // const allTags = await getAllTags(); // TODO: Implement
+        const allTags = [];
         setAvailableTags(allTags);
       } catch (error) {
         console.error('タグ取得エラー:', error);
@@ -155,7 +157,8 @@ const ArchitecturePage = () => {
     
     // 年度情報を取得（既に取得済みでも再度取得して最新の状態を保持）
     try {
-      const years = await getYearsForTag(tag);
+      // const years = await getYearsForTag(tag); // TODO: Implement
+      const years = [];
       setTagsYears(prev => ({
         ...prev,
         [tag]: years
@@ -247,7 +250,8 @@ const ArchitecturePage = () => {
       addedTags.forEach(async (tag) => {
         if (!tagsYears[tag]) {
           try {
-            const years = await getYearsForTag(tag);
+            // const years = await getYearsForTag(tag); // TODO: Implement
+      const years = [];
             setTagsYears(prev => ({
               ...prev,
               [tag]: years

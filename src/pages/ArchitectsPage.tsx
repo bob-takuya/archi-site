@@ -35,7 +35,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { getAllArchitects, getArchitectTags, getDbWorker } from '../services/DbService';
+import { ArchitectService, initDatabase, getResultsArray } from '../services/db';
 import { Architect, ArchitectsResponse, TagCategory } from '../types/architect';
 
 // 並び替えオプションのインターフェース
@@ -96,7 +96,7 @@ const ArchitectsPage: React.FC = () => {
     const loadTags = async () => {
       try {
         console.log("建築家タグ取得開始");
-        const tags = await getArchitectTags();
+        const tags = await ArchitectService.getArchitectTags();
         console.log("取得した建築家タグ:", tags);
         
         // タグを日本語のベースタグに変換
@@ -148,7 +148,7 @@ const ArchitectsPage: React.FC = () => {
         
         // 建築家データを取得
         console.log("建築家データ取得開始:", { page, search, tags, sort, order, nat, cat, sch, birthFrom, birthTo, death });
-        const result = await getAllArchitects(
+        const result = await ArchitectService.getAllArchitects(
           page,
           10, // itemsPerPage
           search,
@@ -196,20 +196,11 @@ const ArchitectsPage: React.FC = () => {
     if (!query) return [];
     
     try {
-      // DbWorkerを使用して直接クエリを実行
-      const db = await getDbWorker();
-      if (!db) {
-        console.error('DBWorkerが初期化されていません');
-        return [];
-      }
-      
-      const results = await db.exec(query, []);
-      if (!results || !results[0] || !results[0].values) {
-        return [];
-      }
+      // getResultsArrayを使用してクエリを実行
+      const results = await getResultsArray<{ value: string | number }>(query);
       
       // 結果を文字列配列に変換
-      return results[0].values.map(item => String(item[0])).filter(Boolean);
+      return results.map(item => String(item.value)).filter(Boolean);
     } catch (error) {
       console.error(`${tag}の値取得エラー:`, error);
       return [];
