@@ -1,0 +1,53 @@
+name: Deploy to gh-pages branch
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Prepare database
+        run: |
+          mkdir -p public/db
+          node scripts/prepare-static-db.js || echo "Database preparation failed, continuing..."
+
+      - name: Build
+        run: npm run build
+
+      - name: Prepare for GitHub Pages
+        run: |
+          # Create .nojekyll file
+          touch dist/.nojekyll
+          
+          # Create 404.html for SPA routing
+          cp dist/index.html dist/404.html
+          
+          # Verify build
+          ls -la dist/
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
