@@ -1,19 +1,23 @@
 import { createDbWorker } from 'sql.js-httpvfs';
 import type { Database, QueryExecResult } from 'sql.js';
 
+// Determine the base path for assets
+const BASE_PATH = import.meta.env.PROD ? '/archi-site' : '';
+
 // データベース設定
 const DB_CONFIG = {
-  from: 'cdn', // またはその他のソース
+  from: 'chunks', // Use chunks for better performance
   config: {
     serverMode: 'full',
-    requestChunkSize: 4096,
-    url: './db/archimap.sqlite',
+    requestChunkSize: 4 * 1024 * 1024, // 4MB chunks
+    url: `${BASE_PATH}/db/archimap.sqlite`,
+    suffixUrl: `${BASE_PATH}/db/archimap.sqlite.suffix`,
   },
 };
 
 // Worker URL
-const WORKER_URL = './sql-wasm.js';
-const WASM_URL = './sql-wasm.wasm';
+const WORKER_URL = `${BASE_PATH}/sqlite.worker.js`;
+const WASM_URL = `${BASE_PATH}/sql-wasm.wasm`;
 
 // シングルトンインスタンス
 let dbWorker: any = null;
@@ -66,8 +70,7 @@ export const initDatabase = async (): Promise<any> => {
     initPromise = createDbWorker(
       [DB_CONFIG as any],
       WORKER_URL,
-      WASM_URL,
-      () => console.log('データベースワーカーの準備完了')
+      WASM_URL
     );
     
     // データベースワーカーを取得
