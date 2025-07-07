@@ -1,24 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>Archi-site - リダイレクト中</title>
-  <script type="text/javascript">
-    // Single Page Apps for GitHub Pages
-    // https://github.com/rafgraph/spa-github-pages
-    var pathSegmentsToKeep = 1;
-    var l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?p=/' +
-      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash
-    );
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本の建築マップ | Architecture Map of Japan</title>
+    <meta name="description" content="日本の建築作品のデータベースとマップ表示アプリケーション" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    
+    <!-- GitHub Pages用のSPAリダイレクト処理 -->
+    <script type="text/javascript">
+        // SPAリダイレクト処理
+        (function(l) {
+            if (l.search[1] === '/') {
+                var decoded = l.search.slice(1).split('&').map(function(s) { 
+                    return s.replace(/~and~/g, '&');
+                }).join('?');
+                window.history.replaceState(null, null,
+                    l.pathname.slice(0, -1) + decoded + l.hash
+                );
+            }
+        }(window.location));
+    </script>
+  <script type="module" crossorigin src="/archi-site/assets/index-CL_GVtix.js"></script>
+  <link rel="modulepreload" crossorigin href="/archi-site/assets/vendor-C30vB44U.js">
+  <link rel="modulepreload" crossorigin href="/archi-site/assets/ui-CyZ5RW7z.js">
+  <link rel="modulepreload" crossorigin href="/archi-site/assets/database-C3TWL7Qm.js">
+  <link rel="modulepreload" crossorigin href="/archi-site/assets/map-C0JyOu4T.js">
+  <link rel="stylesheet" crossorigin href="/archi-site/assets/index-BRBRoBAP.css">
 </head>
 <body>
-  <h1>リダイレクト中...</h1>
-  <p>自動的にリダイレクトされない場合は、<a href="/">こちら</a>をクリックしてください。</p>
+    <div id="root"></div>
 </body>
 </html>
