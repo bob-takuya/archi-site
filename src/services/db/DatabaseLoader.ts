@@ -49,8 +49,8 @@ export async function initDatabase(): Promise<SqliteWorker<WorkerHttpvfs>> {
         suffixUrl: `${BASE_PATH}/db/archimap.sqlite.suffix`,
       },
     }],
-    () => new Worker(`${BASE_PATH}/sqlite.worker.js`),
-    20 * 1024 * 1024, // 20MB cache size
+    `${BASE_PATH}/sqlite.worker.js`,
+    `${BASE_PATH}/sql-wasm.wasm`,
   ).then(worker => {
     dbWorker = worker;
     console.log('Database initialized successfully');
