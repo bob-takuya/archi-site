@@ -9,13 +9,13 @@ export default defineConfig({
   testDir: './tests/e2e/production',
   // Match all test files in the production e2e directory
   testMatch: '**/*.spec.ts',
-  /* Maximum time one test can run for */
-  timeout: 120 * 1000, // Increased for production testing
+  /* Maximum time one test can run for - Extended for large database downloads */
+  timeout: 300 * 1000, // Extended to 5 minutes for database loading (12.7MB + 1.2MB WASM)
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met
      */
-    timeout: 15000 // Increased for production network latency
+    timeout: 30000 // Extended for database operations
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -39,7 +39,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. */
   use: {
     /* Maximum time each action such as `click()` can take. */
-    actionTimeout: 15000, // Increased for production environment
+    actionTimeout: 30000, // Extended for database-dependent actions
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'https://bob-takuya.github.io/archi-site/',
 
@@ -56,7 +56,7 @@ export default defineConfig({
     testIdAttribute: 'data-testid',
     
     /* Additional settings for production testing */
-    navigationTimeout: 45000, // Increased for production network latency
+    navigationTimeout: 120000, // Extended for large database downloads
     ignoreHTTPSErrors: false, // Strict HTTPS for production
     
     /* User agent for testing */

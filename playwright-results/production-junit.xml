@@ -1,18 +1,18 @@
-<testsuites id="" name="" tests="10" failures="4" skipped="0" errors="0" time="57.279897">
-<testsuite name="01-homepage-journey.spec.ts" timestamp="2025-07-07T05:05:50.215Z" hostname="Desktop Chrome" tests="10" failures="4" skipped="0" time="130.769" errors="0">
-<testcase name="Homepage User Journey › should load homepage successfully" classname="01-homepage-journey.spec.ts" time="51.517">
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="108.282596">
+<testsuite name="01-homepage-journey.spec.ts" timestamp="2025-07-07T06:27:16.666Z" hostname="Desktop Chrome" tests="1" failures="1" skipped="0" time="102.135" errors="0">
+<testcase name="Homepage User Journey › should load homepage successfully" classname="01-homepage-journey.spec.ts" time="102.135">
 <failure message="01-homepage-journey.spec.ts:17:7 should load homepage successfully" type="FAILURE">
 <![CDATA[  [Desktop Chrome] › 01-homepage-journey.spec.ts:17:7 › Homepage User Journey › should load homepage successfully 
 
-    Error: Timed out 15000ms waiting for expect(locator).toHaveTitle(expected)
+    Error: Timed out 30000ms waiting for expect(page).toHaveTitle(expected)
 
     Locator: locator(':root')
     Expected pattern: /建築|アーキテクチャ|Architecture/
     Received string:  "Site not found · GitHub Pages"
     Call log:
-      - expect.toHaveTitle with timeout 15000ms
+      - Expect "toHaveTitle" with timeout 30000ms
       - waiting for locator(':root')
-        19 × locator resolved to <html>…</html>
+        34 × locator resolved to <html>…</html>
            - unexpected value "Site not found · GitHub Pages"
 
 
@@ -33,17 +33,19 @@
     playwright-results/production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome/video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
+    Error Context: ../../../playwright-results/production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome/error-context.md
+
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: Timed out 15000ms waiting for expect(locator).toHaveTitle(expected)
+    Error: Timed out 30000ms waiting for expect(page).toHaveTitle(expected)
 
     Locator: locator(':root')
     Expected pattern: /建築|アーキテクチャ|Architecture/
     Received string:  "Site not found · GitHub Pages"
     Call log:
-      - expect.toHaveTitle with timeout 15000ms
+      - Expect "toHaveTitle" with timeout 30000ms
       - waiting for locator(':root')
-        19 × locator resolved to <html>…</html>
+        34 × locator resolved to <html>…</html>
            - unexpected value "Site not found · GitHub Pages"
 
 
@@ -64,6 +66,8 @@
     playwright-results/production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry1/video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
+    Error Context: ../../../playwright-results/production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry1/error-context.md
+
     attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
     playwright-results/production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry1/trace.zip
     Usage:
@@ -74,15 +78,15 @@
 
     Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: Timed out 15000ms waiting for expect(locator).toHaveTitle(expected)
+    Error: Timed out 30000ms waiting for expect(page).toHaveTitle(expected)
 
     Locator: locator(':root')
     Expected pattern: /建築|アーキテクチャ|Architecture/
     Received string:  "Site not found · GitHub Pages"
     Call log:
-      - expect.toHaveTitle with timeout 15000ms
+      - Expect "toHaveTitle" with timeout 30000ms
       - waiting for locator(':root')
-        19 × locator resolved to <html>…</html>
+        34 × locator resolved to <html>…</html>
            - unexpected value "Site not found · GitHub Pages"
 
 
@@ -102,399 +106,42 @@
     attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
     playwright-results/production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry2/video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../playwright-results/production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry2/error-context.md
 ]]>
 </failure>
 <system-out>
-<![CDATA[
+<![CDATA[📊 Database-dependent page detected, waiting for database loading...
+
 [[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome/test-failed-1.png]]
 
 [[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome/video.webm]]
+
+[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome/error-context.md]]
+📊 Database-dependent page detected, waiting for database loading...
 
 [[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry1/test-failed-1.png]]
 
 [[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry1/video.webm]]
 
+[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry1/error-context.md]]
+
 [[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry1/trace.zip]]
+📊 Database-dependent page detected, waiting for database loading...
 
 [[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry2/test-failed-1.png]]
 
 [[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry2/video.webm]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage User Journey › should display hero section and feature cards" classname="01-homepage-journey.spec.ts" time="51.467">
-<failure message="01-homepage-journey.spec.ts:33:7 should display hero section and feature cards" type="FAILURE">
-<![CDATA[  [Desktop Chrome] › 01-homepage-journey.spec.ts:33:7 › Homepage User Journey › should display hero section and feature cards 
 
-    Error: Timed out 15000ms waiting for expect(locator).toBeVisible()
-
-    Locator: locator('section, .hero, .banner, .intro').first()
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 15000ms
-      - waiting for locator('section, .hero, .banner, .intro').first()
-
-
-      34 |     // Check for hero section
-      35 |     const hero = page.locator('section, .hero, .banner, .intro').first();
-    > 36 |     await expect(hero).toBeVisible();
-         |                        ^
-      37 |     
-      38 |     // Check for feature cards or main content sections
-      39 |     const cards = page.locator(selectors.card);
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:36:24
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: Timed out 15000ms waiting for expect(locator).toBeVisible()
-
-    Locator: locator('section, .hero, .banner, .intro').first()
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 15000ms
-      - waiting for locator('section, .hero, .banner, .intro').first()
-
-
-      34 |     // Check for hero section
-      35 |     const hero = page.locator('section, .hero, .banner, .intro').first();
-    > 36 |     await expect(hero).toBeVisible();
-         |                        ^
-      37 |     
-      38 |     // Check for feature cards or main content sections
-      39 |     const cards = page.locator(selectors.card);
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:36:24
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry1/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry1/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry1/trace.zip
-    Usage:
-
-        npx playwright show-trace playwright-results/production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry1/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: Timed out 15000ms waiting for expect(locator).toBeVisible()
-
-    Locator: locator('section, .hero, .banner, .intro').first()
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 15000ms
-      - waiting for locator('section, .hero, .banner, .intro').first()
-
-
-      34 |     // Check for hero section
-      35 |     const hero = page.locator('section, .hero, .banner, .intro').first();
-    > 36 |     await expect(hero).toBeVisible();
-         |                        ^
-      37 |     
-      38 |     // Check for feature cards or main content sections
-      39 |     const cards = page.locator(selectors.card);
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:36:24
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry2/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry2/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome/test-failed-1.png]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome/video.webm]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry1/test-failed-1.png]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry1/video.webm]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry1/trace.zip]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry2/test-failed-1.png]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-e8cb8-o-section-and-feature-cards-Desktop-Chrome-retry2/video.webm]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage User Journey › should have working navigation menu" classname="01-homepage-journey.spec.ts" time="5.449">
-<failure message="01-homepage-journey.spec.ts:52:7 should have working navigation menu" type="FAILURE">
-<![CDATA[  [Desktop Chrome] › 01-homepage-journey.spec.ts:52:7 › Homepage User Journey › should have working navigation menu 
-
-    Error: expect(received).toBeGreaterThan(expected)
-
-    Expected: > 0
-    Received:   0
-
-      54 |     const navLinks = page.locator('nav a, nav button');
-      55 |     const linkCount = await navLinks.count();
-    > 56 |     expect(linkCount).toBeGreaterThan(0);
-         |                       ^
-      57 |     
-      58 |     // Test each navigation link
-      59 |     for (let i = 0; i < Math.min(linkCount, 5); i++) {
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:56:23
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: expect(received).toBeGreaterThan(expected)
-
-    Expected: > 0
-    Received:   0
-
-      54 |     const navLinks = page.locator('nav a, nav button');
-      55 |     const linkCount = await navLinks.count();
-    > 56 |     expect(linkCount).toBeGreaterThan(0);
-         |                       ^
-      57 |     
-      58 |     // Test each navigation link
-      59 |     for (let i = 0; i < Math.min(linkCount, 5); i++) {
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:56:23
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry1/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry1/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry1/trace.zip
-    Usage:
-
-        npx playwright show-trace playwright-results/production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry1/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: expect(received).toBeGreaterThan(expected)
-
-    Expected: > 0
-    Received:   0
-
-      54 |     const navLinks = page.locator('nav a, nav button');
-      55 |     const linkCount = await navLinks.count();
-    > 56 |     expect(linkCount).toBeGreaterThan(0);
-         |                       ^
-      57 |     
-      58 |     // Test each navigation link
-      59 |     for (let i = 0; i < Math.min(linkCount, 5); i++) {
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:56:23
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry2/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry2/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome/test-failed-1.png]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome/video.webm]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry1/test-failed-1.png]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry1/video.webm]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry1/trace.zip]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry2/test-failed-1.png]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-d4eb9-ave-working-navigation-menu-Desktop-Chrome-retry2/video.webm]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage User Journey › should have functional search" classname="01-homepage-journey.spec.ts" time="1.755">
-<system-out>
-<![CDATA[ℹ️  No search functionality found on homepage
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage User Journey › should be responsive on mobile" classname="01-homepage-journey.spec.ts" time="2.745">
-</testcase>
-<testcase name="Homepage User Journey › should be responsive on tablet" classname="01-homepage-journey.spec.ts" time="2.745">
-</testcase>
-<testcase name="Homepage User Journey › should have good performance" classname="01-homepage-journey.spec.ts" time="1.751">
-<system-out>
-<![CDATA[📊 Performance metrics: {
-  loadTime: [32m'0ms'[39m,
-  domContentLoaded: [32m'0ms'[39m,
-  firstContentfulPaint: [32m'48ms'[39m
-}
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage User Journey › should have accessible elements" classname="01-homepage-journey.spec.ts" time="5.301">
-<failure message="01-homepage-journey.spec.ts:184:7 should have accessible elements" type="FAILURE">
-<![CDATA[  [Desktop Chrome] › 01-homepage-journey.spec.ts:184:7 › Homepage User Journey › should have accessible elements 
-
-    Error: expect(received).toBeGreaterThanOrEqual(expected)
-
-    Expected: >= 1
-    Received:    0
-
-      195 |     const main = page.locator('main');
-      196 |     const mainCount = await main.count();
-    > 197 |     expect(mainCount).toBeGreaterThanOrEqual(1);
-          |                       ^
-      198 |     
-      199 |     // Check for proper navigation
-      200 |     const nav = page.locator('nav');
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:197:23
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: expect(received).toBeGreaterThanOrEqual(expected)
-
-    Expected: >= 1
-    Received:    0
-
-      195 |     const main = page.locator('main');
-      196 |     const mainCount = await main.count();
-    > 197 |     expect(mainCount).toBeGreaterThanOrEqual(1);
-          |                       ^
-      198 |     
-      199 |     // Check for proper navigation
-      200 |     const nav = page.locator('nav');
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:197:23
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry1/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry1/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry1/trace.zip
-    Usage:
-
-        npx playwright show-trace playwright-results/production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry1/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: expect(received).toBeGreaterThanOrEqual(expected)
-
-    Expected: >= 1
-    Received:    0
-
-      195 |     const main = page.locator('main');
-      196 |     const mainCount = await main.count();
-    > 197 |     expect(mainCount).toBeGreaterThanOrEqual(1);
-          |                       ^
-      198 |     
-      199 |     // Check for proper navigation
-      200 |     const nav = page.locator('nav');
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:197:23
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry2/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry2/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome/test-failed-1.png]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome/video.webm]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry1/test-failed-1.png]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry1/video.webm]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry1/trace.zip]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry2/test-failed-1.png]]
-
-[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-15ba6-ld-have-accessible-elements-Desktop-Chrome-retry2/video.webm]]
+[[ATTACHMENT|production-artifacts/01-homepage-journey-Homepa-34f4d--load-homepage-successfully-Desktop-Chrome-retry2/error-context.md]]
 ]]>
 </system-out>
 <system-err>
-<![CDATA[⚠️  Image without alt text found
-⚠️  Image without alt text found
-⚠️  Image without alt text found
-⚠️  Image without alt text found
-⚠️  Image without alt text found
-⚠️  Image without alt text found
+<![CDATA[⚠️ Page ready timeout - continuing with test (this may be expected for slow database loading)
+⚠️ Page ready timeout - continuing with test (this may be expected for slow database loading)
+⚠️ Page ready timeout - continuing with test (this may be expected for slow database loading)
 ]]>
 </system-err>
-</testcase>
-<testcase name="Homepage User Journey › should handle errors gracefully" classname="01-homepage-journey.spec.ts" time="6.265">
-<system-out>
-<![CDATA[⚠️  Failed requests: [ [32m'404 https://bob-takuya.github.io/'[39m ]
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage User Journey › should generate homepage report" classname="01-homepage-journey.spec.ts" time="1.774">
-<system-out>
-<![CDATA[📋 Homepage Report: {
-  "testName": "Homepage Journey",
-  "url": "https://bob-takuya.github.io/",
-  "title": "Site not found · GitHub Pages",
-  "timestamp": "2025-07-07T05:06:21.549Z",
-  "viewport": {
-    "width": 1920,
-    "height": 1080
-  },
-  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.6998.35 Safari/537.36",
-  "hasJapaneseText": false,
-  "hasDatabase": false,
-  "navigationLinks": 0,
-  "cardCount": 0,
-  "hasSearch": false
-}
-]]>
-</system-out>
 </testcase>
 </testsuite>
 </testsuites>

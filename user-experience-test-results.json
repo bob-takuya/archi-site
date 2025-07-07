@@ -1,0 +1,70 @@
+{
+  "localTest": {
+    "pageLoad": true,
+    "databaseLoad": false,
+    "searchFunctionality": false,
+    "navigationWorking": false,
+    "progressTracking": false,
+    "errorHandling": false,
+    "performanceMetrics": {},
+    "issues": [
+      "Essential page elements missing",
+      "Test execution failed: Failed to parse URL from http://localhost:8080db/archimap.sqlite"
+    ],
+    "overallSuccess": false
+  },
+  "productionTest": {
+    "pageLoad": true,
+    "databaseLoad": true,
+    "searchFunctionality": false,
+    "navigationWorking": false,
+    "progressTracking": true,
+    "errorHandling": true,
+    "performanceMetrics": {
+      "databaseSize": 3817806,
+      "wasmSize": 513173,
+      "totalDownloadSize": 4330979,
+      "estimatedDownloadTime": {
+        "slowConnection": 42,
+        "fastConnection": 4,
+        "veryFastConnection": 0
+      }
+    },
+    "issues": [
+      "Essential page elements missing",
+      "Database file appears too small",
+      "WASM file appears too small"
+    ],
+    "overallSuccess": true
+  },
+  "crossPlatformTests": [
+    {
+      "scenario": "Desktop Chrome",
+      "success": true,
+      "hasResponsiveDesign": true,
+      "expectedPerformance": "fast"
+    },
+    {
+      "scenario": "Mobile Safari",
+      "success": true,
+      "hasResponsiveDesign": true,
+      "expectedPerformance": "slow"
+    },
+    {
+      "scenario": "Mobile Chrome",
+      "success": true,
+      "hasResponsiveDesign": true,
+      "expectedPerformance": "slow"
+    }
+  ],
+  "summary": {
+    "localSuccess": false,
+    "productionSuccess": true,
+    "crossPlatformSuccess": true,
+    "totalIssues": 5,
+    "overallSuccess": false,
+    "recommendations": [
+      "Address identified issues in test results"
+    ]
+  }
+}

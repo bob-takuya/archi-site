@@ -1,31 +1,732 @@
-<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="32.408516">
-<testsuite name="real-functionality-test.spec.ts" timestamp="2025-07-07T05:54:34.113Z" hostname="chromium" tests="3" failures="0" skipped="0" time="43.329" errors="0">
-<testcase name="Real Architecture Database Functionality › should load database and display real architecture data" classname="real-functionality-test.spec.ts" time="31.769">
+<testsuites id="" name="" tests="10" failures="10" skipped="0" errors="0" time="53.392384">
+<testsuite name="production/01-homepage-journey.spec.ts" timestamp="2025-07-07T06:12:03.252Z" hostname="chromium" tests="10" failures="10" skipped="0" time="245.938" errors="0">
+<testcase name="Homepage User Journey › should load homepage successfully" classname="production/01-homepage-journey.spec.ts" time="25.173">
+<failure message="01-homepage-journey.spec.ts:17:7 should load homepage successfully" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:17:7 › Homepage User Journey › should load homepage successfully 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
 <system-out>
-<![CDATA[🚀 Testing real database functionality...
-🖥️ Console: Emergency timeout: forcing app to render without database
-🖥️ Console: 建築作品の取得に失敗: Error: データベース接続がタイムアウトしました
-    at https://bob-takuya.github.io/archi-site/assets/index-CQOQf6w_.js:1:6447
-🖥️ Console: Found 3 elements with selector: .MuiCard-root
-📊 Architecture data found: true
-📝 Console messages: Emergency timeout: forcing app to render without database, 建築作品の取得に失敗: Error: データベース接続がタイムアウトしました
-    at https://bob-takuya.github.io/archi-site/assets/index-CQOQf6w_.js:1:6447, Found 3 elements with selector: .MuiCard-root
-🏗️ Page structure - Header: false, Main: true
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Real Architecture Database Functionality › should test search functionality if available" classname="real-functionality-test.spec.ts" time="4.847">
+<testcase name="Homepage User Journey › should display hero section and feature cards" classname="production/01-homepage-journey.spec.ts" time="24.689">
+<failure message="01-homepage-journey.spec.ts:33:7 should display hero section and feature cards" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:33:7 › Homepage User Journey › should display hero section and feature cards 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
 <system-out>
-<![CDATA[🔍 Testing search functionality...
-✅ Search input found
-🎯 Search results found: false
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Real Architecture Database Functionality › should check map functionality" classname="real-functionality-test.spec.ts" time="6.713">
+<testcase name="Homepage User Journey › should have working navigation menu" classname="production/01-homepage-journey.spec.ts" time="24.699">
+<failure message="01-homepage-journey.spec.ts:52:7 should have working navigation menu" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:52:7 › Homepage User Journey › should have working navigation menu 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
 <system-out>
-<![CDATA[🗺️ Testing map functionality...
-🗺️ Map container found: false
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Homepage User Journey › should have functional search" classname="production/01-homepage-journey.spec.ts" time="24.724">
+<failure message="01-homepage-journey.spec.ts:86:7 should have functional search" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:86:7 › Homepage User Journey › should have functional search 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Homepage User Journey › should be responsive on mobile" classname="production/01-homepage-journey.spec.ts" time="25.126">
+<failure message="01-homepage-journey.spec.ts:111:7 should be responsive on mobile" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:111:7 › Homepage User Journey › should be responsive on mobile 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Homepage User Journey › should be responsive on tablet" classname="production/01-homepage-journey.spec.ts" time="24.301">
+<failure message="01-homepage-journey.spec.ts:140:7 should be responsive on tablet" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:140:7 › Homepage User Journey › should be responsive on tablet 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Homepage User Journey › should have good performance" classname="production/01-homepage-journey.spec.ts" time="24.255">
+<failure message="01-homepage-journey.spec.ts:165:7 should have good performance" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:165:7 › Homepage User Journey › should have good performance 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Homepage User Journey › should have accessible elements" classname="production/01-homepage-journey.spec.ts" time="24.135">
+<failure message="01-homepage-journey.spec.ts:184:7 should have accessible elements" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:184:7 › Homepage User Journey › should have accessible elements 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Homepage User Journey › should handle errors gracefully" classname="production/01-homepage-journey.spec.ts" time="24.367">
+<failure message="01-homepage-journey.spec.ts:207:7 should handle errors gracefully" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:207:7 › Homepage User Journey › should handle errors gracefully 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Homepage User Journey › should generate homepage report" classname="production/01-homepage-journey.spec.ts" time="24.469">
+<failure message="01-homepage-journey.spec.ts:248:7 should generate homepage report" type="FAILURE">
+<![CDATA[  [chromium] › production/01-homepage-journey.spec.ts:248:7 › Homepage User Journey › should generate homepage report 
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.
+
+       at production/utils/test-helpers.ts:22
+
+      20 |     
+      21 |     // Wait for database to load (look for content indicators)
+    > 22 |     await this.page.waitForFunction(() => {
+         |                     ^
+      23 |       const body = document.body;
+      24 |       return body && body.textContent && body.textContent.length > 200;
+      25 |     }, { timeout });
+        at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/trace.zip]]
 ]]>
 </system-out>
 </testcase>

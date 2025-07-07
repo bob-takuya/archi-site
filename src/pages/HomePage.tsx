@@ -19,7 +19,8 @@ import {
   Stack,
   Divider,
   IconButton,
-  Tooltip
+  Tooltip,
+  LinearProgress
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ArchitectureIcon from '@mui/icons-material/AccountBalance';
@@ -45,15 +46,30 @@ const HomePage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isDbReady, setIsDbReady] = useState<boolean>(false);
+  const [downloadProgress, setDownloadProgress] = useState<{
+    progress: number;
+    speed: number;
+    eta: number;
+    receivedLength: number;
+    totalLength: number;
+  } | null>(null);
 
   useEffect(() => {
-    // Emergency timeout to ensure UI loads even if database fails completely
+    // Listen for database download progress events
+    const handleProgressUpdate = (event: CustomEvent) => {
+      const { progress, speed, eta, receivedLength, totalLength } = event.detail;
+      setDownloadProgress({ progress, speed, eta, receivedLength, totalLength });
+    };
+    
+    window.addEventListener('database-download-progress', handleProgressUpdate as EventListener);
+    
+    // Extended emergency timeout for large database loading (12.7MB + 1.2MB files)
     const emergencyTimeout = setTimeout(() => {
-      console.warn('Emergency timeout: forcing app to render without database');
+      console.warn('Emergency timeout: forcing app to render without database after 3 minutes');
       setLoading(false);
       setIsDbReady(false);
-      setError('データベースの初期化がタイムアウトしました');
-    }, 3000);
+      setError('データベースの初期化がタイムアウトしました（大きなファイルの読み込みに時間がかかっています）。接続が遅い場合は、しばらくお待ちください。');
+    }, 180000); // Extended to 180 seconds (3 minutes) for database download
 
     const fetchRecentWorks = async (): Promise<void> => {
       try {
@@ -64,9 +80,9 @@ const HomePage: React.FC = () => {
         // Dynamically import to prevent module hanging
         const { getAllArchitectures } = await import('../services/db/ArchitectureService');
         
-        // Add timeout to prevent indefinite hanging
+        // Extended timeout for database operations (large file handling)
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました')), 5000);
+          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました（90秒）。大きなファイルの読み込みに時間がかかっています。')), 90000);
         });
         
         const dataPromise = getAllArchitectures(1, 6);
@@ -79,7 +95,17 @@ const HomePage: React.FC = () => {
       } catch (error: any) {
         console.error('建築作品の取得に失敗:', error);
         clearTimeout(emergencyTimeout);
-        setError(error.message || 'データベースからの読み込みに失敗しました');
+        
+        // Enhanced error messages with actionable guidance
+        let errorMessage = error.message || 'データベースからの読み込みに失敗しました';
+        
+        if (error.message?.includes('timeout')) {
+          errorMessage += ' インターネット接続が遅い可能性があります。しばらく待ってからページを再読み込みしてください。';
+        } else if (error.message?.includes('fetch')) {
+          errorMessage += ' ネットワーク接続を確認してください。';
+        }
+        
+        setError(errorMessage);
         // Don't block the UI - show emergency fallback
         setIsDbReady(false);
       } finally {
@@ -91,6 +117,7 @@ const HomePage: React.FC = () => {
     
     return () => {
       clearTimeout(emergencyTimeout);
+      window.removeEventListener('database-download-progress', handleProgressUpdate as EventListener);
     };
   }, []);
 
@@ -99,6 +126,25 @@ const HomePage: React.FC = () => {
     if (searchTerm.trim()) {
       window.location.href = `/architecture?search=${encodeURIComponent(searchTerm)}`;
     }
+  };
+  
+  const handleRetry = () => {
+    setError(null);
+    setLoading(true);
+    setDownloadProgress(null);
+    window.location.reload();
+  };
+  
+  const formatSpeed = (speed: number): string => {
+    if (speed < 1024) return `${Math.round(speed)} B/s`;
+    if (speed < 1024 * 1024) return `${Math.round(speed / 1024)} KB/s`;
+    return `${Math.round(speed / 1024 / 1024)} MB/s`;
+  };
+  
+  const formatTime = (seconds: number): string => {
+    if (seconds < 60) return `${Math.round(seconds)}s`;
+    if (seconds < 3600) return `${Math.round(seconds / 60)}m ${Math.round(seconds % 60)}s`;
+    return `${Math.round(seconds / 3600)}h ${Math.round((seconds % 3600) / 60)}m`;
   };
 
   return (
@@ -240,8 +286,53 @@ const HomePage: React.FC = () => {
                 </Button>
               </Box>
             </Fade>
-            {!isDbReady && (
-              <LoadingSkeleton variant="hero" />
+            {!isDbReady && loading && (
+              <Box sx={{ mt: 4, maxWidth: 600, mx: 'auto' }}>
+                {downloadProgress ? (
+                  <Paper sx={{ p: 3, background: 'rgba(255, 255, 255, 0.9)', borderRadius: 2 }}>
+                    <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
+                      📦 大きなデータベースを読み込み中...
+                    </Typography>
+                    <Box sx={{ mb: 2 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                        <CircularProgress 
+                          variant="determinate" 
+                          value={downloadProgress.progress} 
+                          size={24} 
+                          sx={{ mr: 2 }}
+                        />
+                        <Typography variant="body2" color="text.secondary">
+                          {downloadProgress.progress}% • {Math.round(downloadProgress.receivedLength / 1024 / 1024)} MB / {Math.round(downloadProgress.totalLength / 1024 / 1024)} MB
+                        </Typography>
+                      </Box>
+                      <LinearProgress 
+                        variant="determinate" 
+                        value={downloadProgress.progress} 
+                        sx={{ height: 8, borderRadius: 4 }}
+                      />
+                    </Box>
+                    <Stack direction="row" spacing={2} sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>
+                      <Box>📊 {formatSpeed(downloadProgress.speed)}</Box>
+                      <Box>⏱️ ETA: {formatTime(downloadProgress.eta)}</Box>
+                    </Stack>
+                    <Typography variant="body2" sx={{ mt: 1, fontStyle: 'italic', color: 'text.secondary' }}>
+                      初回のアクセスでは、大きなファイルのダウンロードが必要です。しばらくお待ちください。
+                    </Typography>
+                  </Paper>
+                ) : (
+                  <Paper sx={{ p: 3, background: 'rgba(255, 255, 255, 0.9)', borderRadius: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+                      <CircularProgress size={24} sx={{ mr: 2 }} />
+                      <Typography variant="h6" sx={{ color: 'primary.main' }}>
+                        データベースを初期化中...
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary" align="center">
+                      14,000件の建築作品データを読み込み中です
+                    </Typography>
+                  </Paper>
+                )}
+              </Box>
             )}
           </Box>
         </Box>
@@ -290,15 +381,25 @@ const HomePage: React.FC = () => {
             >
               <Box>
                 {error}
-                <Button 
-                  size="small" 
-                  variant="outlined" 
-                  sx={{ ml: 2 }} 
-                  component={RouterLink} 
-                  to="/db-explorer"
-                >
-                  診断ツールを開く
-                </Button>
+                <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+                  <Button 
+                    size="small" 
+                    variant="contained" 
+                    color="primary"
+                    onClick={handleRetry}
+                    startIcon={<RefreshIcon />}
+                  >
+                    再試行
+                  </Button>
+                  <Button 
+                    size="small" 
+                    variant="outlined" 
+                    component={RouterLink} 
+                    to="/db-explorer"
+                  >
+                    診断ツールを開く
+                  </Button>
+                </Stack>
               </Box>
             </Alert>
           </Fade>
