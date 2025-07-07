@@ -15,28 +15,39 @@ test.describe('Homepage', () => {
     // Check navigation menu
     await expect(page.getByRole('navigation')).toBeVisible();
     
-    // Check main navigation links
-    await expect(page.getByRole('link', { name: /architecture|建築/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /architects|建築家/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /map|マップ/i })).toBeVisible();
+    // Check main navigation links - handle mobile menu
+    const mobileMenuButton = page.getByTestId('mobile-menu-button');
+    const isMobile = await mobileMenuButton.isVisible();
+    
+    if (isMobile) {
+      // Open mobile menu first
+      await mobileMenuButton.click();
+      await expect(page.getByRole('menu')).toBeVisible();
+    }
+    
+    // Check navigation links (either in header or mobile menu)
+    await expect(page.getByTestId('nav-link-建築作品')).toBeVisible();
+    await expect(page.getByTestId('nav-link-建築家')).toBeVisible();
+    await expect(page.getByTestId('nav-link-マップ')).toBeVisible();
     
     // Check search functionality
-    await expect(page.getByRole('searchbox')).toBeVisible();
+    await expect(page.getByTestId('search-input')).toBeVisible();
     
-    // Check footer
-    await expect(page.getByRole('contentinfo')).toBeVisible();
+    // Check footer (scroll to it on mobile)
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await expect(page.getByTestId('footer')).toBeVisible();
   });
 
   test('should have working search functionality', async ({ page }) => {
     // Locate search input
-    const searchInput = page.getByRole('searchbox');
+    const searchInput = page.getByTestId('search-input');
     await expect(searchInput).toBeVisible();
     
     // Enter search term
     await searchInput.fill('Tokyo');
     
     // Submit search (look for search button or press Enter)
-    const searchButton = page.getByRole('button', { name: /search|検索/i });
+    const searchButton = page.getByTestId('search-button');
     if (await searchButton.isVisible()) {
       await searchButton.click();
     } else {
@@ -100,7 +111,7 @@ test.describe('Homepage', () => {
     }
     
     // Check that search is accessible on mobile
-    await expect(page.getByRole('searchbox')).toBeVisible();
+    await expect(page.getByTestId('search-input')).toBeVisible();
     
     // Check that main content is visible and properly scaled
     await expect(page.locator('main')).toBeVisible();

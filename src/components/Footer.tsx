@@ -5,6 +5,8 @@ const Footer: React.FC = () => {
   return (
     <Box
       component="footer"
+      role="contentinfo"
+      data-testid="footer"
       sx={{
         py: 3,
         px: 2,

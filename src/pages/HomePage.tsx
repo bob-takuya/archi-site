@@ -27,7 +27,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import MapIcon from '@mui/icons-material/Map';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { getAllArchitectures } from '../services/db/ArchitectureService';
+// Import moved inside function to prevent module hanging
+// import { getAllArchitectures } from '../services/db/ArchitectureService';
 import LoadingSkeleton from '../components/ui/LoadingSkeleton';
 
 interface ArchitectureWork {
@@ -46,24 +47,51 @@ const HomePage: React.FC = () => {
   const [isDbReady, setIsDbReady] = useState<boolean>(false);
 
   useEffect(() => {
+    // Emergency timeout to ensure UI loads even if database fails completely
+    const emergencyTimeout = setTimeout(() => {
+      console.warn('Emergency timeout: forcing app to render without database');
+      setLoading(false);
+      setIsDbReady(false);
+      setError('データベースの初期化がタイムアウトしました');
+    }, 3000);
+
     const fetchRecentWorks = async (): Promise<void> => {
       try {
         setLoading(true);
         setError(null);
         console.log('最近の建築作品を取得中...');
-        const data = await getAllArchitectures(1, 6);
+        
+        // Dynamically import to prevent module hanging
+        const { getAllArchitectures } = await import('../services/db/ArchitectureService');
+        
+        // Add timeout to prevent indefinite hanging
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました')), 5000);
+        });
+        
+        const dataPromise = getAllArchitectures(1, 6);
+        const data = await Promise.race([dataPromise, timeoutPromise]) as any;
+        
+        clearTimeout(emergencyTimeout);
         setRecentWorks(data.items);
         setIsDbReady(true);
         console.log('建築作品の取得に成功しました', data);
       } catch (error: any) {
         console.error('建築作品の取得に失敗:', error);
+        clearTimeout(emergencyTimeout);
         setError(error.message || 'データベースからの読み込みに失敗しました');
+        // Don't block the UI - show emergency fallback
+        setIsDbReady(false);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRecentWorks();
+    
+    return () => {
+      clearTimeout(emergencyTimeout);
+    };
   }, []);
 
   const handleSearch = (e: React.FormEvent): void => {
@@ -74,10 +102,13 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" data-testid="homepage-container">
       {/* Hero Section */}
       <Fade in={true} timeout={1000}>
         <Box
+          component="section"
+          role="banner"
+          aria-labelledby="main-heading"
           sx={{
             pt: 8,
             pb: 6,
@@ -107,6 +138,7 @@ const HomePage: React.FC = () => {
               align="center"
               color="text.primary"
               gutterBottom
+              id="main-heading"
               sx={{
                 background: 'linear-gradient(135deg, #2E3440 0%, #4C566A 100%)',
                 backgroundClip: 'text',
@@ -157,51 +189,58 @@ const HomePage: React.FC = () => {
             </Stack>
 
             {/* Search Section */}
-            {isDbReady ? (
-              <Fade in={true} timeout={1500}>
-                <Box 
-                  component="form" 
-                  onSubmit={handleSearch}
-                  sx={{ 
-                    mt: 4,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    maxWidth: 600,
-                    mx: 'auto',
-                    gap: 2,
+            <Fade in={true} timeout={1500}>
+              <Box 
+                component="form" 
+                onSubmit={handleSearch}
+                role="search"
+                aria-label="建築作品検索"
+                sx={{ 
+                  mt: 4,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  maxWidth: 600,
+                  mx: 'auto',
+                  gap: 2,
+                }}
+              >
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  placeholder="建築作品、建築家、住所などで検索"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  inputProps={{
+                    'aria-label': '建築作品検索',
+                    'data-testid': 'search-input',
+                    role: 'searchbox'
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      backgroundColor: 'white',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                    },
+                  }}
+                />
+                <Button 
+                  type="submit"
+                  variant="contained" 
+                  color="primary"
+                  startIcon={<SearchIcon />}
+                  size="large"
+                  data-testid="search-button"
+                  sx={{
+                    px: 3,
+                    py: 1.5,
+                    minWidth: 120,
                   }}
                 >
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    placeholder="建築作品、建築家、住所などで検索"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        backgroundColor: 'white',
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                      },
-                    }}
-                  />
-                  <Button 
-                    type="submit"
-                    variant="contained" 
-                    color="primary"
-                    startIcon={<SearchIcon />}
-                    size="large"
-                    sx={{
-                      px: 3,
-                      py: 1.5,
-                      minWidth: 120,
-                    }}
-                  >
-                    検索
-                  </Button>
-                </Box>
-              </Fade>
-            ) : (
+                  検索
+                </Button>
+              </Box>
+            </Fade>
+            {!isDbReady && (
               <LoadingSkeleton variant="hero" />
             )}
           </Box>
@@ -209,7 +248,7 @@ const HomePage: React.FC = () => {
       </Fade>
 
       {/* Recent Works Section */}
-      <Box sx={{ py: 4 }}>
+      <Box component="section" aria-labelledby="recent-works-heading" sx={{ py: 4 }}>
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -218,7 +257,7 @@ const HomePage: React.FC = () => {
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <TrendingUpIcon color="primary" />
-            <Typography variant="h4" fontWeight="bold">
+            <Typography variant="h4" fontWeight="bold" id="recent-works-heading" component="h2">
               最近の建築作品
             </Typography>
           </Box>
@@ -381,11 +420,13 @@ const HomePage: React.FC = () => {
 
       {/* Feature Cards Section */}
       <Fade in={true} timeout={1400}>
-        <Box sx={{ mb: 6 }}>
+        <Box component="section" aria-labelledby="features-heading" sx={{ mb: 6 }}>
           <Typography 
             variant="h4" 
             align="center" 
             gutterBottom 
+            id="features-heading"
+            component="h2"
             sx={{ mb: 4, fontWeight: 'bold' }}
           >
             データベースの特徴
