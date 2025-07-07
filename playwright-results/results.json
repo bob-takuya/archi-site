@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 5
+      "actualWorkers": 1
     },
     "preserveOutput": "always",
     "reporter": [
@@ -54,7 +54,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 1
         },
         "id": "chromium",
         "name": "chromium",
@@ -73,7 +73,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 1
         },
         "id": "firefox",
         "name": "firefox",
@@ -92,7 +92,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 1
         },
         "id": "webkit",
         "name": "webkit",
@@ -111,7 +111,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 1
         },
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
@@ -130,7 +130,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 1
         },
         "id": "Mobile Safari",
         "name": "Mobile Safari",
@@ -149,7 +149,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 1
         },
         "id": "Tablet",
         "name": "Tablet",
@@ -181,20 +181,20 @@
   },
   "suites": [
     {
-      "title": "production/01-homepage-journey.spec.ts",
-      "file": "production/01-homepage-journey.spec.ts",
+      "title": "test-worker-debug.spec.ts",
+      "file": "test-worker-debug.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Homepage User Journey",
-          "file": "production/01-homepage-journey.spec.ts",
-          "line": 8,
+          "title": "Worker Loading Debug Test",
+          "file": "test-worker-debug.spec.ts",
+          "line": 3,
           "column": 6,
           "specs": [
             {
-              "title": "should load homepage successfully",
+              "title": "should debug worker loading issues",
               "ok": false,
               "tags": [],
               "tests": [
@@ -209,1208 +209,556 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 12971,
+                      "duration": 46219,
                       "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts:100:35",
                         "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
+                          "column": 35,
+                          "line": 100
                         },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
+                        "snippet": "   98 |     console.log('🏗️ Database state:', dbState);\n   99 |     \n> 100 |     expect.soft(hasDebugMessages).toBeTruthy();\n      |                                   ^\n  101 |   });\n  102 | });"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
+                            "column": 35,
+                            "line": 100
                           },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n   98 |     console.log('🏗️ Database state:', dbState);\n   99 |     \n> 100 |     expect.soft(hasDebugMessages).toBeTruthy();\n      |                                   ^\n  101 |   });\n  102 | });\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts:100:35"
                         }
                       ],
-                      "stdout": [],
-                      "stderr": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting worker loading debug test...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: React アプリケーションを初期化中... production\n"
+                        },
+                        {
+                          "text": "[BROWSER]: DOM root element: JSHandle@node\n"
+                        },
+                        {
+                          "text": "[BROWSER]: Using HashRouter for GitHub Pages compatibility\n"
+                        },
+                        {
+                          "text": "[BROWSER]: React アプリケーションのレンダリングが成功しました\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 最近の建築作品を取得中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: App running in production mode\n"
+                        },
+                        {
+                          "text": "[BROWSER]: アプリケーション環境: 本番\n"
+                        },
+                        {
+                          "text": "[BROWSER]: GitHub Pages環境: はい\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🚀 データベース初期化を開始...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🌐 Connection speed detected: fast\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📦 SQL.js WASM を読み込み中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔍 ファイル要求: sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: データベース情報:\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - ファイル: archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - 更新日時: 2025-07-07T06:48:27.235Z\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - サイズ: 12.14 MB\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - チャンク: 195 (64KB)のチャンク\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - テーブル数: 10\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - インデックス数: 13\n"
+                        },
+                        {
+                          "text": "[BROWSER]: Failed to load resource: the server responded with a status of 404 ()\n"
+                        },
+                        {
+                          "text": "📄 Page loaded, waiting for database initialization...\n"
+                        },
+                        {
+                          "text": "📝 Captured 21 console messages:\n"
+                        },
+                        {
+                          "text": "  1. React アプリケーションを初期化中... production\n"
+                        },
+                        {
+                          "text": "  2. DOM root element: JSHandle@node\n"
+                        },
+                        {
+                          "text": "  3. Using HashRouter for GitHub Pages compatibility\n"
+                        },
+                        {
+                          "text": "  4. React アプリケーションのレンダリングが成功しました\n"
+                        },
+                        {
+                          "text": "  5. 最近の建築作品を取得中...\n"
+                        },
+                        {
+                          "text": "  6. App running in production mode\n"
+                        },
+                        {
+                          "text": "  7. アプリケーション環境: 本番\n"
+                        },
+                        {
+                          "text": "  8. GitHub Pages環境: はい\n"
+                        },
+                        {
+                          "text": "  9. 🚀 データベース初期化を開始...\n"
+                        },
+                        {
+                          "text": "  10. 🌐 Connection speed detected: fast\n"
+                        },
+                        {
+                          "text": "  11. 📦 SQL.js WASM を読み込み中...\n"
+                        },
+                        {
+                          "text": "  12. 🔍 ファイル要求: sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "  13. 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "  14. データベース情報:\n"
+                        },
+                        {
+                          "text": "  15. - ファイル: archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  16. - 更新日時: 2025-07-07T06:48:27.235Z\n"
+                        },
+                        {
+                          "text": "  17. - サイズ: 12.14 MB\n"
+                        },
+                        {
+                          "text": "  18. - チャンク: 195 (64KB)のチャンク\n"
+                        },
+                        {
+                          "text": "  19. - テーブル数: 10\n"
+                        },
+                        {
+                          "text": "  20. - インデックス数: 13\n"
+                        },
+                        {
+                          "text": "  21. Failed to load resource: the server responded with a status of 404 ()\n"
+                        },
+                        {
+                          "text": "🔧 Has debug messages: false\n"
+                        },
+                        {
+                          "text": "✅ Has worker success: false\n"
+                        },
+                        {
+                          "text": "🔄 Manually triggering database initialization...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔄 Attempting manual database trigger...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: React アプリケーションを初期化中... production\n"
+                        },
+                        {
+                          "text": "[BROWSER]: DOM root element: JSHandle@node\n"
+                        },
+                        {
+                          "text": "[BROWSER]: Using HashRouter for GitHub Pages compatibility\n"
+                        },
+                        {
+                          "text": "[BROWSER]: React アプリケーションのレンダリングが成功しました\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 最近の建築作品を取得中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: App running in production mode\n"
+                        },
+                        {
+                          "text": "[BROWSER]: アプリケーション環境: 本番\n"
+                        },
+                        {
+                          "text": "[BROWSER]: GitHub Pages環境: はい\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🚀 データベース初期化を開始...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: データベース情報:\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - ファイル: archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - 更新日時: 2025-07-07T06:48:27.235Z\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - サイズ: 12.14 MB\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - チャンク: 195 (64KB)のチャンク\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - テーブル数: 10\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - インデックス数: 13\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🌐 Connection speed detected: fast\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📦 SQL.js WASM を読み込み中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔍 ファイル要求: sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "🏗️ Database state: {\n  hasLoadingText: \u001b[33mtrue\u001b[39m,\n  hasErrorText: \u001b[33mfalse\u001b[39m,\n  hasCompletedText: \u001b[33mfalse\u001b[39m,\n  hasArchitectureData: \u001b[33mfalse\u001b[39m\n}\n"
+                        }
+                      ],
+                      "stderr": [
+                        {
+                          "text": "[PAGE ERROR]: C is not a function\n"
+                        },
+                        {
+                          "text": "[PAGE ERROR]: C is not a function\n"
+                        }
+                      ],
                       "retry": 0,
-                      "startTime": "2025-07-07T06:12:03.558Z",
+                      "startTime": "2025-07-07T07:36:03.776Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium/test-failed-1.png"
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium/test-failed-1.png"
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium/video.webm"
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium/error-context.md"
                         }
                       ],
                       "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
+                        "column": 35,
+                        "line": 100
                       }
                     },
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 12202,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T06:12:18.232Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-6067c--load-homepage-successfully-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "c97e2da648fc966fecb7-1290fcfe595310baf07b",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 17,
-              "column": 7
-            },
-            {
-              "title": "should display hero section and feature cards",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
                     {
                       "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 12607,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T06:12:03.540Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium/video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    },
-                    {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 12082,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T06:12:17.608Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9d74d-o-section-and-feature-cards-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "c97e2da648fc966fecb7-2ccc41bd0c75effb8f8f",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 33,
-              "column": 7
-            },
-            {
-              "title": "should have working navigation menu",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
-                      "status": "failed",
-                      "duration": 12604,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T06:12:03.543Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium/video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    },
-                    {
-                      "workerIndex": 7,
-                      "parallelIndex": 2,
-                      "status": "failed",
-                      "duration": 12095,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T06:12:17.636Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-9abf2-ave-working-navigation-menu-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "c97e2da648fc966fecb7-c5c7caee59d22040e1b2",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 52,
-              "column": 7
-            },
-            {
-              "title": "should have functional search",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "failed",
-                      "duration": 12582,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T06:12:03.562Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium/video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    },
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 3,
-                      "status": "failed",
-                      "duration": 12142,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T06:12:17.616Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-f59c1-ould-have-functional-search-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "c97e2da648fc966fecb7-b8fcbbca5adce158ce9d",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 86,
-              "column": 7
-            },
-            {
-              "title": "should be responsive on mobile",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "failed",
-                      "duration": 13034,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T06:12:03.581Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium/video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    },
-                    {
-                      "workerIndex": 9,
-                      "parallelIndex": 4,
-                      "status": "failed",
-                      "duration": 12092,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T06:12:18.274Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d7cfd-uld-be-responsive-on-mobile-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "c97e2da648fc966fecb7-190e730afe12f8af0b4d",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 111,
-              "column": 7
-            },
-            {
-              "title": "should be responsive on tablet",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 12160,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T06:12:30.384Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium/video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    },
-                    {
-                      "workerIndex": 15,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 12141,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T06:12:43.138Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-d87b3-uld-be-responsive-on-tablet-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "c97e2da648fc966fecb7-5dcf018efc132e23bfc7",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 140,
-              "column": 7
-            },
-            {
-              "title": "should have good performance",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 11,
-                      "parallelIndex": 2,
-                      "status": "failed",
-                      "duration": 12170,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T06:12:30.394Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium/video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    },
-                    {
-                      "workerIndex": 16,
-                      "parallelIndex": 2,
-                      "status": "failed",
-                      "duration": 12085,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T06:12:43.136Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-840ca-hould-have-good-performance-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "c97e2da648fc966fecb7-5d999b2fcc4c123f2dd8",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 165,
-              "column": 7
-            },
-            {
-              "title": "should have accessible elements",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 12,
-                      "parallelIndex": 3,
-                      "status": "failed",
-                      "duration": 12060,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T06:12:30.431Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium/video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    },
-                    {
-                      "workerIndex": 17,
-                      "parallelIndex": 3,
-                      "status": "failed",
-                      "duration": 12075,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T06:12:43.247Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-1a434-ld-have-accessible-elements-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "c97e2da648fc966fecb7-6ae940fd7867fba83fb9",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 184,
-              "column": 7
-            },
-            {
-              "title": "should handle errors gracefully",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 13,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 12379,
+                      "duration": 46580,
                       "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts:100:35",
                         "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
+                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
+                          "column": 35,
+                          "line": 100
                         },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
+                        "snippet": "   98 |     console.log('🏗️ Database state:', dbState);\n   99 |     \n> 100 |     expect.soft(hasDebugMessages).toBeTruthy();\n      |                                   ^\n  101 |   });\n  102 | });"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
+                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
+                            "column": 35,
+                            "line": 100
                           },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n   98 |     console.log('🏗️ Database state:', dbState);\n   99 |     \n> 100 |     expect.soft(hasDebugMessages).toBeTruthy();\n      |                                   ^\n  101 |   });\n  102 | });\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts:100:35"
                         }
                       ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T06:12:31.263Z",
-                      "annotations": [],
-                      "attachments": [
+                      "stdout": [
                         {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium/test-failed-1.png"
+                          "text": "🔍 Starting worker loading debug test...\n"
                         },
                         {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium/video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    },
-                    {
-                      "workerIndex": 18,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 11988,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
+                          "text": "[BROWSER]: React アプリケーションを初期化中... production\n"
                         },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
                         {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
+                          "text": "[BROWSER]: DOM root element: JSHandle@node\n"
+                        },
+                        {
+                          "text": "[BROWSER]: Using HashRouter for GitHub Pages compatibility\n"
+                        },
+                        {
+                          "text": "[BROWSER]: React アプリケーションのレンダリングが成功しました\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 最近の建築作品を取得中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: App running in production mode\n"
+                        },
+                        {
+                          "text": "[BROWSER]: アプリケーション環境: 本番\n"
+                        },
+                        {
+                          "text": "[BROWSER]: GitHub Pages環境: はい\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🚀 データベース初期化を開始...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🌐 Connection speed detected: fast\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📦 SQL.js WASM を読み込み中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔍 ファイル要求: sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: Failed to load resource: the server responded with a status of 404 ()\n"
+                        },
+                        {
+                          "text": "[BROWSER]: データベース情報:\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - ファイル: archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - 更新日時: 2025-07-07T06:48:27.235Z\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - サイズ: 12.14 MB\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - チャンク: 195 (64KB)のチャンク\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - テーブル数: 10\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - インデックス数: 13\n"
+                        },
+                        {
+                          "text": "📄 Page loaded, waiting for database initialization...\n"
+                        },
+                        {
+                          "text": "📝 Captured 21 console messages:\n"
+                        },
+                        {
+                          "text": "  1. React アプリケーションを初期化中... production\n"
+                        },
+                        {
+                          "text": "  2. DOM root element: JSHandle@node\n"
+                        },
+                        {
+                          "text": "  3. Using HashRouter for GitHub Pages compatibility\n"
+                        },
+                        {
+                          "text": "  4. React アプリケーションのレンダリングが成功しました\n"
+                        },
+                        {
+                          "text": "  5. 最近の建築作品を取得中...\n"
+                        },
+                        {
+                          "text": "  6. App running in production mode\n"
+                        },
+                        {
+                          "text": "  7. アプリケーション環境: 本番\n"
+                        },
+                        {
+                          "text": "  8. GitHub Pages環境: はい\n"
+                        },
+                        {
+                          "text": "  9. 🚀 データベース初期化を開始...\n"
+                        },
+                        {
+                          "text": "  10. 🌐 Connection speed detected: fast\n"
+                        },
+                        {
+                          "text": "  11. 📦 SQL.js WASM を読み込み中...\n"
+                        },
+                        {
+                          "text": "  12. 🔍 ファイル要求: sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "  13. 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "  14. Failed to load resource: the server responded with a status of 404 ()\n"
+                        },
+                        {
+                          "text": "  15. データベース情報:\n"
+                        },
+                        {
+                          "text": "  16. - ファイル: archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  17. - 更新日時: 2025-07-07T06:48:27.235Z\n"
+                        },
+                        {
+                          "text": "  18. - サイズ: 12.14 MB\n"
+                        },
+                        {
+                          "text": "  19. - チャンク: 195 (64KB)のチャンク\n"
+                        },
+                        {
+                          "text": "  20. - テーブル数: 10\n"
+                        },
+                        {
+                          "text": "  21. - インデックス数: 13\n"
+                        },
+                        {
+                          "text": "🔧 Has debug messages: false\n"
+                        },
+                        {
+                          "text": "✅ Has worker success: false\n"
+                        },
+                        {
+                          "text": "🔄 Manually triggering database initialization...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔄 Attempting manual database trigger...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: React アプリケーションを初期化中... production\n"
+                        },
+                        {
+                          "text": "[BROWSER]: DOM root element: JSHandle@node\n"
+                        },
+                        {
+                          "text": "[BROWSER]: Using HashRouter for GitHub Pages compatibility\n"
+                        },
+                        {
+                          "text": "[BROWSER]: React アプリケーションのレンダリングが成功しました\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 最近の建築作品を取得中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: App running in production mode\n"
+                        },
+                        {
+                          "text": "[BROWSER]: アプリケーション環境: 本番\n"
+                        },
+                        {
+                          "text": "[BROWSER]: GitHub Pages環境: はい\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🚀 データベース初期化を開始...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🌐 Connection speed detected: fast\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📦 SQL.js WASM を読み込み中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔍 ファイル要求: sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: データベース情報:\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - ファイル: archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - 更新日時: 2025-07-07T06:48:27.235Z\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - サイズ: 12.14 MB\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - チャンク: 195 (64KB)のチャンク\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - テーブル数: 10\n"
+                        },
+                        {
+                          "text": "[BROWSER]: - インデックス数: 13\n"
+                        },
+                        {
+                          "text": "🏗️ Database state: {\n  hasLoadingText: \u001b[33mtrue\u001b[39m,\n  hasErrorText: \u001b[33mfalse\u001b[39m,\n  hasCompletedText: \u001b[33mfalse\u001b[39m,\n  hasArchitectureData: \u001b[33mfalse\u001b[39m\n}\n"
                         }
                       ],
-                      "stdout": [],
-                      "stderr": [],
+                      "stderr": [
+                        {
+                          "text": "[PAGE ERROR]: C is not a function\n"
+                        },
+                        {
+                          "text": "[PAGE ERROR]: C is not a function\n"
+                        }
+                      ],
                       "retry": 1,
-                      "startTime": "2025-07-07T06:12:44.208Z",
+                      "startTime": "2025-07-07T07:36:50.495Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/test-failed-1.png"
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium-retry1/test-failed-1.png"
                         },
                         {
                           "name": "video",
                           "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/video.webm"
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium-retry1/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium-retry1/error-context.md"
                         },
                         {
                           "name": "trace",
                           "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-b847d-ld-handle-errors-gracefully-chromium-retry1/trace.zip"
+                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium-retry1/trace.zip"
                         }
                       ],
                       "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
+                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
+                        "column": 35,
+                        "line": 100
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
-              "id": "c97e2da648fc966fecb7-3cefc89ff4e697ef4a19",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 207,
-              "column": 7
-            },
-            {
-              "title": "should generate homepage report",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 14,
-                      "parallelIndex": 4,
-                      "status": "failed",
-                      "duration": 12402,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T06:12:31.260Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium/video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    },
-                    {
-                      "workerIndex": 19,
-                      "parallelIndex": 4,
-                      "status": "failed",
-                      "duration": 12067,
-                      "error": {
-                        "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.",
-                        "stack": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                          "column": 21,
-                          "line": 22
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39mproduction/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                            "column": 21,
-                            "line": 22
-                          },
-                          "message": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded.\n\n   at production/utils/test-helpers.ts:22\n\n  20 |     \n  21 |     // Wait for database to load (look for content indicators)\n> 22 |     await this.page.waitForFunction(() => {\n     |                     ^\n  23 |       const body = document.body;\n  24 |       return body && body.textContent && body.textContent.length > 200;\n  25 |     }, { timeout });\n    at TestHelpers.waitForPageReady (/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts:22:21)\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/01-homepage-journey.spec.ts:14:5"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T06:12:44.215Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-01-homepage-jou-bc435-ld-generate-homepage-report-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production/utils/test-helpers.ts",
-                        "column": 21,
-                        "line": 22
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "c97e2da648fc966fecb7-be6f33ac51c990cabc32",
-              "file": "production/01-homepage-journey.spec.ts",
-              "line": 248,
+              "id": "1e3b653858d9ead3f59b-abaebab8d37b153d9e57",
+              "file": "test-worker-debug.spec.ts",
+              "line": 4,
               "column": 7
             }
           ]
@@ -1420,11 +768,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-07-07T06:12:03.169Z",
-    "duration": 53392.384,
+    "startTime": "2025-07-07T07:36:03.431Z",
+    "duration": 94376.453,
     "expected": 0,
     "skipped": 0,
-    "unexpected": 10,
+    "unexpected": 1,
     "flaky": 0
   }
 }

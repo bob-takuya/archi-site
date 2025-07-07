@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test sql.js-httpvfs</title>
+</head>
+<body>
+    <h1>Testing sql.js-httpvfs</h1>
+    <div id="status">Initializing...</div>
+    <div id="results"></div>
+
+    <script type="module">
+        import { createDbWorker } from './node_modules/sql.js-httpvfs/dist/index.js';
+
+        async function testDatabase() {
+            const statusDiv = document.getElementById('status');
+            const resultsDiv = document.getElementById('results');
+            
+            try {
+                statusDiv.textContent = 'Creating worker...';
+                
+                const config = {
+                    from: 'inline',
+                    config: {
+                        serverMode: 'full',
+                        url: '/archi-site/db/archimap.sqlite',
+                        requestChunkSize: 65536,
+                        cacheSizeKiB: 2048,
+                        pageSize: 4096,
+                        maxPageCount: 10000,
+                        filename: 'archimap.sqlite',
+                        debug: true
+                    }
+                };
+
+                console.log('Creating worker with config:', config);
+
+                const worker = await createDbWorker(
+                    [config],
+                    '/archi-site/sqlite.worker.js',
+                    '/archi-site/sql-wasm.wasm'
+                );
+                
+                statusDiv.textContent = 'Worker created! Testing query...';
+                console.log('Worker created successfully');
+
+                // Test basic query
+                const result = await worker.db.exec('SELECT sqlite_version()');
+                console.log('SQLite version result:', result);
+
+                // Test table count
+                const tablesResult = await worker.db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+                console.log('Tables result:', tablesResult);
+
+                // Test architecture count
+                const countResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+                console.log('Architecture count:', countResult);
+
+                statusDiv.textContent = 'Success!';
+                resultsDiv.innerHTML = `
+                    <p>SQLite Version: ${result[0]?.values[0][0]}</p>
+                    <p>Tables: ${tablesResult[0]?.values.length}</p>
+                    <p>Architecture Count: ${countResult[0]?.values[0][0]}</p>
+                `;
+
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.textContent = `Error: ${error.message}`;
+                resultsDiv.innerHTML = `<pre>${error.stack}</pre>`;
+            }
+        }
+
+        testDatabase();
+    </script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Worker Fix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+        .results {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .architecture-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .architecture-item:last-child {
+            border-bottom: none;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Worker Loading Fix Test</h1>
+    <div id="status-container">
+        <div class="status info">
+            <div class="loading">
+                <div class="spinner"></div>
+                <span>Testing worker fix...</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="results-container"></div>
+
+    <script type="module">
+        import { createDbWorker } from './node_modules/sql.js-httpvfs/dist/index.js';
+        
+        const statusContainer = document.getElementById('status-container');
+        const resultsContainer = document.getElementById('results-container');
+        
+        function addStatus(message, type = 'info') {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            statusContainer.appendChild(statusDiv);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        function addResults(data) {
+            const resultsDiv = document.createElement('div');
+            resultsDiv.className = 'results';
+            resultsDiv.innerHTML = `<h3>Database Results:</h3>${data}`;
+            resultsContainer.appendChild(resultsDiv);
+        }
+        
+        async function testWorkerFix() {
+            try {
+                // Clear initial loading
+                statusContainer.innerHTML = '';
+                
+                addStatus('🔧 Testing worker fix implementation...');
+                
+                // Test 1: Worker URL accessibility
+                addStatus('1️⃣ Testing worker files accessibility...');
+                const workerUrl = '/archi-site/sqlite.worker.js';
+                const wasmUrl = '/archi-site/sql-wasm.wasm';
+                const dbUrl = '/archi-site/db/archimap.sqlite';
+                
+                const workerRes = await fetch(workerUrl);
+                const wasmRes = await fetch(wasmUrl);
+                const dbRes = await fetch(dbUrl, { method: 'HEAD' });
+                
+                if (!workerRes.ok) {
+                    throw new Error(`Worker file not accessible: ${workerRes.status}`);
+                }
+                if (!wasmRes.ok) {
+                    throw new Error(`WASM file not accessible: ${wasmRes.status}`);
+                }
+                if (!dbRes.ok) {
+                    throw new Error(`Database file not accessible: ${dbRes.status}`);
+                }
+                
+                addStatus('✅ All files accessible', 'success');
+                
+                // Test 2: Worker creation
+                addStatus('2️⃣ Creating sql.js-httpvfs worker...');
+                const config = {
+                    from: 'inline',
+                    config: {
+                        serverMode: 'full',
+                        url: dbUrl,
+                        requestChunkSize: 4096,
+                        cacheSizeKiB: 2048,
+                        filename: 'archimap.sqlite',
+                        debug: true
+                    }
+                };
+                
+                const worker = await createDbWorker(
+                    [config],
+                    workerUrl,
+                    wasmUrl,
+                    50 * 1024 * 1024 // 50MB max
+                );
+                
+                addStatus('✅ Worker created successfully!', 'success');
+                
+                // Test 3: Database queries
+                addStatus('3️⃣ Testing database queries...');
+                
+                // Basic query
+                const versionResult = await worker.db.exec('SELECT sqlite_version()');
+                addStatus(`SQLite version: ${versionResult[0]?.values[0][0]}`, 'success');
+                
+                // Table check
+                const tablesResult = await worker.db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+                addStatus(`Tables found: ${tablesResult[0]?.values.length || 0}`, 'success');
+                
+                // Architecture count
+                const countResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+                const archCount = countResult[0]?.values[0][0] || 0;
+                addStatus(`Architecture records: ${archCount}`, 'success');
+                
+                // Sample data
+                const sampleResult = await worker.db.exec(`
+                    SELECT Z_PK, ZAR_TITLE, ZAR_ARCHITECT, ZAR_YEAR, ZAR_ADDRESS 
+                    FROM ZCDARCHITECTURE 
+                    WHERE ZAR_TITLE IS NOT NULL 
+                    LIMIT 5
+                `);
+                
+                if (sampleResult[0]?.values) {
+                    let sampleHtml = '<h4>Sample Architecture Data:</h4>';
+                    sampleResult[0].values.forEach((row, i) => {
+                        sampleHtml += `
+                            <div class="architecture-item">
+                                <strong>${row[1] || 'No title'}</strong><br>
+                                Architect: ${row[2] || 'Unknown'}<br>
+                                Year: ${row[3] || 'Unknown'}<br>
+                                Address: ${row[4] || 'Unknown'}<br>
+                                <small>ID: ${row[0]}</small>
+                            </div>
+                        `;
+                    });
+                    addResults(sampleHtml);
+                }
+                
+                // Test 4: Homepage-style query
+                addStatus('4️⃣ Testing homepage query...');
+                const homepageResult = await worker.db.exec(`
+                    SELECT Z_PK as ZAW_ID, ZAR_TITLE as ZAW_NAME, ZAR_ARCHITECT as ZAW_ARCHITECT, 
+                           ZAR_YEAR as ZAW_YEAR, ZAR_ADDRESS as ZAW_ADDRESS
+                    FROM ZCDARCHITECTURE 
+                    WHERE ZAR_TITLE IS NOT NULL 
+                    ORDER BY ZAR_TITLE ASC
+                    LIMIT 6
+                `);
+                
+                if (homepageResult[0]?.values) {
+                    let homepageHtml = '<h4>Homepage Query Results:</h4>';
+                    homepageResult[0].values.forEach((row, i) => {
+                        homepageHtml += `
+                            <div class="architecture-item">
+                                <strong>${row[1] || 'No title'}</strong><br>
+                                Architect: ${row[2] || 'Unknown'}<br>
+                                Year: ${row[3] || 'Unknown'}<br>
+                                Address: ${row[4] || 'Unknown'}<br>
+                                <small>ID: ${row[0]}</small>
+                            </div>
+                        `;
+                    });
+                    addResults(homepageHtml);
+                }
+                
+                addStatus('🎉 All tests passed! Worker fix is working correctly.', 'success');
+                
+            } catch (error) {
+                console.error('Test failed:', error);
+                addStatus(`❌ Test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run the test
+        testWorkerFix();
+    </script>
+</body>
+</html>
