@@ -1,0 +1,94 @@
+name: Deploy to GitHub Pages (Simple)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prepare database for static deployment
+        run: |
+          echo "::group::Preparing database for static deployment"
+          mkdir -p public/db
+          NODE_OPTIONS="--max-old-space-size=4096" npm run prepare-static-db
+          echo "::endgroup::"
+
+      - name: Build application
+        run: |
+          echo "::group::Building application"
+          export NODE_OPTIONS="--max-old-space-size=4096"
+          npm run build
+          
+          # Create .nojekyll file to bypass Jekyll processing on GitHub Pages
+          touch dist/.nojekyll
+          
+          # Copy 404.html for SPA client-side routing
+          cp public/404.html dist/404.html || echo "404.html not found"
+          
+          # Ensure sqlite worker and wasm files are correctly copied
+          cp -f public/sql-wasm.wasm dist/ || cp -f node_modules/sql.js/dist/sql-wasm.wasm dist/ || echo "sql-wasm.wasm not found"
+          cp -f public/sqlite.worker.js dist/ || cp -f node_modules/sql.js/dist/sql-wasm.js dist/ || echo "sqlite.worker.js not found"
+          
+          # Copy database files
+          mkdir -p dist/db
+          cp -R public/db/archimap.sqlite* dist/db/ || echo "Failed to copy database files"
+          cp -R public/db/database-info.json dist/db/ || echo "database-info.json not found"
+          
+          echo "Build complete"
+          ls -la dist
+          echo "::endgroup::"
+        env:
+          VITE_APP_VERSION: ${{ github.sha }}
+          VITE_PUBLIC_PATH: "/archi-site/"
+          NODE_ENV: production
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Verify deployment
+        run: |
+          echo "🌐 Site should be live at: ${{ steps.deployment.outputs.page_url }}"
+          echo "🔍 Testing URL accessibility..."
+          sleep 30
+          curl -I "${{ steps.deployment.outputs.page_url }}" || echo "Site may still be deploying"
