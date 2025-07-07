@@ -1,105 +1,138 @@
 #!/usr/bin/env node
 
+/**
+ * Deployment Verification Script
+ * Checks if the GitHub Pages deployment is working correctly
+ */
+
 const https = require('https');
 const http = require('http');
 
-const GITHUB_PAGES_URL = 'https://bob-takuya.github.io/archi-site/';
+const SITE_URL = 'https://bob-takuya.github.io/archi-site/';
+const TIMEOUT = 10000; // 10 seconds
 
-console.log('🔍 Verifying GitHub Pages deployment...');
+function log(message) {
+  console.log(`[VERIFY] ${message}`);
+}
 
-function checkUrl(url) {
+function checkUrl(url, timeout = TIMEOUT) {
   return new Promise((resolve, reject) => {
     const protocol = url.startsWith('https:') ? https : http;
-    
+    const timeoutId = setTimeout(() => {
+      reject(new Error(`Request timeout after ${timeout}ms`));
+    }, timeout);
+
     const req = protocol.get(url, (res) => {
+      clearTimeout(timeoutId);
+      
       let data = '';
-      res.on('data', (chunk) => data += chunk);
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      
       res.on('end', () => {
         resolve({
           statusCode: res.statusCode,
           headers: res.headers,
-          body: data
+          body: data,
+          redirected: res.url !== url
         });
       });
     });
-    
-    req.on('error', reject);
-    req.setTimeout(10000, () => {
-      req.destroy();
-      reject(new Error('Request timeout'));
+
+    req.on('error', (err) => {
+      clearTimeout(timeoutId);
+      reject(err);
     });
   });
 }
 
 async function verifyDeployment() {
+  log('Starting deployment verification...');
+  
   try {
-    console.log(`📍 Checking: ${GITHUB_PAGES_URL}`);
-    
-    const response = await checkUrl(GITHUB_PAGES_URL);
+    log(`Checking: ${SITE_URL}`);
+    const response = await checkUrl(SITE_URL);
     
     if (response.statusCode === 200) {
-      console.log('✅ Site is accessible!');
-      console.log(`📊 Status: ${response.statusCode}`);
-      console.log(`📄 Content length: ${response.body.length} bytes`);
+      log('✅ Site is accessible!');
+      log(`Status: ${response.statusCode}`);
       
-      // Check for key indicators
-      if (response.body.includes('日本の建築マップ')) {
-        console.log('✅ Title found: Site content is correct');
+      // Check if the response contains expected content
+      if (response.body.includes('<div id="root">')) {
+        log('✅ React app structure detected');
       } else {
-        console.log('⚠️  Title not found: Site content might be incomplete');
+        log('⚠️  React app structure not found in response');
       }
       
-      if (response.body.includes('assets/')) {
-        console.log('✅ Assets referenced: Build artifacts are present');
+      if (response.body.includes('/archi-site/assets/')) {
+        log('✅ Assets are correctly referenced with base path');
       } else {
-        console.log('⚠️  Assets not found: Build might be incomplete');
+        log('⚠️  Assets may not be correctly referenced');
       }
       
-      // Check database files
-      try {
-        const dbResponse = await checkUrl(GITHUB_PAGES_URL + 'db/archimap.sqlite');
-        if (dbResponse.statusCode === 200) {
-          console.log('✅ Database file is accessible');
-          console.log(`📊 Database size: ${dbResponse.body.length} bytes`);
-        } else {
-          console.log(`⚠️  Database file not accessible: ${dbResponse.statusCode}`);
+      // Check content type
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('text/html')) {
+        log('✅ Correct content type: HTML');
+      } else {
+        log(`⚠️  Unexpected content type: ${contentType}`);
+      }
+      
+      log(`Response size: ${response.body.length} bytes`);
+      
+      // Test a few more critical paths
+      const testPaths = [
+        '/archi-site/404.html',
+        '/archi-site/assets/'
+      ];
+      
+      for (const path of testPaths) {
+        const testUrl = `https://bob-takuya.github.io${path}`;
+        try {
+          const testResponse = await checkUrl(testUrl);
+          if (testResponse.statusCode === 200 || testResponse.statusCode === 403) {
+            log(`✅ ${path} - Status: ${testResponse.statusCode}`);
+          } else {
+            log(`⚠️  ${path} - Status: ${testResponse.statusCode}`);
+          }
+        } catch (error) {
+          log(`❌ ${path} - Error: ${error.message}`);
         }
-      } catch (dbError) {
-        console.log(`⚠️  Database check failed: ${dbError.message}`);
       }
       
-      return true;
+      log('🎉 Deployment verification completed successfully!');
+      log('🌐 Your site is live at: https://bob-takuya.github.io/archi-site/');
+      
+    } else if (response.statusCode === 404) {
+      log('❌ Site returned 404 - deployment may have failed');
+      log('This could mean:');
+      log('  - GitHub Pages is not configured correctly');
+      log('  - The gh-pages branch was not created properly');
+      log('  - GitHub Pages is still processing the deployment');
+      process.exit(1);
+      
     } else {
-      console.log(`❌ Site returned status: ${response.statusCode}`);
-      return false;
+      log(`❌ Unexpected status code: ${response.statusCode}`);
+      log('Response headers:', response.headers);
+      process.exit(1);
     }
+    
   } catch (error) {
-    console.log(`❌ Error checking site: ${error.message}`);
-    return false;
+    log(`❌ Error checking deployment: ${error.message}`);
+    log('This could mean:');
+    log('  - The site is not yet deployed');
+    log('  - Network connectivity issues');
+    log('  - GitHub Pages is still processing');
+    log('  - DNS propagation is still in progress');
+    
+    log('Please wait a few minutes and try again.');
+    process.exit(1);
   }
 }
 
-// Wait for deployment to complete and then verify
-async function waitAndVerify() {
-  console.log('⏳ Waiting for deployment to complete...');
-  
-  for (let i = 0; i < 20; i++) {
-    console.log(`🔄 Attempt ${i + 1}/20...`);
-    
-    const success = await verifyDeployment();
-    if (success) {
-      console.log('🎉 Deployment verification successful!');
-      process.exit(0);
-    }
-    
-    if (i < 19) {
-      console.log('⏳ Waiting 30 seconds before next check...');
-      await new Promise(resolve => setTimeout(resolve, 30000));
-    }
-  }
-  
-  console.log('⏰ Verification timeout. Please check manually.');
+// Run verification
+verifyDeployment().catch(error => {
+  console.error('Verification failed:', error);
   process.exit(1);
-}
-
-waitAndVerify().catch(console.error);
+});

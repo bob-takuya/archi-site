@@ -1,490 +1,176 @@
-<testsuites id="" name="" tests="7" failures="6" skipped="0" errors="0" time="27.097715">
-<testsuite name="homepage.spec.ts" timestamp="2025-07-07T01:16:15.754Z" hostname="chromium" tests="7" failures="6" skipped="0" time="115.249" errors="0">
-<testcase name="Homepage › should load homepage with all essential elements" classname="homepage.spec.ts" time="21.847">
-<failure message="homepage.spec.ts:8:7 should load homepage with all essential elements" type="FAILURE">
-<![CDATA[  [chromium] › homepage.spec.ts:8:7 › Homepage › should load homepage with all essential elements ──
+<testsuites id="" name="" tests="4" failures="2" skipped="0" errors="0" time="7.447531">
+<testsuite name="production-deployment.spec.ts" timestamp="2025-07-07T03:26:31.060Z" hostname="chromium" tests="4" failures="2" skipped="0" time="17.213" errors="0">
+<testcase name="Production Deployment › should load the production site successfully" classname="production-deployment.spec.ts" time="4.449">
+<failure message="production-deployment.spec.ts:10:7 should load the production site successfully" type="FAILURE">
+<![CDATA[  [chromium] › production-deployment.spec.ts:10:7 › Production Deployment › should load the production site successfully 
 
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
+    Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:
+        1) <a href="#/" data-discover="true" data-testid="site-title" class="MuiTypography-root MuiTypography-h6 css-198h993">建築データベース</a> aka getByTestId('site-title')
+        2) <h1 id="main-heading" class="MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })
+        3) <p class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')
+        4) <h2 id="recent-works-heading" class="MuiTypography-root MuiTypography-h4 css-zjdfnm">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })
+        5) <h6 class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })
+        6) <p class="MuiTypography-root MuiTypography-body2 css-1fuj3vy">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')
+        7) <h2 id="features-heading" class="MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })
+        8) <h5 class="MuiTypography-root MuiTypography-h5 css-1lumoho">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })
+        9) <p class="MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')
+        10) <h5 class="MuiTypography-root MuiTypography-h5 css-1lumoho">建築家</h5> aka getByRole('heading', { name: '建築家' })
+        ...
 
-    Locator: getByRole('heading', { level: 1 })
-    Expected: visible
-    Received: <element(s) not found>
     Call log:
       - expect.toBeVisible with timeout 10000ms
-      - waiting for getByRole('heading', { level: 1 })
+      - waiting for locator('h1, h2, .MuiTypography-root')
 
 
-      11 |     
-      12 |     // Check hero section
-    > 13 |     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-         |                                                           ^
-      14 |     
-      15 |     // Check navigation menu
-      16 |     await expect(page.getByRole('navigation')).toBeVisible();
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:13:59
+      15 |     
+      16 |     // Check for the main navigation or key elements
+    > 17 |     await expect(page.locator('h1, h2, .MuiTypography-root')).toBeVisible();
+         |                                                               ^
+      18 |   });
+      19 |
+      20 |   test('should have working asset loading', async ({ page }) => {
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:17:63
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium/test-failed-1.png
+    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium/video.webm
+    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
+    Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:
+        1) <a href="#/" data-discover="true" data-testid="site-title" class="MuiTypography-root MuiTypography-h6 css-198h993">建築データベース</a> aka getByTestId('site-title')
+        2) <h1 id="main-heading" class="MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })
+        3) <p class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')
+        4) <h2 id="recent-works-heading" class="MuiTypography-root MuiTypography-h4 css-zjdfnm">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })
+        5) <h6 class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })
+        6) <p class="MuiTypography-root MuiTypography-body2 css-1fuj3vy">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')
+        7) <h2 id="features-heading" class="MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })
+        8) <h5 class="MuiTypography-root MuiTypography-h5 css-1lumoho">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })
+        9) <p class="MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')
+        10) <h5 class="MuiTypography-root MuiTypography-h5 css-1lumoho">建築家</h5> aka getByRole('heading', { name: '建築家' })
+        ...
 
-    Locator: getByRole('heading', { level: 1 })
-    Expected: visible
-    Received: <element(s) not found>
     Call log:
       - expect.toBeVisible with timeout 10000ms
-      - waiting for getByRole('heading', { level: 1 })
+      - waiting for locator('h1, h2, .MuiTypography-root')
 
 
-      11 |     
-      12 |     // Check hero section
-    > 13 |     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-         |                                                           ^
-      14 |     
-      15 |     // Check navigation menu
-      16 |     await expect(page.getByRole('navigation')).toBeVisible();
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:13:59
+      15 |     
+      16 |     // Check for the main navigation or key elements
+    > 17 |     await expect(page.locator('h1, h2, .MuiTypography-root')).toBeVisible();
+         |                                                               ^
+      18 |   });
+      19 |
+      20 |   test('should have working asset loading', async ({ page }) => {
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:17:63
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/test-failed-1.png
+    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/video.webm
+    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/trace.zip
+    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/trace.zip
     Usage:
 
-        npx playwright show-trace playwright-results/artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/trace.zip
+        npx playwright show-trace playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/trace.zip
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>
 </failure>
 <system-out>
 <![CDATA[
-[[ATTACHMENT|artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium/test-failed-1.png]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/test-failed-1.png]]
 
-[[ATTACHMENT|artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium/video.webm]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/video.webm]]
 
-[[ATTACHMENT|artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/test-failed-1.png]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/test-failed-1.png]]
 
-[[ATTACHMENT|artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/video.webm]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/video.webm]]
 
-[[ATTACHMENT|artifacts/homepage-Homepage-should-l-e8402-with-all-essential-elements-chromium-retry1/trace.zip]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Homepage › should have working search functionality" classname="homepage.spec.ts" time="22.346">
-<failure message="homepage.spec.ts:30:7 should have working search functionality" type="FAILURE">
-<![CDATA[  [chromium] › homepage.spec.ts:30:7 › Homepage › should have working search functionality ─────────
+<testcase name="Production Deployment › should have working asset loading" classname="production-deployment.spec.ts" time="5.901">
+</testcase>
+<testcase name="Production Deployment › should handle SPA routing correctly" classname="production-deployment.spec.ts" time="3.064">
+</testcase>
+<testcase name="Production Deployment › should have proper security headers" classname="production-deployment.spec.ts" time="3.799">
+<failure message="production-deployment.spec.ts:56:7 should have proper security headers" type="FAILURE">
+<![CDATA[  [chromium] › production-deployment.spec.ts:56:7 › Production Deployment › should have proper security headers 
 
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
+    Error: expect(received).toBeDefined()
 
-    Locator: getByRole('searchbox')
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for getByRole('searchbox')
+    Received: undefined
 
-
-      31 |     // Locate search input
-      32 |     const searchInput = page.getByRole('searchbox');
-    > 33 |     await expect(searchInput).toBeVisible();
-         |                               ^
-      34 |     
-      35 |     // Enter search term
-      36 |     await searchInput.fill('Tokyo');
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:33:31
+      63 |     
+      64 |     // GitHub Pages should provide these automatically
+    > 65 |     expect(headers?.['x-frame-options']).toBeDefined();
+         |                                          ^
+      66 |     expect(headers?.['x-content-type-options']).toBeDefined();
+      67 |   });
+      68 | });
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:65:42
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium/test-failed-1.png
+    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium/video.webm
+    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
+    Error: expect(received).toBeDefined()
 
-    Locator: getByRole('searchbox')
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for getByRole('searchbox')
+    Received: undefined
 
-
-      31 |     // Locate search input
-      32 |     const searchInput = page.getByRole('searchbox');
-    > 33 |     await expect(searchInput).toBeVisible();
-         |                               ^
-      34 |     
-      35 |     // Enter search term
-      36 |     await searchInput.fill('Tokyo');
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:33:31
+      63 |     
+      64 |     // GitHub Pages should provide these automatically
+    > 65 |     expect(headers?.['x-frame-options']).toBeDefined();
+         |                                          ^
+      66 |     expect(headers?.['x-content-type-options']).toBeDefined();
+      67 |   });
+      68 | });
+        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:65:42
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/test-failed-1.png
+    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/video.webm
+    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/trace.zip
+    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/trace.zip
     Usage:
 
-        npx playwright show-trace playwright-results/artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/trace.zip
+        npx playwright show-trace playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/trace.zip
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>
 </failure>
 <system-out>
 <![CDATA[
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-working-search-functionality-chromium/test-failed-1.png]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/test-failed-1.png]]
 
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-working-search-functionality-chromium/video.webm]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/video.webm]]
 
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/test-failed-1.png]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/test-failed-1.png]]
 
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/video.webm]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/video.webm]]
 
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-working-search-functionality-chromium-retry1/trace.zip]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage › should display feature cards or sections" classname="homepage.spec.ts" time="2.179">
-</testcase>
-<testcase name="Homepage › should be responsive on mobile devices" classname="homepage.spec.ts" time="23.067">
-<failure message="homepage.spec.ts:86:7 should be responsive on mobile devices" type="FAILURE">
-<![CDATA[  [chromium] › homepage.spec.ts:86:7 › Homepage › should be responsive on mobile devices ───────────
-
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
-
-    Locator: getByRole('navigation')
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for getByRole('navigation')
-
-
-      90 |     // Check that navigation is mobile-friendly
-      91 |     const nav = page.getByRole('navigation');
-    > 92 |     await expect(nav).toBeVisible();
-         |                       ^
-      93 |     
-      94 |     // Check for mobile menu toggle if it exists
-      95 |     const mobileMenuToggle = page.getByRole('button', { name: /menu|メニュー/i });
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:92:23
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
-
-    Locator: getByRole('navigation')
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for getByRole('navigation')
-
-
-      90 |     // Check that navigation is mobile-friendly
-      91 |     const nav = page.getByRole('navigation');
-    > 92 |     await expect(nav).toBeVisible();
-         |                       ^
-      93 |     
-      94 |     // Check for mobile menu toggle if it exists
-      95 |     const mobileMenuToggle = page.getByRole('button', { name: /menu|メニュー/i });
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:92:23
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/trace.zip
-    Usage:
-
-        npx playwright show-trace playwright-results/artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium/video.webm]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/video.webm]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-be-responsive-on-mobile-devices-chromium-retry1/trace.zip]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage › should handle slow loading gracefully" classname="homepage.spec.ts" time="24.126">
-<failure message="homepage.spec.ts:109:7 should handle slow loading gracefully" type="FAILURE">
-<![CDATA[  [chromium] › homepage.spec.ts:109:7 › Homepage › should handle slow loading gracefully ───────────
-
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
-
-    Locator: locator('main')
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for locator('main')
-
-
-      136 |     
-      137 |     // Check that main content is eventually visible
-    > 138 |     await expect(page.locator('main')).toBeVisible();
-          |                                        ^
-      139 |   });
-      140 |
-      141 |   test('should have proper accessibility features', async ({ page }) => {
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:138:40
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
-
-    Locator: locator('main')
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for locator('main')
-
-
-      136 |     
-      137 |     // Check that main content is eventually visible
-    > 138 |     await expect(page.locator('main')).toBeVisible();
-          |                                        ^
-      139 |   });
-      140 |
-      141 |   test('should have proper accessibility features', async ({ page }) => {
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:138:40
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/trace.zip
-    Usage:
-
-        npx playwright show-trace playwright-results/artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium/video.webm]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/video.webm]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-slow-loading-gracefully-chromium-retry1/trace.zip]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage › should have proper accessibility features" classname="homepage.spec.ts" time="21.162">
-<failure message="homepage.spec.ts:141:7 should have proper accessibility features" type="FAILURE">
-<![CDATA[  [chromium] › homepage.spec.ts:141:7 › Homepage › should have proper accessibility features ───────
-
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
-
-    Locator: getByRole('heading', { level: 1 })
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for getByRole('heading', { level: 1 })
-
-
-      148 |     // Check for proper heading hierarchy
-      149 |     const h1 = page.getByRole('heading', { level: 1 });
-    > 150 |     await expect(h1).toBeVisible();
-          |                      ^
-      151 |     
-      152 |     // Check for alt text on images
-      153 |     const images = page.locator('img');
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:150:22
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
-
-    Locator: getByRole('heading', { level: 1 })
-    Expected: visible
-    Received: <element(s) not found>
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for getByRole('heading', { level: 1 })
-
-
-      148 |     // Check for proper heading hierarchy
-      149 |     const h1 = page.getByRole('heading', { level: 1 });
-    > 150 |     await expect(h1).toBeVisible();
-          |                      ^
-      151 |     
-      152 |     // Check for alt text on images
-      153 |     const images = page.locator('img');
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:150:22
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/trace.zip
-    Usage:
-
-        npx playwright show-trace playwright-results/artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium/video.webm]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/video.webm]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-have-proper-accessibility-features-chromium-retry1/trace.zip]]
-]]>
-</system-out>
-</testcase>
-<testcase name="Homepage › should handle errors gracefully" classname="homepage.spec.ts" time="0.522">
-<failure message="homepage.spec.ts:173:7 should handle errors gracefully" type="FAILURE">
-<![CDATA[  [chromium] › homepage.spec.ts:173:7 › Homepage › should handle errors gracefully ─────────────────
-
-    Error: expect(received).toBeTruthy()
-
-    Received: false
-
-      180 |     const isHome = page.url().endsWith('/') || page.url().endsWith('/index.html');
-      181 |     
-    > 182 |     expect(is404 || isHome).toBeTruthy();
-          |                             ^
-      183 |     
-      184 |     // If it's a 404, check that navigation still works
-      185 |     if (is404) {
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:182:29
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: expect(received).toBeTruthy()
-
-    Received: false
-
-      180 |     const isHome = page.url().endsWith('/') || page.url().endsWith('/index.html');
-      181 |     
-    > 182 |     expect(is404 || isHome).toBeTruthy();
-          |                             ^
-      183 |     
-      184 |     // If it's a 404, check that navigation still works
-      185 |     if (is404) {
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/homepage.spec.ts:182:29
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/trace.zip
-    Usage:
-
-        npx playwright show-trace playwright-results/artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium/video.webm]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/video.webm]]
-
-[[ATTACHMENT|artifacts/homepage-Homepage-should-handle-errors-gracefully-chromium-retry1/trace.zip]]
+[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/trace.zip]]
 ]]>
 </system-out>
 </testcase>
