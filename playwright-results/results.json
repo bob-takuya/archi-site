@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 5
+      "actualWorkers": 3
     },
     "preserveOutput": "always",
     "reporter": [
@@ -54,7 +54,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 3
         },
         "id": "chromium",
         "name": "chromium",
@@ -73,7 +73,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 3
         },
         "id": "firefox",
         "name": "firefox",
@@ -92,7 +92,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 3
         },
         "id": "webkit",
         "name": "webkit",
@@ -111,7 +111,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 3
         },
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
@@ -130,7 +130,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 3
         },
         "id": "Mobile Safari",
         "name": "Mobile Safari",
@@ -149,7 +149,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 5
+          "actualWorkers": 3
         },
         "id": "Tablet",
         "name": "Tablet",
@@ -167,7 +167,7 @@
     "shard": null,
     "updateSnapshots": "missing",
     "updateSourceMethod": "patch",
-    "version": "1.51.1",
+    "version": "1.53.2",
     "workers": 5,
     "webServer": {
       "command": "npm run preview",
@@ -181,20 +181,20 @@
   },
   "suites": [
     {
-      "title": "deployment-validation.spec.ts",
-      "file": "deployment-validation.spec.ts",
+      "title": "real-functionality-test.spec.ts",
+      "file": "real-functionality-test.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Archi Site Deployment Validation",
-          "file": "deployment-validation.spec.ts",
-          "line": 3,
+          "title": "Real Architecture Database Functionality",
+          "file": "real-functionality-test.spec.ts",
+          "line": 8,
           "column": 6,
           "specs": [
             {
-              "title": "site loads successfully",
+              "title": "should load database and display real architecture data",
               "ok": true,
               "tags": [],
               "tests": [
@@ -209,25 +209,48 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1417,
+                      "duration": 31769,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "🚀 Testing real database functionality...\n"
+                        },
+                        {
+                          "text": "🖥️ Console: Emergency timeout: forcing app to render without database\n"
+                        },
+                        {
+                          "text": "🖥️ Console: 建築作品の取得に失敗: Error: データベース接続がタイムアウトしました\n    at https://bob-takuya.github.io/archi-site/assets/index-CQOQf6w_.js:1:6447\n"
+                        },
+                        {
+                          "text": "🖥️ Console: Found 3 elements with selector: .MuiCard-root\n"
+                        },
+                        {
+                          "text": "📊 Architecture data found: true\n"
+                        },
+                        {
+                          "text": "📝 Console messages: Emergency timeout: forcing app to render without database, 建築作品の取得に失敗: Error: データベース接続がタイムアウトしました\n    at https://bob-takuya.github.io/archi-site/assets/index-CQOQf6w_.js:1:6447, Found 3 elements with selector: .MuiCard-root\n"
+                        },
+                        {
+                          "text": "🏗️ Page structure - Header: false, Main: true\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-07-07T05:08:18.757Z",
+                      "startTime": "2025-07-07T05:54:34.343Z",
+                      "annotations": [],
                       "attachments": []
                     }
                   ],
                   "status": "expected"
                 }
               ],
-              "id": "7c18564b48ab5acea90d-1b5e5c1d94108c052ecf",
-              "file": "deployment-validation.spec.ts",
-              "line": 11,
+              "id": "59d654e97d94f11eec5c-71860e8e9d8c25c68e20",
+              "file": "real-functionality-test.spec.ts",
+              "line": 10,
               "column": 7
             },
             {
-              "title": "Japanese title displays correctly",
+              "title": "should test search functionality if available",
               "ok": true,
               "tags": [],
               "tests": [
@@ -242,29 +265,36 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 1337,
+                      "duration": 4847,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Page title: 日本の建築マップ | Architecture Map of Japan\n"
+                          "text": "🔍 Testing search functionality...\n"
+                        },
+                        {
+                          "text": "✅ Search input found\n"
+                        },
+                        {
+                          "text": "🎯 Search results found: false\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-07-07T05:08:18.767Z",
+                      "startTime": "2025-07-07T05:54:34.346Z",
+                      "annotations": [],
                       "attachments": []
                     }
                   ],
                   "status": "expected"
                 }
               ],
-              "id": "7c18564b48ab5acea90d-ec801f4f5ddb537a3e75",
-              "file": "deployment-validation.spec.ts",
-              "line": 23,
+              "id": "59d654e97d94f11eec5c-681a56eefcd00b90a8fa",
+              "file": "real-functionality-test.spec.ts",
+              "line": 99,
               "column": 7
             },
             {
-              "title": "React app is functioning",
+              "title": "should check map functionality",
               "ok": true,
               "tags": [],
               "tests": [
@@ -279,548 +309,29 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 720,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:18.759Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-c1f49d1234aa6a15125e",
-              "file": "deployment-validation.spec.ts",
-              "line": 46,
-              "column": 7
-            },
-            {
-              "title": "database content is accessible",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 1440,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:18.767Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-64592f031c4ccb8f1af3",
-              "file": "deployment-validation.spec.ts",
-              "line": 60,
-              "column": 7
-            },
-            {
-              "title": "basic navigation elements exist",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 741,
+                      "duration": 6713,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Navigation elements found: \u001b[33m11\u001b[39m\n"
+                          "text": "🗺️ Testing map functionality...\n"
+                        },
+                        {
+                          "text": "🗺️ Map container found: false\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-07-07T05:08:18.750Z",
+                      "startTime": "2025-07-07T05:54:34.354Z",
+                      "annotations": [],
                       "attachments": []
                     }
                   ],
                   "status": "expected"
                 }
               ],
-              "id": "7c18564b48ab5acea90d-9875e0911a894ae26b32",
-              "file": "deployment-validation.spec.ts",
-              "line": 78,
-              "column": 7
-            },
-            {
-              "title": "essential page elements are present",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 1081,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Page structure - Header: \u001b[33mtrue\u001b[39m Main: \u001b[33mtrue\u001b[39m Footer: \u001b[33mtrue\u001b[39m\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:19.854Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-206444efcae1ac490be5",
-              "file": "deployment-validation.spec.ts",
-              "line": 91,
-              "column": 7
-            },
-            {
-              "title": "site loads successfully",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox",
-                  "projectName": "firefox",
-                  "results": [
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 2,
-                      "status": "passed",
-                      "duration": 1799,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:20.305Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-a7192f2768ad90f124dc",
-              "file": "deployment-validation.spec.ts",
-              "line": 11,
-              "column": 7
-            },
-            {
-              "title": "Japanese title displays correctly",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox",
-                  "projectName": "firefox",
-                  "results": [
-                    {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 1795,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Page title: 日本の建築マップ | Architecture Map of Japan\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:21.013Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-dd1d96d60010e76c012c",
-              "file": "deployment-validation.spec.ts",
-              "line": 23,
-              "column": 7
-            },
-            {
-              "title": "React app is functioning",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox",
-                  "projectName": "firefox",
-                  "results": [
-                    {
-                      "workerIndex": 7,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 1589,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:21.134Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-d97743e12dcc2de89240",
-              "file": "deployment-validation.spec.ts",
-              "line": 46,
-              "column": 7
-            },
-            {
-              "title": "database content is accessible",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox",
-                  "projectName": "firefox",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 2190,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:21.078Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-c323ead9fe6c933a7310",
-              "file": "deployment-validation.spec.ts",
-              "line": 60,
-              "column": 7
-            },
-            {
-              "title": "basic navigation elements exist",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox",
-                  "projectName": "firefox",
-                  "results": [
-                    {
-                      "workerIndex": 9,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 1990,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Navigation elements found: \u001b[33m11\u001b[39m\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:21.540Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-96acfa0a4f98b66ff74e",
-              "file": "deployment-validation.spec.ts",
-              "line": 78,
-              "column": 7
-            },
-            {
-              "title": "essential page elements are present",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox",
-                  "projectName": "firefox",
-                  "results": [
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 2,
-                      "status": "passed",
-                      "duration": 1189,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Page structure - Header: \u001b[33mtrue\u001b[39m Main: \u001b[33mtrue\u001b[39m Footer: \u001b[33mtrue\u001b[39m\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:22.631Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-aee2476d7df6429dcd39",
-              "file": "deployment-validation.spec.ts",
-              "line": 91,
-              "column": 7
-            },
-            {
-              "title": "site loads successfully",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 10,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 28501,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:23.923Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-35aa645f086e4389e394",
-              "file": "deployment-validation.spec.ts",
-              "line": 11,
-              "column": 7
-            },
-            {
-              "title": "Japanese title displays correctly",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 11,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 26508,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Page title: 日本の建築マップ | Architecture Map of Japan\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:24.167Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-9117d626de20c234b969",
-              "file": "deployment-validation.spec.ts",
-              "line": 23,
-              "column": 7
-            },
-            {
-              "title": "React app is functioning",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 12,
-                      "parallelIndex": 2,
-                      "status": "passed",
-                      "duration": 8293,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:24.661Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-d4478584f4a2e3765180",
-              "file": "deployment-validation.spec.ts",
-              "line": 46,
-              "column": 7
-            },
-            {
-              "title": "database content is accessible",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 13,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 25448,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:25.053Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-0e42507b2dc5aec7bdf4",
-              "file": "deployment-validation.spec.ts",
-              "line": 60,
-              "column": 7
-            },
-            {
-              "title": "basic navigation elements exist",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 14,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 7250,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Navigation elements found: \u001b[33m11\u001b[39m\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:25.517Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-208ff9c9c156f6624e1a",
-              "file": "deployment-validation.spec.ts",
-              "line": 78,
-              "column": 7
-            },
-            {
-              "title": "essential page elements are present",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 14,
-                      "parallelIndex": 4,
-                      "status": "passed",
-                      "duration": 24355,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Page structure - Header: \u001b[33mtrue\u001b[39m Main: \u001b[33mtrue\u001b[39m Footer: \u001b[33mtrue\u001b[39m\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-07-07T05:08:32.904Z",
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c18564b48ab5acea90d-ca2de98d26bd5b1acb4c",
-              "file": "deployment-validation.spec.ts",
-              "line": 91,
+              "id": "59d654e97d94f11eec5c-ddf4a4d5f06317150ef4",
+              "file": "real-functionality-test.spec.ts",
+              "line": 130,
               "column": 7
             }
           ]
@@ -830,9 +341,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-07-07T05:08:18.395Z",
-    "duration": 38882.441,
-    "expected": 18,
+    "startTime": "2025-07-07T05:54:34.088Z",
+    "duration": 32408.516,
+    "expected": 3,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
