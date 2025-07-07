@@ -1,10 +1,10 @@
-import { createDbWorker } from 'sql.js-httpvfs';
-import type { WorkerHttpvfs } from 'sql.js-httpvfs';
+// Import sql.js directly instead of sql.js-httpvfs due to GitHub Pages GZIP compression issues
+import initSqlJs from 'sql.js';
 
 // Determine the base path for assets
 const BASE_PATH = import.meta.env.PROD ? '/archi-site' : '';
 
-// Database URLs for sql.js-httpvfs
+// Database URLs for sql.js
 const DATABASE_URL = `${BASE_PATH}/db/archimap.sqlite`;
 
 // Debug logging
@@ -13,10 +13,11 @@ console.log('  - import.meta.env.PROD:', import.meta.env.PROD);
 console.log('  - BASE_PATH:', BASE_PATH);
 console.log('  - DATABASE_URL:', DATABASE_URL);
 
-// Worker instance for sql.js-httpvfs
-let worker: WorkerHttpvfs | null = null;
+// SQL.js database instance and initialization state
+let database: any = null;
+let SQL: any = null;
 let isInitializing = false;
-let initPromise: Promise<WorkerHttpvfs> | null = null;
+let initPromise: Promise<any> | null = null;
 
 /**
  * データベース接続の状態
@@ -32,7 +33,7 @@ export enum DatabaseStatus {
  * データベース接続の現在の状態を返す
  */
 export const getDatabaseStatus = (): DatabaseStatus => {
-  if (worker) {
+  if (database && SQL) {
     return DatabaseStatus.READY;
   }
   if (isInitializing) {
@@ -63,13 +64,13 @@ const detectConnectionSpeed = async (): Promise<'fast' | 'slow' | 'very-slow'> =
 };
 
 /**
- * データベース接続を初期化する（sql.js-httpvfs方式）
- * @returns WorkerHttpvfsインスタンス
+ * データベース接続を初期化する（直接sql.js方式でGitHub Pages対応）
+ * @returns データベースインスタンス
  */
-export const initDatabase = async (): Promise<WorkerHttpvfs> => {
+export const initDatabase = async (): Promise<any> => {
   // 既に初期化済みならそのインスタンスを返す
-  if (worker) {
-    return worker;
+  if (database && SQL) {
+    return database;
   }
   
   // 初期化中なら既存のプロミスを返す
@@ -83,7 +84,7 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
   // 初期化プロミスを作成
   initPromise = (async () => {
     try {
-      console.log('🚀 データベース初期化を開始（sql.js-httpvfs使用）...');
+      console.log('🚀 データベース初期化を開始（直接sql.js使用でGitHub Pages GZIP対応）...');
       
       // Check connection speed for better error messages
       const connectionSpeed = await detectConnectionSpeed();
@@ -99,11 +100,11 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
           throw new Error(`Database file not accessible: ${dbResponse.status} ${dbResponse.statusText} at ${DATABASE_URL}`);
         }
         
-        // Get database file size for debugging
+        // Get database file size for debugging (this will be compressed size from GitHub Pages)
         const contentLength = dbResponse.headers.get('content-length');
         if (contentLength) {
           const sizeInMB = parseInt(contentLength) / (1024 * 1024);
-          console.log(`  - Database file size: ${sizeInMB.toFixed(2)} MB`);
+          console.log(`  - Database file size (compressed): ${sizeInMB.toFixed(2)} MB`);
         }
         
         console.log('✅ Database file is accessible');
@@ -112,157 +113,91 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
         throw new Error(`Database file not accessible: ${dbAccessError.message}`);
       }
       
-      console.log('📦 sql.js-httpvfs worker を初期化中...');
-      console.log(`📍 Database URL: ${DATABASE_URL}`);
+      console.log('📦 sql.js を初期化中...');
       
-      // sql.js-httpvfs worker を作成
-      // Use worker files from public directory (not node_modules)
-      const workerUrl = `${BASE_PATH}/sqlite.worker.js`;
+      // Initialize SQL.js with WASM
       const wasmUrl = `${BASE_PATH}/sql-wasm.wasm`;
       
-      // Additional debug logging for worker URLs
-      console.log('🔧 Worker file URLs:');
-      console.log('  - workerUrl:', workerUrl);
-      console.log('  - wasmUrl:', wasmUrl);
+      console.log('🔧 WASM URL:', wasmUrl);
       
-      // Test worker file accessibility before creating worker
-      console.log('🔍 Testing worker file accessibility...');
+      // Test WASM file accessibility
+      console.log('🔍 Testing WASM file accessibility...');
       try {
-        const workerResponse = await fetch(workerUrl, { method: 'HEAD' });
         const wasmResponse = await fetch(wasmUrl, { method: 'HEAD' });
-        
-        console.log('  - Worker file status:', workerResponse.status, workerResponse.statusText);
         console.log('  - WASM file status:', wasmResponse.status, wasmResponse.statusText);
-        
-        if (!workerResponse.ok) {
-          throw new Error(`Worker file not accessible: ${workerResponse.status} ${workerResponse.statusText} at ${workerUrl}`);
-        }
         
         if (!wasmResponse.ok) {
           throw new Error(`WASM file not accessible: ${wasmResponse.status} ${wasmResponse.statusText} at ${wasmUrl}`);
         }
         
-        console.log('✅ All worker files are accessible');
+        console.log('✅ WASM file is accessible');
       } catch (accessError) {
-        console.error('❌ Worker file accessibility check failed:', accessError);
-        throw new Error(`Worker files not accessible: ${accessError.message}`);
+        console.error('❌ WASM file accessibility check failed:', accessError);
+        throw new Error(`WASM file not accessible: ${accessError.message}`);
       }
       
-      // Load database info and detect actual served file size
-      let dbSize = 12730368; // Default size as fallback
-      let actualDbSize = dbSize; // Actual size served by the HTTP server
-      
-      try {
-        const dbInfoResponse = await fetch(`${BASE_PATH}/db/database-info.json`);
-        if (dbInfoResponse.ok) {
-          const dbInfo = await dbInfoResponse.json();
-          dbSize = dbInfo.size;
-          console.log(`📄 Database info loaded: ${(dbSize / 1024 / 1024).toFixed(2)} MB (uncompressed)`);
-        }
-      } catch (dbInfoError) {
-        console.warn('⚠️ Database info not available, using default size');
-      }
-      
-      // CRITICAL: Detect the actual file size as served by GitHub Pages
-      // GitHub Pages may compress the file, so we need the actual served size
-      try {
-        console.log('🔍 Detecting actual database file size from HTTP server...');
-        const sizeResponse = await fetch(DATABASE_URL, { method: 'HEAD' });
-        const contentLength = sizeResponse.headers.get('content-length');
-        const contentEncoding = sizeResponse.headers.get('content-encoding');
-        
-        if (contentLength) {
-          actualDbSize = parseInt(contentLength);
-          console.log(`📏 Actual served file size: ${(actualDbSize / 1024 / 1024).toFixed(2)} MB`);
-          
-          if (contentEncoding && contentEncoding !== 'identity') {
-            console.log(`⚠️ File is compressed with: ${contentEncoding}`);
-            console.log(`   Original size: ${(dbSize / 1024 / 1024).toFixed(2)} MB`);
-            console.log(`   Compressed size: ${(actualDbSize / 1024 / 1024).toFixed(2)} MB`);
-            console.log(`   Using compressed size for sql.js-httpvfs compatibility`);
+      // Initialize SQL.js with explicit WASM URL
+      console.log('🔧 Initializing SQL.js...');
+      SQL = await initSqlJs({
+        locateFile: (file: string) => {
+          console.log(`🔍 Looking for file: ${file}`);
+          if (file === 'sql-wasm.wasm') {
+            return wasmUrl;
           }
-        } else {
-          console.warn('⚠️ Could not determine actual file size, using configured size');
-          actualDbSize = dbSize;
+          return file;
         }
-      } catch (sizeError) {
-        console.warn('⚠️ Error detecting file size:', sizeError);
-        actualDbSize = dbSize;
+      });
+      
+      console.log('✅ SQL.js initialized successfully');
+      
+      // Download database file with progress tracking
+      console.log('📥 Downloading database file...');
+      const dbResponse = await fetch(DATABASE_URL);
+      
+      if (!dbResponse.ok) {
+        throw new Error(`Failed to download database: ${dbResponse.status} ${dbResponse.statusText}`);
       }
-
-      // Enhanced configuration for sql.js-httpvfs following the proper approach
-      // from https://phiresky.github.io/blog/2021/hosting-sqlite-databases-on-github-pages/
-      // CRITICAL: GitHub Pages gzip compression issue requires special handling
-      const config = {
-        from: 'inline' as const,
-        config: {
-          serverMode: 'full' as const, // Use full mode with automatic HTTP range requests
-          url: DATABASE_URL,
-          requestChunkSize: 4096, // 4KB chunks for better performance with compressed data
-          cacheSizeKiB: 2048, // 2MB cache
-          filename: 'archimap.sqlite',
-          debug: import.meta.env.DEV, // Enable debug in development
-          // CRITICAL WORKAROUND: For GitHub Pages gzip issue, don't specify size
-          // Let sql.js-httpvfs auto-detect file size through actual range requests
-          // This avoids the HEAD request gzip confusion
-          // maxBytesToRead: actualDbSize,
-          // size: actualDbSize
-        }
-      };
       
-      console.log('🔧 Worker config:', config);
-      console.log('🔧 Worker URL:', workerUrl);
-      console.log('🔧 WASM URL:', wasmUrl);
-      console.log('🔧 Config details:');
-      console.log('  - serverMode:', config.config.serverMode);
-      console.log('  - url:', config.config.url);  
-      console.log('  - requestChunkSize:', config.config.requestChunkSize);
-      console.log('  - cacheSizeKiB:', config.config.cacheSizeKiB);
-      console.log('  - filename:', config.config.filename);
-      console.log('  - size: AUTO-DETECT (GitHub Pages gzip workaround)');
-      console.log('  - detected compressed size:', actualDbSize, `(${(actualDbSize / 1024 / 1024).toFixed(2)} MB)`);
+      // GitHub Pages automatically decompresses GZIP, so we get the raw SQLite file
+      const dbArrayBuffer = await dbResponse.arrayBuffer();
+      console.log(`✅ Database downloaded: ${(dbArrayBuffer.byteLength / 1024 / 1024).toFixed(2)} MB (uncompressed)`);
       
-      // Create worker with timeout and limited bytes to read for initial test
-      const workerInitTimeout = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Worker initialization timeout after 30 seconds')), 30000)
-      );
+      // Create database from the downloaded data
+      console.log('🗄️ Creating database from downloaded data...');
+      database = new SQL.Database(new Uint8Array(dbArrayBuffer));
+      console.log('✅ Database created successfully');
       
-      const maxBytesToRead = 50 * 1024 * 1024; // 50MB limit for safety
+      // Test database with simple queries
+      console.log('🔍 Testing database functionality...');
       
-      const workerInit = createDbWorker(
-        [config],
-        workerUrl,
-        wasmUrl,
-        maxBytesToRead
-      );
+      // Get SQLite version
+      const versionResult = database.exec('SELECT sqlite_version()');
+      if (versionResult.length > 0) {
+        console.log(`🔍 SQLite バージョン: ${versionResult[0].values[0][0]}`);
+      }
       
-      worker = await Promise.race([workerInit, workerInitTimeout]);
-      console.log('✅ sql.js-httpvfs worker 初期化完了');
-      
-      // テスト用のシンプルなクエリを実行
-      const testResult = await worker.db.exec('SELECT sqlite_version()');
-      console.log(`🔍 SQLite バージョン: ${testResult[0]?.values[0][0]}`);
-      
-      // 簡単なテーブル存在確認
-      const tablesResult = await worker.db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+      // Check tables
+      const tablesResult = database.exec("SELECT name FROM sqlite_master WHERE type='table'");
       if (tablesResult.length > 0) {
         console.log(`📋 利用可能なテーブル数: ${tablesResult[0].values.length}`);
+        console.log(`📋 テーブル一覧: ${tablesResult[0].values.map(row => row[0]).join(', ')}`);
         
-        // 建築データの件数確認
+        // Count architecture data
         try {
-          const countResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+          const countResult = database.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
           if (countResult.length > 0) {
             console.log(`🏢 建築データ件数: ${countResult[0].values[0][0]} 件`);
           }
         } catch (e) {
-          console.log('📋 テーブル構造確認中...');
+          console.log('📋 Architecture table structure checking...');
         }
       }
       
-      return worker;
+      return database;
     } catch (error) {
       console.error('❌ データベース初期化エラー:', error);
-      worker = null;
+      database = null;
+      SQL = null;
       
       // Enhanced error messages based on connection speed and error type
       if (error instanceof Error) {
@@ -306,16 +241,16 @@ export const executeQuery = async <T = any>(
 ): Promise<any[]> => {
   try {
     // データベース初期化を確認
-    if (!worker) {
+    if (!database) {
       await initDatabase();
     }
     
     // クエリの実行
-    if (!worker) {
+    if (!database) {
       throw new Error('データベースが初期化されていません');
     }
     
-    const result = await worker.db.exec(query, params);
+    const result = database.exec(query, params);
     return result;
   } catch (error) {
     console.error('クエリ実行エラー:', error);
