@@ -148,10 +148,41 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
         throw new Error(`Worker files not accessible: ${accessError.message}`);
       }
       
-      // Enhanced configuration for sql.js-httpvfs
-      // Note: GitHub Pages serves files with gzip compression which prevents
-      // sql.js-httpvfs from detecting the file size. We need to specify it explicitly.
-      const config = {
+      // Load suffix file for chunked loading configuration
+      const suffixUrl = `${BASE_PATH}/db/archimap.sqlite.suffix`;
+      console.log('📄 Loading suffix file for chunked access...');
+      
+      let suffixData;
+      try {
+        const suffixResponse = await fetch(suffixUrl);
+        if (!suffixResponse.ok) {
+          throw new Error(`Suffix file not accessible: ${suffixResponse.status} ${suffixResponse.statusText}`);
+        }
+        suffixData = await suffixResponse.json();
+        console.log(`📄 Suffix file loaded: ${suffixData.chunkCount} chunks, ${(suffixData.size / 1024 / 1024).toFixed(2)} MB total`);
+      } catch (suffixError) {
+        console.warn('⚠️ Suffix file not available, falling back to full database loading');
+        suffixData = null;
+      }
+
+      // Enhanced configuration for sql.js-httpvfs with chunked loading
+      const config = suffixData ? {
+        from: 'inline' as const,
+        config: {
+          serverMode: 'chunked' as const,
+          url: DATABASE_URL,
+          requestChunkSize: suffixData.chunkSize || 65536, // Use chunk size from suffix file
+          cacheSizeKiB: 2048, // 2MB cache
+          filename: 'archimap.sqlite',
+          debug: import.meta.env.DEV, // Enable debug in development
+          // Use chunked loading configuration
+          size: suffixData.size,
+          chunkCount: suffixData.chunkCount,
+          chunks: suffixData.chunks,
+          // Chunk URL pattern for loading individual chunks
+          chunkUrlPattern: `${BASE_PATH}/db/chunks/chunk_{index}.bin`
+        }
+      } : {
         from: 'inline' as const,
         config: {
           serverMode: 'full' as const,
@@ -160,8 +191,7 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
           cacheSizeKiB: 2048, // 2MB cache
           filename: 'archimap.sqlite',
           debug: import.meta.env.DEV, // Enable debug in development
-          // Specify uncompressed file size to work with GitHub Pages gzip compression
-          // This is the actual uncompressed size of the database file
+          // Fallback to full database loading if suffix file not available
           size: 12730368 // 12.14 MB - from database-info.json
         }
       };
