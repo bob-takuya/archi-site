@@ -47,13 +47,16 @@ async function optimizeDatabase() {
       db.serialize(() => {
         console.log('Optimizing database for client-side performance...');
         
+        // Set small page size for HTTP range request efficiency (as per blog post)
+        db.run('PRAGMA page_size = 1024');
+        
         // Enable WAL mode for better performance
         db.run('PRAGMA journal_mode = WAL');
         
         // Run ANALYZE to update statistics
         db.run('ANALYZE');
         
-        // Optimize database with VACUUM
+        // Optimize database with VACUUM to apply page size changes
         db.run('VACUUM');
         
         // Create indexes for commonly filtered columns
@@ -266,15 +269,20 @@ async function prepareDatabase() {
     
     console.log(`Optimized database size: ${(dbSize / 1024 / 1024).toFixed(2)} MB`);
     
-    // Split database into chunks for sql.js-httpvfs
-    const chunks = splitDatabaseIntoChunks(DEST_DB_PATH, path.dirname(DEST_DB_PATH), {
-      chunkSize: CHUNK_SIZE,
-    });
+    // For sql.js-httpvfs, we don't need manual chunking - it uses HTTP range requests
+    // Just create a simple info file for reference
+    const infoData = {
+      database: path.basename(DEST_DB_PATH),
+      size: dbSize,
+      pageSize: 1024, // Small page size for efficient range requests
+      optimizedFor: 'sql.js-httpvfs HTTP range requests',
+      date: new Date().toISOString()
+    };
     
-    // Generate optimized suffix file with chunk information
-    createSuffixFile(DEST_DB_PATH, DEST_SUFFIX_PATH, chunks, {
-      chunkSize: CHUNK_SIZE,
-    });
+    fs.writeFileSync(
+      path.join(path.dirname(DEST_DB_PATH), 'database-info.json'),
+      JSON.stringify(infoData, null, 2)
+    );
     
     // Analyze and log database structure for reference
     const finalDb = new sqlite3.Database(DEST_DB_PATH);
