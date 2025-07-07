@@ -209,7 +209,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 33521,
+                      "duration": 37345,
                       "errors": [],
                       "stdout": [
                         {
@@ -255,22 +255,13 @@
                           "text": "[BROWSER]: 🚀 データベース初期化を開始（sql.js-httpvfs使用）...\n"
                         },
                         {
-                          "text": "[BROWSER]: 🌐 Connection speed detected: slow\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🗄️ Testing database file accessibility...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: Failed to load resource: the server responded with a status of 404 ()\n"
-                        },
-                        {
                           "text": "[BROWSER]: データベース情報:\n"
                         },
                         {
                           "text": "[BROWSER]: - ファイル: archimap.sqlite\n"
                         },
                         {
-                          "text": "[BROWSER]: - 更新日時: 2025-07-07T07:40:24.953Z\n"
+                          "text": "[BROWSER]: - 更新日時: 2025-07-07T07:43:25.924Z\n"
                         },
                         {
                           "text": "[BROWSER]: - サイズ: 12.14 MB\n"
@@ -283,6 +274,15 @@
                         },
                         {
                           "text": "[BROWSER]: - インデックス数: 13\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🌐 Connection speed detected: slow\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🗄️ Testing database file accessibility...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: Failed to load resource: the server responded with a status of 404 ()\n"
                         },
                         {
                           "text": "[BROWSER]:   - Database file status: 200 \n"
@@ -342,19 +342,19 @@
                           "text": "[BROWSER]: Warning: The server responded with gzip encoding to a HEAD request. Ignoring since it may not do so for Range HTTP requests, but this will lead to incorrect results otherwise since the ranges will be based on the compressed data instead of the uncompressed data.\n"
                         },
                         {
-                          "text": "[BROWSER]: response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:41:49 GMT\r\netag: W/\"686b7a03-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:51:48 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:40:51 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 1\r\nx-fastly-request-id: 63b4ef54413cd17350c1415cc258b69c551af5e3\r\nx-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700073-NRT\r\nx-timer: S1751874110.720406,VS0,VE7\r\n\n"
+                          "text": "[BROWSER]: response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:47:28 GMT\r\netag: W/\"686b7ac5-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:57:27 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:44:05 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 1\r\nx-fastly-request-id: 6edcb80a842230bbf489470ddcfea3b24355e50f\r\nx-github-request-id: 262E:260AF0:14CB33D:15399EB:686B7B8F\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700051-NRT\r\nx-timer: S1751874448.386076,VS0,VE7\r\n\n"
                         },
                         {
                           "text": "[BROWSER]: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
                         },
                         {
-                          "text": "[BROWSER]: クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                          "text": "[BROWSER]: クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46\n"
                         },
                         {
-                          "text": "[BROWSER]: 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                          "text": "[BROWSER]: 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46\n"
                         },
                         {
-                          "text": "[BROWSER]: 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                          "text": "[BROWSER]: 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46\n"
                         },
                         {
                           "text": "[BROWSER]: 🚀 データベース初期化を開始（sql.js-httpvfs使用）...\n"
@@ -423,7 +423,7 @@
                           "text": "[BROWSER]: Warning: The server responded with gzip encoding to a HEAD request. Ignoring since it may not do so for Range HTTP requests, but this will lead to incorrect results otherwise since the ranges will be based on the compressed data instead of the uncompressed data.\n"
                         },
                         {
-                          "text": "[BROWSER]: response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:41:49 GMT\r\netag: W/\"686b7a03-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:51:48 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:40:51 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 3\r\nx-fastly-request-id: 24990914d455f70f26826d4308ae3a5e2e118145\r\nx-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700073-NRT\r\nx-timer: S1751874110.868321,VS0,VE0\r\n\n"
+                          "text": "[BROWSER]: response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:47:28 GMT\r\netag: W/\"686b7ac5-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:57:27 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:44:05 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 3\r\nx-fastly-request-id: 8e5887b59fe0007eedc035acf99c530c96fd6cba\r\nx-github-request-id: 262E:260AF0:14CB33D:15399EB:686B7B8F\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700051-NRT\r\nx-timer: S1751874449.550872,VS0,VE1\r\n\n"
                         },
                         {
                           "text": "[BROWSER]: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
@@ -474,34 +474,34 @@
                           "text": "  13. 🚀 データベース初期化を開始（sql.js-httpvfs使用）...\n"
                         },
                         {
-                          "text": "  14. 🌐 Connection speed detected: slow\n"
+                          "text": "  14. データベース情報:\n"
                         },
                         {
-                          "text": "  15. 🗄️ Testing database file accessibility...\n"
+                          "text": "  15. - ファイル: archimap.sqlite\n"
                         },
                         {
-                          "text": "  16. Failed to load resource: the server responded with a status of 404 ()\n"
+                          "text": "  16. - 更新日時: 2025-07-07T07:43:25.924Z\n"
                         },
                         {
-                          "text": "  17. データベース情報:\n"
+                          "text": "  17. - サイズ: 12.14 MB\n"
                         },
                         {
-                          "text": "  18. - ファイル: archimap.sqlite\n"
+                          "text": "  18. - チャンク: 195 (64KB)のチャンク\n"
                         },
                         {
-                          "text": "  19. - 更新日時: 2025-07-07T07:40:24.953Z\n"
+                          "text": "  19. - テーブル数: 10\n"
                         },
                         {
-                          "text": "  20. - サイズ: 12.14 MB\n"
+                          "text": "  20. - インデックス数: 13\n"
                         },
                         {
-                          "text": "  21. - チャンク: 195 (64KB)のチャンク\n"
+                          "text": "  21. 🌐 Connection speed detected: slow\n"
                         },
                         {
-                          "text": "  22. - テーブル数: 10\n"
+                          "text": "  22. 🗄️ Testing database file accessibility...\n"
                         },
                         {
-                          "text": "  23. - インデックス数: 13\n"
+                          "text": "  23. Failed to load resource: the server responded with a status of 404 ()\n"
                         },
                         {
                           "text": "  24.   - Database file status: 200 \n"
@@ -561,19 +561,19 @@
                           "text": "  42. Warning: The server responded with gzip encoding to a HEAD request. Ignoring since it may not do so for Range HTTP requests, but this will lead to incorrect results otherwise since the ranges will be based on the compressed data instead of the uncompressed data.\n"
                         },
                         {
-                          "text": "  43. response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:41:49 GMT\r\netag: W/\"686b7a03-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:51:48 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:40:51 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 1\r\nx-fastly-request-id: 63b4ef54413cd17350c1415cc258b69c551af5e3\r\nx-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700073-NRT\r\nx-timer: S1751874110.720406,VS0,VE7\r\n\n"
+                          "text": "  43. response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:47:28 GMT\r\netag: W/\"686b7ac5-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:57:27 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:44:05 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 1\r\nx-fastly-request-id: 6edcb80a842230bbf489470ddcfea3b24355e50f\r\nx-github-request-id: 262E:260AF0:14CB33D:15399EB:686B7B8F\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700051-NRT\r\nx-timer: S1751874448.386076,VS0,VE7\r\n\n"
                         },
                         {
                           "text": "  44. ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
                         },
                         {
-                          "text": "  45. クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                          "text": "  45. クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46\n"
                         },
                         {
-                          "text": "  46. 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                          "text": "  46. 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46\n"
                         },
                         {
-                          "text": "  47. 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                          "text": "  47. 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46\n"
                         },
                         {
                           "text": "  48. 🚀 データベース初期化を開始（sql.js-httpvfs使用）...\n"
@@ -642,7 +642,7 @@
                           "text": "  69. Warning: The server responded with gzip encoding to a HEAD request. Ignoring since it may not do so for Range HTTP requests, but this will lead to incorrect results otherwise since the ranges will be based on the compressed data instead of the uncompressed data.\n"
                         },
                         {
-                          "text": "  70. response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:41:49 GMT\r\netag: W/\"686b7a03-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:51:48 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:40:51 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 3\r\nx-fastly-request-id: 24990914d455f70f26826d4308ae3a5e2e118145\r\nx-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700073-NRT\r\nx-timer: S1751874110.868321,VS0,VE0\r\n\n"
+                          "text": "  70. response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:47:28 GMT\r\netag: W/\"686b7ac5-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:57:27 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:44:05 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 3\r\nx-fastly-request-id: 8e5887b59fe0007eedc035acf99c530c96fd6cba\r\nx-github-request-id: 262E:260AF0:14CB33D:15399EB:686B7B8F\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700051-NRT\r\nx-timer: S1751874449.550872,VS0,VE1\r\n\n"
                         },
                         {
                           "text": "  71. ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
@@ -657,13 +657,13 @@
                           "text": "  ERROR 1: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
                         },
                         {
-                          "text": "  ERROR 2: クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                          "text": "  ERROR 2: クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46\n"
                         },
                         {
-                          "text": "  ERROR 3: 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                          "text": "  ERROR 3: 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46\n"
                         },
                         {
-                          "text": "  ERROR 4: 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                          "text": "  ERROR 4: 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46\n"
                         },
                         {
                           "text": "  ERROR 5: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
@@ -677,7 +677,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-07-07T07:41:47.340Z",
+                      "startTime": "2025-07-07T07:47:26.009Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -697,8 +697,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-07-07T07:41:47.058Z",
-    "duration": 34369.419,
+    "startTime": "2025-07-07T07:47:25.432Z",
+    "duration": 38541.187,
     "expected": 1,
     "skipped": 0,
     "unexpected": 0,
