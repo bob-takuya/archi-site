@@ -1,176 +1,78 @@
-<testsuites id="" name="" tests="4" failures="2" skipped="0" errors="0" time="7.447531">
-<testsuite name="production-deployment.spec.ts" timestamp="2025-07-07T03:26:31.060Z" hostname="chromium" tests="4" failures="2" skipped="0" time="17.213" errors="0">
-<testcase name="Production Deployment › should load the production site successfully" classname="production-deployment.spec.ts" time="4.449">
-<failure message="production-deployment.spec.ts:10:7 should load the production site successfully" type="FAILURE">
-<![CDATA[  [chromium] › production-deployment.spec.ts:10:7 › Production Deployment › should load the production site successfully 
-
-    Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:
-        1) <a href="#/" data-discover="true" data-testid="site-title" class="MuiTypography-root MuiTypography-h6 css-198h993">建築データベース</a> aka getByTestId('site-title')
-        2) <h1 id="main-heading" class="MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })
-        3) <p class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')
-        4) <h2 id="recent-works-heading" class="MuiTypography-root MuiTypography-h4 css-zjdfnm">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })
-        5) <h6 class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })
-        6) <p class="MuiTypography-root MuiTypography-body2 css-1fuj3vy">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')
-        7) <h2 id="features-heading" class="MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })
-        8) <h5 class="MuiTypography-root MuiTypography-h5 css-1lumoho">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })
-        9) <p class="MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')
-        10) <h5 class="MuiTypography-root MuiTypography-h5 css-1lumoho">建築家</h5> aka getByRole('heading', { name: '建築家' })
-        ...
-
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for locator('h1, h2, .MuiTypography-root')
-
-
-      15 |     
-      16 |     // Check for the main navigation or key elements
-    > 17 |     await expect(page.locator('h1, h2, .MuiTypography-root')).toBeVisible();
-         |                                                               ^
-      18 |   });
-      19 |
-      20 |   test('should have working asset loading', async ({ page }) => {
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:17:63
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:
-        1) <a href="#/" data-discover="true" data-testid="site-title" class="MuiTypography-root MuiTypography-h6 css-198h993">建築データベース</a> aka getByTestId('site-title')
-        2) <h1 id="main-heading" class="MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })
-        3) <p class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')
-        4) <h2 id="recent-works-heading" class="MuiTypography-root MuiTypography-h4 css-zjdfnm">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })
-        5) <h6 class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })
-        6) <p class="MuiTypography-root MuiTypography-body2 css-1fuj3vy">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')
-        7) <h2 id="features-heading" class="MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })
-        8) <h5 class="MuiTypography-root MuiTypography-h5 css-1lumoho">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })
-        9) <p class="MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')
-        10) <h5 class="MuiTypography-root MuiTypography-h5 css-1lumoho">建築家</h5> aka getByRole('heading', { name: '建築家' })
-        ...
-
-    Call log:
-      - expect.toBeVisible with timeout 10000ms
-      - waiting for locator('h1, h2, .MuiTypography-root')
-
-
-      15 |     
-      16 |     // Check for the main navigation or key elements
-    > 17 |     await expect(page.locator('h1, h2, .MuiTypography-root')).toBeVisible();
-         |                                                               ^
-      18 |   });
-      19 |
-      20 |   test('should have working asset loading', async ({ page }) => {
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:17:63
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/trace.zip
-    Usage:
-
-        npx playwright show-trace playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
+<testsuites id="" name="" tests="18" failures="0" skipped="0" errors="0" time="38.882441">
+<testsuite name="deployment-validation.spec.ts" timestamp="2025-07-07T05:08:18.408Z" hostname="chromium" tests="6" failures="0" skipped="0" time="6.736" errors="0">
+<testcase name="Archi Site Deployment Validation › site loads successfully" classname="deployment-validation.spec.ts" time="1.417">
+</testcase>
+<testcase name="Archi Site Deployment Validation › Japanese title displays correctly" classname="deployment-validation.spec.ts" time="1.337">
 <system-out>
-<![CDATA[
-[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/video.webm]]
-
-[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/video.webm]]
-
-[[ATTACHMENT|artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/trace.zip]]
+<![CDATA[Page title: 日本の建築マップ | Architecture Map of Japan
 ]]>
 </system-out>
 </testcase>
-<testcase name="Production Deployment › should have working asset loading" classname="production-deployment.spec.ts" time="5.901">
+<testcase name="Archi Site Deployment Validation › React app is functioning" classname="deployment-validation.spec.ts" time="0.72">
 </testcase>
-<testcase name="Production Deployment › should handle SPA routing correctly" classname="production-deployment.spec.ts" time="3.064">
+<testcase name="Archi Site Deployment Validation › database content is accessible" classname="deployment-validation.spec.ts" time="1.44">
 </testcase>
-<testcase name="Production Deployment › should have proper security headers" classname="production-deployment.spec.ts" time="3.799">
-<failure message="production-deployment.spec.ts:56:7 should have proper security headers" type="FAILURE">
-<![CDATA[  [chromium] › production-deployment.spec.ts:56:7 › Production Deployment › should have proper security headers 
-
-    Error: expect(received).toBeDefined()
-
-    Received: undefined
-
-      63 |     
-      64 |     // GitHub Pages should provide these automatically
-    > 65 |     expect(headers?.['x-frame-options']).toBeDefined();
-         |                                          ^
-      66 |     expect(headers?.['x-content-type-options']).toBeDefined();
-      67 |   });
-      68 | });
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:65:42
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: expect(received).toBeDefined()
-
-    Received: undefined
-
-      63 |     
-      64 |     // GitHub Pages should provide these automatically
-    > 65 |     expect(headers?.['x-frame-options']).toBeDefined();
-         |                                          ^
-      66 |     expect(headers?.['x-content-type-options']).toBeDefined();
-      67 |   });
-      68 | });
-        at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:65:42
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/trace.zip
-    Usage:
-
-        npx playwright show-trace playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
+<testcase name="Archi Site Deployment Validation › basic navigation elements exist" classname="deployment-validation.spec.ts" time="0.741">
 <system-out>
-<![CDATA[
-[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/video.webm]]
-
-[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/test-failed-1.png]]
-
-[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/video.webm]]
-
-[[ATTACHMENT|artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/trace.zip]]
+<![CDATA[Navigation elements found: [33m11[39m
+]]>
+</system-out>
+</testcase>
+<testcase name="Archi Site Deployment Validation › essential page elements are present" classname="deployment-validation.spec.ts" time="1.081">
+<system-out>
+<![CDATA[Page structure - Header: [33mtrue[39m Main: [33mtrue[39m Footer: [33mtrue[39m
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="deployment-validation.spec.ts" timestamp="2025-07-07T05:08:18.408Z" hostname="firefox" tests="6" failures="0" skipped="0" time="10.552" errors="0">
+<testcase name="Archi Site Deployment Validation › site loads successfully" classname="deployment-validation.spec.ts" time="1.799">
+</testcase>
+<testcase name="Archi Site Deployment Validation › Japanese title displays correctly" classname="deployment-validation.spec.ts" time="1.795">
+<system-out>
+<![CDATA[Page title: 日本の建築マップ | Architecture Map of Japan
+]]>
+</system-out>
+</testcase>
+<testcase name="Archi Site Deployment Validation › React app is functioning" classname="deployment-validation.spec.ts" time="1.589">
+</testcase>
+<testcase name="Archi Site Deployment Validation › database content is accessible" classname="deployment-validation.spec.ts" time="2.19">
+</testcase>
+<testcase name="Archi Site Deployment Validation › basic navigation elements exist" classname="deployment-validation.spec.ts" time="1.99">
+<system-out>
+<![CDATA[Navigation elements found: [33m11[39m
+]]>
+</system-out>
+</testcase>
+<testcase name="Archi Site Deployment Validation › essential page elements are present" classname="deployment-validation.spec.ts" time="1.189">
+<system-out>
+<![CDATA[Page structure - Header: [33mtrue[39m Main: [33mtrue[39m Footer: [33mtrue[39m
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="deployment-validation.spec.ts" timestamp="2025-07-07T05:08:18.408Z" hostname="webkit" tests="6" failures="0" skipped="0" time="120.355" errors="0">
+<testcase name="Archi Site Deployment Validation › site loads successfully" classname="deployment-validation.spec.ts" time="28.501">
+</testcase>
+<testcase name="Archi Site Deployment Validation › Japanese title displays correctly" classname="deployment-validation.spec.ts" time="26.508">
+<system-out>
+<![CDATA[Page title: 日本の建築マップ | Architecture Map of Japan
+]]>
+</system-out>
+</testcase>
+<testcase name="Archi Site Deployment Validation › React app is functioning" classname="deployment-validation.spec.ts" time="8.293">
+</testcase>
+<testcase name="Archi Site Deployment Validation › database content is accessible" classname="deployment-validation.spec.ts" time="25.448">
+</testcase>
+<testcase name="Archi Site Deployment Validation › basic navigation elements exist" classname="deployment-validation.spec.ts" time="7.25">
+<system-out>
+<![CDATA[Navigation elements found: [33m11[39m
+]]>
+</system-out>
+</testcase>
+<testcase name="Archi Site Deployment Validation › essential page elements are present" classname="deployment-validation.spec.ts" time="24.355">
+<system-out>
+<![CDATA[Page structure - Header: [33mtrue[39m Main: [33mtrue[39m Footer: [33mtrue[39m
 ]]>
 </system-out>
 </testcase>

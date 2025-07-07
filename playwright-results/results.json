@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 4
+      "actualWorkers": 5
     },
     "preserveOutput": "always",
     "reporter": [
@@ -54,7 +54,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 5
         },
         "id": "chromium",
         "name": "chromium",
@@ -73,7 +73,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 5
         },
         "id": "firefox",
         "name": "firefox",
@@ -92,7 +92,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 5
         },
         "id": "webkit",
         "name": "webkit",
@@ -111,7 +111,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 5
         },
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
@@ -130,7 +130,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 5
         },
         "id": "Mobile Safari",
         "name": "Mobile Safari",
@@ -149,7 +149,7 @@
         "repeatEach": 1,
         "retries": 1,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 5
         },
         "id": "Tablet",
         "name": "Tablet",
@@ -181,21 +181,21 @@
   },
   "suites": [
     {
-      "title": "production-deployment.spec.ts",
-      "file": "production-deployment.spec.ts",
+      "title": "deployment-validation.spec.ts",
+      "file": "deployment-validation.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Production Deployment",
-          "file": "production-deployment.spec.ts",
-          "line": 5,
+          "title": "Archi Site Deployment Validation",
+          "file": "deployment-validation.spec.ts",
+          "line": 3,
           "column": 6,
           "specs": [
             {
-              "title": "should load the production site successfully",
-              "ok": false,
+              "title": "site loads successfully",
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -208,123 +208,26 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 2732,
-                      "error": {
-                        "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:\n    1) <a href=\"#/\" data-discover=\"true\" data-testid=\"site-title\" class=\"MuiTypography-root MuiTypography-h6 css-198h993\">建築データベース</a> aka getByTestId('site-title')\n    2) <h1 id=\"main-heading\" class=\"MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6\">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })\n    3) <p class=\"MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty\">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')\n    4) <h2 id=\"recent-works-heading\" class=\"MuiTypography-root MuiTypography-h4 css-zjdfnm\">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })\n    5) <h6 class=\"MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun\">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })\n    6) <p class=\"MuiTypography-root MuiTypography-body2 css-1fuj3vy\">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')\n    7) <h2 id=\"features-heading\" class=\"MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07\">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })\n    8) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })\n    9) <p class=\"MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw\">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')\n    10) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築家</h5> aka getByRole('heading', { name: '建築家' })\n    ...\n\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, .MuiTypography-root')\u001b[22m\n",
-                        "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:\n    1) <a href=\"#/\" data-discover=\"true\" data-testid=\"site-title\" class=\"MuiTypography-root MuiTypography-h6 css-198h993\">建築データベース</a> aka getByTestId('site-title')\n    2) <h1 id=\"main-heading\" class=\"MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6\">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })\n    3) <p class=\"MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty\">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')\n    4) <h2 id=\"recent-works-heading\" class=\"MuiTypography-root MuiTypography-h4 css-zjdfnm\">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })\n    5) <h6 class=\"MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun\">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })\n    6) <p class=\"MuiTypography-root MuiTypography-body2 css-1fuj3vy\">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')\n    7) <h2 id=\"features-heading\" class=\"MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07\">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })\n    8) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })\n    9) <p class=\"MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw\">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')\n    10) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築家</h5> aka getByRole('heading', { name: '建築家' })\n    ...\n\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, .MuiTypography-root')\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:17:63",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                          "column": 63,
-                          "line": 17
-                        },
-                        "snippet": "  15 |     \n  16 |     // Check for the main navigation or key elements\n> 17 |     await expect(page.locator('h1, h2, .MuiTypography-root')).toBeVisible();\n     |                                                               ^\n  18 |   });\n  19 |\n  20 |   test('should have working asset loading', async ({ page }) => {"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                            "column": 63,
-                            "line": 17
-                          },
-                          "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:\n    1) <a href=\"#/\" data-discover=\"true\" data-testid=\"site-title\" class=\"MuiTypography-root MuiTypography-h6 css-198h993\">建築データベース</a> aka getByTestId('site-title')\n    2) <h1 id=\"main-heading\" class=\"MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6\">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })\n    3) <p class=\"MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty\">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')\n    4) <h2 id=\"recent-works-heading\" class=\"MuiTypography-root MuiTypography-h4 css-zjdfnm\">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })\n    5) <h6 class=\"MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun\">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })\n    6) <p class=\"MuiTypography-root MuiTypography-body2 css-1fuj3vy\">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')\n    7) <h2 id=\"features-heading\" class=\"MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07\">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })\n    8) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })\n    9) <p class=\"MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw\">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')\n    10) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築家</h5> aka getByRole('heading', { name: '建築家' })\n    ...\n\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, .MuiTypography-root')\u001b[22m\n\n\n  15 |     \n  16 |     // Check for the main navigation or key elements\n> 17 |     await expect(page.locator('h1, h2, .MuiTypography-root')).toBeVisible();\n     |                                                               ^\n  18 |   });\n  19 |\n  20 |   test('should have working asset loading', async ({ page }) => {\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:17:63"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 1417,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-07-07T03:26:31.532Z",
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium/video.webm"
-                        },
-                        {
-                          "name": "_prompt-0",
-                          "contentType": "text/markdown",
-                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBQcm9kdWN0aW9uIERlcGxveW1lbnQgPj4gc2hvdWxkIGxvYWQgdGhlIHByb2R1Y3Rpb24gc2l0ZSBzdWNjZXNzZnVsbHkKLSBMb2NhdGlvbjogL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9wcm9kdWN0aW9uLWRlcGxveW1lbnQuc3BlYy50czoxMDo3CgojIEVycm9yIGRldGFpbHMKCmBgYApFcnJvcjogZXhwZWN0LnRvQmVWaXNpYmxlOiBFcnJvcjogc3RyaWN0IG1vZGUgdmlvbGF0aW9uOiBsb2NhdG9yKCdoMSwgaDIsIC5NdWlUeXBvZ3JhcGh5LXJvb3QnKSByZXNvbHZlZCB0byAxNCBlbGVtZW50czoKICAgIDEpIDxhIGhyZWY9IiMvIiBkYXRhLWRpc2NvdmVyPSJ0cnVlIiBkYXRhLXRlc3RpZD0ic2l0ZS10aXRsZSIgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg2IGNzcy0xOThoOTkzIj7lu7rnr4njg4fjg7zjgr/jg5njg7zjgrk8L2E+IGFrYSBnZXRCeVRlc3RJZCgnc2l0ZS10aXRsZScpCiAgICAyKSA8aDEgaWQ9Im1haW4taGVhZGluZyIgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWgxIE11aVR5cG9ncmFwaHktYWxpZ25DZW50ZXIgTXVpVHlwb2dyYXBoeS1ndXR0ZXJCb3R0b20gY3NzLTFvNHZyZjYiPuW7uuevieODh+ODvOOCv+ODmeODvOOCuTwvaDE+IGFrYSBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IG5hbWU6ICflu7rnr4njg4fjg7zjgr/jg5njg7zjgrknIH0pCiAgICAzKSA8cCBjbGFzcz0iTXVpVHlwb2dyYXBoeS1yb290IE11aVR5cG9ncmFwaHktaDUgTXVpVHlwb2dyYXBoeS1hbGlnbkNlbnRlciBNdWlUeXBvZ3JhcGh5LXBhcmFncmFwaCBjc3MtMTEweGd0eSI+4oCmPC9wPiBha2EgZ2V0QnlUZXh0KCfml6XmnKzjga7lu7rnr4nkvZzlk4Hjgajlu7rnr4nlrrbjgpLmpJzntKLjg7vplrLopqfjgafjgY3jgovljIXmi6znmoTjgarjg4fjg7zjgr/jg5njg7zjgrknKQogICAgNCkgPGgyIGlkPSJyZWNlbnQtd29ya3MtaGVhZGluZyIgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg0IGNzcy16amRmbm0iPuacgOi/keOBruW7uuevieS9nOWTgTwvaDI+IGFrYSBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IG5hbWU6ICfmnIDov5Hjga7lu7rnr4nkvZzlk4EnIH0pCiAgICA1KSA8aDYgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg2IE11aVR5cG9ncmFwaHktZ3V0dGVyQm90dG9tIGNzcy12c3VodW4iPuW7uuevieS9nOWTgeOBjOimi+OBpOOBi+OCiuOBvuOBm+OCk+OBp+OBl+OBnzwvaDY+IGFrYSBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IG5hbWU6ICflu7rnr4nkvZzlk4HjgYzopovjgaTjgYvjgorjgb7jgZvjgpPjgafjgZfjgZ8nIH0pCiAgICA2KSA8cCBjbGFzcz0iTXVpVHlwb2dyYXBoeS1yb290IE11aVR5cG9ncmFwaHktYm9keTIgY3NzLTFmdWozdnkiPuODh+ODvOOCv+ODmeODvOOCueOBruaOpee2muOCkueiuuiqjeOBl+OBpuOBj+OBoOOBleOBhDwvcD4gYWthIGdldEJ5VGV4dCgn44OH44O844K/44OZ44O844K544Gu5o6l57aa44KS56K66KqN44GX44Gm44GP44Gg44GV44GEJykKICAgIDcpIDxoMiBpZD0iZmVhdHVyZXMtaGVhZGluZyIgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg0IE11aVR5cG9ncmFwaHktYWxpZ25DZW50ZXIgTXVpVHlwb2dyYXBoeS1ndXR0ZXJCb3R0b20gY3NzLTEwc21yMDciPuODh+ODvOOCv+ODmeODvOOCueOBrueJueW+tDwvaDI+IGFrYSBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IG5hbWU6ICfjg4fjg7zjgr/jg5njg7zjgrnjga7nibnlvrQnIH0pCiAgICA4KSA8aDUgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg1IGNzcy0xbHVtb2hvIj7lu7rnr4nkvZzlk4E8L2g1PiBha2EgZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBuYW1lOiAn5bu656+J5L2c5ZOBJywgZXhhY3Q6IHRydWUgfSkKICAgIDkpIDxwIGNsYXNzPSJNdWlUeXBvZ3JhcGh5LXJvb3QgTXVpVHlwb2dyYXBoeS1ib2R5MSBNdWlUeXBvZ3JhcGh5LXBhcmFncmFwaCBjc3MtbDlyY2J3Ij7ml6XmnKzlhajlm73jgYvjgokxNCwwMDDku7bku6XkuIrjga7lu7rnr4nkvZzlk4Hmg4XloLHjgpLplrLopqfjgafjgY3jgb7jgZnjgILlnLDln5/jgIHlubTku6PjgIHjgqvjg4bjgrTjg6rjg7zjgarjganjgafoqbPntLDmpJzntKLjgYzigKY8L3A+IGFrYSBnZXRCeVRleHQoJ+aXpeacrOWFqOWbveOBi+OCiTE0LDAwMCcpCiAgICAxMCkgPGg1IGNsYXNzPSJNdWlUeXBvZ3JhcGh5LXJvb3QgTXVpVHlwb2dyYXBoeS1oNSBjc3MtMWx1bW9obyI+5bu656+J5a62PC9oNT4gYWthIGdldEJ5Um9sZSgnaGVhZGluZycsIHsgbmFtZTogJ+W7uuevieWuticgfSkKICAgIC4uLgoKQ2FsbCBsb2c6CiAgLSBleHBlY3QudG9CZVZpc2libGUgd2l0aCB0aW1lb3V0IDEwMDAwbXMKICAtIHdhaXRpbmcgZm9yIGxvY2F0b3IoJ2gxLCBoMiwgLk11aVR5cG9ncmFwaHktcm9vdCcpCgogICAgYXQgL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9wcm9kdWN0aW9uLWRlcGxveW1lbnQuc3BlYy50czoxNzo2MwpgYGAKCiMgUGFnZSBzbmFwc2hvdAoKYGBgeWFtbAotIG5hdmlnYXRpb24gIuODoeOCpOODs+ODiuODk+OCsuODvOOCt+ODp+ODsyI6CiAgLSBsaW5rICLlu7rnr4njg4fjg7zjgr/jg5njg7zjgrkiCiAgLSBtZW51YmFyICLjg4fjgrnjgq/jg4jjg4Pjg5fjg4rjg5PjgrLjg7zjgrfjg6fjg7MiOgogICAgLSBtZW51aXRlbSAi44Ob44O844OgIgogICAgLSBtZW51aXRlbSAi5bu656+J5L2c5ZOBIgogICAgLSBtZW51aXRlbSAi5bu656+J5a62IgogICAgLSBtZW51aXRlbSAi44Oe44OD44OXIgogICAgLSBtZW51aXRlbSAiRELjgqjjgq/jgrnjg5fjg63jg7zjg6njg7wiCi0gbWFpbjoKICAtIGJhbm5lciAi5bu656+J44OH44O844K/44OZ44O844K5IjoKICAgIC0gaGVhZGluZyAi5bu656+J44OH44O844K/44OZ44O844K5IiBbbGV2ZWw9MV0KICAgIC0gcGFyYWdyYXBoOiDml6XmnKzjga7lu7rnr4nkvZzlk4Hjgajlu7rnr4nlrrbjgpLmpJzntKLjg7vplrLopqfjgafjgY3jgosg5YyF5ous55qE44Gq44OH44O844K/44OZ44O844K5CiAgICAtIHRleHQ6IDE0LDAwMCsg5bu656+J5L2c5ZOBIDIsOTAwKyDlu7rnr4nlrrYg5YWo5Zu95a++5b+cCiAgICAtIHNlYXJjaCAi5bu656+J5L2c5ZOB5qSc57SiIjoKICAgICAgLSBzZWFyY2hib3ggIuW7uuevieS9nOWTgeaknOe0oiIKICAgICAgLSBidXR0b24gIuaknOe0oiIKICAtIHJlZ2lvbiAi5pyA6L+R44Gu5bu656+J5L2c5ZOBIjoKICAgIC0gaGVhZGluZyAi5pyA6L+R44Gu5bu656+J5L2c5ZOBIiBbbGV2ZWw9Ml0KICAgIC0gYWxlcnQ6CiAgICAgIC0gdGV4dDogIkZhaWxlZCB0byBleGVjdXRlICdwb3N0TWVzc2FnZScgb24gJ1dvcmtlcic6ICgpPT5jb25zb2xlLmxvZyhcIuODh+ODvOOCv+ODmeODvOOCueODr+ODvOOCq+ODvOOBrua6luWCmeWujOS6hlwiKSBjb3VsZCBub3QgYmUgY2xvbmVkLiIKICAgICAgLSBsaW5rICLoqLrmlq3jg4Tjg7zjg6vjgpLplovjgY8iCiAgICAtIGhlYWRpbmcgIuW7uuevieS9nOWTgeOBjOimi+OBpOOBi+OCiuOBvuOBm+OCk+OBp+OBl+OBnyIgW2xldmVsPTZdCiAgICAtIHBhcmFncmFwaDog44OH44O844K/44OZ44O844K544Gu5o6l57aa44KS56K66KqN44GX44Gm44GP44Gg44GV44GECiAgLSBzZXBhcmF0b3IKICAtIHJlZ2lvbiAi44OH44O844K/44OZ44O844K544Gu54m55b60IjoKICAgIC0gaGVhZGluZyAi44OH44O844K/44OZ44O844K544Gu54m55b60IiBbbGV2ZWw9Ml0KICAgIC0gaGVhZGluZyAi5bu656+J5L2c5ZOBIiBbbGV2ZWw9NV0KICAgIC0gcGFyYWdyYXBoOiDml6XmnKzlhajlm73jgYvjgokxNCwwMDDku7bku6XkuIrjga7lu7rnr4nkvZzlk4Hmg4XloLHjgpLplrLopqfjgafjgY3jgb7jgZnjgILlnLDln5/jgIHlubTku6PjgIHjgqvjg4bjgrTjg6rjg7zjgarjganjgafoqbPntLDmpJzntKLjgYzlj6/og73jgafjgZnjgIIKICAgIC0gbGluayAi5L2c5ZOB44KS5o6i44GZIgogICAgLSBoZWFkaW5nICLlu7rnr4nlrrYiIFtsZXZlbD01XQogICAgLSBwYXJhZ3JhcGg6IDIsOTAw5Lq65Lul5LiK44Gu5bu656+J5a625oOF5aCx44KS5Y+O6Yyy44CC57WM5q2044CB5L2c5ZOB44Oq44K544OI44CB5omA5bGe5LqL5YuZ5omA44Gq44Gp44Gu6Kmz57Sw5oOF5aCx44KS56K66KqN44Gn44GN44G+44GZ44CCCiAgICAtIGxpbmsgIuW7uuevieWutuOCkuaOouOBmSIKICAgIC0gaGVhZGluZyAi44Oe44OD44OX6KGo56S6IiBbbGV2ZWw9NV0KICAgIC0gcGFyYWdyYXBoOiDlu7rnr4nkvZzlk4HjgpLlnLDlm7PkuIrjgafoppbopprnmoTjgavmjqLntKLjgafjgY3jgb7jgZnjgILkvY3nva7mg4XloLHjgpLjgoLjgajjgavlkajovrrjga7lu7rnr4nkvZzlk4HjgpLnmbropovjgafjgY3jgb7jgZnjgIIKICAgIC0gbGluayAi44Oe44OD44OX44KS6ZaL44GPIgotIGNvbnRlbnRpbmZvOgogIC0gcGFyYWdyYXBoOiDlu7rnr4njg4fjg7zjgr/jg5njg7zjgrkgwqkgMjAyNQpgYGAKCiMgVGVzdCBzb3VyY2UKCmBgYHRzCiAgIDEgfCBpbXBvcnQgeyB0ZXN0LCBleHBlY3QgfSBmcm9tICdAcGxheXdyaWdodC90ZXN0JzsKICAgMiB8CiAgIDMgfCBjb25zdCBQUk9EVUNUSU9OX1VSTCA9ICdodHRwczovL2JvYi10YWt1eWEuZ2l0aHViLmlvL2FyY2hpLXNpdGUvJzsKICAgNCB8CiAgIDUgfCB0ZXN0LmRlc2NyaWJlKCdQcm9kdWN0aW9uIERlcGxveW1lbnQnLCAoKSA9PiB7CiAgIDYgfCAgIHRlc3QuYmVmb3JlRWFjaChhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgNyB8ICAgICBhd2FpdCBwYWdlLmdvdG8oUFJPRFVDVElPTl9VUkwpOwogICA4IHwgICB9KTsKICAgOSB8CiAgMTAgfCAgIHRlc3QoJ3Nob3VsZCBsb2FkIHRoZSBwcm9kdWN0aW9uIHNpdGUgc3VjY2Vzc2Z1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTEgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVRpdGxlKC/ml6XmnKzjga7lu7rnr4njg57jg4Pjg5cvKTsKICAxMiB8ICAgICAKICAxMyB8ICAgICAvLyBDaGVjayB0aGF0IHRoZSBtYWluIGNvbnRlbnQgaXMgbG9hZGVkCiAgMTQgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UubG9jYXRvcignI3Jvb3QnKSkudG9CZVZpc2libGUoKTsKICAxNSB8ICAgICAKICAxNiB8ICAgICAvLyBDaGVjayBmb3IgdGhlIG1haW4gbmF2aWdhdGlvbiBvciBrZXkgZWxlbWVudHMKPiAxNyB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdoMSwgaDIsIC5NdWlUeXBvZ3JhcGh5LXJvb3QnKSkudG9CZVZpc2libGUoKTsKICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXiBFcnJvcjogZXhwZWN0LnRvQmVWaXNpYmxlOiBFcnJvcjogc3RyaWN0IG1vZGUgdmlvbGF0aW9uOiBsb2NhdG9yKCdoMSwgaDIsIC5NdWlUeXBvZ3JhcGh5LXJvb3QnKSByZXNvbHZlZCB0byAxNCBlbGVtZW50czoKICAxOCB8ICAgfSk7CiAgMTkgfAogIDIwIHwgICB0ZXN0KCdzaG91bGQgaGF2ZSB3b3JraW5nIGFzc2V0IGxvYWRpbmcnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAyMSB8ICAgICAvLyBXYWl0IGZvciB0aGUgcGFnZSB0byBiZSBmdWxseSBsb2FkZWQKICAyMiB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JMb2FkU3RhdGUoJ25ldHdvcmtpZGxlJyk7CiAgMjMgfCAgICAgCiAgMjQgfCAgICAgLy8gQ2hlY2sgZm9yIGFueSBjb25zb2xlIGVycm9ycwogIDI1IHwgICAgIGNvbnN0IGNvbnNvbGVFcnJvcnMgPSBbXTsKICAyNiB8ICAgICBwYWdlLm9uKCdjb25zb2xlJywgbXNnID0+IHsKICAyNyB8ICAgICAgIGlmIChtc2cudHlwZSgpID09PSAnZXJyb3InKSB7CiAgMjggfCAgICAgICAgIGNvbnNvbGVFcnJvcnMucHVzaChtc2cudGV4dCgpKTsKICAyOSB8ICAgICAgIH0KICAzMCB8ICAgICB9KTsKICAzMSB8ICAgICAKICAzMiB8ICAgICAvLyBBbGxvdyBzb21lIHRpbWUgZm9yIGFueSBhc3luYyBvcGVyYXRpb25zCiAgMzMgfCAgICAgYXdhaXQgcGFnZS53YWl0Rm9yVGltZW91dCgzMDAwKTsKICAzNCB8ICAgICAKICAzNSB8ICAgICAvLyBDaGVjayB0aGF0IHRoZXJlIGFyZSBubyBjcml0aWNhbCBjb25zb2xlIGVycm9ycwogIDM2IHwgICAgIGNvbnN0IGNyaXRpY2FsRXJyb3JzID0gY29uc29sZUVycm9ycy5maWx0ZXIoZXJyb3IgPT4gCiAgMzcgfCAgICAgICBlcnJvci5pbmNsdWRlcygnRmFpbGVkIHRvIGxvYWQnKSB8fCAKICAzOCB8ICAgICAgIGVycm9yLmluY2x1ZGVzKCc0MDQnKSB8fAogIDM5IHwgICAgICAgZXJyb3IuaW5jbHVkZXMoJ25ldDo6RVJSXycpCiAgNDAgfCAgICAgKTsKICA0MSB8ICAgICAKICA0MiB8ICAgICBleHBlY3QoY3JpdGljYWxFcnJvcnMpLnRvSGF2ZUxlbmd0aCgwKTsKICA0MyB8ICAgfSk7CiAgNDQgfAogIDQ1IHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIFNQQSByb3V0aW5nIGNvcnJlY3RseScsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDQ2IHwgICAgIC8vIFRlc3QgdGhlIDQwNCBwYWdlIGZhbGxiYWNrIGZvciBTUEEgcm91dGluZwogIDQ3IHwgICAgIGF3YWl0IHBhZ2UuZ290byhgJHtQUk9EVUNUSU9OX1VSTH1ub24tZXhpc3RlbnQtcGFnZWApOwogIDQ4IHwgICAgIAogIDQ5IHwgICAgIC8vIFNob3VsZCBzdGlsbCBsb2FkIHRoZSBhcHAgKGR1ZSB0byA0MDQuaHRtbCBmYWxsYmFjaykKICA1MCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCcjcm9vdCcpKS50b0JlVmlzaWJsZSgpOwogIDUxIHwgICAgIAogIDUyIHwgICAgIC8vIFRoZSBhcHAgc2hvdWxkIGhhbmRsZSB0aGUgdW5rbm93biByb3V0ZSBncmFjZWZ1bGx5CiAgNTMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVRpdGxlKC/ml6XmnKzjga7lu7rnr4njg57jg4Pjg5cvKTsKICA1NCB8ICAgfSk7CiAgNTUgfAogIDU2IHwgICB0ZXN0KCdzaG91bGQgaGF2ZSBwcm9wZXIgc2VjdXJpdHkgaGVhZGVycycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDU3IHwgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgcGFnZS5nb3RvKFBST0RVQ1RJT05fVVJMKTsKICA1OCB8ICAgICAKICA1OSB8ICAgICBleHBlY3QocmVzcG9uc2U/LnN0YXR1cygpKS50b0JlKDIwMCk7CiAgNjAgfCAgICAgCiAgNjEgfCAgICAgLy8gQ2hlY2sgZm9yIGNvbW1vbiBzZWN1cml0eSBoZWFkZXJzCiAgNjIgfCAgICAgY29uc3QgaGVhZGVycyA9IHJlc3BvbnNlPy5oZWFkZXJzKCk7CiAgNjMgfCAgICAgCiAgNjQgfCAgICAgLy8gR2l0SHViIFBhZ2VzIHNob3VsZCBwcm92aWRlIHRoZXNlIGF1dG9tYXRpY2FsbHkKICA2NSB8ICAgICBleHBlY3QoaGVhZGVycz8uWyd4LWZyYW1lLW9wdGlvbnMnXSkudG9CZURlZmluZWQoKTsKICA2NiB8ICAgICBleHBlY3QoaGVhZGVycz8uWyd4LWNvbnRlbnQtdHlwZS1vcHRpb25zJ10pLnRvQmVEZWZpbmVkKCk7CiAgNjcgfCAgIH0pOwogIDY4IHwgfSk7CmBgYA=="
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                        "column": 63,
-                        "line": 17
-                      }
-                    },
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 1717,
-                      "error": {
-                        "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:\n    1) <a href=\"#/\" data-discover=\"true\" data-testid=\"site-title\" class=\"MuiTypography-root MuiTypography-h6 css-198h993\">建築データベース</a> aka getByTestId('site-title')\n    2) <h1 id=\"main-heading\" class=\"MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6\">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })\n    3) <p class=\"MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty\">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')\n    4) <h2 id=\"recent-works-heading\" class=\"MuiTypography-root MuiTypography-h4 css-zjdfnm\">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })\n    5) <h6 class=\"MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun\">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })\n    6) <p class=\"MuiTypography-root MuiTypography-body2 css-1fuj3vy\">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')\n    7) <h2 id=\"features-heading\" class=\"MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07\">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })\n    8) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })\n    9) <p class=\"MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw\">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')\n    10) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築家</h5> aka getByRole('heading', { name: '建築家' })\n    ...\n\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, .MuiTypography-root')\u001b[22m\n",
-                        "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:\n    1) <a href=\"#/\" data-discover=\"true\" data-testid=\"site-title\" class=\"MuiTypography-root MuiTypography-h6 css-198h993\">建築データベース</a> aka getByTestId('site-title')\n    2) <h1 id=\"main-heading\" class=\"MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6\">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })\n    3) <p class=\"MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty\">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')\n    4) <h2 id=\"recent-works-heading\" class=\"MuiTypography-root MuiTypography-h4 css-zjdfnm\">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })\n    5) <h6 class=\"MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun\">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })\n    6) <p class=\"MuiTypography-root MuiTypography-body2 css-1fuj3vy\">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')\n    7) <h2 id=\"features-heading\" class=\"MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07\">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })\n    8) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })\n    9) <p class=\"MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw\">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')\n    10) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築家</h5> aka getByRole('heading', { name: '建築家' })\n    ...\n\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, .MuiTypography-root')\u001b[22m\n\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:17:63",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                          "column": 63,
-                          "line": 17
-                        },
-                        "snippet": "  15 |     \n  16 |     // Check for the main navigation or key elements\n> 17 |     await expect(page.locator('h1, h2, .MuiTypography-root')).toBeVisible();\n     |                                                               ^\n  18 |   });\n  19 |\n  20 |   test('should have working asset loading', async ({ page }) => {"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                            "column": 63,
-                            "line": 17
-                          },
-                          "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('h1, h2, .MuiTypography-root') resolved to 14 elements:\n    1) <a href=\"#/\" data-discover=\"true\" data-testid=\"site-title\" class=\"MuiTypography-root MuiTypography-h6 css-198h993\">建築データベース</a> aka getByTestId('site-title')\n    2) <h1 id=\"main-heading\" class=\"MuiTypography-root MuiTypography-h1 MuiTypography-alignCenter MuiTypography-gutterBottom css-1o4vrf6\">建築データベース</h1> aka getByRole('heading', { name: '建築データベース' })\n    3) <p class=\"MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter MuiTypography-paragraph css-110xgty\">…</p> aka getByText('日本の建築作品と建築家を検索・閲覧できる包括的なデータベース')\n    4) <h2 id=\"recent-works-heading\" class=\"MuiTypography-root MuiTypography-h4 css-zjdfnm\">最近の建築作品</h2> aka getByRole('heading', { name: '最近の建築作品' })\n    5) <h6 class=\"MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-vsuhun\">建築作品が見つかりませんでした</h6> aka getByRole('heading', { name: '建築作品が見つかりませんでした' })\n    6) <p class=\"MuiTypography-root MuiTypography-body2 css-1fuj3vy\">データベースの接続を確認してください</p> aka getByText('データベースの接続を確認してください')\n    7) <h2 id=\"features-heading\" class=\"MuiTypography-root MuiTypography-h4 MuiTypography-alignCenter MuiTypography-gutterBottom css-10smr07\">データベースの特徴</h2> aka getByRole('heading', { name: 'データベースの特徴' })\n    8) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築作品</h5> aka getByRole('heading', { name: '建築作品', exact: true })\n    9) <p class=\"MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-l9rcbw\">日本全国から14,000件以上の建築作品情報を閲覧できます。地域、年代、カテゴリーなどで詳細検索が…</p> aka getByText('日本全国から14,000')\n    10) <h5 class=\"MuiTypography-root MuiTypography-h5 css-1lumoho\">建築家</h5> aka getByRole('heading', { name: '建築家' })\n    ...\n\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1, h2, .MuiTypography-root')\u001b[22m\n\n\n  15 |     \n  16 |     // Check for the main navigation or key elements\n> 17 |     await expect(page.locator('h1, h2, .MuiTypography-root')).toBeVisible();\n     |                                                               ^\n  18 |   });\n  19 |\n  20 |   test('should have working asset loading', async ({ page }) => {\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:17:63"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T03:26:36.069Z",
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "_prompt-0",
-                          "contentType": "text/markdown",
-                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBQcm9kdWN0aW9uIERlcGxveW1lbnQgPj4gc2hvdWxkIGxvYWQgdGhlIHByb2R1Y3Rpb24gc2l0ZSBzdWNjZXNzZnVsbHkKLSBMb2NhdGlvbjogL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9wcm9kdWN0aW9uLWRlcGxveW1lbnQuc3BlYy50czoxMDo3CgojIEVycm9yIGRldGFpbHMKCmBgYApFcnJvcjogZXhwZWN0LnRvQmVWaXNpYmxlOiBFcnJvcjogc3RyaWN0IG1vZGUgdmlvbGF0aW9uOiBsb2NhdG9yKCdoMSwgaDIsIC5NdWlUeXBvZ3JhcGh5LXJvb3QnKSByZXNvbHZlZCB0byAxNCBlbGVtZW50czoKICAgIDEpIDxhIGhyZWY9IiMvIiBkYXRhLWRpc2NvdmVyPSJ0cnVlIiBkYXRhLXRlc3RpZD0ic2l0ZS10aXRsZSIgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg2IGNzcy0xOThoOTkzIj7lu7rnr4njg4fjg7zjgr/jg5njg7zjgrk8L2E+IGFrYSBnZXRCeVRlc3RJZCgnc2l0ZS10aXRsZScpCiAgICAyKSA8aDEgaWQ9Im1haW4taGVhZGluZyIgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWgxIE11aVR5cG9ncmFwaHktYWxpZ25DZW50ZXIgTXVpVHlwb2dyYXBoeS1ndXR0ZXJCb3R0b20gY3NzLTFvNHZyZjYiPuW7uuevieODh+ODvOOCv+ODmeODvOOCuTwvaDE+IGFrYSBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IG5hbWU6ICflu7rnr4njg4fjg7zjgr/jg5njg7zjgrknIH0pCiAgICAzKSA8cCBjbGFzcz0iTXVpVHlwb2dyYXBoeS1yb290IE11aVR5cG9ncmFwaHktaDUgTXVpVHlwb2dyYXBoeS1hbGlnbkNlbnRlciBNdWlUeXBvZ3JhcGh5LXBhcmFncmFwaCBjc3MtMTEweGd0eSI+4oCmPC9wPiBha2EgZ2V0QnlUZXh0KCfml6XmnKzjga7lu7rnr4nkvZzlk4Hjgajlu7rnr4nlrrbjgpLmpJzntKLjg7vplrLopqfjgafjgY3jgovljIXmi6znmoTjgarjg4fjg7zjgr/jg5njg7zjgrknKQogICAgNCkgPGgyIGlkPSJyZWNlbnQtd29ya3MtaGVhZGluZyIgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg0IGNzcy16amRmbm0iPuacgOi/keOBruW7uuevieS9nOWTgTwvaDI+IGFrYSBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IG5hbWU6ICfmnIDov5Hjga7lu7rnr4nkvZzlk4EnIH0pCiAgICA1KSA8aDYgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg2IE11aVR5cG9ncmFwaHktZ3V0dGVyQm90dG9tIGNzcy12c3VodW4iPuW7uuevieS9nOWTgeOBjOimi+OBpOOBi+OCiuOBvuOBm+OCk+OBp+OBl+OBnzwvaDY+IGFrYSBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IG5hbWU6ICflu7rnr4nkvZzlk4HjgYzopovjgaTjgYvjgorjgb7jgZvjgpPjgafjgZfjgZ8nIH0pCiAgICA2KSA8cCBjbGFzcz0iTXVpVHlwb2dyYXBoeS1yb290IE11aVR5cG9ncmFwaHktYm9keTIgY3NzLTFmdWozdnkiPuODh+ODvOOCv+ODmeODvOOCueOBruaOpee2muOCkueiuuiqjeOBl+OBpuOBj+OBoOOBleOBhDwvcD4gYWthIGdldEJ5VGV4dCgn44OH44O844K/44OZ44O844K544Gu5o6l57aa44KS56K66KqN44GX44Gm44GP44Gg44GV44GEJykKICAgIDcpIDxoMiBpZD0iZmVhdHVyZXMtaGVhZGluZyIgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg0IE11aVR5cG9ncmFwaHktYWxpZ25DZW50ZXIgTXVpVHlwb2dyYXBoeS1ndXR0ZXJCb3R0b20gY3NzLTEwc21yMDciPuODh+ODvOOCv+ODmeODvOOCueOBrueJueW+tDwvaDI+IGFrYSBnZXRCeVJvbGUoJ2hlYWRpbmcnLCB7IG5hbWU6ICfjg4fjg7zjgr/jg5njg7zjgrnjga7nibnlvrQnIH0pCiAgICA4KSA8aDUgY2xhc3M9Ik11aVR5cG9ncmFwaHktcm9vdCBNdWlUeXBvZ3JhcGh5LWg1IGNzcy0xbHVtb2hvIj7lu7rnr4nkvZzlk4E8L2g1PiBha2EgZ2V0QnlSb2xlKCdoZWFkaW5nJywgeyBuYW1lOiAn5bu656+J5L2c5ZOBJywgZXhhY3Q6IHRydWUgfSkKICAgIDkpIDxwIGNsYXNzPSJNdWlUeXBvZ3JhcGh5LXJvb3QgTXVpVHlwb2dyYXBoeS1ib2R5MSBNdWlUeXBvZ3JhcGh5LXBhcmFncmFwaCBjc3MtbDlyY2J3Ij7ml6XmnKzlhajlm73jgYvjgokxNCwwMDDku7bku6XkuIrjga7lu7rnr4nkvZzlk4Hmg4XloLHjgpLplrLopqfjgafjgY3jgb7jgZnjgILlnLDln5/jgIHlubTku6PjgIHjgqvjg4bjgrTjg6rjg7zjgarjganjgafoqbPntLDmpJzntKLjgYzigKY8L3A+IGFrYSBnZXRCeVRleHQoJ+aXpeacrOWFqOWbveOBi+OCiTE0LDAwMCcpCiAgICAxMCkgPGg1IGNsYXNzPSJNdWlUeXBvZ3JhcGh5LXJvb3QgTXVpVHlwb2dyYXBoeS1oNSBjc3MtMWx1bW9obyI+5bu656+J5a62PC9oNT4gYWthIGdldEJ5Um9sZSgnaGVhZGluZycsIHsgbmFtZTogJ+W7uuevieWuticgfSkKICAgIC4uLgoKQ2FsbCBsb2c6CiAgLSBleHBlY3QudG9CZVZpc2libGUgd2l0aCB0aW1lb3V0IDEwMDAwbXMKICAtIHdhaXRpbmcgZm9yIGxvY2F0b3IoJ2gxLCBoMiwgLk11aVR5cG9ncmFwaHktcm9vdCcpCgogICAgYXQgL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9wcm9kdWN0aW9uLWRlcGxveW1lbnQuc3BlYy50czoxNzo2MwpgYGAKCiMgUGFnZSBzbmFwc2hvdAoKYGBgeWFtbAotIG5hdmlnYXRpb24gIuODoeOCpOODs+ODiuODk+OCsuODvOOCt+ODp+ODsyI6CiAgLSBsaW5rICLlu7rnr4njg4fjg7zjgr/jg5njg7zjgrkiCiAgLSBtZW51YmFyICLjg4fjgrnjgq/jg4jjg4Pjg5fjg4rjg5PjgrLjg7zjgrfjg6fjg7MiOgogICAgLSBtZW51aXRlbSAi44Ob44O844OgIgogICAgLSBtZW51aXRlbSAi5bu656+J5L2c5ZOBIgogICAgLSBtZW51aXRlbSAi5bu656+J5a62IgogICAgLSBtZW51aXRlbSAi44Oe44OD44OXIgogICAgLSBtZW51aXRlbSAiRELjgqjjgq/jgrnjg5fjg63jg7zjg6njg7wiCi0gbWFpbjoKICAtIGJhbm5lciAi5bu656+J44OH44O844K/44OZ44O844K5IjoKICAgIC0gaGVhZGluZyAi5bu656+J44OH44O844K/44OZ44O844K5IiBbbGV2ZWw9MV0KICAgIC0gcGFyYWdyYXBoOiDml6XmnKzjga7lu7rnr4nkvZzlk4Hjgajlu7rnr4nlrrbjgpLmpJzntKLjg7vplrLopqfjgafjgY3jgosg5YyF5ous55qE44Gq44OH44O844K/44OZ44O844K5CiAgICAtIHRleHQ6IDE0LDAwMCsg5bu656+J5L2c5ZOBIDIsOTAwKyDlu7rnr4nlrrYg5YWo5Zu95a++5b+cCiAgICAtIHNlYXJjaCAi5bu656+J5L2c5ZOB5qSc57SiIjoKICAgICAgLSBzZWFyY2hib3ggIuW7uuevieS9nOWTgeaknOe0oiIKICAgICAgLSBidXR0b24gIuaknOe0oiIKICAtIHJlZ2lvbiAi5pyA6L+R44Gu5bu656+J5L2c5ZOBIjoKICAgIC0gaGVhZGluZyAi5pyA6L+R44Gu5bu656+J5L2c5ZOBIiBbbGV2ZWw9Ml0KICAgIC0gYWxlcnQ6CiAgICAgIC0gdGV4dDogIkZhaWxlZCB0byBleGVjdXRlICdwb3N0TWVzc2FnZScgb24gJ1dvcmtlcic6ICgpPT5jb25zb2xlLmxvZyhcIuODh+ODvOOCv+ODmeODvOOCueODr+ODvOOCq+ODvOOBrua6luWCmeWujOS6hlwiKSBjb3VsZCBub3QgYmUgY2xvbmVkLiIKICAgICAgLSBsaW5rICLoqLrmlq3jg4Tjg7zjg6vjgpLplovjgY8iCiAgICAtIGhlYWRpbmcgIuW7uuevieS9nOWTgeOBjOimi+OBpOOBi+OCiuOBvuOBm+OCk+OBp+OBl+OBnyIgW2xldmVsPTZdCiAgICAtIHBhcmFncmFwaDog44OH44O844K/44OZ44O844K544Gu5o6l57aa44KS56K66KqN44GX44Gm44GP44Gg44GV44GECiAgLSBzZXBhcmF0b3IKICAtIHJlZ2lvbiAi44OH44O844K/44OZ44O844K544Gu54m55b60IjoKICAgIC0gaGVhZGluZyAi44OH44O844K/44OZ44O844K544Gu54m55b60IiBbbGV2ZWw9Ml0KICAgIC0gaGVhZGluZyAi5bu656+J5L2c5ZOBIiBbbGV2ZWw9NV0KICAgIC0gcGFyYWdyYXBoOiDml6XmnKzlhajlm73jgYvjgokxNCwwMDDku7bku6XkuIrjga7lu7rnr4nkvZzlk4Hmg4XloLHjgpLplrLopqfjgafjgY3jgb7jgZnjgILlnLDln5/jgIHlubTku6PjgIHjgqvjg4bjgrTjg6rjg7zjgarjganjgafoqbPntLDmpJzntKLjgYzlj6/og73jgafjgZnjgIIKICAgIC0gbGluayAi5L2c5ZOB44KS5o6i44GZIgogICAgLSBoZWFkaW5nICLlu7rnr4nlrrYiIFtsZXZlbD01XQogICAgLSBwYXJhZ3JhcGg6IDIsOTAw5Lq65Lul5LiK44Gu5bu656+J5a625oOF5aCx44KS5Y+O6Yyy44CC57WM5q2044CB5L2c5ZOB44Oq44K544OI44CB5omA5bGe5LqL5YuZ5omA44Gq44Gp44Gu6Kmz57Sw5oOF5aCx44KS56K66KqN44Gn44GN44G+44GZ44CCCiAgICAtIGxpbmsgIuW7uuevieWutuOCkuaOouOBmSIKICAgIC0gaGVhZGluZyAi44Oe44OD44OX6KGo56S6IiBbbGV2ZWw9NV0KICAgIC0gcGFyYWdyYXBoOiDlu7rnr4nkvZzlk4HjgpLlnLDlm7PkuIrjgafoppbopprnmoTjgavmjqLntKLjgafjgY3jgb7jgZnjgILkvY3nva7mg4XloLHjgpLjgoLjgajjgavlkajovrrjga7lu7rnr4nkvZzlk4HjgpLnmbropovjgafjgY3jgb7jgZnjgIIKICAgIC0gbGluayAi44Oe44OD44OX44KS6ZaL44GPIgotIGNvbnRlbnRpbmZvOgogIC0gcGFyYWdyYXBoOiDlu7rnr4njg4fjg7zjgr/jg5njg7zjgrkgwqkgMjAyNQpgYGAKCiMgVGVzdCBzb3VyY2UKCmBgYHRzCiAgIDEgfCBpbXBvcnQgeyB0ZXN0LCBleHBlY3QgfSBmcm9tICdAcGxheXdyaWdodC90ZXN0JzsKICAgMiB8CiAgIDMgfCBjb25zdCBQUk9EVUNUSU9OX1VSTCA9ICdodHRwczovL2JvYi10YWt1eWEuZ2l0aHViLmlvL2FyY2hpLXNpdGUvJzsKICAgNCB8CiAgIDUgfCB0ZXN0LmRlc2NyaWJlKCdQcm9kdWN0aW9uIERlcGxveW1lbnQnLCAoKSA9PiB7CiAgIDYgfCAgIHRlc3QuYmVmb3JlRWFjaChhc3luYyAoeyBwYWdlIH0pID0+IHsKICAgNyB8ICAgICBhd2FpdCBwYWdlLmdvdG8oUFJPRFVDVElPTl9VUkwpOwogICA4IHwgICB9KTsKICAgOSB8CiAgMTAgfCAgIHRlc3QoJ3Nob3VsZCBsb2FkIHRoZSBwcm9kdWN0aW9uIHNpdGUgc3VjY2Vzc2Z1bGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgMTEgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVRpdGxlKC/ml6XmnKzjga7lu7rnr4njg57jg4Pjg5cvKTsKICAxMiB8ICAgICAKICAxMyB8ICAgICAvLyBDaGVjayB0aGF0IHRoZSBtYWluIGNvbnRlbnQgaXMgbG9hZGVkCiAgMTQgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UubG9jYXRvcignI3Jvb3QnKSkudG9CZVZpc2libGUoKTsKICAxNSB8ICAgICAKICAxNiB8ICAgICAvLyBDaGVjayBmb3IgdGhlIG1haW4gbmF2aWdhdGlvbiBvciBrZXkgZWxlbWVudHMKPiAxNyB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCdoMSwgaDIsIC5NdWlUeXBvZ3JhcGh5LXJvb3QnKSkudG9CZVZpc2libGUoKTsKICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXiBFcnJvcjogZXhwZWN0LnRvQmVWaXNpYmxlOiBFcnJvcjogc3RyaWN0IG1vZGUgdmlvbGF0aW9uOiBsb2NhdG9yKCdoMSwgaDIsIC5NdWlUeXBvZ3JhcGh5LXJvb3QnKSByZXNvbHZlZCB0byAxNCBlbGVtZW50czoKICAxOCB8ICAgfSk7CiAgMTkgfAogIDIwIHwgICB0ZXN0KCdzaG91bGQgaGF2ZSB3b3JraW5nIGFzc2V0IGxvYWRpbmcnLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAyMSB8ICAgICAvLyBXYWl0IGZvciB0aGUgcGFnZSB0byBiZSBmdWxseSBsb2FkZWQKICAyMiB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JMb2FkU3RhdGUoJ25ldHdvcmtpZGxlJyk7CiAgMjMgfCAgICAgCiAgMjQgfCAgICAgLy8gQ2hlY2sgZm9yIGFueSBjb25zb2xlIGVycm9ycwogIDI1IHwgICAgIGNvbnN0IGNvbnNvbGVFcnJvcnMgPSBbXTsKICAyNiB8ICAgICBwYWdlLm9uKCdjb25zb2xlJywgbXNnID0+IHsKICAyNyB8ICAgICAgIGlmIChtc2cudHlwZSgpID09PSAnZXJyb3InKSB7CiAgMjggfCAgICAgICAgIGNvbnNvbGVFcnJvcnMucHVzaChtc2cudGV4dCgpKTsKICAyOSB8ICAgICAgIH0KICAzMCB8ICAgICB9KTsKICAzMSB8ICAgICAKICAzMiB8ICAgICAvLyBBbGxvdyBzb21lIHRpbWUgZm9yIGFueSBhc3luYyBvcGVyYXRpb25zCiAgMzMgfCAgICAgYXdhaXQgcGFnZS53YWl0Rm9yVGltZW91dCgzMDAwKTsKICAzNCB8ICAgICAKICAzNSB8ICAgICAvLyBDaGVjayB0aGF0IHRoZXJlIGFyZSBubyBjcml0aWNhbCBjb25zb2xlIGVycm9ycwogIDM2IHwgICAgIGNvbnN0IGNyaXRpY2FsRXJyb3JzID0gY29uc29sZUVycm9ycy5maWx0ZXIoZXJyb3IgPT4gCiAgMzcgfCAgICAgICBlcnJvci5pbmNsdWRlcygnRmFpbGVkIHRvIGxvYWQnKSB8fCAKICAzOCB8ICAgICAgIGVycm9yLmluY2x1ZGVzKCc0MDQnKSB8fAogIDM5IHwgICAgICAgZXJyb3IuaW5jbHVkZXMoJ25ldDo6RVJSXycpCiAgNDAgfCAgICAgKTsKICA0MSB8ICAgICAKICA0MiB8ICAgICBleHBlY3QoY3JpdGljYWxFcnJvcnMpLnRvSGF2ZUxlbmd0aCgwKTsKICA0MyB8ICAgfSk7CiAgNDQgfAogIDQ1IHwgICB0ZXN0KCdzaG91bGQgaGFuZGxlIFNQQSByb3V0aW5nIGNvcnJlY3RseScsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDQ2IHwgICAgIC8vIFRlc3QgdGhlIDQwNCBwYWdlIGZhbGxiYWNrIGZvciBTUEEgcm91dGluZwogIDQ3IHwgICAgIGF3YWl0IHBhZ2UuZ290byhgJHtQUk9EVUNUSU9OX1VSTH1ub24tZXhpc3RlbnQtcGFnZWApOwogIDQ4IHwgICAgIAogIDQ5IHwgICAgIC8vIFNob3VsZCBzdGlsbCBsb2FkIHRoZSBhcHAgKGR1ZSB0byA0MDQuaHRtbCBmYWxsYmFjaykKICA1MCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCcjcm9vdCcpKS50b0JlVmlzaWJsZSgpOwogIDUxIHwgICAgIAogIDUyIHwgICAgIC8vIFRoZSBhcHAgc2hvdWxkIGhhbmRsZSB0aGUgdW5rbm93biByb3V0ZSBncmFjZWZ1bGx5CiAgNTMgfCAgICAgYXdhaXQgZXhwZWN0KHBhZ2UpLnRvSGF2ZVRpdGxlKC/ml6XmnKzjga7lu7rnr4njg57jg4Pjg5cvKTsKICA1NCB8ICAgfSk7CiAgNTUgfAogIDU2IHwgICB0ZXN0KCdzaG91bGQgaGF2ZSBwcm9wZXIgc2VjdXJpdHkgaGVhZGVycycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDU3IHwgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgcGFnZS5nb3RvKFBST0RVQ1RJT05fVVJMKTsKICA1OCB8ICAgICAKICA1OSB8ICAgICBleHBlY3QocmVzcG9uc2U/LnN0YXR1cygpKS50b0JlKDIwMCk7CiAgNjAgfCAgICAgCiAgNjEgfCAgICAgLy8gQ2hlY2sgZm9yIGNvbW1vbiBzZWN1cml0eSBoZWFkZXJzCiAgNjIgfCAgICAgY29uc3QgaGVhZGVycyA9IHJlc3BvbnNlPy5oZWFkZXJzKCk7CiAgNjMgfCAgICAgCiAgNjQgfCAgICAgLy8gR2l0SHViIFBhZ2VzIHNob3VsZCBwcm92aWRlIHRoZXNlIGF1dG9tYXRpY2FsbHkKICA2NSB8ICAgICBleHBlY3QoaGVhZGVycz8uWyd4LWZyYW1lLW9wdGlvbnMnXSkudG9CZURlZmluZWQoKTsKICA2NiB8ICAgICBleHBlY3QoaGVhZGVycz8uWyd4LWNvbnRlbnQtdHlwZS1vcHRpb25zJ10pLnRvQmVEZWZpbmVkKCk7CiAgNjcgfCAgIH0pOwogIDY4IHwgfSk7CmBgYA=="
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-e27f0-roduction-site-successfully-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                        "column": 63,
-                        "line": 17
-                      }
+                      "startTime": "2025-07-07T05:08:18.757Z",
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
-              "id": "565b83f40e373b6bd6e9-199f619cd6f6afa039ac",
-              "file": "production-deployment.spec.ts",
-              "line": 10,
+              "id": "7c18564b48ab5acea90d-1b5e5c1d94108c052ecf",
+              "file": "deployment-validation.spec.ts",
+              "line": 11,
               "column": 7
             },
             {
-              "title": "should have working asset loading",
+              "title": "Japanese title displays correctly",
               "ok": true,
               "tags": [],
               "tests": [
@@ -339,25 +242,29 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 5901,
+                      "duration": 1337,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "Page title: 日本の建築マップ | Architecture Map of Japan\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-07-07T03:26:31.543Z",
+                      "startTime": "2025-07-07T05:08:18.767Z",
                       "attachments": []
                     }
                   ],
                   "status": "expected"
                 }
               ],
-              "id": "565b83f40e373b6bd6e9-881ccad6f332219e3562",
-              "file": "production-deployment.spec.ts",
-              "line": 20,
+              "id": "7c18564b48ab5acea90d-ec801f4f5ddb537a3e75",
+              "file": "deployment-validation.spec.ts",
+              "line": 23,
               "column": 7
             },
             {
-              "title": "should handle SPA routing correctly",
+              "title": "React app is functioning",
               "ok": true,
               "tags": [],
               "tests": [
@@ -372,26 +279,26 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 3064,
+                      "duration": 720,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-07-07T03:26:31.530Z",
+                      "startTime": "2025-07-07T05:08:18.759Z",
                       "attachments": []
                     }
                   ],
                   "status": "expected"
                 }
               ],
-              "id": "565b83f40e373b6bd6e9-04d93584a59e8b9f98a9",
-              "file": "production-deployment.spec.ts",
-              "line": 45,
+              "id": "7c18564b48ab5acea90d-c1f49d1234aa6a15125e",
+              "file": "deployment-validation.spec.ts",
+              "line": 46,
               "column": 7
             },
             {
-              "title": "should have proper security headers",
-              "ok": false,
+              "title": "database content is accessible",
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -404,127 +311,516 @@
                     {
                       "workerIndex": 3,
                       "parallelIndex": 3,
-                      "status": "failed",
-                      "duration": 2650,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeDefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeDefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:65:42",
-                        "matcherResult": {
-                          "message": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeDefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
-                          "pass": false
-                        },
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                          "column": 42,
-                          "line": 65
-                        },
-                        "snippet": "  63 |     \n  64 |     // GitHub Pages should provide these automatically\n> 65 |     expect(headers?.['x-frame-options']).toBeDefined();\n     |                                          ^\n  66 |     expect(headers?.['x-content-type-options']).toBeDefined();\n  67 |   });\n  68 | });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                            "column": 42,
-                            "line": 65
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeDefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  63 |     \n  64 |     // GitHub Pages should provide these automatically\n> 65 |     expect(headers?.['x-frame-options']).toBeDefined();\n     |                                          ^\n  66 |     expect(headers?.['x-content-type-options']).toBeDefined();\n  67 |   });\n  68 | });\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:65:42"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 1440,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-07-07T03:26:31.527Z",
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium/video.webm"
-                        },
-                        {
-                          "name": "_prompt-0",
-                          "contentType": "text/markdown",
-                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBQcm9kdWN0aW9uIERlcGxveW1lbnQgPj4gc2hvdWxkIGhhdmUgcHJvcGVyIHNlY3VyaXR5IGhlYWRlcnMKLSBMb2NhdGlvbjogL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9wcm9kdWN0aW9uLWRlcGxveW1lbnQuc3BlYy50czo1Njo3CgojIEVycm9yIGRldGFpbHMKCmBgYApFcnJvcjogZXhwZWN0KHJlY2VpdmVkKS50b0JlRGVmaW5lZCgpCgpSZWNlaXZlZDogdW5kZWZpbmVkCiAgICBhdCAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL3Byb2R1Y3Rpb24tZGVwbG95bWVudC5zcGVjLnRzOjY1OjQyCmBgYAoKIyBQYWdlIHNuYXBzaG90CgpgYGB5YW1sCi0gbmF2aWdhdGlvbiAi44Oh44Kk44Oz44OK44OT44Ky44O844K344On44OzIjoKICAtIGxpbmsgIuW7uuevieODh+ODvOOCv+ODmeODvOOCuSIKICAtIG1lbnViYXIgIuODh+OCueOCr+ODiOODg+ODl+ODiuODk+OCsuODvOOCt+ODp+ODsyI6CiAgICAtIG1lbnVpdGVtICLjg5vjg7zjg6AiCiAgICAtIG1lbnVpdGVtICLlu7rnr4nkvZzlk4EiCiAgICAtIG1lbnVpdGVtICLlu7rnr4nlrrYiCiAgICAtIG1lbnVpdGVtICLjg57jg4Pjg5ciCiAgICAtIG1lbnVpdGVtICJEQuOCqOOCr+OCueODl+ODreODvOODqeODvCIKLSBtYWluOgogIC0gYmFubmVyICLlu7rnr4njg4fjg7zjgr/jg5njg7zjgrkiOgogICAgLSBoZWFkaW5nICLlu7rnr4njg4fjg7zjgr/jg5njg7zjgrkiIFtsZXZlbD0xXQogICAgLSBwYXJhZ3JhcGg6IOaXpeacrOOBruW7uuevieS9nOWTgeOBqOW7uuevieWutuOCkuaknOe0ouODu+mWsuimp+OBp+OBjeOCiyDljIXmi6znmoTjgarjg4fjg7zjgr/jg5njg7zjgrkKICAgIC0gdGV4dDogMTQsMDAwKyDlu7rnr4nkvZzlk4EgMiw5MDArIOW7uuevieWutiDlhajlm73lr77lv5wKICAgIC0gc2VhcmNoICLlu7rnr4nkvZzlk4HmpJzntKIiOgogICAgICAtIHNlYXJjaGJveCAi5bu656+J5L2c5ZOB5qSc57SiIgogICAgICAtIGJ1dHRvbiAi5qSc57SiIgogIC0gcmVnaW9uICLmnIDov5Hjga7lu7rnr4nkvZzlk4EiOgogICAgLSBoZWFkaW5nICLmnIDov5Hjga7lu7rnr4nkvZzlk4EiIFtsZXZlbD0yXQogICAgLSBhbGVydDoKICAgICAgLSB0ZXh0OiAiRmFpbGVkIHRvIGV4ZWN1dGUgJ3Bvc3RNZXNzYWdlJyBvbiAnV29ya2VyJzogKCk9PmNvbnNvbGUubG9nKFwi44OH44O844K/44OZ44O844K544Ov44O844Kr44O844Gu5rqW5YKZ5a6M5LqGXCIpIGNvdWxkIG5vdCBiZSBjbG9uZWQuIgogICAgICAtIGxpbmsgIuiouuaWreODhOODvOODq+OCkumWi+OBjyIKICAgIC0gaGVhZGluZyAi5bu656+J5L2c5ZOB44GM6KaL44Gk44GL44KK44G+44Gb44KT44Gn44GX44GfIiBbbGV2ZWw9Nl0KICAgIC0gcGFyYWdyYXBoOiDjg4fjg7zjgr/jg5njg7zjgrnjga7mjqXntprjgpLnorroqo3jgZfjgabjgY/jgaDjgZXjgYQKICAtIHNlcGFyYXRvcgogIC0gcmVnaW9uICLjg4fjg7zjgr/jg5njg7zjgrnjga7nibnlvrQiOgogICAgLSBoZWFkaW5nICLjg4fjg7zjgr/jg5njg7zjgrnjga7nibnlvrQiIFtsZXZlbD0yXQogICAgLSBoZWFkaW5nICLlu7rnr4nkvZzlk4EiIFtsZXZlbD01XQogICAgLSBwYXJhZ3JhcGg6IOaXpeacrOWFqOWbveOBi+OCiTE0LDAwMOS7tuS7peS4iuOBruW7uuevieS9nOWTgeaDheWgseOCkumWsuimp+OBp+OBjeOBvuOBmeOAguWcsOWfn+OAgeW5tOS7o+OAgeOCq+ODhuOCtOODquODvOOBquOBqeOBp+ips+e0sOaknOe0ouOBjOWPr+iDveOBp+OBmeOAggogICAgLSBsaW5rICLkvZzlk4HjgpLmjqLjgZkiCiAgICAtIGhlYWRpbmcgIuW7uuevieWutiIgW2xldmVsPTVdCiAgICAtIHBhcmFncmFwaDogMiw5MDDkurrku6XkuIrjga7lu7rnr4nlrrbmg4XloLHjgpLlj47pjLLjgILntYzmrbTjgIHkvZzlk4Hjg6rjgrnjg4jjgIHmiYDlsZ7kuovli5nmiYDjgarjganjga7oqbPntLDmg4XloLHjgpLnorroqo3jgafjgY3jgb7jgZnjgIIKICAgIC0gbGluayAi5bu656+J5a6244KS5o6i44GZIgogICAgLSBoZWFkaW5nICLjg57jg4Pjg5fooajnpLoiIFtsZXZlbD01XQogICAgLSBwYXJhZ3JhcGg6IOW7uuevieS9nOWTgeOCkuWcsOWbs+S4iuOBp+imluimmueahOOBq+aOoue0ouOBp+OBjeOBvuOBmeOAguS9jee9ruaDheWgseOCkuOCguOBqOOBq+WRqOi+uuOBruW7uuevieS9nOWTgeOCkueZuuimi+OBp+OBjeOBvuOBmeOAggogICAgLSBsaW5rICLjg57jg4Pjg5fjgpLplovjgY8iCi0gY29udGVudGluZm86CiAgLSBwYXJhZ3JhcGg6IOW7uuevieODh+ODvOOCv+ODmeODvOOCuSDCqSAyMDI1CmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgMSB8IGltcG9ydCB7IHRlc3QsIGV4cGVjdCB9IGZyb20gJ0BwbGF5d3JpZ2h0L3Rlc3QnOwogICAyIHwKICAgMyB8IGNvbnN0IFBST0RVQ1RJT05fVVJMID0gJ2h0dHBzOi8vYm9iLXRha3V5YS5naXRodWIuaW8vYXJjaGktc2l0ZS8nOwogICA0IHwKICAgNSB8IHRlc3QuZGVzY3JpYmUoJ1Byb2R1Y3Rpb24gRGVwbG95bWVudCcsICgpID0+IHsKICAgNiB8ICAgdGVzdC5iZWZvcmVFYWNoKGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA3IHwgICAgIGF3YWl0IHBhZ2UuZ290byhQUk9EVUNUSU9OX1VSTCk7CiAgIDggfCAgIH0pOwogICA5IHwKICAxMCB8ICAgdGVzdCgnc2hvdWxkIGxvYWQgdGhlIHByb2R1Y3Rpb24gc2l0ZSBzdWNjZXNzZnVsbHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxMSB8ICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVGl0bGUoL+aXpeacrOOBruW7uuevieODnuODg+ODly8pOwogIDEyIHwgICAgIAogIDEzIHwgICAgIC8vIENoZWNrIHRoYXQgdGhlIG1haW4gY29udGVudCBpcyBsb2FkZWQKICAxNCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCcjcm9vdCcpKS50b0JlVmlzaWJsZSgpOwogIDE1IHwgICAgIAogIDE2IHwgICAgIC8vIENoZWNrIGZvciB0aGUgbWFpbiBuYXZpZ2F0aW9uIG9yIGtleSBlbGVtZW50cwogIDE3IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJ2gxLCBoMiwgLk11aVR5cG9ncmFwaHktcm9vdCcpKS50b0JlVmlzaWJsZSgpOwogIDE4IHwgICB9KTsKICAxOSB8CiAgMjAgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHdvcmtpbmcgYXNzZXQgbG9hZGluZycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDIxIHwgICAgIC8vIFdhaXQgZm9yIHRoZSBwYWdlIHRvIGJlIGZ1bGx5IGxvYWRlZAogIDIyIHwgICAgIGF3YWl0IHBhZ2Uud2FpdEZvckxvYWRTdGF0ZSgnbmV0d29ya2lkbGUnKTsKICAyMyB8ICAgICAKICAyNCB8ICAgICAvLyBDaGVjayBmb3IgYW55IGNvbnNvbGUgZXJyb3JzCiAgMjUgfCAgICAgY29uc3QgY29uc29sZUVycm9ycyA9IFtdOwogIDI2IHwgICAgIHBhZ2Uub24oJ2NvbnNvbGUnLCBtc2cgPT4gewogIDI3IHwgICAgICAgaWYgKG1zZy50eXBlKCkgPT09ICdlcnJvcicpIHsKICAyOCB8ICAgICAgICAgY29uc29sZUVycm9ycy5wdXNoKG1zZy50ZXh0KCkpOwogIDI5IHwgICAgICAgfQogIDMwIHwgICAgIH0pOwogIDMxIHwgICAgIAogIDMyIHwgICAgIC8vIEFsbG93IHNvbWUgdGltZSBmb3IgYW55IGFzeW5jIG9wZXJhdGlvbnMKICAzMyB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JUaW1lb3V0KDMwMDApOwogIDM0IHwgICAgIAogIDM1IHwgICAgIC8vIENoZWNrIHRoYXQgdGhlcmUgYXJlIG5vIGNyaXRpY2FsIGNvbnNvbGUgZXJyb3JzCiAgMzYgfCAgICAgY29uc3QgY3JpdGljYWxFcnJvcnMgPSBjb25zb2xlRXJyb3JzLmZpbHRlcihlcnJvciA9PiAKICAzNyB8ICAgICAgIGVycm9yLmluY2x1ZGVzKCdGYWlsZWQgdG8gbG9hZCcpIHx8IAogIDM4IHwgICAgICAgZXJyb3IuaW5jbHVkZXMoJzQwNCcpIHx8CiAgMzkgfCAgICAgICBlcnJvci5pbmNsdWRlcygnbmV0OjpFUlJfJykKICA0MCB8ICAgICApOwogIDQxIHwgICAgIAogIDQyIHwgICAgIGV4cGVjdChjcml0aWNhbEVycm9ycykudG9IYXZlTGVuZ3RoKDApOwogIDQzIHwgICB9KTsKICA0NCB8CiAgNDUgfCAgIHRlc3QoJ3Nob3VsZCBoYW5kbGUgU1BBIHJvdXRpbmcgY29ycmVjdGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgNDYgfCAgICAgLy8gVGVzdCB0aGUgNDA0IHBhZ2UgZmFsbGJhY2sgZm9yIFNQQSByb3V0aW5nCiAgNDcgfCAgICAgYXdhaXQgcGFnZS5nb3RvKGAke1BST0RVQ1RJT05fVVJMfW5vbi1leGlzdGVudC1wYWdlYCk7CiAgNDggfCAgICAgCiAgNDkgfCAgICAgLy8gU2hvdWxkIHN0aWxsIGxvYWQgdGhlIGFwcCAoZHVlIHRvIDQwNC5odG1sIGZhbGxiYWNrKQogIDUwIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJyNyb290JykpLnRvQmVWaXNpYmxlKCk7CiAgNTEgfCAgICAgCiAgNTIgfCAgICAgLy8gVGhlIGFwcCBzaG91bGQgaGFuZGxlIHRoZSB1bmtub3duIHJvdXRlIGdyYWNlZnVsbHkKICA1MyB8ICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVGl0bGUoL+aXpeacrOOBruW7uuevieODnuODg+ODly8pOwogIDU0IHwgICB9KTsKICA1NSB8CiAgNTYgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHByb3BlciBzZWN1cml0eSBoZWFkZXJzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgNTcgfCAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBwYWdlLmdvdG8oUFJPRFVDVElPTl9VUkwpOwogIDU4IHwgICAgIAogIDU5IHwgICAgIGV4cGVjdChyZXNwb25zZT8uc3RhdHVzKCkpLnRvQmUoMjAwKTsKICA2MCB8ICAgICAKICA2MSB8ICAgICAvLyBDaGVjayBmb3IgY29tbW9uIHNlY3VyaXR5IGhlYWRlcnMKICA2MiB8ICAgICBjb25zdCBoZWFkZXJzID0gcmVzcG9uc2U/LmhlYWRlcnMoKTsKICA2MyB8ICAgICAKICA2NCB8ICAgICAvLyBHaXRIdWIgUGFnZXMgc2hvdWxkIHByb3ZpZGUgdGhlc2UgYXV0b21hdGljYWxseQo+IDY1IHwgICAgIGV4cGVjdChoZWFkZXJzPy5bJ3gtZnJhbWUtb3B0aW9ucyddKS50b0JlRGVmaW5lZCgpOwogICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeIEVycm9yOiBleHBlY3QocmVjZWl2ZWQpLnRvQmVEZWZpbmVkKCkKICA2NiB8ICAgICBleHBlY3QoaGVhZGVycz8uWyd4LWNvbnRlbnQtdHlwZS1vcHRpb25zJ10pLnRvQmVEZWZpbmVkKCk7CiAgNjcgfCAgIH0pOwogIDY4IHwgfSk7CmBgYA=="
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                        "column": 42,
-                        "line": 65
-                      }
-                    },
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 3,
-                      "status": "failed",
-                      "duration": 1149,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeDefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeDefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:65:42",
-                        "matcherResult": {
-                          "message": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeDefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m",
-                          "pass": false
-                        },
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                          "column": 42,
-                          "line": 65
-                        },
-                        "snippet": "  63 |     \n  64 |     // GitHub Pages should provide these automatically\n> 65 |     expect(headers?.['x-frame-options']).toBeDefined();\n     |                                          ^\n  66 |     expect(headers?.['x-content-type-options']).toBeDefined();\n  67 |   });\n  68 | });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                            "column": 42,
-                            "line": 65
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeDefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m\n\n  63 |     \n  64 |     // GitHub Pages should provide these automatically\n> 65 |     expect(headers?.['x-frame-options']).toBeDefined();\n     |                                          ^\n  66 |     expect(headers?.['x-content-type-options']).toBeDefined();\n  67 |   });\n  68 | });\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts:65:42"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-07-07T03:26:36.072Z",
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "_prompt-0",
-                          "contentType": "text/markdown",
-                          "body": "IyBJbnN0cnVjdGlvbnMKCi0gRm9sbG93aW5nIFBsYXl3cmlnaHQgdGVzdCBmYWlsZWQuCi0gRXhwbGFpbiB3aHksIGJlIGNvbmNpc2UsIHJlc3BlY3QgUGxheXdyaWdodCBiZXN0IHByYWN0aWNlcy4KLSBQcm92aWRlIGEgc25pcHBldCBvZiBjb2RlIHdpdGggdGhlIGZpeCwgaWYgcG9zc2libGUuCgojIFRlc3QgaW5mbwoKLSBOYW1lOiBQcm9kdWN0aW9uIERlcGxveW1lbnQgPj4gc2hvdWxkIGhhdmUgcHJvcGVyIHNlY3VyaXR5IGhlYWRlcnMKLSBMb2NhdGlvbjogL1VzZXJzL2hvbWVzZXJ2ZXIvYWktY3JlYXRpdmUtdGVhbS9hcmNoaS1zaXRlL3Rlc3RzL2UyZS9wcm9kdWN0aW9uLWRlcGxveW1lbnQuc3BlYy50czo1Njo3CgojIEVycm9yIGRldGFpbHMKCmBgYApFcnJvcjogZXhwZWN0KHJlY2VpdmVkKS50b0JlRGVmaW5lZCgpCgpSZWNlaXZlZDogdW5kZWZpbmVkCiAgICBhdCAvVXNlcnMvaG9tZXNlcnZlci9haS1jcmVhdGl2ZS10ZWFtL2FyY2hpLXNpdGUvdGVzdHMvZTJlL3Byb2R1Y3Rpb24tZGVwbG95bWVudC5zcGVjLnRzOjY1OjQyCmBgYAoKIyBQYWdlIHNuYXBzaG90CgpgYGB5YW1sCi0gbmF2aWdhdGlvbiAi44Oh44Kk44Oz44OK44OT44Ky44O844K344On44OzIjoKICAtIGxpbmsgIuW7uuevieODh+ODvOOCv+ODmeODvOOCuSIKICAtIG1lbnViYXIgIuODh+OCueOCr+ODiOODg+ODl+ODiuODk+OCsuODvOOCt+ODp+ODsyI6CiAgICAtIG1lbnVpdGVtICLjg5vjg7zjg6AiCiAgICAtIG1lbnVpdGVtICLlu7rnr4nkvZzlk4EiCiAgICAtIG1lbnVpdGVtICLlu7rnr4nlrrYiCiAgICAtIG1lbnVpdGVtICLjg57jg4Pjg5ciCiAgICAtIG1lbnVpdGVtICJEQuOCqOOCr+OCueODl+ODreODvOODqeODvCIKLSBtYWluOgogIC0gYmFubmVyICLlu7rnr4njg4fjg7zjgr/jg5njg7zjgrkiOgogICAgLSBoZWFkaW5nICLlu7rnr4njg4fjg7zjgr/jg5njg7zjgrkiIFtsZXZlbD0xXQogICAgLSBwYXJhZ3JhcGg6IOaXpeacrOOBruW7uuevieS9nOWTgeOBqOW7uuevieWutuOCkuaknOe0ouODu+mWsuimp+OBp+OBjeOCiyDljIXmi6znmoTjgarjg4fjg7zjgr/jg5njg7zjgrkKICAgIC0gdGV4dDogMTQsMDAwKyDlu7rnr4nkvZzlk4EgMiw5MDArIOW7uuevieWutiDlhajlm73lr77lv5wKICAgIC0gc2VhcmNoICLlu7rnr4nkvZzlk4HmpJzntKIiOgogICAgICAtIHNlYXJjaGJveCAi5bu656+J5L2c5ZOB5qSc57SiIgogICAgICAtIGJ1dHRvbiAi5qSc57SiIgogIC0gcmVnaW9uICLmnIDov5Hjga7lu7rnr4nkvZzlk4EiOgogICAgLSBoZWFkaW5nICLmnIDov5Hjga7lu7rnr4nkvZzlk4EiIFtsZXZlbD0yXQogICAgLSBhbGVydDoKICAgICAgLSB0ZXh0OiAiRmFpbGVkIHRvIGV4ZWN1dGUgJ3Bvc3RNZXNzYWdlJyBvbiAnV29ya2VyJzogKCk9PmNvbnNvbGUubG9nKFwi44OH44O844K/44OZ44O844K544Ov44O844Kr44O844Gu5rqW5YKZ5a6M5LqGXCIpIGNvdWxkIG5vdCBiZSBjbG9uZWQuIgogICAgICAtIGxpbmsgIuiouuaWreODhOODvOODq+OCkumWi+OBjyIKICAgIC0gaGVhZGluZyAi5bu656+J5L2c5ZOB44GM6KaL44Gk44GL44KK44G+44Gb44KT44Gn44GX44GfIiBbbGV2ZWw9Nl0KICAgIC0gcGFyYWdyYXBoOiDjg4fjg7zjgr/jg5njg7zjgrnjga7mjqXntprjgpLnorroqo3jgZfjgabjgY/jgaDjgZXjgYQKICAtIHNlcGFyYXRvcgogIC0gcmVnaW9uICLjg4fjg7zjgr/jg5njg7zjgrnjga7nibnlvrQiOgogICAgLSBoZWFkaW5nICLjg4fjg7zjgr/jg5njg7zjgrnjga7nibnlvrQiIFtsZXZlbD0yXQogICAgLSBoZWFkaW5nICLlu7rnr4nkvZzlk4EiIFtsZXZlbD01XQogICAgLSBwYXJhZ3JhcGg6IOaXpeacrOWFqOWbveOBi+OCiTE0LDAwMOS7tuS7peS4iuOBruW7uuevieS9nOWTgeaDheWgseOCkumWsuimp+OBp+OBjeOBvuOBmeOAguWcsOWfn+OAgeW5tOS7o+OAgeOCq+ODhuOCtOODquODvOOBquOBqeOBp+ips+e0sOaknOe0ouOBjOWPr+iDveOBp+OBmeOAggogICAgLSBsaW5rICLkvZzlk4HjgpLmjqLjgZkiCiAgICAtIGhlYWRpbmcgIuW7uuevieWutiIgW2xldmVsPTVdCiAgICAtIHBhcmFncmFwaDogMiw5MDDkurrku6XkuIrjga7lu7rnr4nlrrbmg4XloLHjgpLlj47pjLLjgILntYzmrbTjgIHkvZzlk4Hjg6rjgrnjg4jjgIHmiYDlsZ7kuovli5nmiYDjgarjganjga7oqbPntLDmg4XloLHjgpLnorroqo3jgafjgY3jgb7jgZnjgIIKICAgIC0gbGluayAi5bu656+J5a6244KS5o6i44GZIgogICAgLSBoZWFkaW5nICLjg57jg4Pjg5fooajnpLoiIFtsZXZlbD01XQogICAgLSBwYXJhZ3JhcGg6IOW7uuevieS9nOWTgeOCkuWcsOWbs+S4iuOBp+imluimmueahOOBq+aOoue0ouOBp+OBjeOBvuOBmeOAguS9jee9ruaDheWgseOCkuOCguOBqOOBq+WRqOi+uuOBruW7uuevieS9nOWTgeOCkueZuuimi+OBp+OBjeOBvuOBmeOAggogICAgLSBsaW5rICLjg57jg4Pjg5fjgpLplovjgY8iCi0gY29udGVudGluZm86CiAgLSBwYXJhZ3JhcGg6IOW7uuevieODh+ODvOOCv+ODmeODvOOCuSDCqSAyMDI1CmBgYAoKIyBUZXN0IHNvdXJjZQoKYGBgdHMKICAgMSB8IGltcG9ydCB7IHRlc3QsIGV4cGVjdCB9IGZyb20gJ0BwbGF5d3JpZ2h0L3Rlc3QnOwogICAyIHwKICAgMyB8IGNvbnN0IFBST0RVQ1RJT05fVVJMID0gJ2h0dHBzOi8vYm9iLXRha3V5YS5naXRodWIuaW8vYXJjaGktc2l0ZS8nOwogICA0IHwKICAgNSB8IHRlc3QuZGVzY3JpYmUoJ1Byb2R1Y3Rpb24gRGVwbG95bWVudCcsICgpID0+IHsKICAgNiB8ICAgdGVzdC5iZWZvcmVFYWNoKGFzeW5jICh7IHBhZ2UgfSkgPT4gewogICA3IHwgICAgIGF3YWl0IHBhZ2UuZ290byhQUk9EVUNUSU9OX1VSTCk7CiAgIDggfCAgIH0pOwogICA5IHwKICAxMCB8ICAgdGVzdCgnc2hvdWxkIGxvYWQgdGhlIHByb2R1Y3Rpb24gc2l0ZSBzdWNjZXNzZnVsbHknLCBhc3luYyAoeyBwYWdlIH0pID0+IHsKICAxMSB8ICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVGl0bGUoL+aXpeacrOOBruW7uuevieODnuODg+ODly8pOwogIDEyIHwgICAgIAogIDEzIHwgICAgIC8vIENoZWNrIHRoYXQgdGhlIG1haW4gY29udGVudCBpcyBsb2FkZWQKICAxNCB8ICAgICBhd2FpdCBleHBlY3QocGFnZS5sb2NhdG9yKCcjcm9vdCcpKS50b0JlVmlzaWJsZSgpOwogIDE1IHwgICAgIAogIDE2IHwgICAgIC8vIENoZWNrIGZvciB0aGUgbWFpbiBuYXZpZ2F0aW9uIG9yIGtleSBlbGVtZW50cwogIDE3IHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJ2gxLCBoMiwgLk11aVR5cG9ncmFwaHktcm9vdCcpKS50b0JlVmlzaWJsZSgpOwogIDE4IHwgICB9KTsKICAxOSB8CiAgMjAgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHdvcmtpbmcgYXNzZXQgbG9hZGluZycsIGFzeW5jICh7IHBhZ2UgfSkgPT4gewogIDIxIHwgICAgIC8vIFdhaXQgZm9yIHRoZSBwYWdlIHRvIGJlIGZ1bGx5IGxvYWRlZAogIDIyIHwgICAgIGF3YWl0IHBhZ2Uud2FpdEZvckxvYWRTdGF0ZSgnbmV0d29ya2lkbGUnKTsKICAyMyB8ICAgICAKICAyNCB8ICAgICAvLyBDaGVjayBmb3IgYW55IGNvbnNvbGUgZXJyb3JzCiAgMjUgfCAgICAgY29uc3QgY29uc29sZUVycm9ycyA9IFtdOwogIDI2IHwgICAgIHBhZ2Uub24oJ2NvbnNvbGUnLCBtc2cgPT4gewogIDI3IHwgICAgICAgaWYgKG1zZy50eXBlKCkgPT09ICdlcnJvcicpIHsKICAyOCB8ICAgICAgICAgY29uc29sZUVycm9ycy5wdXNoKG1zZy50ZXh0KCkpOwogIDI5IHwgICAgICAgfQogIDMwIHwgICAgIH0pOwogIDMxIHwgICAgIAogIDMyIHwgICAgIC8vIEFsbG93IHNvbWUgdGltZSBmb3IgYW55IGFzeW5jIG9wZXJhdGlvbnMKICAzMyB8ICAgICBhd2FpdCBwYWdlLndhaXRGb3JUaW1lb3V0KDMwMDApOwogIDM0IHwgICAgIAogIDM1IHwgICAgIC8vIENoZWNrIHRoYXQgdGhlcmUgYXJlIG5vIGNyaXRpY2FsIGNvbnNvbGUgZXJyb3JzCiAgMzYgfCAgICAgY29uc3QgY3JpdGljYWxFcnJvcnMgPSBjb25zb2xlRXJyb3JzLmZpbHRlcihlcnJvciA9PiAKICAzNyB8ICAgICAgIGVycm9yLmluY2x1ZGVzKCdGYWlsZWQgdG8gbG9hZCcpIHx8IAogIDM4IHwgICAgICAgZXJyb3IuaW5jbHVkZXMoJzQwNCcpIHx8CiAgMzkgfCAgICAgICBlcnJvci5pbmNsdWRlcygnbmV0OjpFUlJfJykKICA0MCB8ICAgICApOwogIDQxIHwgICAgIAogIDQyIHwgICAgIGV4cGVjdChjcml0aWNhbEVycm9ycykudG9IYXZlTGVuZ3RoKDApOwogIDQzIHwgICB9KTsKICA0NCB8CiAgNDUgfCAgIHRlc3QoJ3Nob3VsZCBoYW5kbGUgU1BBIHJvdXRpbmcgY29ycmVjdGx5JywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgNDYgfCAgICAgLy8gVGVzdCB0aGUgNDA0IHBhZ2UgZmFsbGJhY2sgZm9yIFNQQSByb3V0aW5nCiAgNDcgfCAgICAgYXdhaXQgcGFnZS5nb3RvKGAke1BST0RVQ1RJT05fVVJMfW5vbi1leGlzdGVudC1wYWdlYCk7CiAgNDggfCAgICAgCiAgNDkgfCAgICAgLy8gU2hvdWxkIHN0aWxsIGxvYWQgdGhlIGFwcCAoZHVlIHRvIDQwNC5odG1sIGZhbGxiYWNrKQogIDUwIHwgICAgIGF3YWl0IGV4cGVjdChwYWdlLmxvY2F0b3IoJyNyb290JykpLnRvQmVWaXNpYmxlKCk7CiAgNTEgfCAgICAgCiAgNTIgfCAgICAgLy8gVGhlIGFwcCBzaG91bGQgaGFuZGxlIHRoZSB1bmtub3duIHJvdXRlIGdyYWNlZnVsbHkKICA1MyB8ICAgICBhd2FpdCBleHBlY3QocGFnZSkudG9IYXZlVGl0bGUoL+aXpeacrOOBruW7uuevieODnuODg+ODly8pOwogIDU0IHwgICB9KTsKICA1NSB8CiAgNTYgfCAgIHRlc3QoJ3Nob3VsZCBoYXZlIHByb3BlciBzZWN1cml0eSBoZWFkZXJzJywgYXN5bmMgKHsgcGFnZSB9KSA9PiB7CiAgNTcgfCAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBwYWdlLmdvdG8oUFJPRFVDVElPTl9VUkwpOwogIDU4IHwgICAgIAogIDU5IHwgICAgIGV4cGVjdChyZXNwb25zZT8uc3RhdHVzKCkpLnRvQmUoMjAwKTsKICA2MCB8ICAgICAKICA2MSB8ICAgICAvLyBDaGVjayBmb3IgY29tbW9uIHNlY3VyaXR5IGhlYWRlcnMKICA2MiB8ICAgICBjb25zdCBoZWFkZXJzID0gcmVzcG9uc2U/LmhlYWRlcnMoKTsKICA2MyB8ICAgICAKICA2NCB8ICAgICAvLyBHaXRIdWIgUGFnZXMgc2hvdWxkIHByb3ZpZGUgdGhlc2UgYXV0b21hdGljYWxseQo+IDY1IHwgICAgIGV4cGVjdChoZWFkZXJzPy5bJ3gtZnJhbWUtb3B0aW9ucyddKS50b0JlRGVmaW5lZCgpOwogICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeIEVycm9yOiBleHBlY3QocmVjZWl2ZWQpLnRvQmVEZWZpbmVkKCkKICA2NiB8ICAgICBleHBlY3QoaGVhZGVycz8uWyd4LWNvbnRlbnQtdHlwZS1vcHRpb25zJ10pLnRvQmVEZWZpbmVkKCk7CiAgNjcgfCAgIH0pOwogIDY4IHwgfSk7CmBgYA=="
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/production-deployment-Prod-2365e-ave-proper-security-headers-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/production-deployment.spec.ts",
-                        "column": 42,
-                        "line": 65
-                      }
+                      "startTime": "2025-07-07T05:08:18.767Z",
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
-              "id": "565b83f40e373b6bd6e9-1c3e11db03cee2c98f07",
-              "file": "production-deployment.spec.ts",
-              "line": 56,
+              "id": "7c18564b48ab5acea90d-64592f031c4ccb8f1af3",
+              "file": "deployment-validation.spec.ts",
+              "line": 60,
+              "column": 7
+            },
+            {
+              "title": "basic navigation elements exist",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 741,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Navigation elements found: \u001b[33m11\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:18.750Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-9875e0911a894ae26b32",
+              "file": "deployment-validation.spec.ts",
+              "line": 78,
+              "column": 7
+            },
+            {
+              "title": "essential page elements are present",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1081,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Page structure - Header: \u001b[33mtrue\u001b[39m Main: \u001b[33mtrue\u001b[39m Footer: \u001b[33mtrue\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:19.854Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-206444efcae1ac490be5",
+              "file": "deployment-validation.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "site loads successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1799,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:20.305Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-a7192f2768ad90f124dc",
+              "file": "deployment-validation.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "Japanese title displays correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1795,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Page title: 日本の建築マップ | Architecture Map of Japan\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:21.013Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-dd1d96d60010e76c012c",
+              "file": "deployment-validation.spec.ts",
+              "line": 23,
+              "column": 7
+            },
+            {
+              "title": "React app is functioning",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1589,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:21.134Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-d97743e12dcc2de89240",
+              "file": "deployment-validation.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "database content is accessible",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2190,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:21.078Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-c323ead9fe6c933a7310",
+              "file": "deployment-validation.spec.ts",
+              "line": 60,
+              "column": 7
+            },
+            {
+              "title": "basic navigation elements exist",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1990,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Navigation elements found: \u001b[33m11\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:21.540Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-96acfa0a4f98b66ff74e",
+              "file": "deployment-validation.spec.ts",
+              "line": 78,
+              "column": 7
+            },
+            {
+              "title": "essential page elements are present",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1189,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Page structure - Header: \u001b[33mtrue\u001b[39m Main: \u001b[33mtrue\u001b[39m Footer: \u001b[33mtrue\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:22.631Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-aee2476d7df6429dcd39",
+              "file": "deployment-validation.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "site loads successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 28501,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:23.923Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-35aa645f086e4389e394",
+              "file": "deployment-validation.spec.ts",
+              "line": 11,
+              "column": 7
+            },
+            {
+              "title": "Japanese title displays correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26508,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Page title: 日本の建築マップ | Architecture Map of Japan\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:24.167Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-9117d626de20c234b969",
+              "file": "deployment-validation.spec.ts",
+              "line": 23,
+              "column": 7
+            },
+            {
+              "title": "React app is functioning",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 8293,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:24.661Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-d4478584f4a2e3765180",
+              "file": "deployment-validation.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "database content is accessible",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 25448,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:25.053Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-0e42507b2dc5aec7bdf4",
+              "file": "deployment-validation.spec.ts",
+              "line": 60,
+              "column": 7
+            },
+            {
+              "title": "basic navigation elements exist",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 7250,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Navigation elements found: \u001b[33m11\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:25.517Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-208ff9c9c156f6624e1a",
+              "file": "deployment-validation.spec.ts",
+              "line": 78,
+              "column": 7
+            },
+            {
+              "title": "essential page elements are present",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 24355,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Page structure - Header: \u001b[33mtrue\u001b[39m Main: \u001b[33mtrue\u001b[39m Footer: \u001b[33mtrue\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-07-07T05:08:32.904Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7c18564b48ab5acea90d-ca2de98d26bd5b1acb4c",
+              "file": "deployment-validation.spec.ts",
+              "line": 91,
               "column": 7
             }
           ]
@@ -534,11 +830,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-07-07T03:26:30.992Z",
-    "duration": 7447.531,
-    "expected": 2,
+    "startTime": "2025-07-07T05:08:18.395Z",
+    "duration": 38882.441,
+    "expected": 18,
     "skipped": 0,
-    "unexpected": 2,
+    "unexpected": 0,
     "flaky": 0
   }
 }
