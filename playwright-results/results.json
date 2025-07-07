@@ -195,7 +195,7 @@
           "specs": [
             {
               "title": "should debug worker loading issues",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -208,33 +208,26 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 46219,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts:100:35",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
-                          "column": 35,
-                          "line": 100
-                        },
-                        "snippet": "   98 |     console.log('🏗️ Database state:', dbState);\n   99 |     \n> 100 |     expect.soft(hasDebugMessages).toBeTruthy();\n      |                                   ^\n  101 |   });\n  102 | });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
-                            "column": 35,
-                            "line": 100
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n   98 |     console.log('🏗️ Database state:', dbState);\n   99 |     \n> 100 |     expect.soft(hasDebugMessages).toBeTruthy();\n      |                                   ^\n  101 |   });\n  102 | });\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts:100:35"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 33521,
+                      "errors": [],
                       "stdout": [
                         {
                           "text": "🔍 Starting worker loading debug test...\n"
                         },
                         {
+                          "text": "[BROWSER]: 🔧 Environment debug info:\n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - import.meta.env.PROD: true\n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - BASE_PATH: /archi-site\n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - DATABASE_URL: /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
                           "text": "[BROWSER]: React アプリケーションを初期化中... production\n"
                         },
                         {
@@ -259,160 +252,25 @@
                           "text": "[BROWSER]: GitHub Pages環境: はい\n"
                         },
                         {
-                          "text": "[BROWSER]: 🚀 データベース初期化を開始...\n"
+                          "text": "[BROWSER]: 🚀 データベース初期化を開始（sql.js-httpvfs使用）...\n"
                         },
                         {
-                          "text": "[BROWSER]: 🌐 Connection speed detected: fast\n"
+                          "text": "[BROWSER]: 🌐 Connection speed detected: slow\n"
                         },
                         {
-                          "text": "[BROWSER]: 📦 SQL.js WASM を読み込み中...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🔍 ファイル要求: sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "[BROWSER]: データベース情報:\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - ファイル: archimap.sqlite\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - 更新日時: 2025-07-07T06:48:27.235Z\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - サイズ: 12.14 MB\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - チャンク: 195 (64KB)のチャンク\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - テーブル数: 10\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - インデックス数: 13\n"
+                          "text": "[BROWSER]: 🗄️ Testing database file accessibility...\n"
                         },
                         {
                           "text": "[BROWSER]: Failed to load resource: the server responded with a status of 404 ()\n"
                         },
                         {
-                          "text": "📄 Page loaded, waiting for database initialization...\n"
-                        },
-                        {
-                          "text": "📝 Captured 21 console messages:\n"
-                        },
-                        {
-                          "text": "  1. React アプリケーションを初期化中... production\n"
-                        },
-                        {
-                          "text": "  2. DOM root element: JSHandle@node\n"
-                        },
-                        {
-                          "text": "  3. Using HashRouter for GitHub Pages compatibility\n"
-                        },
-                        {
-                          "text": "  4. React アプリケーションのレンダリングが成功しました\n"
-                        },
-                        {
-                          "text": "  5. 最近の建築作品を取得中...\n"
-                        },
-                        {
-                          "text": "  6. App running in production mode\n"
-                        },
-                        {
-                          "text": "  7. アプリケーション環境: 本番\n"
-                        },
-                        {
-                          "text": "  8. GitHub Pages環境: はい\n"
-                        },
-                        {
-                          "text": "  9. 🚀 データベース初期化を開始...\n"
-                        },
-                        {
-                          "text": "  10. 🌐 Connection speed detected: fast\n"
-                        },
-                        {
-                          "text": "  11. 📦 SQL.js WASM を読み込み中...\n"
-                        },
-                        {
-                          "text": "  12. 🔍 ファイル要求: sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "  13. 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "  14. データベース情報:\n"
-                        },
-                        {
-                          "text": "  15. - ファイル: archimap.sqlite\n"
-                        },
-                        {
-                          "text": "  16. - 更新日時: 2025-07-07T06:48:27.235Z\n"
-                        },
-                        {
-                          "text": "  17. - サイズ: 12.14 MB\n"
-                        },
-                        {
-                          "text": "  18. - チャンク: 195 (64KB)のチャンク\n"
-                        },
-                        {
-                          "text": "  19. - テーブル数: 10\n"
-                        },
-                        {
-                          "text": "  20. - インデックス数: 13\n"
-                        },
-                        {
-                          "text": "  21. Failed to load resource: the server responded with a status of 404 ()\n"
-                        },
-                        {
-                          "text": "🔧 Has debug messages: false\n"
-                        },
-                        {
-                          "text": "✅ Has worker success: false\n"
-                        },
-                        {
-                          "text": "🔄 Manually triggering database initialization...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🔄 Attempting manual database trigger...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: React アプリケーションを初期化中... production\n"
-                        },
-                        {
-                          "text": "[BROWSER]: DOM root element: JSHandle@node\n"
-                        },
-                        {
-                          "text": "[BROWSER]: Using HashRouter for GitHub Pages compatibility\n"
-                        },
-                        {
-                          "text": "[BROWSER]: React アプリケーションのレンダリングが成功しました\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 最近の建築作品を取得中...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: App running in production mode\n"
-                        },
-                        {
-                          "text": "[BROWSER]: アプリケーション環境: 本番\n"
-                        },
-                        {
-                          "text": "[BROWSER]: GitHub Pages環境: はい\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🚀 データベース初期化を開始...\n"
-                        },
-                        {
                           "text": "[BROWSER]: データベース情報:\n"
                         },
                         {
                           "text": "[BROWSER]: - ファイル: archimap.sqlite\n"
                         },
                         {
-                          "text": "[BROWSER]: - 更新日時: 2025-07-07T06:48:27.235Z\n"
+                          "text": "[BROWSER]: - 更新日時: 2025-07-07T07:40:24.953Z\n"
                         },
                         {
                           "text": "[BROWSER]: - サイズ: 12.14 MB\n"
@@ -427,333 +285,404 @@
                           "text": "[BROWSER]: - インデックス数: 13\n"
                         },
                         {
+                          "text": "[BROWSER]:   - Database file status: 200 \n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - Database file size: 3.64 MB\n"
+                        },
+                        {
+                          "text": "[BROWSER]: ✅ Database file is accessible\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📦 sql.js-httpvfs worker を初期化中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📍 Database URL: /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔧 Worker file URLs:\n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - workerUrl: /archi-site/sqlite.worker.js\n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - wasmUrl: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔍 Testing worker file accessibility...\n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - Worker file status: 200 \n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - WASM file status: 200 \n"
+                        },
+                        {
+                          "text": "[BROWSER]: ✅ All worker files are accessible\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔧 Worker config: {from: inline, config: Object}\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔧 Worker URL: /archi-site/sqlite.worker.js\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔧 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: constructing url database /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: filename _archi-site_db_archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: constructing url database /archi-site/db/archimap.sqlite filename _archi-site_db_archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: Warning: The server responded with gzip encoding to a HEAD request. Ignoring since it may not do so for Range HTTP requests, but this will lead to incorrect results otherwise since the ranges will be based on the compressed data instead of the uncompressed data.\n"
+                        },
+                        {
+                          "text": "[BROWSER]: response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:41:49 GMT\r\netag: W/\"686b7a03-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:51:48 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:40:51 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 1\r\nx-fastly-request-id: 63b4ef54413cd17350c1415cc258b69c551af5e3\r\nx-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700073-NRT\r\nx-timer: S1751874110.720406,VS0,VE7\r\n\n"
+                        },
+                        {
+                          "text": "[BROWSER]: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
+                        },
+                        {
+                          "text": "[BROWSER]: クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🚀 データベース初期化を開始（sql.js-httpvfs使用）...\n"
+                        },
+                        {
                           "text": "[BROWSER]: 🌐 Connection speed detected: fast\n"
                         },
                         {
-                          "text": "[BROWSER]: 📦 SQL.js WASM を読み込み中...\n"
+                          "text": "[BROWSER]: 🗄️ Testing database file accessibility...\n"
                         },
                         {
-                          "text": "[BROWSER]: 🔍 ファイル要求: sql-wasm.wasm\n"
+                          "text": "[BROWSER]:   - Database file status: 200 \n"
                         },
                         {
-                          "text": "[BROWSER]: 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
+                          "text": "[BROWSER]:   - Database file size: 3.64 MB\n"
                         },
                         {
-                          "text": "🏗️ Database state: {\n  hasLoadingText: \u001b[33mtrue\u001b[39m,\n  hasErrorText: \u001b[33mfalse\u001b[39m,\n  hasCompletedText: \u001b[33mfalse\u001b[39m,\n  hasArchitectureData: \u001b[33mfalse\u001b[39m\n}\n"
+                          "text": "[BROWSER]: ✅ Database file is accessible\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📦 sql.js-httpvfs worker を初期化中...\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 📍 Database URL: /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔧 Worker file URLs:\n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - workerUrl: /archi-site/sqlite.worker.js\n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - wasmUrl: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔍 Testing worker file accessibility...\n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - Worker file status: 200 \n"
+                        },
+                        {
+                          "text": "[BROWSER]:   - WASM file status: 200 \n"
+                        },
+                        {
+                          "text": "[BROWSER]: ✅ All worker files are accessible\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔧 Worker config: {from: inline, config: Object}\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔧 Worker URL: /archi-site/sqlite.worker.js\n"
+                        },
+                        {
+                          "text": "[BROWSER]: 🔧 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "[BROWSER]: constructing url database /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: filename _archi-site_db_archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: constructing url database /archi-site/db/archimap.sqlite filename _archi-site_db_archimap.sqlite\n"
+                        },
+                        {
+                          "text": "[BROWSER]: Warning: The server responded with gzip encoding to a HEAD request. Ignoring since it may not do so for Range HTTP requests, but this will lead to incorrect results otherwise since the ranges will be based on the compressed data instead of the uncompressed data.\n"
+                        },
+                        {
+                          "text": "[BROWSER]: response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:41:49 GMT\r\netag: W/\"686b7a03-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:51:48 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:40:51 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 3\r\nx-fastly-request-id: 24990914d455f70f26826d4308ae3a5e2e118145\r\nx-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700073-NRT\r\nx-timer: S1751874110.868321,VS0,VE0\r\n\n"
+                        },
+                        {
+                          "text": "[BROWSER]: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
+                        },
+                        {
+                          "text": "📄 Page loaded, waiting for database initialization...\n"
+                        },
+                        {
+                          "text": "📝 Captured 71 console messages:\n"
+                        },
+                        {
+                          "text": "  1. 🔧 Environment debug info:\n"
+                        },
+                        {
+                          "text": "  2.   - import.meta.env.PROD: true\n"
+                        },
+                        {
+                          "text": "  3.   - BASE_PATH: /archi-site\n"
+                        },
+                        {
+                          "text": "  4.   - DATABASE_URL: /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  5. React アプリケーションを初期化中... production\n"
+                        },
+                        {
+                          "text": "  6. DOM root element: JSHandle@node\n"
+                        },
+                        {
+                          "text": "  7. Using HashRouter for GitHub Pages compatibility\n"
+                        },
+                        {
+                          "text": "  8. React アプリケーションのレンダリングが成功しました\n"
+                        },
+                        {
+                          "text": "  9. 最近の建築作品を取得中...\n"
+                        },
+                        {
+                          "text": "  10. App running in production mode\n"
+                        },
+                        {
+                          "text": "  11. アプリケーション環境: 本番\n"
+                        },
+                        {
+                          "text": "  12. GitHub Pages環境: はい\n"
+                        },
+                        {
+                          "text": "  13. 🚀 データベース初期化を開始（sql.js-httpvfs使用）...\n"
+                        },
+                        {
+                          "text": "  14. 🌐 Connection speed detected: slow\n"
+                        },
+                        {
+                          "text": "  15. 🗄️ Testing database file accessibility...\n"
+                        },
+                        {
+                          "text": "  16. Failed to load resource: the server responded with a status of 404 ()\n"
+                        },
+                        {
+                          "text": "  17. データベース情報:\n"
+                        },
+                        {
+                          "text": "  18. - ファイル: archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  19. - 更新日時: 2025-07-07T07:40:24.953Z\n"
+                        },
+                        {
+                          "text": "  20. - サイズ: 12.14 MB\n"
+                        },
+                        {
+                          "text": "  21. - チャンク: 195 (64KB)のチャンク\n"
+                        },
+                        {
+                          "text": "  22. - テーブル数: 10\n"
+                        },
+                        {
+                          "text": "  23. - インデックス数: 13\n"
+                        },
+                        {
+                          "text": "  24.   - Database file status: 200 \n"
+                        },
+                        {
+                          "text": "  25.   - Database file size: 3.64 MB\n"
+                        },
+                        {
+                          "text": "  26. ✅ Database file is accessible\n"
+                        },
+                        {
+                          "text": "  27. 📦 sql.js-httpvfs worker を初期化中...\n"
+                        },
+                        {
+                          "text": "  28. 📍 Database URL: /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  29. 🔧 Worker file URLs:\n"
+                        },
+                        {
+                          "text": "  30.   - workerUrl: /archi-site/sqlite.worker.js\n"
+                        },
+                        {
+                          "text": "  31.   - wasmUrl: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "  32. 🔍 Testing worker file accessibility...\n"
+                        },
+                        {
+                          "text": "  33.   - Worker file status: 200 \n"
+                        },
+                        {
+                          "text": "  34.   - WASM file status: 200 \n"
+                        },
+                        {
+                          "text": "  35. ✅ All worker files are accessible\n"
+                        },
+                        {
+                          "text": "  36. 🔧 Worker config: {from: inline, config: Object}\n"
+                        },
+                        {
+                          "text": "  37. 🔧 Worker URL: /archi-site/sqlite.worker.js\n"
+                        },
+                        {
+                          "text": "  38. 🔧 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "  39. constructing url database /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  40. filename _archi-site_db_archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  41. constructing url database /archi-site/db/archimap.sqlite filename _archi-site_db_archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  42. Warning: The server responded with gzip encoding to a HEAD request. Ignoring since it may not do so for Range HTTP requests, but this will lead to incorrect results otherwise since the ranges will be based on the compressed data instead of the uncompressed data.\n"
+                        },
+                        {
+                          "text": "  43. response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:41:49 GMT\r\netag: W/\"686b7a03-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:51:48 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:40:51 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 1\r\nx-fastly-request-id: 63b4ef54413cd17350c1415cc258b69c551af5e3\r\nx-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700073-NRT\r\nx-timer: S1751874110.720406,VS0,VE7\r\n\n"
+                        },
+                        {
+                          "text": "  44. ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
+                        },
+                        {
+                          "text": "  45. クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                        },
+                        {
+                          "text": "  46. 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                        },
+                        {
+                          "text": "  47. 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                        },
+                        {
+                          "text": "  48. 🚀 データベース初期化を開始（sql.js-httpvfs使用）...\n"
+                        },
+                        {
+                          "text": "  49. 🌐 Connection speed detected: fast\n"
+                        },
+                        {
+                          "text": "  50. 🗄️ Testing database file accessibility...\n"
+                        },
+                        {
+                          "text": "  51.   - Database file status: 200 \n"
+                        },
+                        {
+                          "text": "  52.   - Database file size: 3.64 MB\n"
+                        },
+                        {
+                          "text": "  53. ✅ Database file is accessible\n"
+                        },
+                        {
+                          "text": "  54. 📦 sql.js-httpvfs worker を初期化中...\n"
+                        },
+                        {
+                          "text": "  55. 📍 Database URL: /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  56. 🔧 Worker file URLs:\n"
+                        },
+                        {
+                          "text": "  57.   - workerUrl: /archi-site/sqlite.worker.js\n"
+                        },
+                        {
+                          "text": "  58.   - wasmUrl: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "  59. 🔍 Testing worker file accessibility...\n"
+                        },
+                        {
+                          "text": "  60.   - Worker file status: 200 \n"
+                        },
+                        {
+                          "text": "  61.   - WASM file status: 200 \n"
+                        },
+                        {
+                          "text": "  62. ✅ All worker files are accessible\n"
+                        },
+                        {
+                          "text": "  63. 🔧 Worker config: {from: inline, config: Object}\n"
+                        },
+                        {
+                          "text": "  64. 🔧 Worker URL: /archi-site/sqlite.worker.js\n"
+                        },
+                        {
+                          "text": "  65. 🔧 WASM URL: /archi-site/sql-wasm.wasm\n"
+                        },
+                        {
+                          "text": "  66. constructing url database /archi-site/db/archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  67. filename _archi-site_db_archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  68. constructing url database /archi-site/db/archimap.sqlite filename _archi-site_db_archimap.sqlite\n"
+                        },
+                        {
+                          "text": "  69. Warning: The server responded with gzip encoding to a HEAD request. Ignoring since it may not do so for Range HTTP requests, but this will lead to incorrect results otherwise since the ranges will be based on the compressed data instead of the uncompressed data.\n"
+                        },
+                        {
+                          "text": "  70. response headers accept-ranges: bytes\r\naccess-control-allow-origin: *\r\nage: 1\r\ncache-control: max-age=600\r\ncontent-encoding: gzip\r\ncontent-length: 3817806\r\ncontent-type: application/octet-stream\r\ndate: Mon, 07 Jul 2025 07:41:49 GMT\r\netag: W/\"686b7a03-c24000\"\r\nexpires: Mon, 07 Jul 2025 07:51:48 GMT\r\nlast-modified: Mon, 07 Jul 2025 07:40:51 GMT\r\nserver: GitHub.com\r\nstrict-transport-security: max-age=31556952\r\nvary: Accept-Encoding\r\nvia: 1.1 varnish\r\nx-cache: HIT\r\nx-cache-hits: 3\r\nx-fastly-request-id: 24990914d455f70f26826d4308ae3a5e2e118145\r\nx-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C\r\nx-origin-cache: HIT\r\nx-proxy-cache: MISS\r\nx-served-by: cache-nrt-rjtf7700073-NRT\r\nx-timer: S1751874110.868321,VS0,VE0\r\n\n"
+                        },
+                        {
+                          "text": "  71. ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
+                        },
+                        {
+                          "text": "🔧 Has debug messages: true\n"
+                        },
+                        {
+                          "text": "❌ Found 5 error messages:\n"
+                        },
+                        {
+                          "text": "  ERROR 1: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
+                        },
+                        {
+                          "text": "  ERROR 2: クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                        },
+                        {
+                          "text": "  ERROR 3: 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                        },
+                        {
+                          "text": "  ERROR 4: 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46\n"
+                        },
+                        {
+                          "text": "  ERROR 5: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.\n    at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)\n    at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)\n    at ze.get [as usedBytes] (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:8167)\n    at Object.getattr (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:38015)\n    at Object.stat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49035)\n    at lstat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:49059)\n    at Object.doStat (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:63664)\n    at E (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:70298)\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51\n    at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036\n"
+                        },
+                        {
+                          "text": "✅ Has worker success: true\n"
+                        },
+                        {
+                          "text": "🏗️ Database state: {\n  hasLoadingText: \u001b[33mfalse\u001b[39m,\n  hasErrorText: \u001b[33mfalse\u001b[39m,\n  hasCompletedText: \u001b[33mfalse\u001b[39m,\n  hasArchitectureData: \u001b[33mfalse\u001b[39m\n}\n"
                         }
                       ],
-                      "stderr": [
-                        {
-                          "text": "[PAGE ERROR]: C is not a function\n"
-                        },
-                        {
-                          "text": "[PAGE ERROR]: C is not a function\n"
-                        }
-                      ],
+                      "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-07-07T07:36:03.776Z",
+                      "startTime": "2025-07-07T07:41:47.340Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
-                        "column": 35,
-                        "line": 100
-                      }
-                    },
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 46580,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts:100:35",
-                        "location": {
-                          "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
-                          "column": 35,
-                          "line": 100
-                        },
-                        "snippet": "   98 |     console.log('🏗️ Database state:', dbState);\n   99 |     \n> 100 |     expect.soft(hasDebugMessages).toBeTruthy();\n      |                                   ^\n  101 |   });\n  102 | });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
-                            "column": 35,
-                            "line": 100
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n   98 |     console.log('🏗️ Database state:', dbState);\n   99 |     \n> 100 |     expect.soft(hasDebugMessages).toBeTruthy();\n      |                                   ^\n  101 |   });\n  102 | });\n    at /Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts:100:35"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "🔍 Starting worker loading debug test...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: React アプリケーションを初期化中... production\n"
-                        },
-                        {
-                          "text": "[BROWSER]: DOM root element: JSHandle@node\n"
-                        },
-                        {
-                          "text": "[BROWSER]: Using HashRouter for GitHub Pages compatibility\n"
-                        },
-                        {
-                          "text": "[BROWSER]: React アプリケーションのレンダリングが成功しました\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 最近の建築作品を取得中...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: App running in production mode\n"
-                        },
-                        {
-                          "text": "[BROWSER]: アプリケーション環境: 本番\n"
-                        },
-                        {
-                          "text": "[BROWSER]: GitHub Pages環境: はい\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🚀 データベース初期化を開始...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🌐 Connection speed detected: fast\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 📦 SQL.js WASM を読み込み中...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🔍 ファイル要求: sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "[BROWSER]: Failed to load resource: the server responded with a status of 404 ()\n"
-                        },
-                        {
-                          "text": "[BROWSER]: データベース情報:\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - ファイル: archimap.sqlite\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - 更新日時: 2025-07-07T06:48:27.235Z\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - サイズ: 12.14 MB\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - チャンク: 195 (64KB)のチャンク\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - テーブル数: 10\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - インデックス数: 13\n"
-                        },
-                        {
-                          "text": "📄 Page loaded, waiting for database initialization...\n"
-                        },
-                        {
-                          "text": "📝 Captured 21 console messages:\n"
-                        },
-                        {
-                          "text": "  1. React アプリケーションを初期化中... production\n"
-                        },
-                        {
-                          "text": "  2. DOM root element: JSHandle@node\n"
-                        },
-                        {
-                          "text": "  3. Using HashRouter for GitHub Pages compatibility\n"
-                        },
-                        {
-                          "text": "  4. React アプリケーションのレンダリングが成功しました\n"
-                        },
-                        {
-                          "text": "  5. 最近の建築作品を取得中...\n"
-                        },
-                        {
-                          "text": "  6. App running in production mode\n"
-                        },
-                        {
-                          "text": "  7. アプリケーション環境: 本番\n"
-                        },
-                        {
-                          "text": "  8. GitHub Pages環境: はい\n"
-                        },
-                        {
-                          "text": "  9. 🚀 データベース初期化を開始...\n"
-                        },
-                        {
-                          "text": "  10. 🌐 Connection speed detected: fast\n"
-                        },
-                        {
-                          "text": "  11. 📦 SQL.js WASM を読み込み中...\n"
-                        },
-                        {
-                          "text": "  12. 🔍 ファイル要求: sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "  13. 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "  14. Failed to load resource: the server responded with a status of 404 ()\n"
-                        },
-                        {
-                          "text": "  15. データベース情報:\n"
-                        },
-                        {
-                          "text": "  16. - ファイル: archimap.sqlite\n"
-                        },
-                        {
-                          "text": "  17. - 更新日時: 2025-07-07T06:48:27.235Z\n"
-                        },
-                        {
-                          "text": "  18. - サイズ: 12.14 MB\n"
-                        },
-                        {
-                          "text": "  19. - チャンク: 195 (64KB)のチャンク\n"
-                        },
-                        {
-                          "text": "  20. - テーブル数: 10\n"
-                        },
-                        {
-                          "text": "  21. - インデックス数: 13\n"
-                        },
-                        {
-                          "text": "🔧 Has debug messages: false\n"
-                        },
-                        {
-                          "text": "✅ Has worker success: false\n"
-                        },
-                        {
-                          "text": "🔄 Manually triggering database initialization...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🔄 Attempting manual database trigger...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: React アプリケーションを初期化中... production\n"
-                        },
-                        {
-                          "text": "[BROWSER]: DOM root element: JSHandle@node\n"
-                        },
-                        {
-                          "text": "[BROWSER]: Using HashRouter for GitHub Pages compatibility\n"
-                        },
-                        {
-                          "text": "[BROWSER]: React アプリケーションのレンダリングが成功しました\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 最近の建築作品を取得中...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: App running in production mode\n"
-                        },
-                        {
-                          "text": "[BROWSER]: アプリケーション環境: 本番\n"
-                        },
-                        {
-                          "text": "[BROWSER]: GitHub Pages環境: はい\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🚀 データベース初期化を開始...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🌐 Connection speed detected: fast\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 📦 SQL.js WASM を読み込み中...\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 🔍 ファイル要求: sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "[BROWSER]: 📍 WASM URL: /archi-site/sql-wasm.wasm\n"
-                        },
-                        {
-                          "text": "[BROWSER]: データベース情報:\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - ファイル: archimap.sqlite\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - 更新日時: 2025-07-07T06:48:27.235Z\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - サイズ: 12.14 MB\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - チャンク: 195 (64KB)のチャンク\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - テーブル数: 10\n"
-                        },
-                        {
-                          "text": "[BROWSER]: - インデックス数: 13\n"
-                        },
-                        {
-                          "text": "🏗️ Database state: {\n  hasLoadingText: \u001b[33mtrue\u001b[39m,\n  hasErrorText: \u001b[33mfalse\u001b[39m,\n  hasCompletedText: \u001b[33mfalse\u001b[39m,\n  hasArchitectureData: \u001b[33mfalse\u001b[39m\n}\n"
-                        }
-                      ],
-                      "stderr": [
-                        {
-                          "text": "[PAGE ERROR]: C is not a function\n"
-                        },
-                        {
-                          "text": "[PAGE ERROR]: C is not a function\n"
-                        }
-                      ],
-                      "retry": 1,
-                      "startTime": "2025-07-07T07:36:50.495Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium-retry1/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium-retry1/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium-retry1/error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/Users/homeserver/ai-creative-team/archi-site/playwright-results/artifacts/test-worker-debug-Worker-L-8da2c-debug-worker-loading-issues-chromium-retry1/trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/homeserver/ai-creative-team/archi-site/tests/e2e/test-worker-debug.spec.ts",
-                        "column": 35,
-                        "line": 100
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "1e3b653858d9ead3f59b-abaebab8d37b153d9e57",
@@ -768,11 +697,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-07-07T07:36:03.431Z",
-    "duration": 94376.453,
-    "expected": 0,
+    "startTime": "2025-07-07T07:41:47.058Z",
+    "duration": 34369.419,
+    "expected": 1,
     "skipped": 0,
-    "unexpected": 1,
+    "unexpected": 0,
     "flaky": 0
   }
 }
