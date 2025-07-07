@@ -33,6 +33,7 @@
     "type-check": "tsc --noEmit",
     "docs": "typedoc --entryPointStrategy expand ./src",
     "deploy": "npm run build && gh-pages -d dist",
+    "deploy:gh-pages": "node scripts/deploy-gh-pages.js",
     "clean": "rm -rf dist node_modules/.cache"
   },
   "repository": {

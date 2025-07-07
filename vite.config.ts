@@ -41,5 +41,5 @@ export default defineConfig({
     port: 3000,
     open: true,
   },
-  base: './', // Required for GitHub Pages relative paths
+  base: '/archi-site/', // Required for GitHub Pages with repository name
 });
