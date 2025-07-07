@@ -8,7 +8,7 @@ import type { Architecture, ArchitectureResponse, Tag } from '../../types/archit
  */
 export const getArchitectureById = async (id: number): Promise<Architecture | undefined> => {
   return getSingleResult<Architecture>(
-    `SELECT * FROM ZCDARCHITECTURE WHERE ZAW_ID = ?`,
+    `SELECT * FROM ZCDARCHITECTURE WHERE Z_PK = ?`,
     [id]
   );
 };
@@ -21,8 +21,8 @@ export const getArchitectureById = async (id: number): Promise<Architecture | un
 export const getArchitecturesByArchitect = async (architectId: number): Promise<Architecture[]> => {
   return getResultsArray<Architecture>(
     `SELECT * FROM ZCDARCHITECTURE 
-     WHERE ZAW_ARCHITECT_ID = ? 
-     ORDER BY ZAW_YEAR DESC`,
+     WHERE ZAR_ARCHITECT_NUM = ? 
+     ORDER BY ZAR_YEAR DESC`,
     [architectId]
   );
 };
@@ -41,7 +41,7 @@ export const getAllArchitectures = async (
   page: number = 1,
   limit: number = 12,
   searchTerm: string = '',
-  sortBy: string = 'ZAW_NAME',
+  sortBy: string = 'ZAR_TITLE',
   sortOrder: string = 'asc',
   options: {
     tags?: string[];
@@ -60,62 +60,54 @@ export const getAllArchitectures = async (
   
   // キーワード検索
   if (searchTerm) {
-    whereClause += ' AND (ZAW_NAME LIKE ? OR ZAW_ADDRESS LIKE ? OR ZAW_DETAIL LIKE ?)';
-    params.push(`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`);
+    whereClause += ' AND (ZAR_TITLE LIKE ? OR ZAR_ADDRESS LIKE ? OR ZAR_DESCRIPTION LIKE ? OR ZAR_ARCHITECT LIKE ?)';
+    params.push(`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`);
   }
   
   // その他のフィルター条件
   if (options.architect) {
-    whereClause += ' AND (ZAW_ARCHITECT LIKE ? OR a.ZAR_NAME LIKE ? OR a.ZAR_NAMEENG LIKE ?)';
-    params.push(`%${options.architect}%`, `%${options.architect}%`, `%${options.architect}%`);
+    whereClause += ' AND (ZAR_ARCHITECT LIKE ? OR ZAR_ARCHITECT_ENG LIKE ?)';
+    params.push(`%${options.architect}%`, `%${options.architect}%`);
   }
   
   if (options.location) {
-    whereClause += ' AND ZAW_ADDRESS LIKE ?';
+    whereClause += ' AND ZAR_ADDRESS LIKE ?';
     params.push(`%${options.location}%`);
   }
   
   if (options.prefecture) {
-    whereClause += ' AND ZAW_PREFECTURE = ?';
+    whereClause += ' AND ZAR_PREFECTURE = ?';
     params.push(options.prefecture);
   }
   
   if (options.yearFrom) {
-    whereClause += ' AND ZAW_YEAR >= ?';
+    whereClause += ' AND ZAR_YEAR >= ?';
     params.push(options.yearFrom);
   }
   
   if (options.yearTo) {
-    whereClause += ' AND ZAW_YEAR <= ?';
+    whereClause += ' AND ZAR_YEAR <= ?';
     params.push(options.yearTo);
   }
   
-  // タグによるフィルタリング
-  let joinClause = 'LEFT JOIN ZCDARCHITECT a ON ZCDARCHITECTURE.ZAW_ARCHITECT_ID = a.ZAR_ID';
+  // Basic query without complex joins for now
   if (options.tags && options.tags.length > 0) {
-    joinClause += `
-      INNER JOIN ZCDARCHITECTURE_TAG ON ZCDARCHITECTURE.ZAW_ID = ZCDARCHITECTURE_TAG.ARCHITECTURE_ID
-      INNER JOIN ZCDTAG ON ZCDARCHITECTURE_TAG.TAG_ID = ZCDTAG.TAG_ID
-    `;
-    whereClause += ' AND ZCDTAG.TAG_NAME IN (';
-    whereClause += options.tags.map(() => '?').join(',');
-    whereClause += ')';
-    params.push(...options.tags);
+    // For now, use tag column directly since we don't have separate tag tables
+    whereClause += ' AND ZAR_TAG LIKE ?';
+    params.push(`%${options.tags.join('%')}%`);
   }
   
   // 総件数のクエリ
   const countQuery = `
-    SELECT COUNT(DISTINCT ZCDARCHITECTURE.ZAW_ID) as total
+    SELECT COUNT(*) as total
     FROM ZCDARCHITECTURE
-    ${joinClause}
     WHERE ${whereClause}
   `;
   
   // データ取得クエリ
   const dataQuery = `
-    SELECT DISTINCT ZCDARCHITECTURE.*
+    SELECT *
     FROM ZCDARCHITECTURE
-    ${joinClause}
     WHERE ${whereClause}
     ORDER BY ${sortBy} ${sortOrder === 'desc' ? 'DESC' : 'ASC'}
     LIMIT ? OFFSET ?
@@ -165,10 +157,10 @@ export const getAllTags = async (): Promise<Tag[]> => {
  */
 export const getPrefectureCounts = async (): Promise<{ prefecture: string; count: number }[]> => {
   return getResultsArray<{ prefecture: string; count: number }>(`
-    SELECT ZAW_PREFECTURE as prefecture, COUNT(*) as count
+    SELECT ZAR_PREFECTURE as prefecture, COUNT(*) as count
     FROM ZCDARCHITECTURE
-    WHERE ZAW_PREFECTURE IS NOT NULL AND ZAW_PREFECTURE != ''
-    GROUP BY ZAW_PREFECTURE
+    WHERE ZAR_PREFECTURE IS NOT NULL AND ZAR_PREFECTURE != ''
+    GROUP BY ZAR_PREFECTURE
     ORDER BY count DESC
   `);
 };
@@ -196,10 +188,10 @@ export const getArchitectureForMap = async (
 ): Promise<Architecture[]> => {
   // 検索条件の構築
   let whereClause = `
-    ZAW_LAT BETWEEN ? AND ?
-    AND ZAW_LNG BETWEEN ? AND ?
-    AND ZAW_LAT IS NOT NULL
-    AND ZAW_LNG IS NOT NULL
+    ZAR_LATITUDE BETWEEN ? AND ?
+    AND ZAR_LONGITUDE BETWEEN ? AND ?
+    AND ZAR_LATITUDE IS NOT NULL
+    AND ZAR_LONGITUDE IS NOT NULL
   `;
   
   const params: any[] = [
@@ -211,7 +203,7 @@ export const getArchitectureForMap = async (
   
   // その他のフィルター条件
   if (filters.searchTerm) {
-    whereClause += ' AND (ZAW_NAME LIKE ? OR ZAW_ADDRESS LIKE ? OR ZAW_ARCHITECT LIKE ?)';
+    whereClause += ' AND (ZAR_TITLE LIKE ? OR ZAR_ADDRESS LIKE ? OR ZAR_ARCHITECT LIKE ?)';
     params.push(
       `%${filters.searchTerm}%`,
       `%${filters.searchTerm}%`,
@@ -220,42 +212,33 @@ export const getArchitectureForMap = async (
   }
   
   if (filters.architect) {
-    whereClause += ' AND (ZAW_ARCHITECT LIKE ? OR a.ZAR_NAME LIKE ? OR a.ZAR_NAMEENG LIKE ?)';
+    whereClause += ' AND (ZAR_ARCHITECT LIKE ? OR ZAR_ARCHITECT_ENG LIKE ?)';
     params.push(
-      `%${filters.architect}%`,
       `%${filters.architect}%`,
       `%${filters.architect}%`
     );
   }
   
   if (filters.yearFrom) {
-    whereClause += ' AND ZAW_YEAR >= ?';
+    whereClause += ' AND ZAR_YEAR >= ?';
     params.push(filters.yearFrom);
   }
   
   if (filters.yearTo) {
-    whereClause += ' AND ZAW_YEAR <= ?';
+    whereClause += ' AND ZAR_YEAR <= ?';
     params.push(filters.yearTo);
   }
   
-  // タグによるフィルタリング
-  let joinClause = 'LEFT JOIN ZCDARCHITECT a ON ZCDARCHITECTURE.ZAW_ARCHITECT_ID = a.ZAR_ID';
+  // Simplified tag filtering
   if (filters.tags && filters.tags.length > 0) {
-    joinClause += `
-      INNER JOIN ZCDARCHITECTURE_TAG ON ZCDARCHITECTURE.ZAW_ID = ZCDARCHITECTURE_TAG.ARCHITECTURE_ID
-      INNER JOIN ZCDTAG ON ZCDARCHITECTURE_TAG.TAG_ID = ZCDTAG.TAG_ID
-    `;
-    whereClause += ' AND ZCDTAG.TAG_NAME IN (';
-    whereClause += filters.tags.map(() => '?').join(',');
-    whereClause += ')';
-    params.push(...filters.tags);
+    whereClause += ' AND ZAR_TAG LIKE ?';
+    params.push(`%${filters.tags.join('%')}%`);
   }
   
   // 結果を最大500件に制限（パフォーマンス対策）
   const query = `
-    SELECT DISTINCT ZCDARCHITECTURE.*
+    SELECT *
     FROM ZCDARCHITECTURE
-    ${joinClause}
     WHERE ${whereClause}
     LIMIT 500
   `;

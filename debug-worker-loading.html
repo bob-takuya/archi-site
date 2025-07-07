@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Worker Loading</title>
+</head>
+<body>
+    <h1>Debug Worker Loading</h1>
+    <div id="console-output"></div>
+    <div id="status">Starting...</div>
+    
+    <script type="module">
+        const consoleOutput = document.getElementById('console-output');
+        const statusDiv = document.getElementById('status');
+        
+        // Intercept console.log to show in page
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = (...args) => {
+            originalLog(...args);
+            consoleOutput.innerHTML += `<div style="color: blue;">LOG: ${args.join(' ')}</div>`;
+        };
+        
+        console.error = (...args) => {
+            originalError(...args);
+            consoleOutput.innerHTML += `<div style="color: red;">ERROR: ${args.join(' ')}</div>`;
+        };
+        
+        async function testWorkerLoading() {
+            try {
+                statusDiv.textContent = 'Testing worker loading...';
+                
+                // Test 1: Check if sql.js-httpvfs module loads
+                console.log('Testing sql.js-httpvfs module import...');
+                const module = await import('sql.js-httpvfs');
+                console.log('sql.js-httpvfs module loaded:', module);
+                
+                // Test 2: Check worker URL construction
+                console.log('Testing worker URL construction...');
+                const workerUrl = '/archi-site/sqlite.worker.js';
+                console.log('Worker URL:', workerUrl);
+                
+                const wasmUrl = '/archi-site/sql-wasm.wasm';
+                console.log('WASM URL:', wasmUrl);
+                
+                // Test 3: Check if worker files are accessible
+                console.log('Testing worker file accessibility...');
+                try {
+                    const response = await fetch(workerUrl);
+                    console.log('Worker file accessible:', response.ok, response.status);
+                } catch (e) {
+                    console.error('Worker file not accessible:', e.message);
+                }
+                
+                try {
+                    const response = await fetch(wasmUrl);
+                    console.log('WASM file accessible:', response.ok, response.status);
+                } catch (e) {
+                    console.error('WASM file not accessible:', e.message);
+                }
+                
+                // Test 4: Try to create the worker
+                console.log('Testing worker creation...');
+                const config = {
+                    from: 'inline',
+                    config: {
+                        serverMode: 'full',
+                        url: '/archi-site/db/archimap.sqlite',
+                        requestChunkSize: 4096,
+                        cacheSizeKiB: 2048,
+                        filename: 'archimap.sqlite',
+                        debug: true
+                    }
+                };
+                
+                console.log('Creating worker with config:', config);
+                
+                const worker = await module.createDbWorker(
+                    [config],
+                    workerUrl,
+                    wasmUrl
+                );
+                
+                console.log('Worker created successfully!', worker);
+                statusDiv.textContent = 'Worker created successfully!';
+                
+            } catch (error) {
+                console.error('Error in testWorkerLoading:', error);
+                statusDiv.textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        testWorkerLoading();
+    </script>
+</body>
+</html>

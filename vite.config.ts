@@ -19,6 +19,7 @@ export default defineConfig({
       },
     },
     target: 'esnext',
+    copyPublicDir: true,
   },
   optimizeDeps: {
     include: [
@@ -31,6 +32,10 @@ export default defineConfig({
       '@mui/icons-material',
     ],
     exclude: ['sql.js', 'sql.js-httpvfs'],
+  },
+  worker: {
+    format: 'es',
+    plugins: [react()],
   },
   resolve: {
     alias: {

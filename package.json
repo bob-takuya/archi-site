@@ -66,6 +66,7 @@
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.4.0",
     "sql.js": "^1.13.0",
+    "sql.js-httpvfs": "^0.8.12",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
@@ -102,7 +103,6 @@
     "jest-environment-jsdom": "^29.7.0",
     "kill-port": "^2.0.1",
     "path-browserify": "^1.0.1",
-    "sql.js-httpvfs": "^0.8.12",
     "style-loader": "^4.0.0",
     "ts-jest": "^29.3.1",
     "ts-loader": "^9.5.2",

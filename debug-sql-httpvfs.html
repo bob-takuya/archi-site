@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug sql.js-httpvfs</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .log { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffe6e6; color: #d00; }
+        .success { background: #e6ffe6; color: #060; }
+    </style>
+</head>
+<body>
+    <h1>Debug sql.js-httpvfs Implementation</h1>
+    <div id="logs"></div>
+
+    <script type="module">
+        const logsDiv = document.getElementById('logs');
+        
+        function log(message, type = 'info') {
+            console.log(message);
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            logsDiv.appendChild(div);
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+        }
+
+        async function testSqlJsHttpvfs() {
+            try {
+                log('Starting sql.js-httpvfs test...');
+
+                // Import the module
+                const { createDbWorker } = await import('/archi-site/assets/database-C3TWL7Qm.js');
+                log('Successfully imported sql.js-httpvfs module', 'success');
+
+                // Configure the worker
+                const config = {
+                    from: 'inline',
+                    config: {
+                        serverMode: 'full',
+                        url: '/archi-site/db/archimap.sqlite',
+                        requestChunkSize: 4096,
+                        cacheSizeKiB: 2048,
+                        filename: 'archimap.sqlite',
+                        debug: true
+                    }
+                };
+
+                log(`Database URL: ${config.config.url}`);
+
+                // Get worker URLs from assets
+                const workerUrl = '/archi-site/assets/sqlite.worker-DMS32ee_.js';
+                const wasmUrl = '/archi-site/assets/sql-wasm-Bv7gRpUo.wasm';
+
+                log(`Worker URL: ${workerUrl}`);
+                log(`WASM URL: ${wasmUrl}`);
+
+                // Create the worker
+                log('Creating worker...');
+                const worker = await createDbWorker(
+                    [config],
+                    workerUrl,
+                    wasmUrl,
+                    50 * 1024 * 1024 // 50MB limit
+                );
+
+                log('Worker created successfully!', 'success');
+
+                // Test basic query
+                log('Testing SQLite version query...');
+                const versionResult = await worker.db.exec('SELECT sqlite_version()');
+                log(`SQLite version: ${versionResult[0]?.values[0][0]}`, 'success');
+
+                // Test table listing
+                log('Listing tables...');
+                const tablesResult = await worker.db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+                log(`Found ${tablesResult[0]?.values.length} tables`, 'success');
+
+                // Test architecture count
+                log('Counting architecture records...');
+                const countResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+                const count = countResult[0]?.values[0][0];
+                log(`Architecture records: ${count}`, 'success');
+
+                // Test sample architecture data
+                log('Fetching sample architecture data...');
+                const sampleResult = await worker.db.exec("SELECT ZAR_TITLE, ZAR_ARCHITECT FROM ZCDARCHITECTURE LIMIT 5");
+                log(`Sample data: ${JSON.stringify(sampleResult[0]?.values)}`, 'success');
+
+                log('All tests passed! sql.js-httpvfs is working correctly.', 'success');
+
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                log(`Stack: ${error.stack}`, 'error');
+            }
+        }
+
+        // Start the test
+        testSqlJsHttpvfs();
+    </script>
+</body>
+</html>

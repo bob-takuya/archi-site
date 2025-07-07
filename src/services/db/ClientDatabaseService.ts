@@ -1,17 +1,22 @@
-import initSqlJs, { Database, QueryExecResult } from 'sql.js';
+import { createDbWorker } from 'sql.js-httpvfs';
+import type { WorkerHttpvfs } from 'sql.js-httpvfs';
 
 // Determine the base path for assets
 const BASE_PATH = import.meta.env.PROD ? '/archi-site' : '';
 
-// WASM and database URLs
-const WASM_URL = `${BASE_PATH}/sql-wasm.wasm`;
+// Database URLs for sql.js-httpvfs
 const DATABASE_URL = `${BASE_PATH}/db/archimap.sqlite`;
 
-// シングルトンインスタンス
-let database: Database | null = null;
-let sqlJs: any = null;
+// Debug logging
+console.log('🔧 Environment debug info:');
+console.log('  - import.meta.env.PROD:', import.meta.env.PROD);
+console.log('  - BASE_PATH:', BASE_PATH);
+console.log('  - DATABASE_URL:', DATABASE_URL);
+
+// Worker instance for sql.js-httpvfs
+let worker: WorkerHttpvfs | null = null;
 let isInitializing = false;
-let initPromise: Promise<Database> | null = null;
+let initPromise: Promise<WorkerHttpvfs> | null = null;
 
 /**
  * データベース接続の状態
@@ -27,7 +32,7 @@ export enum DatabaseStatus {
  * データベース接続の現在の状態を返す
  */
 export const getDatabaseStatus = (): DatabaseStatus => {
-  if (database) {
+  if (worker) {
     return DatabaseStatus.READY;
   }
   if (isInitializing) {
@@ -58,13 +63,13 @@ const detectConnectionSpeed = async (): Promise<'fast' | 'slow' | 'very-slow'> =
 };
 
 /**
- * データベース接続を初期化する（完全ファイル読み込み方式）
- * @returns データベースインスタンス
+ * データベース接続を初期化する（sql.js-httpvfs方式）
+ * @returns WorkerHttpvfsインスタンス
  */
-export const initDatabase = async (): Promise<Database> => {
+export const initDatabase = async (): Promise<WorkerHttpvfs> => {
   // 既に初期化済みならそのインスタンスを返す
-  if (database) {
-    return database;
+  if (worker) {
+    return worker;
   }
   
   // 初期化中なら既存のプロミスを返す
@@ -78,166 +83,117 @@ export const initDatabase = async (): Promise<Database> => {
   // 初期化プロミスを作成
   initPromise = (async () => {
     try {
-      console.log('🚀 データベース初期化を開始...');
+      console.log('🚀 データベース初期化を開始（sql.js-httpvfs使用）...');
       
       // Check connection speed for better error messages
       const connectionSpeed = await detectConnectionSpeed();
       console.log(`🌐 Connection speed detected: ${connectionSpeed}`);
       
-      // SQL.js を初期化（タイムアウト設定）
-      if (!sqlJs) {
-        console.log('📦 SQL.js WASM を読み込み中...');
+      // Test database file accessibility
+      console.log('🗄️ Testing database file accessibility...');
+      try {
+        const dbResponse = await fetch(DATABASE_URL, { method: 'HEAD' });
+        console.log('  - Database file status:', dbResponse.status, dbResponse.statusText);
         
-        const wasmInitTimeout = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('WASM initialization timeout after 45 seconds')), 45000)
-        );
+        if (!dbResponse.ok) {
+          throw new Error(`Database file not accessible: ${dbResponse.status} ${dbResponse.statusText} at ${DATABASE_URL}`);
+        }
         
-        const wasmInit = initSqlJs({
-          locateFile: (file: string) => {
-            console.log(`🔍 ファイル要求: ${file}`);
-            if (file.endsWith('.wasm')) {
-              console.log(`📍 WASM URL: ${WASM_URL}`);
-              return WASM_URL;
-            }
-            return file;
-          }
-        });
+        // Get database file size for debugging
+        const contentLength = dbResponse.headers.get('content-length');
+        if (contentLength) {
+          const sizeInMB = parseInt(contentLength) / (1024 * 1024);
+          console.log(`  - Database file size: ${sizeInMB.toFixed(2)} MB`);
+        }
         
-        sqlJs = await Promise.race([wasmInit, wasmInitTimeout]);
-        console.log('✅ SQL.js WASM 読み込み完了');
+        console.log('✅ Database file is accessible');
+      } catch (dbAccessError) {
+        console.error('❌ Database file accessibility check failed:', dbAccessError);
+        throw new Error(`Database file not accessible: ${dbAccessError.message}`);
       }
       
-      // データベースファイルを段階的に読み込み
-      console.log('💾 データベースファイルを読み込み中...');
+      console.log('📦 sql.js-httpvfs worker を初期化中...');
       console.log(`📍 Database URL: ${DATABASE_URL}`);
       
-      // Extended timeout for large database download (12.7MB + 1.2MB WASM)
-      const dbFetchTimeout = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Database fetch timeout after 120 seconds - Large file download may take longer on slow connections')), 120000)
+      // sql.js-httpvfs worker を作成
+      // Use worker files from public directory (not node_modules)
+      const workerUrl = `${BASE_PATH}/sqlite.worker.js`;
+      const wasmUrl = `${BASE_PATH}/sql-wasm.wasm`;
+      
+      // Additional debug logging for worker URLs
+      console.log('🔧 Worker file URLs:');
+      console.log('  - workerUrl:', workerUrl);
+      console.log('  - wasmUrl:', wasmUrl);
+      
+      // Test worker file accessibility before creating worker
+      console.log('🔍 Testing worker file accessibility...');
+      try {
+        const workerResponse = await fetch(workerUrl, { method: 'HEAD' });
+        const wasmResponse = await fetch(wasmUrl, { method: 'HEAD' });
+        
+        console.log('  - Worker file status:', workerResponse.status, workerResponse.statusText);
+        console.log('  - WASM file status:', wasmResponse.status, wasmResponse.statusText);
+        
+        if (!workerResponse.ok) {
+          throw new Error(`Worker file not accessible: ${workerResponse.status} ${workerResponse.statusText} at ${workerUrl}`);
+        }
+        
+        if (!wasmResponse.ok) {
+          throw new Error(`WASM file not accessible: ${wasmResponse.status} ${wasmResponse.statusText} at ${wasmUrl}`);
+        }
+        
+        console.log('✅ All worker files are accessible');
+      } catch (accessError) {
+        console.error('❌ Worker file accessibility check failed:', accessError);
+        throw new Error(`Worker files not accessible: ${accessError.message}`);
+      }
+      
+      // Enhanced configuration for sql.js-httpvfs
+      const config = {
+        from: 'inline' as const,
+        config: {
+          serverMode: 'full' as const,
+          url: DATABASE_URL,
+          requestChunkSize: 4096, // Use standard SQLite page size
+          cacheSizeKiB: 2048, // 2MB cache
+          filename: 'archimap.sqlite',
+          debug: import.meta.env.DEV // Enable debug in development
+        }
+      };
+      
+      console.log('🔧 Worker config:', config);
+      console.log('🔧 Worker URL:', workerUrl);
+      console.log('🔧 WASM URL:', wasmUrl);
+      
+      // Create worker with timeout and limited bytes to read for initial test
+      const workerInitTimeout = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Worker initialization timeout after 30 seconds')), 30000)
       );
       
-      // Implement exponential backoff retry logic
-      const fetchWithRetry = async (url: string, options: RequestInit, maxRetries = 3) => {
-        let lastError: Error | null = null;
-        
-        for (let attempt = 1; attempt <= maxRetries; attempt++) {
-          try {
-            console.log(`🔄 Database fetch attempt ${attempt}/${maxRetries}`);
-            const response = await fetch(url, options);
-            if (response.ok) {
-              return response;
-            }
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          } catch (error) {
-            lastError = error as Error;
-            console.warn(`❌ Attempt ${attempt} failed:`, error);
-            
-            if (attempt < maxRetries) {
-              const delay = Math.pow(2, attempt - 1) * 1000; // Exponential backoff
-              console.log(`⏳ Retrying in ${delay}ms...`);
-              await new Promise(resolve => setTimeout(resolve, delay));
-            }
-          }
-        }
-        
-        throw lastError;
-      };
+      const maxBytesToRead = 50 * 1024 * 1024; // 50MB limit for safety
       
-      const dbFetch = fetchWithRetry(DATABASE_URL, {
-        method: 'GET',
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
+      const workerInit = createDbWorker(
+        [config],
+        workerUrl,
+        wasmUrl,
+        maxBytesToRead
+      );
       
-      const response = await Promise.race([dbFetch, dbFetchTimeout]);
-      
-      if (!response.ok) {
-        throw new Error(`データベースファイルの読み込みに失敗: ${response.status} ${response.statusText}`);
-      }
-      
-      const contentLength = response.headers.get('content-length');
-      console.log(`📏 データベースサイズ: ${contentLength ? Math.round(parseInt(contentLength) / 1024 / 1024 * 100) / 100 : 'unknown'} MB`);
-      
-      // Enhanced progress reporting with time estimation
-      const reader = response.body?.getReader();
-      if (!reader) {
-        throw new Error('Response body reader not available');
-      }
-      
-      const chunks: Uint8Array[] = [];
-      let receivedLength = 0;
-      const totalLength = contentLength ? parseInt(contentLength) : 0;
-      const startTime = Date.now();
-      let lastProgressTime = startTime;
-      
-      // Dispatch progress events for UI updates
-      const dispatchProgress = (progress: number, speed: number, eta: number) => {
-        window.dispatchEvent(new CustomEvent('database-download-progress', {
-          detail: { progress, speed, eta, receivedLength, totalLength }
-        }));
-      };
-      
-      console.log(`📦 Starting database download: ${Math.round(totalLength / 1024 / 1024)} MB`);
-      
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        
-        chunks.push(value);
-        receivedLength += value.length;
-        
-        if (totalLength > 0) {
-          const progress = Math.round((receivedLength / totalLength) * 100);
-          const currentTime = Date.now();
-          const elapsedTime = (currentTime - startTime) / 1000; // seconds
-          const speed = receivedLength / elapsedTime; // bytes per second
-          const remainingBytes = totalLength - receivedLength;
-          const eta = remainingBytes / speed; // estimated time remaining in seconds
-          
-          // Update progress every 500ms or every MB
-          if (currentTime - lastProgressTime > 500 || receivedLength % (1024 * 1024) < value.length) {
-            console.log(`📥 Download progress: ${progress}% (${Math.round(receivedLength / 1024 / 1024)} MB) - ${Math.round(speed / 1024)} KB/s - ETA: ${Math.round(eta)}s`);
-            dispatchProgress(progress, speed, eta);
-            lastProgressTime = currentTime;
-          }
-        }
-      }
-      
-      // Final progress update
-      if (totalLength > 0) {
-        dispatchProgress(100, 0, 0);
-      }
-      
-      // Combine chunks
-      const arrayBuffer = new Uint8Array(receivedLength);
-      let position = 0;
-      for (const chunk of chunks) {
-        arrayBuffer.set(chunk, position);
-        position += chunk.length;
-      }
-      
-      console.log(`📊 データベースファイル読み込み完了: ${Math.round(receivedLength / 1024 / 1024 * 100) / 100} MB`);
-      
-      // データベースを作成
-      console.log('🔧 SQLite データベースを初期化中...');
-      database = new sqlJs.Database(arrayBuffer);
-      console.log('✅ データベース接続を確立しました');
+      worker = await Promise.race([workerInit, workerInitTimeout]);
+      console.log('✅ sql.js-httpvfs worker 初期化完了');
       
       // テスト用のシンプルなクエリを実行
-      const testResult = database.exec('SELECT sqlite_version()');
+      const testResult = await worker.db.exec('SELECT sqlite_version()');
       console.log(`🔍 SQLite バージョン: ${testResult[0]?.values[0][0]}`);
       
       // 簡単なテーブル存在確認
-      const tablesResult = database.exec("SELECT name FROM sqlite_master WHERE type='table'");
+      const tablesResult = await worker.db.exec("SELECT name FROM sqlite_master WHERE type='table'");
       if (tablesResult.length > 0) {
         console.log(`📋 利用可能なテーブル数: ${tablesResult[0].values.length}`);
         
         // 建築データの件数確認
         try {
-          const countResult = database.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+          const countResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
           if (countResult.length > 0) {
             console.log(`🏢 建築データ件数: ${countResult[0].values[0][0]} 件`);
           }
@@ -246,10 +202,10 @@ export const initDatabase = async (): Promise<Database> => {
         }
       }
       
-      return database;
+      return worker;
     } catch (error) {
       console.error('❌ データベース初期化エラー:', error);
-      database = null;
+      worker = null;
       
       // Enhanced error messages based on connection speed and error type
       if (error instanceof Error) {
@@ -258,9 +214,9 @@ export const initDatabase = async (): Promise<Database> => {
         
         if (error.message.includes('timeout')) {
           if (connectionSpeed === 'very-slow') {
-            enhancedMessage += '\n\n📡 接続速度が非常に遅いため、ファイルのダウンロードに時間がかかっています。WiFiやより高速な接続をお試しください。';
+            enhancedMessage += '\n\n📡 接続速度が非常に遅いため、データベースの初期化に時間がかかっています。WiFiやより高速な接続をお試しください。';
           } else if (connectionSpeed === 'slow') {
-            enhancedMessage += '\n\n📡 接続速度が遅いため、大きなファイルのダウンロードに時間がかかっています。';
+            enhancedMessage += '\n\n📡 接続速度が遅いため、データベースの初期化に時間がかかっています。';
           }
         } else if (error.message.includes('fetch') || error.message.includes('network')) {
           enhancedMessage += '\n\n🌐 ネットワーク接続に問題があります。接続状態を確認してください。';
@@ -290,19 +246,19 @@ export const initDatabase = async (): Promise<Database> => {
 export const executeQuery = async <T = any>(
   query: string,
   params: any[] = []
-): Promise<QueryExecResult[]> => {
+): Promise<any[]> => {
   try {
     // データベース初期化を確認
-    if (!database) {
+    if (!worker) {
       await initDatabase();
     }
     
     // クエリの実行
-    if (!database) {
+    if (!worker) {
       throw new Error('データベースが初期化されていません');
     }
     
-    const result = database.exec(query, params);
+    const result = await worker.db.exec(query, params);
     return result;
   } catch (error) {
     console.error('クエリ実行エラー:', error);
@@ -316,7 +272,7 @@ export const executeQuery = async <T = any>(
  * @returns オブジェクトの配列
  */
 export const resultsToObjects = <T = Record<string, any>>(
-  result: QueryExecResult[]
+  result: any[]
 ): T[] => {
   if (!result || result.length === 0) {
     return [];
@@ -324,9 +280,9 @@ export const resultsToObjects = <T = Record<string, any>>(
   
   const { columns, values } = result[0];
   
-  return values.map(row => {
+  return values.map((row: any[]) => {
     const obj: Record<string, any> = {};
-    columns.forEach((col, i) => {
+    columns.forEach((col: string, i: number) => {
       obj[col] = row[i];
     });
     return obj as T;
