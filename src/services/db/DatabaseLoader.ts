@@ -38,6 +38,19 @@ export async function initDatabase(): Promise<SqliteWorker<WorkerHttpvfs>> {
 
   console.log(`Initializing database from ${BASE_PATH}/db/archimap.sqlite`);
 
+  // Fetch database info to get file size
+  let databaseSize = 12730368; // Default fallback size
+  try {
+    const dbInfoResponse = await fetch(`${BASE_PATH}/db/database-info.json`);
+    if (dbInfoResponse.ok) {
+      const dbInfo = await dbInfoResponse.json();
+      databaseSize = dbInfo.size || databaseSize;
+      console.log(`Database size from info: ${databaseSize} bytes`);
+    }
+  } catch (error) {
+    console.warn('Could not fetch database info, using default size:', error);
+  }
+
   // Initialize the database
   initPromise = createDbWorker(
     [{
@@ -47,6 +60,8 @@ export async function initDatabase(): Promise<SqliteWorker<WorkerHttpvfs>> {
         requestChunkSize: 4 * 1024 * 1024, // 4MB chunks for requests
         url: `${BASE_PATH}/db/archimap.sqlite`,
         suffixUrl: `${BASE_PATH}/db/archimap.sqlite.suffix`,
+        dbPageSize: 4096,
+        maxBytesToRead: databaseSize, // Specify exact file size
       },
     }],
     `${BASE_PATH}/sqlite.worker.js`,
