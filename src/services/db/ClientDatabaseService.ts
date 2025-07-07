@@ -169,6 +169,12 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
       console.log('🔧 Worker config:', config);
       console.log('🔧 Worker URL:', workerUrl);
       console.log('🔧 WASM URL:', wasmUrl);
+      console.log('🔧 Config details:');
+      console.log('  - serverMode:', config.config.serverMode);
+      console.log('  - url:', config.config.url);  
+      console.log('  - requestChunkSize:', config.config.requestChunkSize);
+      console.log('  - size:', config.config.size);
+      console.log('  - filename:', config.config.filename);
       
       // Create worker with timeout and limited bytes to read for initial test
       const workerInitTimeout = new Promise((_, reject) => 

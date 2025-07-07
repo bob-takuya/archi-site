@@ -1,6 +1,6 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="34.369419">
-<testsuite name="test-worker-debug.spec.ts" timestamp="2025-07-07T07:41:47.073Z" hostname="chromium" tests="1" failures="0" skipped="0" time="33.521" errors="0">
-<testcase name="Worker Loading Debug Test › should debug worker loading issues" classname="test-worker-debug.spec.ts" time="33.521">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="38.541187">
+<testsuite name="test-worker-debug.spec.ts" timestamp="2025-07-07T07:47:25.471Z" hostname="chromium" tests="1" failures="0" skipped="0" time="37.345" errors="0">
+<testcase name="Worker Loading Debug Test › should debug worker loading issues" classname="test-worker-debug.spec.ts" time="37.345">
 <system-out>
 <![CDATA[🔍 Starting worker loading debug test...
 [BROWSER]: 🔧 Environment debug info:
@@ -16,16 +16,16 @@
 [BROWSER]: アプリケーション環境: 本番
 [BROWSER]: GitHub Pages環境: はい
 [BROWSER]: 🚀 データベース初期化を開始（sql.js-httpvfs使用）...
-[BROWSER]: 🌐 Connection speed detected: slow
-[BROWSER]: 🗄️ Testing database file accessibility...
-[BROWSER]: Failed to load resource: the server responded with a status of 404 ()
 [BROWSER]: データベース情報:
 [BROWSER]: - ファイル: archimap.sqlite
-[BROWSER]: - 更新日時: 2025-07-07T07:40:24.953Z
+[BROWSER]: - 更新日時: 2025-07-07T07:43:25.924Z
 [BROWSER]: - サイズ: 12.14 MB
 [BROWSER]: - チャンク: 195 (64KB)のチャンク
 [BROWSER]: - テーブル数: 10
 [BROWSER]: - インデックス数: 13
+[BROWSER]: 🌐 Connection speed detected: slow
+[BROWSER]: 🗄️ Testing database file accessibility...
+[BROWSER]: Failed to load resource: the server responded with a status of 404 ()
 [BROWSER]:   - Database file status: 200 
 [BROWSER]:   - Database file size: 3.64 MB
 [BROWSER]: ✅ Database file is accessible
@@ -52,22 +52,22 @@ cache-control: max-age=600
 content-encoding: gzip
 content-length: 3817806
 content-type: application/octet-stream
-date: Mon, 07 Jul 2025 07:41:49 GMT
-etag: W/"686b7a03-c24000"
-expires: Mon, 07 Jul 2025 07:51:48 GMT
-last-modified: Mon, 07 Jul 2025 07:40:51 GMT
+date: Mon, 07 Jul 2025 07:47:28 GMT
+etag: W/"686b7ac5-c24000"
+expires: Mon, 07 Jul 2025 07:57:27 GMT
+last-modified: Mon, 07 Jul 2025 07:44:05 GMT
 server: GitHub.com
 strict-transport-security: max-age=31556952
 vary: Accept-Encoding
 via: 1.1 varnish
 x-cache: HIT
 x-cache-hits: 1
-x-fastly-request-id: 63b4ef54413cd17350c1415cc258b69c551af5e3
-x-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C
+x-fastly-request-id: 6edcb80a842230bbf489470ddcfea3b24355e50f
+x-github-request-id: 262E:260AF0:14CB33D:15399EB:686B7B8F
 x-origin-cache: HIT
 x-proxy-cache: MISS
-x-served-by: cache-nrt-rjtf7700073-NRT
-x-timer: S1751874110.720406,VS0,VE7
+x-served-by: cache-nrt-rjtf7700051-NRT
+x-timer: S1751874448.386076,VS0,VE7
 
 [BROWSER]: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
     at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)
@@ -81,11 +81,11 @@ x-timer: S1751874110.720406,VS0,VE7
     at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51
     at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036
 [BROWSER]: クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
-    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46
+    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46
 [BROWSER]: 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
-    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46
+    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46
 [BROWSER]: 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
-    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46
+    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46
 [BROWSER]: 🚀 データベース初期化を開始（sql.js-httpvfs使用）...
 [BROWSER]: 🌐 Connection speed detected: fast
 [BROWSER]: 🗄️ Testing database file accessibility...
@@ -115,22 +115,22 @@ cache-control: max-age=600
 content-encoding: gzip
 content-length: 3817806
 content-type: application/octet-stream
-date: Mon, 07 Jul 2025 07:41:49 GMT
-etag: W/"686b7a03-c24000"
-expires: Mon, 07 Jul 2025 07:51:48 GMT
-last-modified: Mon, 07 Jul 2025 07:40:51 GMT
+date: Mon, 07 Jul 2025 07:47:28 GMT
+etag: W/"686b7ac5-c24000"
+expires: Mon, 07 Jul 2025 07:57:27 GMT
+last-modified: Mon, 07 Jul 2025 07:44:05 GMT
 server: GitHub.com
 strict-transport-security: max-age=31556952
 vary: Accept-Encoding
 via: 1.1 varnish
 x-cache: HIT
 x-cache-hits: 3
-x-fastly-request-id: 24990914d455f70f26826d4308ae3a5e2e118145
-x-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C
+x-fastly-request-id: 8e5887b59fe0007eedc035acf99c530c96fd6cba
+x-github-request-id: 262E:260AF0:14CB33D:15399EB:686B7B8F
 x-origin-cache: HIT
 x-proxy-cache: MISS
-x-served-by: cache-nrt-rjtf7700073-NRT
-x-timer: S1751874110.868321,VS0,VE0
+x-served-by: cache-nrt-rjtf7700051-NRT
+x-timer: S1751874449.550872,VS0,VE1
 
 [BROWSER]: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
     at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)
@@ -158,16 +158,16 @@ x-timer: S1751874110.868321,VS0,VE0
   11. アプリケーション環境: 本番
   12. GitHub Pages環境: はい
   13. 🚀 データベース初期化を開始（sql.js-httpvfs使用）...
-  14. 🌐 Connection speed detected: slow
-  15. 🗄️ Testing database file accessibility...
-  16. Failed to load resource: the server responded with a status of 404 ()
-  17. データベース情報:
-  18. - ファイル: archimap.sqlite
-  19. - 更新日時: 2025-07-07T07:40:24.953Z
-  20. - サイズ: 12.14 MB
-  21. - チャンク: 195 (64KB)のチャンク
-  22. - テーブル数: 10
-  23. - インデックス数: 13
+  14. データベース情報:
+  15. - ファイル: archimap.sqlite
+  16. - 更新日時: 2025-07-07T07:43:25.924Z
+  17. - サイズ: 12.14 MB
+  18. - チャンク: 195 (64KB)のチャンク
+  19. - テーブル数: 10
+  20. - インデックス数: 13
+  21. 🌐 Connection speed detected: slow
+  22. 🗄️ Testing database file accessibility...
+  23. Failed to load resource: the server responded with a status of 404 ()
   24.   - Database file status: 200 
   25.   - Database file size: 3.64 MB
   26. ✅ Database file is accessible
@@ -194,22 +194,22 @@ cache-control: max-age=600
 content-encoding: gzip
 content-length: 3817806
 content-type: application/octet-stream
-date: Mon, 07 Jul 2025 07:41:49 GMT
-etag: W/"686b7a03-c24000"
-expires: Mon, 07 Jul 2025 07:51:48 GMT
-last-modified: Mon, 07 Jul 2025 07:40:51 GMT
+date: Mon, 07 Jul 2025 07:47:28 GMT
+etag: W/"686b7ac5-c24000"
+expires: Mon, 07 Jul 2025 07:57:27 GMT
+last-modified: Mon, 07 Jul 2025 07:44:05 GMT
 server: GitHub.com
 strict-transport-security: max-age=31556952
 vary: Accept-Encoding
 via: 1.1 varnish
 x-cache: HIT
 x-cache-hits: 1
-x-fastly-request-id: 63b4ef54413cd17350c1415cc258b69c551af5e3
-x-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C
+x-fastly-request-id: 6edcb80a842230bbf489470ddcfea3b24355e50f
+x-github-request-id: 262E:260AF0:14CB33D:15399EB:686B7B8F
 x-origin-cache: HIT
 x-proxy-cache: MISS
-x-served-by: cache-nrt-rjtf7700073-NRT
-x-timer: S1751874110.720406,VS0,VE7
+x-served-by: cache-nrt-rjtf7700051-NRT
+x-timer: S1751874448.386076,VS0,VE7
 
   44. ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
     at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)
@@ -223,11 +223,11 @@ x-timer: S1751874110.720406,VS0,VE7
     at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51
     at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036
   45. クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
-    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46
+    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46
   46. 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
-    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46
+    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46
   47. 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
-    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46
+    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46
   48. 🚀 データベース初期化を開始（sql.js-httpvfs使用）...
   49. 🌐 Connection speed detected: fast
   50. 🗄️ Testing database file accessibility...
@@ -257,22 +257,22 @@ cache-control: max-age=600
 content-encoding: gzip
 content-length: 3817806
 content-type: application/octet-stream
-date: Mon, 07 Jul 2025 07:41:49 GMT
-etag: W/"686b7a03-c24000"
-expires: Mon, 07 Jul 2025 07:51:48 GMT
-last-modified: Mon, 07 Jul 2025 07:40:51 GMT
+date: Mon, 07 Jul 2025 07:47:28 GMT
+etag: W/"686b7ac5-c24000"
+expires: Mon, 07 Jul 2025 07:57:27 GMT
+last-modified: Mon, 07 Jul 2025 07:44:05 GMT
 server: GitHub.com
 strict-transport-security: max-age=31556952
 vary: Accept-Encoding
 via: 1.1 varnish
 x-cache: HIT
 x-cache-hits: 3
-x-fastly-request-id: 24990914d455f70f26826d4308ae3a5e2e118145
-x-github-request-id: FD16:089A:AB589:ADCB6:686B7A3C
+x-fastly-request-id: 8e5887b59fe0007eedc035acf99c530c96fd6cba
+x-github-request-id: 262E:260AF0:14CB33D:15399EB:686B7B8F
 x-origin-cache: HIT
 x-proxy-cache: MISS
-x-served-by: cache-nrt-rjtf7700073-NRT
-x-timer: S1751874110.868321,VS0,VE0
+x-served-by: cache-nrt-rjtf7700051-NRT
+x-timer: S1751874449.550872,VS0,VE1
 
   71. ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
     at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)
@@ -299,11 +299,11 @@ x-timer: S1751874110.868321,VS0,VE0
     at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[637]:0x89b51
     at https://bob-takuya.github.io/archi-site/sql-wasm.wasm:wasm-function[1304]:0xff036
   ERROR 2: クエリ実行エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
-    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46
+    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46
   ERROR 3: 建築作品データ取得エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
-    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46
+    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46
   ERROR 4: 建築作品の取得に失敗: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
-    at https://bob-takuya.github.io/archi-site/assets/index-6Xo8Arz5.js:7:46
+    at https://bob-takuya.github.io/archi-site/assets/index-DS8Nu8PG.js:7:46
   ERROR 5: ❌ データベース初期化エラー: Error: Length of the file not known. It must either be supplied in the config or given by the HTTP server.
     at r.checkServer (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:6848)
     at get length (https://bob-takuya.github.io/archi-site/sqlite.worker.js:1:7039)
