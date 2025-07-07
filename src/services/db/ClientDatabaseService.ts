@@ -149,6 +149,8 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
       }
       
       // Enhanced configuration for sql.js-httpvfs
+      // Note: GitHub Pages serves files with gzip compression which prevents
+      // sql.js-httpvfs from detecting the file size. We need to specify it explicitly.
       const config = {
         from: 'inline' as const,
         config: {
@@ -157,7 +159,10 @@ export const initDatabase = async (): Promise<WorkerHttpvfs> => {
           requestChunkSize: 4096, // Use standard SQLite page size
           cacheSizeKiB: 2048, // 2MB cache
           filename: 'archimap.sqlite',
-          debug: import.meta.env.DEV // Enable debug in development
+          debug: import.meta.env.DEV, // Enable debug in development
+          // Specify uncompressed file size to work with GitHub Pages gzip compression
+          // This is the actual uncompressed size of the database file
+          size: 12730368 // 12.14 MB - from database-info.json
         }
       };
       
