@@ -38,30 +38,39 @@ export async function initDatabase(): Promise<SqliteWorker<WorkerHttpvfs>> {
 
   console.log(`Initializing database from ${BASE_PATH}/db/archimap.sqlite`);
 
-  // Fetch database info to get file size
-  let databaseSize = 12730368; // Default fallback size
+  // Get actual server response size (compressed if applicable)
+  let databaseSize = 12730368; // Default fallback size (uncompressed)
   try {
+    // Try to get actual content-length from server
+    const headResponse = await fetch(`${BASE_PATH}/db/archimap.sqlite`, { method: 'HEAD' });
+    if (headResponse.ok) {
+      const contentLength = headResponse.headers.get('content-length');
+      if (contentLength) {
+        databaseSize = parseInt(contentLength, 10);
+        console.log(`Database size from server headers: ${databaseSize} bytes`);
+      }
+    }
+    
+    // Also fetch database info for additional metadata
     const dbInfoResponse = await fetch(`${BASE_PATH}/db/database-info.json`);
     if (dbInfoResponse.ok) {
       const dbInfo = await dbInfoResponse.json();
-      databaseSize = dbInfo.size || databaseSize;
-      console.log(`Database size from info: ${databaseSize} bytes`);
+      console.log(`Database info - uncompressed size: ${dbInfo.size} bytes`);
     }
   } catch (error) {
-    console.warn('Could not fetch database info, using default size:', error);
+    console.warn('Could not fetch database size, using default:', error);
   }
 
-  // Initialize the database
+  // Initialize the database with special handling for compressed files
   initPromise = createDbWorker(
     [{
       from: 'chunks',
       config: {
         serverMode: 'full',
-        requestChunkSize: 4 * 1024 * 1024, // 4MB chunks for requests
+        requestChunkSize: 1024 * 1024, // 1MB chunks for better compatibility
         url: `${BASE_PATH}/db/archimap.sqlite`,
         suffixUrl: `${BASE_PATH}/db/archimap.sqlite.suffix`,
-        dbPageSize: 4096,
-        maxBytesToRead: databaseSize, // Specify exact file size
+        // Don't specify size for compressed files - let sql.js-httpvfs handle it
       },
     }],
     `${BASE_PATH}/sqlite.worker.js`,

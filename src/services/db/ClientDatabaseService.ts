@@ -66,32 +66,38 @@ export const initDatabase = async (): Promise<any> => {
   isInitializing = true;
   
   try {
-    // Fetch database info to get file size
-    let databaseSize = 12730368; // Default fallback size
+    // Get actual server response size (compressed if applicable)
     try {
+      const headResponse = await fetch(`${BASE_PATH}/db/archimap.sqlite`, { method: 'HEAD' });
+      if (headResponse.ok) {
+        const contentLength = headResponse.headers.get('content-length');
+        if (contentLength) {
+          console.log(`Database size from server headers: ${contentLength} bytes`);
+        }
+      }
+      
       const dbInfoResponse = await fetch(`${BASE_PATH}/db/database-info.json`);
       if (dbInfoResponse.ok) {
         const dbInfo = await dbInfoResponse.json();
-        databaseSize = dbInfo.size || databaseSize;
-        console.log(`Database size from info: ${databaseSize} bytes`);
+        console.log(`Database info - uncompressed size: ${dbInfo.size} bytes`);
       }
     } catch (error) {
-      console.warn('Could not fetch database info, using default size:', error);
+      console.warn('Could not fetch database size info:', error);
     }
 
-    // Update config with file size
-    const configWithSize = {
+    // Use config without explicit size for compressed files
+    const configForCompressed = {
       ...DB_CONFIG,
       config: {
         ...DB_CONFIG.config,
-        dbPageSize: 4096,
-        maxBytesToRead: databaseSize,
+        requestChunkSize: 1024 * 1024, // 1MB chunks for better compatibility
+        // Don't specify size - let sql.js-httpvfs handle compressed files
       }
     };
 
     // 初期化プロミスを作成
     initPromise = createDbWorker(
-      [configWithSize as any],
+      [configForCompressed as any],
       WORKER_URL,
       WASM_URL
     );
