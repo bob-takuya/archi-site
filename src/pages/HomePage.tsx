@@ -63,14 +63,13 @@ const HomePage: React.FC = () => {
     
     window.addEventListener('database-download-progress', handleProgressUpdate as EventListener);
     
-    // Extended emergency timeout for large database loading (12.7MB + 1.2MB files)
-    // With proper chunked loading, 5 minutes should be sufficient for GitHub Pages
+    // Fast JSON loading - should complete in under 3 seconds
     const emergencyTimeout = setTimeout(() => {
-      console.warn('Emergency timeout: forcing app to render without database after 5 minutes');
+      console.warn('Emergency timeout: forcing app to render without data after 30 seconds');
       setLoading(false);
       setIsDbReady(false);
-      setError('データベースの初期化がタイムアウトしました（5分）。チャンク読み込み設定を確認中です。しばらくお待ちください。');
-    }, 300000); // 300 seconds (5 minutes) with proper chunked loading
+      setError('データの読み込みがタイムアウトしました（30秒）。ネットワーク接続を確認してください。');
+    }, 30000); // 30 seconds for fast JSON loading
 
     const fetchRecentWorks = async (): Promise<void> => {
       try {
@@ -78,12 +77,12 @@ const HomePage: React.FC = () => {
         setError(null);
         console.log('最近の建築作品を取得中...');
         
-        // Dynamically import to prevent module hanging
-        const { getAllArchitectures } = await import('../services/db/ArchitectureService');
+        // Use fast JSON-based service instead of SQLite
+        const { getAllArchitectures } = await import('../services/api/FastArchitectureService');
         
-        // Extended timeout for database operations (large file handling) - matches emergency timeout
+        // Fast JSON loading timeout - should complete in under 3 seconds
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました（5分）。チャンク読み込み設定を確認中です。')), 300000);
+          setTimeout(() => reject(new Error('データの読み込みがタイムアウトしました（30秒）。ネットワーク接続を確認してください。')), 30000);
         });
         
         const dataPromise = getAllArchitectures(1, 6);
@@ -317,7 +316,7 @@ const HomePage: React.FC = () => {
                       <Box>⏱️ ETA: {formatTime(downloadProgress.eta)}</Box>
                     </Stack>
                     <Typography variant="body2" sx={{ mt: 1, fontStyle: 'italic', color: 'text.secondary' }}>
-                      初回のアクセスでは、大きなファイルのダウンロードが必要です。GitHub Pages環境では3-5分程度かかることがあります。
+                      最適化されたデータを読み込み中です。通常1-3秒で完了します。
                     </Typography>
                   </Paper>
                 ) : (
@@ -331,7 +330,7 @@ const HomePage: React.FC = () => {
                     <Typography variant="body2" color="text.secondary" align="center">
                       14,000件の建築作品データを読み込み中です
                       <br />
-                      <em>GitHub Pages環境では3-5分程度かかることがあります</em>
+                      <em>最適化されたデータで高速読み込み中（1-3秒）</em>
                     </Typography>
                   </Paper>
                 )}
