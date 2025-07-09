@@ -211,9 +211,12 @@ class FastArchitectureService {
       
       // Filter by year
       if (filters.year) {
-        const yearStr = filters.year.toString();
-        const yearIds = this.searchIndex.years[yearStr] || [];
+        // Years are stored as "YYYY.0" in the search index
+        const yearKey = filters.year + '.0';
+        const yearIds = this.searchIndex.years[yearKey] || [];
         const yearIdSet = new Set(yearIds);
+        
+        console.log(`🔍 Searching for year ${filters.year} with key "${yearKey}", found ${yearIds.length} items`);
         
         if (isFirstFilter) {
           matchingIds = yearIdSet;

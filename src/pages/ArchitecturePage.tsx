@@ -129,12 +129,44 @@ const ArchitecturePage = () => {
   const fetchArchitectures = async (page, search = searchTerm, sort = sortBy) => {
     setLoading(true);
     try {
-      const result = await getAllArchitectures(page, itemsPerPage, search, sort);
+      let result;
+      
+      // Parse search query and call appropriate method
+      if (!search || search.trim() === '') {
+        // No search - get all architectures
+        result = await getAllArchitectures(page, itemsPerPage);
+      } else if (search.startsWith('tag:')) {
+        // Tag search - not implemented yet, fall back to regular search
+        const query = search.substring(4).trim();
+        result = await searchArchitectures(query, {}, page, itemsPerPage);
+      } else if (search.startsWith('year:')) {
+        // Year search
+        const year = parseInt(search.substring(5).trim());
+        result = await searchArchitectures('', { year }, page, itemsPerPage);
+      } else if (search.startsWith('architect:')) {
+        // Architect search
+        const architect = search.substring(10).trim();
+        result = await searchArchitectures('', { architect }, page, itemsPerPage);
+      } else if (search.startsWith('category:')) {
+        // Category search
+        const category = search.substring(9).trim();
+        result = await searchArchitectures('', { category }, page, itemsPerPage);
+      } else if (search.startsWith('prefecture:')) {
+        // Prefecture search - search in address field
+        const prefecture = search.substring(11).trim();
+        result = await searchArchitectures(prefecture, {}, page, itemsPerPage);
+      } else {
+        // Regular text search
+        result = await searchArchitectures(search, {}, page, itemsPerPage);
+      }
+      
       setArchitectures(result.results);
       setTotalItems(result.total);
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching architectures:', error);
+      setArchitectures([]);
+      setTotalItems(0);
     } finally {
       setLoading(false);
     }
@@ -632,7 +664,7 @@ const ArchitecturePage = () => {
           ) : (
             <Grid container spacing={3}>
               {architectures.map((architecture) => (
-                <Grid item key={architecture.Z_PK} xs={12} sm={6} md={4} lg={3}>
+                <Grid item key={architecture.id} xs={12} sm={6} md={4} lg={3}>
                   <Card 
                     sx={{ 
                       height: '100%', 
@@ -646,7 +678,7 @@ const ArchitecturePage = () => {
                   >
                     <CardActionArea 
                       component={RouterLink} 
-                      to={`/architecture/${architecture.Z_PK}`}
+                      to={`/architecture/${architecture.id}`}
                       sx={{ 
                         display: 'flex', 
                         flexDirection: 'column', 
@@ -656,33 +688,33 @@ const ArchitecturePage = () => {
                     >
                       <CardContent sx={{ width: '100%', flexGrow: 1 }}>
                         <Typography gutterBottom variant="h6" component="h2">
-                          {architecture.ZAR_TITLE}
+                          {architecture.title}
                         </Typography>
                         
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 2 }}>
-                          {architecture.ZAR_ARCHITECT && (
+                          {architecture.architect && (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <PersonIcon fontSize="small" color="action" />
                               <Typography variant="body2" color="text.secondary">
-                                {architecture.ZAR_ARCHITECT}
+                                {architecture.architect}
                               </Typography>
                             </Box>
                           )}
                           
-                          {architecture.ZAR_ADDRESS && (
+                          {architecture.address && (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <LocationOnIcon fontSize="small" color="action" />
                               <Typography variant="body2" color="text.secondary">
-                                {architecture.ZAR_ADDRESS}
+                                {architecture.address}
                               </Typography>
                             </Box>
                           )}
                           
-                          {architecture.ZAR_YEAR && architecture.ZAR_YEAR > 0 && (
+                          {architecture.year && architecture.year > 0 && (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <CalendarTodayIcon fontSize="small" color="action" />
                               <Typography variant="body2" color="text.secondary">
-                                {architecture.ZAR_YEAR}年
+                                {architecture.year}年
                               </Typography>
                             </Box>
                           )}
