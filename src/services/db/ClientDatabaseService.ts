@@ -102,18 +102,9 @@ async function tryChunkedLoading(): Promise<any> {
     
     console.log('🔧 Config data loaded:', JSON.stringify(configData, null, 2));
     
-    // Initialize sql.js-httpvfs worker with chunked database
-    // Use direct chunked configuration
-    const dbConfig = [{
-      from: 'chunked',
-      config: {
-        serverMode: 'full',
-        requestChunkSize: 65536,
-        url: window.location.origin + BASE_PATH + '/db/archimap.sqlite3'
-      }
-    }];
-    
-    worker = await createDbWorker(dbConfig, workerUrl.toString(), wasmUrl.toString());
+    // Initialize sql.js-httpvfs worker using the JSON configuration
+    // This configuration now includes fileLength to work around GitHub Pages compression
+    worker = await createDbWorker([configData], workerUrl.toString(), wasmUrl.toString());
     
     console.log('✅ sql.js-httpvfs worker initialized successfully');
     
