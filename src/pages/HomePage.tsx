@@ -64,13 +64,13 @@ const HomePage: React.FC = () => {
     window.addEventListener('database-download-progress', handleProgressUpdate as EventListener);
     
     // Extended emergency timeout for large database loading (12.7MB + 1.2MB files)
-    // GitHub Pages takes ~3.5 minutes due to compression issues, so extended to 5 minutes
+    // GitHub Pages takes ~3.5 minutes due to compression issues, so extended to 7 minutes for safety
     const emergencyTimeout = setTimeout(() => {
-      console.warn('Emergency timeout: forcing app to render without database after 5 minutes');
+      console.warn('Emergency timeout: forcing app to render without database after 7 minutes');
       setLoading(false);
       setIsDbReady(false);
-      setError('データベースの初期化がタイムアウトしました（5分）。GitHub Pages では大きなファイルの読み込みに時間がかかることがあります。しばらくお待ちください。');
-    }, 300000); // Extended to 300 seconds (5 minutes) for GitHub Pages compatibility
+      setError('データベースの初期化がタイムアウトしました（7分）。GitHub Pages では大きなファイルの読み込みに時間がかかることがあります。しばらくお待ちください。');
+    }, 420000); // Extended to 420 seconds (7 minutes) for GitHub Pages compatibility
 
     const fetchRecentWorks = async (): Promise<void> => {
       try {
@@ -83,7 +83,7 @@ const HomePage: React.FC = () => {
         
         // Extended timeout for database operations (large file handling) - matches emergency timeout
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました（5分）。GitHub Pages では大きなファイルの読み込みに時間がかかることがあります。')), 300000);
+          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました（7分）。GitHub Pages では大きなファイルの読み込みに時間がかかることがあります。')), 420000);
         });
         
         const dataPromise = getAllArchitectures(1, 6);

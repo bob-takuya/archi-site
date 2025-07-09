@@ -104,7 +104,8 @@ async function tryChunkedLoading(): Promise<any> {
     
     // Initialize sql.js-httpvfs worker using the JSON configuration
     // This configuration now includes fileLength to work around GitHub Pages compression
-    worker = await createDbWorker([configData], workerUrl.toString(), wasmUrl.toString());
+    // Pass the actual data array from the config, not the whole config object
+    worker = await createDbWorker(configData.data, workerUrl.toString(), wasmUrl.toString());
     
     console.log('✅ sql.js-httpvfs worker initialized successfully');
     
