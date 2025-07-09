@@ -18,8 +18,8 @@ let initPromise: Promise<SqliteWorker<WorkerHttpvfs>> | null = null;
 
 // Determine the base path for assets
 // In production (GitHub Pages), the base path is /archi-site/
-// In development, the base path is /
-const BASE_PATH = import.meta.env.PROD ? '/archi-site' : '';
+// In development with Vite, the base path is also /archi-site/ due to vite.config.ts
+const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 /**
  * Initialize the database connection

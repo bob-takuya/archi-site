@@ -3,31 +3,40 @@
  */
 
 /**
- * 建築作品の基本情報
+ * 建築作品の基本情報 (Actual database schema)
  */
 export interface Architecture {
-  ZAW_ID: number;
-  ZAW_NAME: string;
+  Z_PK: number;
+  ZAR_TITLE: string;
+  ZAR_ARCHITECT?: string;
+  ZAR_ARCHITECT1?: string;
+  ZAR_ARCHITECT2?: string;
+  ZAR_ARCHITECT3?: string;
+  ZAR_ARCHITECT4?: string;
+  ZAR_ARCHITECT_ENG?: string;
+  ZAR_YEAR?: number;
+  ZAR_MONTH?: number;
+  ZAR_ADDRESS?: string;
+  ZAR_PREFECTURE?: string;
+  ZAR_AREA?: string;
+  ZAR_LATITUDE?: number;
+  ZAR_LONGITUDE?: number;
+  ZAR_CATEGORY?: string;
+  ZAR_BIGCATEGORY?: string;
+  ZAR_DESCRIPTION?: string;
+  ZAR_IMAGE_URL?: string;
+  ZAR_URL?: string;
+  ZAR_ID?: string;
+  
+  // Legacy compatibility properties (for backward compatibility)
+  ZAW_ID?: number;
+  ZAW_NAME?: string;
   ZAW_ARCHITECT?: string;
-  ZAW_ARCHITECT_ID?: number;
   ZAW_YEAR?: number;
-  ZAW_COMPLETION_YEAR?: number;
   ZAW_ADDRESS?: string;
   ZAW_PREFECTURE?: string;
-  ZAW_CITY?: string;
   ZAW_LAT?: number;
   ZAW_LNG?: number;
-  ZAW_STRUCTURE?: string;
-  ZAW_SITE_AREA?: number;
-  ZAW_BUILDING_AREA?: number;
-  ZAW_TOTAL_FLOOR_AREA?: number;
-  ZAW_DETAIL?: string;
-  ZAW_MATERIAL?: string;
-  ZAW_PROGRAM?: string;
-  ZAW_IMAGE?: string;
-  ZAW_STATUS?: string;
-  ZAW_CREATED?: string;
-  ZAW_MODIFIED?: string;
 }
 
 /**

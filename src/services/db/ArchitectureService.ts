@@ -41,7 +41,7 @@ export const getAllArchitectures = async (
   page: number = 1,
   limit: number = 12,
   searchTerm: string = '',
-  sortBy: string = 'ZAR_TITLE',
+  sortBy: string = 'year_desc',
   sortOrder: string = 'asc',
   options: {
     tags?: string[];
@@ -97,6 +97,18 @@ export const getAllArchitectures = async (
     params.push(`%${options.tags.join('%')}%`);
   }
   
+  // Sort mapping
+  const sortMapping: Record<string, string> = {
+    'year_desc': 'ZAR_YEAR DESC',
+    'year_asc': 'ZAR_YEAR ASC',
+    'name_asc': 'ZAR_TITLE ASC',
+    'name_desc': 'ZAR_TITLE DESC',
+    'architect_asc': 'ZAR_ARCHITECT ASC',
+    'architect_desc': 'ZAR_ARCHITECT DESC'
+  };
+  
+  const orderByClause = sortMapping[sortBy] || 'ZAR_YEAR DESC';
+  
   // 総件数のクエリ
   const countQuery = `
     SELECT COUNT(*) as total
@@ -109,7 +121,7 @@ export const getAllArchitectures = async (
     SELECT *
     FROM ZCDARCHITECTURE
     WHERE ${whereClause}
-    ORDER BY ${sortBy} ${sortOrder === 'desc' ? 'DESC' : 'ASC'}
+    ORDER BY ${orderByClause}
     LIMIT ? OFFSET ?
   `;
   

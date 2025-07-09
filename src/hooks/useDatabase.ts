@@ -3,7 +3,8 @@ import {
   ArchitectureService, 
   ArchitectService,
   DatabaseStatus, 
-  getDatabaseStatus
+  getDatabaseStatus,
+  initDatabase
 } from '../services/db';
 import { measureQueryPerformance } from '../utils/dbUtils';
 
@@ -13,15 +14,44 @@ import { measureQueryPerformance } from '../utils/dbUtils';
  */
 const useDatabase = () => {
   const [status, setStatus] = useState<DatabaseStatus>(getDatabaseStatus());
+  const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   
-  // Update status when it changes
+  // Initialize database and handle status changes
   useEffect(() => {
+    const initDb = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        await initDatabase();
+        setIsLoading(false);
+      } catch (err) {
+        setError(err as Error);
+        setIsLoading(false);
+      }
+    };
+    
     const checkStatus = () => {
       const currentStatus = getDatabaseStatus();
       if (currentStatus !== status) {
         setStatus(currentStatus);
+        
+        // Update loading state based on status
+        if (currentStatus === DatabaseStatus.READY) {
+          setIsLoading(false);
+          setError(null);
+        } else if (currentStatus === DatabaseStatus.ERROR) {
+          setIsLoading(false);
+        } else if (currentStatus === DatabaseStatus.INITIALIZING) {
+          setIsLoading(true);
+        }
       }
     };
+    
+    // Initialize database and check status
+    if (status === DatabaseStatus.NOT_INITIALIZED) {
+      initDb();
+    }
     
     // Check status initially and then every second
     checkStatus();
@@ -34,8 +64,11 @@ const useDatabase = () => {
     // Status
     status,
     isReady: status === DatabaseStatus.READY,
-    isInitializing: status === DatabaseStatus.INITIALIZING,
-    isError: status === DatabaseStatus.ERROR,
+    isInitializing: status === DatabaseStatus.INITIALIZING || isLoading,
+    isError: status === DatabaseStatus.ERROR || !!error,
+    isLoading,
+    error,
+    errorDetails: error?.message,
     
     // Architecture methods with performance measurement
     architecture: {

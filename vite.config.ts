@@ -30,8 +30,9 @@ export default defineConfig({
       'react-leaflet',
       '@mui/material',
       '@mui/icons-material',
+      'sql.js-httpvfs',
     ],
-    exclude: ['sql.js', 'sql.js-httpvfs'],
+    exclude: ['sql.js'],
   },
   worker: {
     format: 'es',
