@@ -33,11 +33,11 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import LoadingSkeleton from '../components/ui/LoadingSkeleton';
 
 interface ArchitectureWork {
-  ZAW_ID: number;
-  ZAW_NAME: string;
-  ZAW_ARCHITECT?: string;
-  ZAW_YEAR?: number;
-  ZAW_ADDRESS?: string;
+  Z_PK: number;
+  ZAR_TITLE: string;
+  ZAR_ARCHITECT?: string;
+  ZAR_YEAR?: number;
+  ZAR_ADDRESS?: string;
 }
 
 const HomePage: React.FC = () => {
@@ -80,16 +80,16 @@ const HomePage: React.FC = () => {
         // Dynamically import to prevent module hanging
         const { getAllArchitectures } = await import('../services/db/ArchitectureService');
         
-        // Extended timeout for database operations (large file handling)
+        // Extended timeout for database operations (large file handling) - matches emergency timeout
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました（90秒）。大きなファイルの読み込みに時間がかかっています。')), 90000);
+          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました（3分）。大きなファイルの読み込みに時間がかかっています。')), 180000);
         });
         
         const dataPromise = getAllArchitectures(1, 6);
         const data = await Promise.race([dataPromise, timeoutPromise]) as any;
         
         clearTimeout(emergencyTimeout);
-        setRecentWorks(data.items);
+        setRecentWorks(data.results || []);
         setIsDbReady(true);
         console.log('建築作品の取得に成功しました', data);
       } catch (error: any) {
@@ -124,7 +124,7 @@ const HomePage: React.FC = () => {
   const handleSearch = (e: React.FormEvent): void => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      window.location.href = `/architecture?search=${encodeURIComponent(searchTerm)}`;
+      window.location.href = `#/architecture?search=${encodeURIComponent(searchTerm)}`;
     }
   };
   
@@ -407,11 +407,11 @@ const HomePage: React.FC = () => {
 
         {loading ? (
           <LoadingSkeleton variant="card" count={6} />
-        ) : recentWorks.length > 0 ? (
+        ) : recentWorks && recentWorks.length > 0 ? (
           <Fade in={true} timeout={800}>
             <Grid container spacing={4}>
               {recentWorks.map((work, index) => (
-                <Grid item key={work.ZAW_ID} xs={12} sm={6} md={4}>
+                <Grid item key={work.Z_PK} xs={12} sm={6} md={4}>
                   <Fade in={true} timeout={1000 + index * 200}>
                     <Card 
                       sx={{ 
@@ -429,7 +429,7 @@ const HomePage: React.FC = () => {
                     >
                       <CardActionArea 
                         component={RouterLink} 
-                        to={`/architecture/${work.ZAW_ID}`}
+                        to={`/architecture/${work.Z_PK}`}
                         sx={{ height: '100%' }}
                       >
                         <CardContent 
@@ -451,21 +451,21 @@ const HomePage: React.FC = () => {
                               lineHeight: 1.3,
                             }}
                           >
-                            {work.ZAW_NAME}
+                            {work.ZAR_TITLE}
                           </Typography>
                           
                           <Stack spacing={1}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <PeopleIcon fontSize="small" color="secondary" />
                               <Typography variant="body2" color="text.secondary">
-                                {work.ZAW_ARCHITECT || '建築家不明'}
+                                {work.ZAR_ARCHITECT || '建築家不明'}
                               </Typography>
                             </Box>
                             
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <MapIcon fontSize="small" color="secondary" />
                               <Typography variant="body2" color="text.secondary">
-                                {work.ZAW_ADDRESS || '場所不明'} • {work.ZAW_YEAR && work.ZAW_YEAR !== 0 ? work.ZAW_YEAR + '年' : '年代不明'}
+                                {work.ZAR_ADDRESS || '場所不明'} • {work.ZAR_YEAR && work.ZAR_YEAR !== 0 ? work.ZAR_YEAR + '年' : '年代不明'}
                               </Typography>
                             </Box>
                           </Stack>

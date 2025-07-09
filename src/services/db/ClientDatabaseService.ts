@@ -1,23 +1,29 @@
-// Import sql.js directly instead of sql.js-httpvfs due to GitHub Pages GZIP compression issues
-import initSqlJs from 'sql.js';
+// Dynamic imports will be used inside functions
 
-// Determine the base path for assets
-const BASE_PATH = import.meta.env.PROD ? '/archi-site' : '';
+// Determine the base path for assets (always use /archi-site for database files)
+const BASE_PATH = '/archi-site';
 
-// Database URLs for sql.js
+// Database configuration (will try sql.js-httpvfs first, fallback to direct sql.js)
+const DATABASE_CONFIG = {
+  from: "jsonconfig",
+  configUrl: `${BASE_PATH}/db/archimap.sqlite3.json`
+};
+
+// Fallback direct database URL
 const DATABASE_URL = `${BASE_PATH}/db/archimap.sqlite`;
 
 // Debug logging
 console.log('🔧 Environment debug info:');
 console.log('  - import.meta.env.PROD:', import.meta.env.PROD);
 console.log('  - BASE_PATH:', BASE_PATH);
-console.log('  - DATABASE_URL:', DATABASE_URL);
+console.log('  - Database config URL:', DATABASE_CONFIG.configUrl);
 
-// SQL.js database instance and initialization state
+// Database instance and initialization state (supports both sql.js-httpvfs and direct sql.js)
+let worker: any = null;
 let database: any = null;
-let SQL: any = null;
 let isInitializing = false;
 let initPromise: Promise<any> | null = null;
+let useChunked = true; // Will be set to false if chunked loading fails
 
 /**
  * データベース接続の状態
@@ -33,7 +39,7 @@ export enum DatabaseStatus {
  * データベース接続の現在の状態を返す
  */
 export const getDatabaseStatus = (): DatabaseStatus => {
-  if (database && SQL) {
+  if (worker || database) {
     return DatabaseStatus.READY;
   }
   if (isInitializing) {
@@ -64,13 +70,199 @@ const detectConnectionSpeed = async (): Promise<'fast' | 'slow' | 'very-slow'> =
 };
 
 /**
- * データベース接続を初期化する（直接sql.js方式でGitHub Pages対応）
- * @returns データベースインスタンス
+ * Try chunked database loading with sql.js-httpvfs
+ */
+async function tryChunkedLoading(): Promise<any> {
+  console.log('🚀 Attempting chunked database loading with sql.js-httpvfs...');
+  
+  try {
+    // Dynamic import of sql.js-httpvfs
+    const { createDbWorker } = await import('sql.js-httpvfs');
+    
+    // Test database config file accessibility
+    console.log('🗄️ Testing database config file accessibility...');
+    console.log(`🔗 Config URL: ${DATABASE_CONFIG.configUrl}`);
+    const configResponse = await fetch(DATABASE_CONFIG.configUrl, { method: 'HEAD' });
+    
+    if (!configResponse.ok) {
+      throw new Error(`Database config not accessible: ${configResponse.status} ${configResponse.statusText}`);
+    }
+    
+    console.log('✅ Database config is accessible');
+    
+    // Create worker with proper configuration for GitHub Pages
+    const workerUrl = new URL(`${BASE_PATH}/sqlite.worker.js`, window.location.origin);
+    const wasmUrl = new URL(`${BASE_PATH}/sql-wasm.wasm`, window.location.origin);
+    
+    console.log('🔧 Worker URL:', workerUrl.toString());
+    console.log('🔧 WASM URL:', wasmUrl.toString());
+    
+    // Load the config
+    const configData = await fetch(DATABASE_CONFIG.configUrl).then(r => r.json());
+    
+    console.log('🔧 Config data loaded:', JSON.stringify(configData, null, 2));
+    
+    // Initialize sql.js-httpvfs worker with chunked database
+    // Use direct chunked configuration
+    const dbConfig = [{
+      from: 'chunked',
+      config: {
+        serverMode: 'full',
+        requestChunkSize: 65536,
+        url: window.location.origin + BASE_PATH + '/db/archimap.sqlite3'
+      }
+    }];
+    
+    worker = await createDbWorker(dbConfig, workerUrl.toString(), wasmUrl.toString());
+    
+    console.log('✅ sql.js-httpvfs worker initialized successfully');
+    
+    // Test database functionality
+    const versionResult = await worker.db.exec('SELECT sqlite_version()');
+    if (versionResult && versionResult.length > 0) {
+      console.log(`🔍 SQLite バージョン: ${versionResult[0].values[0][0]}`);
+    }
+    
+    const tablesResult = await worker.db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+    if (tablesResult && tablesResult.length > 0) {
+      console.log(`📋 利用可能なテーブル数: ${tablesResult[0].values.length}`);
+      console.log(`📋 テーブル一覧: ${tablesResult[0].values.map((row: any) => row[0]).join(', ')}`);
+      
+      try {
+        const countResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+        if (countResult && countResult.length > 0) {
+          console.log(`🏢 建築データ件数: ${countResult[0].values[0][0]} 件 (チャンク読み込み)`);
+        }
+      } catch (e) {
+        console.log('📋 Architecture table structure checking...');
+      }
+    }
+    
+    return worker;
+  } catch (error) {
+    console.warn('⚠️ Chunked loading failed, will try direct loading:', error.message);
+    throw error;
+  }
+}
+
+/**
+ * Fallback to direct sql.js loading
+ */
+async function tryDirectLoading(): Promise<any> {
+  console.log('🚀 Fallback: Using direct sql.js loading...');
+  
+  try {
+    // Dynamic import of sql.js
+    console.log('📦 Importing sql.js...');
+    const sqljs = await import('sql.js');
+    console.log('📦 sql.js imported:', typeof sqljs, Object.keys(sqljs));
+    
+    // sql.js exports as default in ES modules
+    const initSqlJs = sqljs.default || sqljs;
+    
+    if (typeof initSqlJs !== 'function') {
+      // Try to find the init function in the module
+      if (sqljs.initSqlJs && typeof sqljs.initSqlJs === 'function') {
+        console.log('📦 Found initSqlJs as named export');
+        const SQL = await sqljs.initSqlJs({
+          locateFile: (file: string) => {
+            if (file === 'sql-wasm.wasm') {
+              return `${BASE_PATH}/sql-wasm.wasm`;
+            }
+            return file;
+          }
+        });
+        database = new SQL.Database();
+        return database;
+      }
+      console.error('❌ Unable to find initSqlJs function in:', sqljs);
+      throw new Error('sql.js import failed - no initialization function found');
+    }
+    
+    console.log('📦 initSqlJs function found:', typeof initSqlJs);
+    
+    // Test database file accessibility
+    console.log('🗄️ Testing database file accessibility...');
+    console.log(`🔗 Database URL: ${DATABASE_URL}`);
+    const dbResponse = await fetch(DATABASE_URL, { method: 'HEAD' });
+    
+    if (!dbResponse.ok) {
+      throw new Error(`Database file not accessible: ${dbResponse.status} ${dbResponse.statusText}`);
+    }
+    
+    const contentLength = dbResponse.headers.get('content-length');
+    if (contentLength) {
+      const sizeInMB = parseInt(contentLength) / (1024 * 1024);
+      console.log(`📁 Database file size: ${sizeInMB.toFixed(2)} MB`);
+    }
+    
+    console.log('✅ Database file is accessible');
+    
+    // Initialize SQL.js with WASM
+    const wasmUrl = `${BASE_PATH}/sql-wasm.wasm`;
+    
+    const SQL = await initSqlJs({
+      locateFile: (file: string) => {
+        if (file === 'sql-wasm.wasm') {
+          return wasmUrl;
+        }
+        return file;
+      }
+    });
+    
+    console.log('✅ SQL.js initialized successfully');
+    
+    // Download database file
+    console.log('📥 Downloading database file...');
+    const dbResponse2 = await fetch(DATABASE_URL);
+    
+    if (!dbResponse2.ok) {
+      throw new Error(`Failed to download database: ${dbResponse2.status} ${dbResponse2.statusText}`);
+    }
+    
+    const dbArrayBuffer = await dbResponse2.arrayBuffer();
+    console.log(`✅ Database downloaded: ${(dbArrayBuffer.byteLength / 1024 / 1024).toFixed(2)} MB (uncompressed)`);
+    
+    // Create database from the downloaded data
+    database = new SQL.Database(new Uint8Array(dbArrayBuffer));
+    console.log('✅ Database created successfully');
+    
+    // Test database functionality
+    const versionResult = database.exec('SELECT sqlite_version()');
+    if (versionResult.length > 0) {
+      console.log(`🔍 SQLite バージョン: ${versionResult[0].values[0][0]}`);
+    }
+    
+    const tablesResult = database.exec("SELECT name FROM sqlite_master WHERE type='table'");
+    if (tablesResult.length > 0) {
+      console.log(`📋 利用可能なテーブル数: ${tablesResult[0].values.length}`);
+      console.log(`📋 テーブル一覧: ${tablesResult[0].values.map(row => row[0]).join(', ')}`);
+      
+      try {
+        const countResult = database.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+        if (countResult.length > 0) {
+          console.log(`🏢 建築データ件数: ${countResult[0].values[0][0]} 件 (直接読み込み)`);
+        }
+      } catch (e) {
+        console.log('📋 Architecture table structure checking...');
+      }
+    }
+    
+    return database;
+  } catch (error) {
+    console.error('❌ Direct loading also failed:', error.message);
+    throw error;
+  }
+}
+
+/**
+ * データベース接続を初期化する（チャンク読み込み優先、直接読み込みフォールバック）
+ * @returns データベースワーカーまたはインスタンス
  */
 export const initDatabase = async (): Promise<any> => {
   // 既に初期化済みならそのインスタンスを返す
-  if (database && SQL) {
-    return database;
+  if (worker || database) {
+    return worker || database;
   }
   
   // 初期化中なら既存のプロミスを返す
@@ -84,120 +276,33 @@ export const initDatabase = async (): Promise<any> => {
   // 初期化プロミスを作成
   initPromise = (async () => {
     try {
-      console.log('🚀 データベース初期化を開始（直接sql.js使用でGitHub Pages GZIP対応）...');
+      console.log('🚀 データベース初期化を開始（チャンク読み込み優先、直接読み込みフォールバック）...');
       
       // Check connection speed for better error messages
       const connectionSpeed = await detectConnectionSpeed();
       console.log(`🌐 Connection speed detected: ${connectionSpeed}`);
       
-      // Test database file accessibility
-      console.log('🗄️ Testing database file accessibility...');
-      try {
-        const dbResponse = await fetch(DATABASE_URL, { method: 'HEAD' });
-        console.log('  - Database file status:', dbResponse.status, dbResponse.statusText);
-        
-        if (!dbResponse.ok) {
-          throw new Error(`Database file not accessible: ${dbResponse.status} ${dbResponse.statusText} at ${DATABASE_URL}`);
-        }
-        
-        // Get database file size for debugging (this will be compressed size from GitHub Pages)
-        const contentLength = dbResponse.headers.get('content-length');
-        if (contentLength) {
-          const sizeInMB = parseInt(contentLength) / (1024 * 1024);
-          console.log(`  - Database file size (compressed): ${sizeInMB.toFixed(2)} MB`);
-        }
-        
-        console.log('✅ Database file is accessible');
-      } catch (dbAccessError) {
-        console.error('❌ Database file accessibility check failed:', dbAccessError);
-        throw new Error(`Database file not accessible: ${dbAccessError.message}`);
-      }
-      
-      console.log('📦 sql.js を初期化中...');
-      
-      // Initialize SQL.js with WASM
-      const wasmUrl = `${BASE_PATH}/sql-wasm.wasm`;
-      
-      console.log('🔧 WASM URL:', wasmUrl);
-      
-      // Test WASM file accessibility
-      console.log('🔍 Testing WASM file accessibility...');
-      try {
-        const wasmResponse = await fetch(wasmUrl, { method: 'HEAD' });
-        console.log('  - WASM file status:', wasmResponse.status, wasmResponse.statusText);
-        
-        if (!wasmResponse.ok) {
-          throw new Error(`WASM file not accessible: ${wasmResponse.status} ${wasmResponse.statusText} at ${wasmUrl}`);
-        }
-        
-        console.log('✅ WASM file is accessible');
-      } catch (accessError) {
-        console.error('❌ WASM file accessibility check failed:', accessError);
-        throw new Error(`WASM file not accessible: ${accessError.message}`);
-      }
-      
-      // Initialize SQL.js with explicit WASM URL
-      console.log('🔧 Initializing SQL.js...');
-      SQL = await initSqlJs({
-        locateFile: (file: string) => {
-          console.log(`🔍 Looking for file: ${file}`);
-          if (file === 'sql-wasm.wasm') {
-            return wasmUrl;
-          }
-          return file;
-        }
-      });
-      
-      console.log('✅ SQL.js initialized successfully');
-      
-      // Download database file with progress tracking
-      console.log('📥 Downloading database file...');
-      const dbResponse = await fetch(DATABASE_URL);
-      
-      if (!dbResponse.ok) {
-        throw new Error(`Failed to download database: ${dbResponse.status} ${dbResponse.statusText}`);
-      }
-      
-      // GitHub Pages automatically decompresses GZIP, so we get the raw SQLite file
-      const dbArrayBuffer = await dbResponse.arrayBuffer();
-      console.log(`✅ Database downloaded: ${(dbArrayBuffer.byteLength / 1024 / 1024).toFixed(2)} MB (uncompressed)`);
-      
-      // Create database from the downloaded data
-      console.log('🗄️ Creating database from downloaded data...');
-      database = new SQL.Database(new Uint8Array(dbArrayBuffer));
-      console.log('✅ Database created successfully');
-      
-      // Test database with simple queries
-      console.log('🔍 Testing database functionality...');
-      
-      // Get SQLite version
-      const versionResult = database.exec('SELECT sqlite_version()');
-      if (versionResult.length > 0) {
-        console.log(`🔍 SQLite バージョン: ${versionResult[0].values[0][0]}`);
-      }
-      
-      // Check tables
-      const tablesResult = database.exec("SELECT name FROM sqlite_master WHERE type='table'");
-      if (tablesResult.length > 0) {
-        console.log(`📋 利用可能なテーブル数: ${tablesResult[0].values.length}`);
-        console.log(`📋 テーブル一覧: ${tablesResult[0].values.map(row => row[0]).join(', ')}`);
-        
-        // Count architecture data
+      if (useChunked) {
         try {
-          const countResult = database.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
-          if (countResult.length > 0) {
-            console.log(`🏢 建築データ件数: ${countResult[0].values[0][0]} 件`);
-          }
-        } catch (e) {
-          console.log('📋 Architecture table structure checking...');
+          // Try chunked loading first
+          const result = await tryChunkedLoading();
+          console.log('🎉 チャンク読み込みが成功しました！');
+          return result;
+        } catch (chunkedError) {
+          console.warn('⚠️ チャンク読み込みに失敗、直接読み込みにフォールバック:', chunkedError.message);
+          useChunked = false;
         }
       }
       
-      return database;
+      // Fallback to direct loading
+      const result = await tryDirectLoading();
+      console.log('🎉 直接読み込みが成功しました！');
+      return result;
+      
     } catch (error) {
       console.error('❌ データベース初期化エラー:', error);
+      worker = null;
       database = null;
-      SQL = null;
       
       // Enhanced error messages based on connection speed and error type
       if (error instanceof Error) {
@@ -212,6 +317,8 @@ export const initDatabase = async (): Promise<any> => {
           }
         } else if (error.message.includes('fetch') || error.message.includes('network')) {
           enhancedMessage += '\n\n🌐 ネットワーク接続に問題があります。接続状態を確認してください。';
+        } else if (error.message.includes('GZIP') || error.message.includes('compression')) {
+          enhancedMessage += '\n\n📦 GZIP圧縮の問題が検出されました。データベースファイルの設定を確認中...';
         }
         
         const enhancedError = new Error(enhancedMessage);
@@ -241,17 +348,22 @@ export const executeQuery = async <T = any>(
 ): Promise<any[]> => {
   try {
     // データベース初期化を確認
-    if (!database) {
+    if (!worker && !database) {
       await initDatabase();
     }
     
     // クエリの実行
-    if (!database) {
+    if (worker) {
+      // Use sql.js-httpvfs worker
+      const result = await worker.db.exec(query, params);
+      return result;
+    } else if (database) {
+      // Use direct sql.js database
+      const result = database.exec(query, params);
+      return result;
+    } else {
       throw new Error('データベースが初期化されていません');
     }
-    
-    const result = database.exec(query, params);
-    return result;
   } catch (error) {
     console.error('クエリ実行エラー:', error);
     throw error;

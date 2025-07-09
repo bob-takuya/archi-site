@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-07-07T16:11:04.916Z",
+  "testUrl": "https://bob-takuya.github.io/archi-site/",
+  "success": true,
+  "attempts": 19,
+  "consoleMessagesCount": 112,
+  "finalStatus": "SUCCESS",
+  "consoleMessages": [
+    "  - Total cards found: 9",
+    "🔍 Data check results:",
+    "  - Real architecture data patterns: false",
+    "  - Cards with real data: true",
+    "  - Total cards found: 9",
+    "🔍 Data check results:",
+    "  - Real architecture data patterns: false",
+    "  - Cards with real data: true",
+    "  - Total cards found: 9",
+    "🔍 Data check results:",
+    "  - Real architecture data patterns: false",
+    "  - Cards with real data: true",
+    "  - Total cards found: 9",
+    "Emergency timeout: forcing app to render without database after 3 minutes",
+    "建築作品の取得に失敗: Error: データベース接続がタイムアウトしました（3分）。大きなファイルの読み込みに時間がかかっています。\n    at https://bob-takuya.github.io/archi-site/assets/index-D6n7CK4Q.js:1:6745",
+    "🔍 Data check results:",
+    "  - Real architecture data patterns: false",
+    "  - Cards with real data: true",
+    "  - Total cards found: 3",
+    "Failed to load resource: the server responded with a status of 404 ()"
+  ]
+}
