@@ -32,3 +32,7 @@ worker.plugins is now a function that returns an array of plugins. Please update
 4:14:19 PM [vite] hmr update /src/pages/ArchitectureSinglePage.tsx, /src/pages/MapPage.tsx, /src/pages/ArchitectSinglePage.tsx, /src/pages/ArchitectsPage.tsx, /src/App.tsx, /src/pages/ArchitecturePage.tsx, /src/pages/HomePage.tsx, /src/components/DatabaseLoader.tsx
 4:14:31 PM [vite] hmr update /src/pages/HomePage.tsx
 4:14:38 PM [vite] hmr update /src/pages/HomePage.tsx
+5:02:22 PM [vite] hmr update /src/pages/ArchitectureSinglePage.tsx, /src/pages/MapPage.tsx, /src/pages/ArchitectSinglePage.tsx, /src/pages/ArchitectsPage.tsx, /src/App.tsx, /src/pages/ArchitecturePage.tsx, /src/pages/HomePage.tsx, /src/components/DatabaseLoader.tsx
+5:02:34 PM [vite] hmr update /src/pages/HomePage.tsx
+5:02:34 PM [vite] hmr update /src/pages/HomePage.tsx
+5:02:42 PM [vite] hmr update /src/pages/HomePage.tsx

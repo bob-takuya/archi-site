@@ -97,15 +97,22 @@ async function tryChunkedLoading(): Promise<any> {
     console.log('🔧 Worker URL:', workerUrl.toString());
     console.log('🔧 WASM URL:', wasmUrl.toString());
     
-    // Load the config
-    const configData = await fetch(DATABASE_CONFIG.configUrl).then(r => r.json());
+    // Use proper inline configuration format for sql.js-httpvfs
+    const dbConfig = [{
+      from: "inline",
+      config: {
+        serverMode: "full",
+        url: `${BASE_PATH}/db/archimap.sqlite3`,
+        requestChunkSize: 65536,
+        // Add fileLength to help with GitHub Pages compression issues
+        fileLength: 12730368
+      }
+    }];
     
-    console.log('🔧 Config data loaded:', JSON.stringify(configData, null, 2));
+    console.log('🔧 Using inline config:', JSON.stringify(dbConfig, null, 2));
     
-    // Initialize sql.js-httpvfs worker using the JSON configuration
-    // This configuration now includes fileLength to work around GitHub Pages compression
-    // Pass the actual data array from the config, not the whole config object
-    worker = await createDbWorker(configData.data, workerUrl.toString(), wasmUrl.toString());
+    // Initialize sql.js-httpvfs worker with proper configuration format
+    worker = await createDbWorker(dbConfig, workerUrl.toString(), wasmUrl.toString());
     
     console.log('✅ sql.js-httpvfs worker initialized successfully');
     
