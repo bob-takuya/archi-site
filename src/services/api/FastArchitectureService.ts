@@ -46,6 +46,7 @@ class FastArchitectureService {
   private searchIndex: SearchIndex | null = null;
   private allItems: Map<number, Architecture> = new Map();
   private initialized = false;
+  private metadata: { total_items: number; total_pages: number } | null = null;
 
   constructor() {
     // Use dynamic base path - both dev and prod use /archi-site/data due to GitHub Pages base path
@@ -72,8 +73,11 @@ class FastArchitectureService {
       // Load metadata
       const metadataResponse = await fetch(`${this.baseUrl}/metadata.json`);
       if (metadataResponse.ok) {
-        const metadata = await metadataResponse.json();
-        console.log(`📊 Database info: ${metadata.total_items.toLocaleString()} items in ${metadata.total_pages} pages`);
+        this.metadata = await metadataResponse.json();
+        console.log(`📊 Database info: ${this.metadata.total_items.toLocaleString()} items in ${this.metadata.total_pages} pages`);
+      } else {
+        // Default metadata if file is missing
+        this.metadata = { total_items: 14467, total_pages: 290 };
       }
       
       this.initialized = true;
@@ -129,10 +133,10 @@ class FastArchitectureService {
       // Return data in the expected format
       return {
         results: pageData.items.slice(0, limit),
-        total: pageData.total_items,
+        total: this.metadata?.total_items || pageData.total_items,
         page: page,
-        total_pages: pageData.total_pages,
-        has_more: page < pageData.total_pages
+        total_pages: this.metadata?.total_pages || pageData.total_pages,
+        has_more: page < (this.metadata?.total_pages || pageData.total_pages)
       };
     } catch (error) {
       console.error('❌ getAllArchitectures error:', error);
@@ -234,12 +238,39 @@ class FastArchitectureService {
       // Load items that we don't have cached yet
       const missingIds = [...matchingIds].filter(id => !this.allItems.has(id));
       if (missingIds.length > 0) {
-        // Load additional pages to get all items
-        // This is a simplified approach - in production you might want to optimize this
-        const maxPages = Math.min(10, Math.ceil(missingIds.length / 50)); // Load up to 10 pages
-        for (let p = 1; p <= maxPages; p++) {
-          if (!this.cache.has(`page_${p}`)) {
-            await this.loadPage(p);
+        // Group missing IDs by their likely page number
+        const pageNumbers = new Set<number>();
+        
+        // Estimate which pages contain these IDs (assuming sequential IDs)
+        for (const id of missingIds) {
+          const estimatedPage = Math.ceil(id / 50);
+          pageNumbers.add(estimatedPage);
+        }
+        
+        console.log(`📋 Need to load ${pageNumbers.size} pages for ${missingIds.length} missing items`);
+        
+        // Load all required pages
+        for (const pageNum of pageNumbers) {
+          if (pageNum > 0 && pageNum <= 290) { // We have 290 pages total
+            if (!this.cache.has(`page_${pageNum}`)) {
+              await this.loadPage(pageNum);
+            }
+          }
+        }
+        
+        // If we still have missing items, load pages sequentially until we find them
+        const stillMissing = missingIds.filter(id => !this.allItems.has(id));
+        if (stillMissing.length > 0) {
+          console.log(`⚠️ Still missing ${stillMissing.length} items, loading additional pages...`);
+          
+          // Load up to 50 more pages to find missing items
+          let pagesLoaded = 0;
+          for (let p = 1; p <= 290 && stillMissing.some(id => !this.allItems.has(id)); p++) {
+            if (!this.cache.has(`page_${p}`)) {
+              await this.loadPage(p);
+              pagesLoaded++;
+              if (pagesLoaded >= 50) break; // Limit to prevent loading entire database
+            }
           }
         }
       }
