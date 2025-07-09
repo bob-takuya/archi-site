@@ -64,12 +64,13 @@ const HomePage: React.FC = () => {
     window.addEventListener('database-download-progress', handleProgressUpdate as EventListener);
     
     // Extended emergency timeout for large database loading (12.7MB + 1.2MB files)
+    // GitHub Pages takes ~3.5 minutes due to compression issues, so extended to 5 minutes
     const emergencyTimeout = setTimeout(() => {
-      console.warn('Emergency timeout: forcing app to render without database after 3 minutes');
+      console.warn('Emergency timeout: forcing app to render without database after 5 minutes');
       setLoading(false);
       setIsDbReady(false);
-      setError('データベースの初期化がタイムアウトしました（大きなファイルの読み込みに時間がかかっています）。接続が遅い場合は、しばらくお待ちください。');
-    }, 180000); // Extended to 180 seconds (3 minutes) for database download
+      setError('データベースの初期化がタイムアウトしました（5分）。GitHub Pages では大きなファイルの読み込みに時間がかかることがあります。しばらくお待ちください。');
+    }, 300000); // Extended to 300 seconds (5 minutes) for GitHub Pages compatibility
 
     const fetchRecentWorks = async (): Promise<void> => {
       try {
@@ -82,7 +83,7 @@ const HomePage: React.FC = () => {
         
         // Extended timeout for database operations (large file handling) - matches emergency timeout
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました（3分）。大きなファイルの読み込みに時間がかかっています。')), 180000);
+          setTimeout(() => reject(new Error('データベース接続がタイムアウトしました（5分）。GitHub Pages では大きなファイルの読み込みに時間がかかることがあります。')), 300000);
         });
         
         const dataPromise = getAllArchitectures(1, 6);
@@ -316,7 +317,7 @@ const HomePage: React.FC = () => {
                       <Box>⏱️ ETA: {formatTime(downloadProgress.eta)}</Box>
                     </Stack>
                     <Typography variant="body2" sx={{ mt: 1, fontStyle: 'italic', color: 'text.secondary' }}>
-                      初回のアクセスでは、大きなファイルのダウンロードが必要です。しばらくお待ちください。
+                      初回のアクセスでは、大きなファイルのダウンロードが必要です。GitHub Pages環境では3-5分程度かかることがあります。
                     </Typography>
                   </Paper>
                 ) : (
@@ -329,6 +330,8 @@ const HomePage: React.FC = () => {
                     </Box>
                     <Typography variant="body2" color="text.secondary" align="center">
                       14,000件の建築作品データを読み込み中です
+                      <br />
+                      <em>GitHub Pages環境では3-5分程度かかることがあります</em>
                     </Typography>
                   </Paper>
                 )}
