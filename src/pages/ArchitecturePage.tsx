@@ -29,7 +29,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import SortIcon from '@mui/icons-material/Sort';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { getAllArchitectures } from '../services/db/ArchitectureService';
+import { getAllArchitectures, searchArchitectures } from '../services/api/FastArchitectureService';
 // TODO: Import getAllTags and getYearsForTag when available
 
 const ArchitecturePage = () => {
