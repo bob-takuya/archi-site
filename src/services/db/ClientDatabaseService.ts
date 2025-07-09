@@ -103,10 +103,10 @@ async function tryChunkedLoading(): Promise<any> {
       config: {
         serverMode: "full",
         url: `${BASE_PATH}/db/archimap.sqlite3`,
-        requestChunkSize: 65536,
-        // Add fileLength to help with GitHub Pages compression issues
-        fileLength: 12730368
-      }
+        requestChunkSize: 65536
+      },
+      // Add fileLength at top level to help with GitHub Pages compression issues
+      fileLength: 12730368
     }];
     
     console.log('🔧 Using inline config:', JSON.stringify(dbConfig, null, 2));
