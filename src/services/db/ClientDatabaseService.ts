@@ -10,7 +10,7 @@ const DATABASE_CONFIG = {
 };
 
 // Fallback direct database URL
-const DATABASE_URL = `${BASE_PATH}/db/archimap.sqlite`;
+const DATABASE_URL = `${BASE_PATH}/db/archimap.sqlite3`;
 
 // Debug logging
 console.log('🔧 Environment debug info:');
