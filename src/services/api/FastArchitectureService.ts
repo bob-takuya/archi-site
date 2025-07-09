@@ -48,8 +48,8 @@ class FastArchitectureService {
   private initialized = false;
 
   constructor() {
-    // Use dynamic base path
-    this.baseUrl = import.meta.env.PROD ? '/archi-site/data' : '/data';
+    // Use dynamic base path - both dev and prod use /archi-site/data due to GitHub Pages base path
+    this.baseUrl = '/archi-site/data';
     console.log('🚀 FastArchitectureService initialized with baseUrl:', this.baseUrl);
   }
 

@@ -1,0 +1,15 @@
+
+> archi-site@1.1.0 dev
+> vite
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+worker.plugins is now a function that returns an array of plugins. Please update your Vite config accordingly.
+
+
+  VITE v5.4.19  ready in 81 ms
+
+  ➜  Local:   http://localhost:3000/archi-site/
+  ➜  Network: use --host to expose
+8:16:36 PM [vite] hmr update /src/pages/ArchitecturePage.tsx, /src/pages/HomePage.tsx
+8:17:12 PM [vite] hmr update /src/pages/HomePage.tsx
+8:17:36 PM [vite] hmr update /src/pages/HomePage.tsx

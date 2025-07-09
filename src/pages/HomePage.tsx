@@ -33,11 +33,11 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import LoadingSkeleton from '../components/ui/LoadingSkeleton';
 
 interface ArchitectureWork {
-  Z_PK: number;
-  ZAR_TITLE: string;
-  ZAR_ARCHITECT?: string;
-  ZAR_YEAR?: number;
-  ZAR_ADDRESS?: string;
+  id: number;
+  title: string;
+  architect?: string;
+  year?: number;
+  address?: string;
 }
 
 const HomePage: React.FC = () => {
@@ -413,7 +413,7 @@ const HomePage: React.FC = () => {
           <Fade in={true} timeout={800}>
             <Grid container spacing={4}>
               {recentWorks.map((work, index) => (
-                <Grid item key={work.Z_PK} xs={12} sm={6} md={4}>
+                <Grid item key={work.id} xs={12} sm={6} md={4}>
                   <Fade in={true} timeout={1000 + index * 200}>
                     <Card 
                       sx={{ 
@@ -431,7 +431,7 @@ const HomePage: React.FC = () => {
                     >
                       <CardActionArea 
                         component={RouterLink} 
-                        to={`/architecture/${work.Z_PK}`}
+                        to={`/architecture/${work.id}`}
                         sx={{ height: '100%' }}
                       >
                         <CardContent 
@@ -453,21 +453,21 @@ const HomePage: React.FC = () => {
                               lineHeight: 1.3,
                             }}
                           >
-                            {work.ZAR_TITLE}
+                            {work.title}
                           </Typography>
                           
                           <Stack spacing={1}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <PeopleIcon fontSize="small" color="secondary" />
                               <Typography variant="body2" color="text.secondary">
-                                {work.ZAR_ARCHITECT || '建築家不明'}
+                                {work.architect || '建築家不明'}
                               </Typography>
                             </Box>
                             
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <MapIcon fontSize="small" color="secondary" />
                               <Typography variant="body2" color="text.secondary">
-                                {work.ZAR_ADDRESS || '場所不明'} • {work.ZAR_YEAR && work.ZAR_YEAR !== 0 ? work.ZAR_YEAR + '年' : '年代不明'}
+                                {work.address || '場所不明'} • {work.year && work.year !== 0 ? work.year + '年' : '年代不明'}
                               </Typography>
                             </Box>
                           </Stack>
