@@ -4,8 +4,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 
 // Import translation files directly for better performance
-import enCommon from '../../public/locales/en/common.json';
-import jaCommon from '../../public/locales/ja/common.json';
+import enCommon from '../locales/en/common.json';
+import jaCommon from '../locales/ja/common.json';
 
 // Resources object with all translations
 const resources = {
