@@ -85,7 +85,7 @@ const ArchitecturePageEnhanced = () => {
   const [showInsights, setShowInsights] = useState(true);
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
   const [activeFilters, setActiveFilters] = useState<{type: string, value: string, label: string}[]>([]);
-  const itemsPerPage = viewMode === 'grid' ? 12 : viewMode === 'list' ? 20 : 15000; // Load all items for map view (database has 14,467 records)
+  const itemsPerPage = viewMode === 'grid' ? 12 : viewMode === 'list' ? 20 : 200; // Show more results on map to see spatial distribution
   const location = useLocation();
   const navigate = useNavigate();
 
