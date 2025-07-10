@@ -1,0 +1,17 @@
+{
+  "role": "coordinator",
+  "default_capabilities": [
+    "task_management",
+    "coordination",
+    "communication"
+  ],
+  "task_patterns": [
+    "coordinate_*",
+    "manage_*",
+    "schedule_*"
+  ],
+  "quality_criteria": {
+    "task_completion_rate": 95,
+    "coordination_efficiency": 88
+  }
+}

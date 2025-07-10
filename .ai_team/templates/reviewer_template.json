@@ -1,0 +1,17 @@
+{
+  "role": "reviewer",
+  "default_capabilities": [
+    "code_review",
+    "documentation_review",
+    "quality_gate"
+  ],
+  "task_patterns": [
+    "review_*",
+    "audit_*",
+    "approve_*"
+  ],
+  "quality_criteria": {
+    "review_thoroughness": 90,
+    "approval_accuracy": 95
+  }
+}

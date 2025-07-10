@@ -1,0 +1,121 @@
+{
+  "local": {
+    "passed": 0,
+    "failed": 7,
+    "tests": [
+      {
+        "name": "Homepage Load",
+        "status": "FAILED",
+        "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/\", waiting until \"networkidle\"\u001b[22m\n"
+      },
+      {
+        "name": "Database Loading",
+        "status": "FAILED",
+        "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/\", waiting until \"networkidle\"\u001b[22m\n"
+      },
+      {
+        "name": "Search Functionality",
+        "status": "FAILED",
+        "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/\", waiting until \"networkidle\"\u001b[22m\n"
+      },
+      {
+        "name": "Map Functionality",
+        "status": "FAILED",
+        "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/map\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/map\", waiting until \"networkidle\"\u001b[22m\n"
+      },
+      {
+        "name": "Responsive Design",
+        "status": "FAILED",
+        "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/\", waiting until \"networkidle\"\u001b[22m\n"
+      },
+      {
+        "name": "Accessibility",
+        "status": "FAILED",
+        "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/\", waiting until \"networkidle\"\u001b[22m\n"
+      },
+      {
+        "name": "Performance",
+        "status": "FAILED",
+        "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/\", waiting until \"networkidle\"\u001b[22m\n"
+      }
+    ]
+  },
+  "production": {
+    "passed": 3,
+    "failed": 4,
+    "tests": [
+      {
+        "name": "Homepage Load",
+        "status": "FAILED",
+        "error": "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('header') to be visible\u001b[22m\n"
+      },
+      {
+        "name": "Database Loading",
+        "status": "FAILED",
+        "error": "page.waitForSelector: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"architecture-list\"], .architecture-card, .building-item') to be visible\u001b[22m\n"
+      },
+      {
+        "name": "Search Functionality",
+        "status": "FAILED",
+        "error": "elementHandle.fill: Element is not attached to the DOM\nCall log:\n\u001b[2m    - fill(\"住宅\")\u001b[22m\n\u001b[2m  - attempting fill action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and editable\u001b[22m\n"
+      },
+      {
+        "name": "Map Functionality",
+        "status": "FAILED",
+        "error": "page.waitForSelector: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.leaflet-container, #map, [data-testid=\"map\"]') to be visible\u001b[22m\n"
+      },
+      {
+        "name": "Responsive Design",
+        "status": "PASSED",
+        "details": {
+          "viewportTests": [
+            {
+              "viewport": "Mobile",
+              "expectedWidth": 375,
+              "actualWidth": 375,
+              "responsive": true
+            },
+            {
+              "viewport": "Tablet",
+              "expectedWidth": 768,
+              "actualWidth": 768,
+              "responsive": true
+            },
+            {
+              "viewport": "Desktop",
+              "expectedWidth": 1920,
+              "actualWidth": 1920,
+              "responsive": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "Accessibility",
+        "status": "PASSED",
+        "details": {
+          "hasMainLandmark": true,
+          "hasNavLandmark": true,
+          "hasHeadings": true,
+          "hasAltTexts": true,
+          "imagesWithoutAlt": 0
+        }
+      },
+      {
+        "name": "Performance",
+        "status": "PASSED",
+        "details": {
+          "pageLoadTime": 819,
+          "databaseLoadTime": 30000,
+          "performanceGrade": "EXCELLENT"
+        }
+      }
+    ]
+  },
+  "summary": {
+    "totalTests": 14,
+    "totalPassed": 3,
+    "totalFailed": 11,
+    "passRate": 21.428571428571427
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "role": "developer",
+  "default_capabilities": [
+    "coding",
+    "debugging",
+    "code_review",
+    "testing"
+  ],
+  "task_patterns": [
+    "implement_*",
+    "fix_*",
+    "refactor_*"
+  ],
+  "quality_criteria": {
+    "code_coverage": 80,
+    "code_quality_score": 85
+  }
+}

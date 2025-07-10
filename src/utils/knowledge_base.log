@@ -1,0 +1,3 @@
+2025-07-10 02:14:40,952 - communication_hub - INFO - Communication Hub initialized
+2025-07-10 02:14:40,952 - communication_hub - INFO - Communication Hub initialized
+2025-07-10 02:14:40,952 - ai_team - INFO - Event: message_sent - {"message_id": "fe9b3911-dcfe-4304-8f3c-7695558ad82d", "sender": "TESTER_001", "recipient": null, "type": "status_update", "priority": "NORMAL"}

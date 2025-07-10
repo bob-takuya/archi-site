@@ -1,0 +1,17 @@
+{
+  "role": "architect",
+  "default_capabilities": [
+    "system_design",
+    "architecture_review",
+    "technical_planning"
+  ],
+  "task_patterns": [
+    "design_*",
+    "architecture_*",
+    "planning_*"
+  ],
+  "quality_criteria": {
+    "design_completeness": 90,
+    "documentation_coverage": 85
+  }
+}

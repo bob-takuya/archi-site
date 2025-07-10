@@ -5,43 +5,15 @@
 [33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
 worker.plugins is now a function that returns an array of plugins. Please update your Vite config accordingly.
 
+Port 3000 is in use, trying another one...
 
-  VITE v5.4.19  ready in 136 ms
+  VITE v5.4.19  ready in 101 ms
 
-  ➜  Local:   http://localhost:3000/archi-site/
+  ➜  Local:   http://localhost:3001/archi-site/
   ➜  Network: use --host to expose
-12:49:15 PM [vite] hmr update /src/pages/HomePageSimple.tsx, /src/pages/ArchitecturePageSimple.tsx
-12:49:23 PM [vite] hmr update /src/pages/HomePageSimple.tsx, /src/pages/ArchitecturePageSimple.tsx
-12:49:29 PM [vite] hmr update /src/pages/HomePageSimple.tsx, /src/pages/ArchitecturePageSimple.tsx
-12:49:37 PM [vite] hmr update /src/pages/HomePageSimple.tsx, /src/pages/ArchitecturePageSimple.tsx
-12:49:37 PM [vite] hmr update /src/pages/HomePageSimple.tsx, /src/pages/ArchitecturePageSimple.tsx
-12:49:43 PM [vite] hmr update /src/pages/HomePageSimple.tsx, /src/pages/ArchitecturePageSimple.tsx
-12:50:24 PM [vite] hmr update /src/pages/HomePageSimple.tsx, /src/pages/ArchitecturePageSimple.tsx
-12:50:53 PM [vite] hmr update /src/pages/HomePageSimple.tsx, /src/pages/ArchitecturePageSimple.tsx
-12:51:03 PM [vite] hmr update /src/pages/HomePageSimple.tsx, /src/pages/ArchitecturePageSimple.tsx
-12:51:33 PM [vite] hmr update /src/App.tsx
-12:51:40 PM [vite] hmr update /src/App.tsx
-12:51:40 PM [vite] hmr update /src/App.tsx
-12:51:45 PM [vite] hmr update /src/App.tsx
-12:51:45 PM [vite] hmr update /src/App.tsx
-1:05:34 PM [vite] hmr update /src/pages/ArchitectureSinglePage.tsx, /src/pages/MapPage.tsx, /src/pages/ArchitectSinglePage.tsx, /src/pages/ArchitectsPage.tsx, /src/App.tsx, /src/pages/ArchitecturePage.tsx, /src/pages/HomePage.tsx, /src/components/DatabaseLoader.tsx
-4:06:33 PM [vite] hmr update /src/pages/HomePage.tsx
-4:06:39 PM [vite] hmr update /src/pages/HomePage.tsx
-4:06:57 PM [vite] hmr update /src/pages/HomePage.tsx
-4:07:02 PM [vite] hmr update /src/pages/HomePage.tsx
-4:14:19 PM [vite] hmr update /src/pages/ArchitectureSinglePage.tsx, /src/pages/MapPage.tsx, /src/pages/ArchitectSinglePage.tsx, /src/pages/ArchitectsPage.tsx, /src/App.tsx, /src/pages/ArchitecturePage.tsx, /src/pages/HomePage.tsx, /src/components/DatabaseLoader.tsx
-4:14:31 PM [vite] hmr update /src/pages/HomePage.tsx
-4:14:38 PM [vite] hmr update /src/pages/HomePage.tsx
-5:02:22 PM [vite] hmr update /src/pages/ArchitectureSinglePage.tsx, /src/pages/MapPage.tsx, /src/pages/ArchitectSinglePage.tsx, /src/pages/ArchitectsPage.tsx, /src/App.tsx, /src/pages/ArchitecturePage.tsx, /src/pages/HomePage.tsx, /src/components/DatabaseLoader.tsx
-5:02:34 PM [vite] hmr update /src/pages/HomePage.tsx
-5:02:34 PM [vite] hmr update /src/pages/HomePage.tsx
-5:02:42 PM [vite] hmr update /src/pages/HomePage.tsx
-5:08:08 PM [vite] hmr update /src/pages/ArchitectureSinglePage.tsx, /src/pages/MapPage.tsx, /src/pages/ArchitectSinglePage.tsx, /src/pages/ArchitectsPage.tsx, /src/App.tsx, /src/pages/ArchitecturePage.tsx, /src/pages/HomePage.tsx, /src/components/DatabaseLoader.tsx
-7:25:30 PM [vite] hmr update /src/pages/HomePage.tsx
-7:25:43 PM [vite] hmr update /src/pages/HomePage.tsx
-7:25:43 PM [vite] hmr update /src/pages/HomePage.tsx
-7:25:49 PM [vite] hmr update /src/pages/HomePage.tsx
-7:25:58 PM [vite] hmr update /src/pages/HomePage.tsx
-7:25:58 PM [vite] hmr update /src/pages/HomePage.tsx
-7:26:04 PM [vite] hmr update /src/pages/HomePage.tsx
-7:26:38 PM [vite] hmr update /src/pages/ArchitecturePage.tsx
+Assets in public directory cannot be imported from JavaScript.
+If you intend to import that asset, put the file in the src directory, and use /src/locales/en/common.json instead of /public/locales/en/common.json.
+If you intend to use the URL of that asset, use /locales/en/common.json?url.
+Assets in public directory cannot be imported from JavaScript.
+If you intend to import that asset, put the file in the src directory, and use /src/locales/ja/common.json instead of /public/locales/ja/common.json.
+If you intend to use the URL of that asset, use /locales/ja/common.json?url.

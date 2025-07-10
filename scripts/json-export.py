@@ -59,8 +59,15 @@ def export_architecture_data(db_path="public/db/archimap.sqlite3", output_dir="p
                     ZAR_LATITUDE as latitude,
                     ZAR_LONGITUDE as longitude,
                     ZAR_CATEGORY as category,
+                    ZAR_BIGCATEGORY as big_category,
                     ZAR_DESCRIPTION as description,
-                    ZAR_IMAGE_URL as image_url
+                    ZAR_IMAGE_URL as image_url,
+                    ZAR_TAG as tags,
+                    ZAR_PREFECTURE as prefecture,
+                    ZAR_CONTRACTOR as contractor,
+                    ZAR_STRUCTURAL_DESIGNER as structural_designer,
+                    ZAR_LANDSCAPE_DESIGNER as landscape_designer,
+                    ZAR_SHINKENCHIKU_URL as shinkenchiku_url
                 FROM ZCDARCHITECTURE 
                 ORDER BY Z_PK 
                 LIMIT ? OFFSET ?
@@ -79,8 +86,15 @@ def export_architecture_data(db_path="public/db/archimap.sqlite3", output_dir="p
                     "latitude": row["latitude"],
                     "longitude": row["longitude"],
                     "category": row["category"],
+                    "big_category": row["big_category"],
                     "description": row["description"],
-                    "image_url": row["image_url"]
+                    "image_url": row["image_url"],
+                    "tags": row["tags"],
+                    "prefecture": row["prefecture"],
+                    "contractor": row["contractor"],
+                    "structural_designer": row["structural_designer"],
+                    "landscape_designer": row["landscape_designer"],
+                    "shinkenchiku_url": row["shinkenchiku_url"]
                 }
                 page_data.append(item)
                 all_items.append(item)
@@ -134,6 +148,21 @@ def export_architecture_data(db_path="public/db/archimap.sqlite3", output_dir="p
                         if key not in search_index["titles"]:
                             search_index["titles"][key] = []
                         search_index["titles"][key].append(item_id)
+            
+            # Index categories
+            if item["category"]:
+                category = item["category"].lower()
+                if category not in search_index["categories"]:
+                    search_index["categories"][category] = []
+                search_index["categories"][category].append(item_id)
+            
+            # Index addresses
+            if item["address"] and item["address"] != "住所不明":
+                # Index by first few characters of address
+                addr_key = item["address"].lower()[:5]
+                if addr_key not in search_index["addresses"]:
+                    search_index["addresses"][addr_key] = []
+                search_index["addresses"][addr_key].append(item_id)
         
         # Save search index
         index_file = f"{output_dir}/search_index.json"
