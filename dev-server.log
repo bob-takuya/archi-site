@@ -1,0 +1,63 @@
+
+> archi-site@1.1.0 dev
+> vite
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+worker.plugins is now a function that returns an array of plugins. Please update your Vite config accordingly.
+
+Re-optimizing dependencies because lockfile has changed
+Port 3000 is in use, trying another one...
+
+  VITE v5.4.19  ready in 131 ms
+
+  ➜  Local:   http://localhost:3001/archi-site/
+  ➜  Network: use --host to expose
+Error:   Failed to scan for dependencies from entries:
+  /Users/homeserver/ai-creative-team/archi-site/debug-chunked-loading.html
+/Users/homeserver/ai-creative-team/archi-site/debug-database-loading.html
+/Users/homeserver/ai-creative-team/archi-site/debug-sql-httpvfs.html
+/Users/homeserver/ai-creative-team/archi-site/debug-worker-loading.html
+/Users/homeserver/ai-creative-team/archi-site/index.html
+/Users/homeserver/ai-creative-team/archi-site/manual-database-loading-test.html
+/Users/homeserver/ai-creative-team/archi-site/test-httpvfs.html
+/Users/homeserver/ai-creative-team/archi-site/test-worker-fix.html
+/Users/homeserver/ai-creative-team/archi-site/public/404.html
+/Users/homeserver/ai-creative-team/archi-site/public/debug-chunked-loading.html
+/Users/homeserver/ai-creative-team/archi-site/public/test-httpvfs.html
+/Users/homeserver/ai-creative-team/archi-site/src/index.html
+/Users/homeserver/ai-creative-team/archi-site/playwright-results/production-reports/index.html
+/Users/homeserver/ai-creative-team/archi-site/playwright-results/reports/index.html
+/Users/homeserver/ai-creative-team/archi-site/test-results/reports/index.html
+/Users/homeserver/ai-creative-team/archi-site/tests/results/architect-detail-2025-03-21T18-19-40.863Z.html
+/Users/homeserver/ai-creative-team/archi-site/playwright-results/reports/trace/index.html
+/Users/homeserver/ai-creative-team/archi-site/playwright-results/reports/trace/snapshot.html
+/Users/homeserver/ai-creative-team/archi-site/playwright-results/reports/trace/uiMode.html
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mNo matching export in "src/hooks/useDatabase.ts" for import "useDatabase"[0m
+
+    src/pages/AnalyticsPage.tsx:32:9:
+[37m      32 │ import { [32museDatabase[37m } from '../hooks/useDatabase';
+         ╵          [32m~~~~~~~~~~~[0m
+
+
+    at failureErrorWithLog (/Users/homeserver/ai-creative-team/archi-site/node_modules/esbuild/lib/main.js:1472:15)
+    at /Users/homeserver/ai-creative-team/archi-site/node_modules/esbuild/lib/main.js:945:25
+    at runOnEndCallbacks (/Users/homeserver/ai-creative-team/archi-site/node_modules/esbuild/lib/main.js:1315:45)
+    at buildResponseToResult (/Users/homeserver/ai-creative-team/archi-site/node_modules/esbuild/lib/main.js:943:7)
+    at /Users/homeserver/ai-creative-team/archi-site/node_modules/esbuild/lib/main.js:955:9
+    at new Promise (<anonymous>)
+    at requestCallbacks.on-end (/Users/homeserver/ai-creative-team/archi-site/node_modules/esbuild/lib/main.js:954:54)
+    at handleRequest (/Users/homeserver/ai-creative-team/archi-site/node_modules/esbuild/lib/main.js:647:17)
+    at handleIncomingPacket (/Users/homeserver/ai-creative-team/archi-site/node_modules/esbuild/lib/main.js:672:7)
+    at Socket.readFromStdout (/Users/homeserver/ai-creative-team/archi-site/node_modules/esbuild/lib/main.js:600:7)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+Assets in public directory cannot be imported from JavaScript.
+If you intend to import that asset, put the file in the src directory, and use /src/locales/ja/common.json instead of /public/locales/ja/common.json.
+If you intend to use the URL of that asset, use /locales/ja/common.json?url.
+Assets in public directory cannot be imported from JavaScript.
+If you intend to import that asset, put the file in the src directory, and use /src/locales/en/common.json instead of /public/locales/en/common.json.
+If you intend to use the URL of that asset, use /locales/en/common.json?url.

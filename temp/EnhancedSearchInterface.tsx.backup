@@ -1,0 +1,616 @@
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  TextField,
+  Button,
+  Paper,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Chip,
+  Stack,
+  Slider,
+  Grid,
+  Divider,
+  IconButton,
+  Tooltip,
+  useTheme,
+  alpha,
+  Collapse,
+  Card,
+  CardContent,
+} from '@mui/material';
+import {
+  Search as SearchIcon,
+  ExpandMore as ExpandMoreIcon,
+  FilterList as FilterListIcon,
+  Clear as ClearIcon,
+  Tune as TuneIcon,
+  LocationOn as LocationIcon,
+  CalendarToday as CalendarIcon,
+  Architecture as ArchitectureIcon,
+  Person as PersonIcon,
+  Category as CategoryIcon,
+  Refresh as RefreshIcon,
+} from '@mui/icons-material';
+
+interface SearchFilters {
+  query: string;
+  category: string[];
+  prefecture: string[];
+  architect: string;
+  yearRange: [number, number];
+  style: string[];
+  sortBy: string;
+  sortOrder: 'asc' | 'desc';
+}
+
+interface FilterOption {
+  value: string;
+  label: string;
+  count?: number;
+}
+
+interface EnhancedSearchInterfaceProps {
+  onSearch: (filters: SearchFilters) => void;
+  onReset?: () => void;
+  showAdvanced?: boolean;
+  compact?: boolean;
+  placeholder?: string;
+}
+
+const categories: FilterOption[] = [
+  { value: 'residential', label: '住宅建築', count: 4200 },
+  { value: 'commercial', label: '商業建築', count: 2800 },
+  { value: 'cultural', label: '文化施設', count: 1900 },
+  { value: 'religious', label: '宗教建築', count: 1600 },
+  { value: 'educational', label: '教育施設', count: 1400 },
+  { value: 'transportation', label: '交通施設', count: 800 },
+  { value: 'industrial', label: '産業施設', count: 600 },
+  { value: 'healthcare', label: '医療施設', count: 500 },
+];
+
+const prefectures: FilterOption[] = [
+  { value: 'tokyo', label: '東京都', count: 3200 },
+  { value: 'osaka', label: '大阪府', count: 1800 },
+  { value: 'kanagawa', label: '神奈川県', count: 1500 },
+  { value: 'kyoto', label: '京都府', count: 1200 },
+  { value: 'aichi', label: '愛知県', count: 900 },
+  { value: 'hyogo', label: '兵庫県', count: 800 },
+  { value: 'fukuoka', label: '福岡県', count: 700 },
+  { value: 'saitama', label: '埼玉県', count: 650 },
+];
+
+const styles: FilterOption[] = [
+  { value: 'modern', label: 'モダン', count: 3200 },
+  { value: 'traditional', label: '伝統', count: 1200 },
+  { value: 'contemporary', label: 'コンテンポラリー', count: 2100 },
+  { value: 'minimalist', label: 'ミニマル', count: 1800 },
+  { value: 'brutalist', label: 'ブルータリズム', count: 400 },
+  { value: 'deconstructivist', label: '脱構築主義', count: 300 },
+  { value: 'sustainable', label: '持続可能', count: 900 },
+];
+
+const sortOptions: FilterOption[] = [
+  { value: 'relevance', label: '関連度' },
+  { value: 'year', label: '建設年' },
+  { value: 'name', label: '名前' },
+  { value: 'architect', label: '建築家' },
+  { value: 'location', label: '所在地' },
+  { value: 'popularity', label: '人気度' },
+];
+
+const EnhancedSearchInterface: React.FC<EnhancedSearchInterfaceProps> = ({
+  onSearch,
+  onReset,
+  showAdvanced = true,
+  compact = false,
+  placeholder = '建築作品名、建築家名、住所、スタイルなどで検索'
+}) => {
+  const theme = useTheme();
+  const [filters, setFilters] = useState<SearchFilters>({
+    query: '',
+    category: [],
+    prefecture: [],
+    architect: '',
+    yearRange: [1900, 2024],
+    style: [],
+    sortBy: 'relevance',
+    sortOrder: 'desc',
+  });
+  
+  const [showFilters, setShowFilters] = useState(false);
+  const [activeFilterCount, setActiveFilterCount] = useState(0);
+
+  // Count active filters
+  useEffect(() => {
+    let count = 0;
+    if (filters.query.trim()) count++;
+    if (filters.category.length > 0) count++;
+    if (filters.prefecture.length > 0) count++;
+    if (filters.architect.trim()) count++;
+    if (filters.yearRange[0] !== 1900 || filters.yearRange[1] !== 2024) count++;
+    if (filters.style.length > 0) count++;
+    if (filters.sortBy !== 'relevance') count++;
+    setActiveFilterCount(count);
+  }, [filters]);
+
+  const handleSearch = () => {
+    onSearch(filters);
+  };
+
+  const handleReset = () => {
+    const resetFilters: SearchFilters = {
+      query: '',
+      category: [],
+      prefecture: [],
+      architect: '',
+      yearRange: [1900, 2024],
+      style: [],
+      sortBy: 'relevance',
+      sortOrder: 'desc',
+    };
+    setFilters(resetFilters);
+    onReset?.();
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setFilters(prev => ({
+      ...prev,
+      category: prev.category.includes(category)
+        ? prev.category.filter(c => c !== category)
+        : [...prev.category, category]
+    }));
+  };
+
+  const handlePrefectureChange = (prefecture: string) => {
+    setFilters(prev => ({
+      ...prev,
+      prefecture: prev.prefecture.includes(prefecture)
+        ? prev.prefecture.filter(p => p !== prefecture)
+        : [...prev.prefecture, prefecture]
+    }));
+  };
+
+  const handleStyleChange = (style: string) => {
+    setFilters(prev => ({
+      ...prev,
+      style: prev.style.includes(style)
+        ? prev.style.filter(s => s !== style)
+        : [...prev.style, style]
+    }));
+  };
+
+  const removeFilter = (type: string, value?: string) => {
+    switch (type) {
+      case 'query':
+        setFilters(prev => ({ ...prev, query: '' }));
+        break;
+      case 'category':
+        if (value) {
+          handleCategoryChange(value);
+        } else {
+          setFilters(prev => ({ ...prev, category: [] }));
+        }
+        break;
+      case 'prefecture':
+        if (value) {
+          handlePrefectureChange(value);
+        } else {
+          setFilters(prev => ({ ...prev, prefecture: [] }));
+        }
+        break;
+      case 'architect':
+        setFilters(prev => ({ ...prev, architect: '' }));
+        break;
+      case 'style':
+        if (value) {
+          handleStyleChange(value);
+        } else {
+          setFilters(prev => ({ ...prev, style: [] }));
+        }
+        break;
+      case 'year':
+        setFilters(prev => ({ ...prev, yearRange: [1900, 2024] }));
+        break;
+    }
+  };
+
+  const FilterChips = () => (
+    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 2 }}>
+      {filters.query && (
+        <Chip
+          label={`検索: "${filters.query}"`}
+          onDelete={() => removeFilter('query')}
+          size="small"
+          color="primary"
+        />
+      )}
+      {filters.category.map(cat => (
+        <Chip
+          key={cat}
+          label={categories.find(c => c.value === cat)?.label || cat}
+          onDelete={() => removeFilter('category', cat)}
+          size="small"
+          color="secondary"
+        />
+      ))}
+      {filters.prefecture.map(pref => (
+        <Chip
+          key={pref}
+          label={prefectures.find(p => p.value === pref)?.label || pref}
+          onDelete={() => removeFilter('prefecture', pref)}
+          size="small"
+          color="info"
+        />
+      ))}
+      {filters.architect && (
+        <Chip
+          label={`建築家: ${filters.architect}`}
+          onDelete={() => removeFilter('architect')}
+          size="small"
+          color="warning"
+        />
+      )}
+      {filters.style.map(style => (
+        <Chip
+          key={style}
+          label={styles.find(s => s.value === style)?.label || style}
+          onDelete={() => removeFilter('style', style)}
+          size="small"
+          color="success"
+        />
+      ))}
+      {(filters.yearRange[0] !== 1900 || filters.yearRange[1] !== 2024) && (
+        <Chip
+          label={`${filters.yearRange[0]} - ${filters.yearRange[1]}年`}
+          onDelete={() => removeFilter('year')}
+          size="small"
+          variant="outlined"
+        />
+      )}
+    </Stack>
+  );
+
+  return (
+    <Paper 
+      elevation={2}
+      sx={{ 
+        p: compact ? 2 : 3, 
+        backgroundColor: 'background.paper',
+        border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+      }}
+    >
+      {/* Main Search Bar */}
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'stretch' }}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          placeholder={placeholder}
+          value={filters.query}
+          onChange={(e) => setFilters(prev => ({ ...prev, query: e.target.value }))}
+          onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+          inputProps={{
+            'aria-label': '建築作品検索',
+            'data-testid': 'enhanced-search-input',
+          }}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              backgroundColor: 'white',
+            },
+          }}
+          InputProps={{
+            startAdornment: <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />,
+          }}
+        />
+        
+        {/* Filter Toggle Button */}
+        {showAdvanced && (
+          <Button
+            variant={showFilters ? 'contained' : 'outlined'}
+            onClick={() => setShowFilters(!showFilters)}
+            startIcon={<FilterListIcon />}
+            sx={{ 
+              minWidth: 120,
+              position: 'relative',
+            }}
+          >
+            フィルター
+            {activeFilterCount > 0 && (
+              <Chip
+                label={activeFilterCount}
+                size="small"
+                color="error"
+                sx={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  height: 20,
+                  minWidth: 20,
+                  '& .MuiChip-label': {
+                    px: 0.5,
+                    fontSize: '0.75rem',
+                  },
+                }}
+              />
+            )}
+          </Button>
+        )}
+        
+        {/* Search Button */}
+        <Button
+          variant="contained"
+          onClick={handleSearch}
+          startIcon={<SearchIcon />}
+          size="large"
+          sx={{ 
+            minWidth: 100,
+            px: 3,
+          }}
+        >
+          検索
+        </Button>
+      </Box>
+
+      {/* Active Filter Chips */}
+      {activeFilterCount > 0 && (
+        <Box sx={{ mt: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+            <Typography variant="body2" color="text.secondary">
+              適用中のフィルター ({activeFilterCount}件)
+            </Typography>
+            <Button 
+              size="small" 
+              onClick={handleReset}
+              startIcon={<ClearIcon />}
+              color="secondary"
+            >
+              すべてクリア
+            </Button>
+          </Box>
+          <FilterChips />
+        </Box>
+      )}
+
+      {/* Advanced Filters */}
+      <Collapse in={showFilters}>
+        <Box sx={{ mt: 3 }}>
+          <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <TuneIcon />
+            詳細検索オプション
+          </Typography>
+          
+          <Grid container spacing={3}>
+            {/* Categories */}
+            <Grid item xs={12} md={6}>
+              <Card variant="outlined" sx={{ height: '100%' }}>
+                <CardContent>
+                  <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CategoryIcon fontSize="small" />
+                    カテゴリー
+                  </Typography>
+                  <FormGroup>
+                    {categories.map((category) => (
+                      <FormControlLabel
+                        key={category.value}
+                        control={
+                          <Checkbox
+                            checked={filters.category.includes(category.value)}
+                            onChange={() => handleCategoryChange(category.value)}
+                            size="small"
+                          />
+                        }
+                        label={
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                            <span>{category.label}</span>
+                            <Chip label={category.count?.toLocaleString()} size="small" variant="outlined" />
+                          </Box>
+                        }
+                        sx={{ 
+                          width: '100%',
+                          m: 0,
+                          '& .MuiFormControlLabel-label': {
+                            width: '100%',
+                            fontSize: '0.875rem',
+                          },
+                        }}
+                      />
+                    ))}
+                  </FormGroup>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* Prefectures */}
+            <Grid item xs={12} md={6}>
+              <Card variant="outlined" sx={{ height: '100%' }}>
+                <CardContent>
+                  <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LocationIcon fontSize="small" />
+                    都道府県
+                  </Typography>
+                  <FormGroup>
+                    {prefectures.map((prefecture) => (
+                      <FormControlLabel
+                        key={prefecture.value}
+                        control={
+                          <Checkbox
+                            checked={filters.prefecture.includes(prefecture.value)}
+                            onChange={() => handlePrefectureChange(prefecture.value)}
+                            size="small"
+                          />
+                        }
+                        label={
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                            <span>{prefecture.label}</span>
+                            <Chip label={prefecture.count?.toLocaleString()} size="small" variant="outlined" />
+                          </Box>
+                        }
+                        sx={{ 
+                          width: '100%',
+                          m: 0,
+                          '& .MuiFormControlLabel-label': {
+                            width: '100%',
+                            fontSize: '0.875rem',
+                          },
+                        }}
+                      />
+                    ))}
+                  </FormGroup>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* Architect */}
+            <Grid item xs={12} md={6}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <PersonIcon fontSize="small" />
+                    建築家
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    placeholder="建築家名を入力"
+                    value={filters.architect}
+                    onChange={(e) => setFilters(prev => ({ ...prev, architect: e.target.value }))}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* Year Range */}
+            <Grid item xs={12} md={6}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CalendarIcon fontSize="small" />
+                    建設年代 ({filters.yearRange[0]} - {filters.yearRange[1]})
+                  </Typography>
+                  <Slider
+                    value={filters.yearRange}
+                    onChange={(_, newValue) => setFilters(prev => ({ ...prev, yearRange: newValue as [number, number] }))}
+                    valueLabelDisplay="auto"
+                    min={1900}
+                    max={2024}
+                    marks={[
+                      { value: 1900, label: '1900' },
+                      { value: 1950, label: '1950' },
+                      { value: 2000, label: '2000' },
+                      { value: 2024, label: '2024' },
+                    ]}
+                    sx={{ mt: 2 }}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* Styles */}
+            <Grid item xs={12} md={6}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <ArchitectureIcon fontSize="small" />
+                    建築スタイル
+                  </Typography>
+                  <FormGroup row>
+                    {styles.map((style) => (
+                      <FormControlLabel
+                        key={style.value}
+                        control={
+                          <Checkbox
+                            checked={filters.style.includes(style.value)}
+                            onChange={() => handleStyleChange(style.value)}
+                            size="small"
+                          />
+                        }
+                        label={style.label}
+                        sx={{ 
+                          fontSize: '0.875rem',
+                          mr: 2,
+                          mb: 1,
+                        }}
+                      />
+                    ))}
+                  </FormGroup>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* Sort Options */}
+            <Grid item xs={12} md={6}>
+              <Card variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle1" gutterBottom>
+                    並び順
+                  </Typography>
+                  <Stack direction="row" spacing={2}>
+                    <FormControl size="small" sx={{ minWidth: 150 }}>
+                      <InputLabel>ソート順</InputLabel>
+                      <Select
+                        value={filters.sortBy}
+                        label="ソート順"
+                        onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value }))}
+                      >
+                        {sortOptions.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    
+                    <FormControl size="small" sx={{ minWidth: 100 }}>
+                      <InputLabel>順序</InputLabel>
+                      <Select
+                        value={filters.sortOrder}
+                        label="順序"
+                        onChange={(e) => setFilters(prev => ({ ...prev, sortOrder: e.target.value as 'asc' | 'desc' }))}
+                      >
+                        <MenuItem value="desc">降順</MenuItem>
+                        <MenuItem value="asc">昇順</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+
+          {/* Action Buttons */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+            <Button
+              variant="outlined"
+              onClick={handleReset}
+              startIcon={<RefreshIcon />}
+              color="secondary"
+            >
+              フィルターをリセット
+            </Button>
+            
+            <Button
+              variant="contained"
+              onClick={handleSearch}
+              startIcon={<SearchIcon />}
+              size="large"
+              sx={{ px: 4 }}
+            >
+              適用して検索
+            </Button>
+          </Box>
+        </Box>
+      </Collapse>
+    </Paper>
+  );
+};
+
+export default EnhancedSearchInterface;

@@ -393,14 +393,6 @@ const HomePage: React.FC = () => {
                   >
                     再試行
                   </Button>
-                  <Button 
-                    size="small" 
-                    variant="outlined" 
-                    component={RouterLink} 
-                    to="/db-explorer"
-                  >
-                    診断ツールを開く
-                  </Button>
                 </Stack>
               </Box>
             </Alert>

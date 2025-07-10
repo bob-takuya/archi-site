@@ -1,0 +1,130 @@
+2025-07-10 02:30:13,537 - ai_team.registry - INFO - register:124 - Registered command: ai-team-init
+2025-07-10 02:30:13,537 - ai_team.registry - INFO - register:124 - Registered command: ai-team-status
+2025-07-10 02:30:13,537 - ai_team.registry - INFO - register:124 - Registered command: ai-team-assign
+2025-07-10 02:30:13,538 - ai_team.registry - INFO - register:124 - Registered command: ai-team-quality-check
+2025-07-10 02:30:13,538 - ai_team.registry - INFO - register:124 - Registered command: ai-team-report
+2025-07-10 02:30:13,538 - ai_team.registry - INFO - register:124 - Registered command: ai-team-learn
+2025-07-10 02:30:13,538 - ai_team.registry - INFO - register:124 - Registered command: ai-team-improve
+2025-07-10 02:30:13,538 - ai_team.registry - INFO - register:124 - Registered command: ai-team-help
+2025-07-10 02:30:13,538 - ai_team - INFO - log:176 - Registered 8 commands
+2025-07-10 02:30:13,538 - ai_team - INFO - log:176 - AI Team system initialized
+2025-07-10 02:30:13,538 - ai_team - WARNING - log:176 - Knowledge base connection failed: No module named 'mcp_qdrant_server'
+2025-07-10 02:30:13,639 - ai_team - INFO - log:176 - Executing command: ai-team-assign tester Critical E2E test optimization and URL configuration fixes for archi-site production deployment. Focus on: 1) Fix playwright configuration for stable production testing 2) Resolve architecture list test failures and timeouts 3) Optimize database loading test scenarios 4) Achieve 90%+ E2E test pass rate target. Project location: /Users/homeserver/ai-creative-team/archi-site/
+2025-07-10 02:30:13,640 - ai_team.ai-team-assign - INFO - log_execution:106 - {"command": "ai-team-assign", "status": "error", "execution_time": 2.384185791015625e-05, "timestamp": "2025-07-10T02:30:13.640111", "user_id": "default", "session_id": "d1ec4119-dc0b-41e1-9268-197f0f1913f8", "message": "Agent 'tester' not found. Available agents: "}
+2025-07-10 02:30:13,640 - ai_team - INFO - log:176 - Command completed: ai-team-assign
+2025-07-10 02:30:19,043 - ai_team.registry - INFO - register:124 - Registered command: ai-team-init
+2025-07-10 02:30:19,043 - ai_team.registry - INFO - register:124 - Registered command: ai-team-status
+2025-07-10 02:30:19,043 - ai_team.registry - INFO - register:124 - Registered command: ai-team-assign
+2025-07-10 02:30:19,043 - ai_team.registry - INFO - register:124 - Registered command: ai-team-quality-check
+2025-07-10 02:30:19,043 - ai_team.registry - INFO - register:124 - Registered command: ai-team-report
+2025-07-10 02:30:19,043 - ai_team.registry - INFO - register:124 - Registered command: ai-team-learn
+2025-07-10 02:30:19,043 - ai_team.registry - INFO - register:124 - Registered command: ai-team-improve
+2025-07-10 02:30:19,043 - ai_team.registry - INFO - register:124 - Registered command: ai-team-help
+2025-07-10 02:30:19,043 - ai_team - INFO - log:176 - Registered 8 commands
+2025-07-10 02:30:19,043 - ai_team - INFO - log:176 - AI Team system initialized
+2025-07-10 02:30:19,043 - ai_team - WARNING - log:176 - Knowledge base connection failed: No module named 'mcp_qdrant_server'
+2025-07-10 02:30:19,145 - ai_team - INFO - log:176 - Executing command: ai-team-status
+2025-07-10 02:30:19,146 - ai_team.ai-team-status - INFO - log_execution:106 - {"command": "ai-team-status", "status": "warning", "execution_time": 5.0067901611328125e-06, "timestamp": "2025-07-10T02:30:19.146218", "user_id": "default", "session_id": "ebbcc3f6-2b9f-41a9-b6d4-e81d7f5f030a", "message": "Project not initialized. Run 'ai-team init' first."}
+2025-07-10 02:30:19,146 - ai_team - INFO - log:176 - Command completed: ai-team-status
+2025-07-10 02:30:26,794 - ai_team.registry - INFO - register:124 - Registered command: ai-team-init
+2025-07-10 02:30:26,794 - ai_team.registry - INFO - register:124 - Registered command: ai-team-status
+2025-07-10 02:30:26,794 - ai_team.registry - INFO - register:124 - Registered command: ai-team-assign
+2025-07-10 02:30:26,794 - ai_team.registry - INFO - register:124 - Registered command: ai-team-quality-check
+2025-07-10 02:30:26,794 - ai_team.registry - INFO - register:124 - Registered command: ai-team-report
+2025-07-10 02:30:26,794 - ai_team.registry - INFO - register:124 - Registered command: ai-team-learn
+2025-07-10 02:30:26,794 - ai_team.registry - INFO - register:124 - Registered command: ai-team-improve
+2025-07-10 02:30:26,794 - ai_team.registry - INFO - register:124 - Registered command: ai-team-help
+2025-07-10 02:30:26,794 - ai_team - INFO - log:176 - Registered 8 commands
+2025-07-10 02:30:26,794 - ai_team - INFO - log:176 - AI Team system initialized
+2025-07-10 02:30:26,794 - ai_team - WARNING - log:176 - Knowledge base connection failed: No module named 'mcp_qdrant_server'
+2025-07-10 02:30:26,896 - ai_team - INFO - log:176 - Executing command: ai-team-init Japanese Architecture Database Perfection Initiative
+2025-07-10 02:30:26,898 - ai_team.ai-team-init - INFO - log_execution:106 - {"command": "ai-team-init", "status": "success", "execution_time": 0.0011398792266845703, "timestamp": "2025-07-10T02:30:26.897272", "user_id": "default", "session_id": "ce1ab86c-de57-4c45-b57b-31db3eb324b7", "message": "AI team project 'Japanese' initialized successfully"}
+2025-07-10 02:30:26,898 - ai_team - INFO - log:176 - Command completed: ai-team-init
+2025-07-10 02:30:33,253 - ai_team.registry - INFO - register:124 - Registered command: ai-team-init
+2025-07-10 02:30:33,253 - ai_team.registry - INFO - register:124 - Registered command: ai-team-status
+2025-07-10 02:30:33,253 - ai_team.registry - INFO - register:124 - Registered command: ai-team-assign
+2025-07-10 02:30:33,253 - ai_team.registry - INFO - register:124 - Registered command: ai-team-quality-check
+2025-07-10 02:30:33,253 - ai_team.registry - INFO - register:124 - Registered command: ai-team-report
+2025-07-10 02:30:33,253 - ai_team.registry - INFO - register:124 - Registered command: ai-team-learn
+2025-07-10 02:30:33,253 - ai_team.registry - INFO - register:124 - Registered command: ai-team-improve
+2025-07-10 02:30:33,253 - ai_team.registry - INFO - register:124 - Registered command: ai-team-help
+2025-07-10 02:30:33,253 - ai_team - INFO - log:176 - Registered 8 commands
+2025-07-10 02:30:33,254 - ai_team - INFO - log:176 - AI Team system initialized
+2025-07-10 02:30:33,254 - ai_team - WARNING - log:176 - Knowledge base connection failed: No module named 'mcp_qdrant_server'
+2025-07-10 02:30:33,356 - ai_team - INFO - log:176 - Executing command: ai-team-status
+2025-07-10 02:30:33,356 - ai_team.ai-team-status - INFO - log_execution:106 - {"command": "ai-team-status", "status": "success", "execution_time": 2.7894973754882812e-05, "timestamp": "2025-07-10T02:30:33.356468", "user_id": "default", "session_id": "6757f443-9735-4f54-8d4a-eb853462ea70", "message": "\ud83e\udd16 AI Team Status Report\n==================================================\n\ud83d\udccb Project: Japanese\n\u23f0 Last Updated: just now\n\ud83d\udc65 Active Agents: 4\n\ud83d\udcdd Tasks: 0/0 completed\n\n\ud83e\udd16 Agent Status:\n  \ud83d\udfe2 Architect (architect)\n     Current Tasks: 0\n  \ud83d\udfe2 Developer (developer)\n     Current Tasks: 0\n  \ud83d\udfe2 Tester (tester)\n     Current Tasks: 0\n  \ud83d\udfe2 Reviewer (reviewer)\n     Current Tasks: 0\n\n\ud83d\udccb Task Summary:\n  Total: 0\n"}
+2025-07-10 02:30:33,356 - ai_team - INFO - log:176 - Command completed: ai-team-status
+2025-07-10 02:30:50,280 - ai_team.registry - INFO - register:124 - Registered command: ai-team-init
+2025-07-10 02:30:50,280 - ai_team.registry - INFO - register:124 - Registered command: ai-team-status
+2025-07-10 02:30:50,280 - ai_team.registry - INFO - register:124 - Registered command: ai-team-assign
+2025-07-10 02:30:50,280 - ai_team.registry - INFO - register:124 - Registered command: ai-team-quality-check
+2025-07-10 02:30:50,280 - ai_team.registry - INFO - register:124 - Registered command: ai-team-report
+2025-07-10 02:30:50,280 - ai_team.registry - INFO - register:124 - Registered command: ai-team-learn
+2025-07-10 02:30:50,280 - ai_team.registry - INFO - register:124 - Registered command: ai-team-improve
+2025-07-10 02:30:50,280 - ai_team.registry - INFO - register:124 - Registered command: ai-team-help
+2025-07-10 02:30:50,280 - ai_team - INFO - log:176 - Registered 8 commands
+2025-07-10 02:30:50,280 - ai_team - INFO - log:176 - AI Team system initialized
+2025-07-10 02:30:50,281 - ai_team - WARNING - log:176 - Knowledge base connection failed: No module named 'mcp_qdrant_server'
+2025-07-10 02:30:50,381 - ai_team - INFO - log:176 - Executing command: ai-team-assign tester CRITICAL E2E TEST OPTIMIZATION: Fix playwright configuration issues causing architecture list test failures. Focus on: 1) Resolve 30+ second timeouts in navigation tests 2) Optimize database loading test scenarios 3) Fix URL configuration for production testing 4) Achieve stable 90%+ E2E test pass rate. Project: /Users/homeserver/ai-creative-team/archi-site/
+2025-07-10 02:30:50,382 - ai_team.ai-team-assign - INFO - _update_knowledge_base:612 - Task created and logged: task_1752082250_33f35b47 for tester
+2025-07-10 02:30:50,382 - ai_team.ai-team-assign - INFO - log_execution:106 - {"command": "ai-team-assign", "status": "success", "execution_time": 9.608268737792969e-05, "timestamp": "2025-07-10T02:30:50.382067", "user_id": "default", "session_id": "9cba1739-80ef-4c19-a5b4-debb5add859c", "message": "Task assigned to tester: CRITICAL E2E TEST OPTIMIZATION: Fix playwright con..."}
+2025-07-10 02:30:50,382 - ai_team - INFO - log:176 - Command completed: ai-team-assign
+2025-07-10 02:30:50,437 - ai_team.registry - INFO - register:124 - Registered command: ai-team-init
+2025-07-10 02:30:50,437 - ai_team.registry - INFO - register:124 - Registered command: ai-team-status
+2025-07-10 02:30:50,437 - ai_team.registry - INFO - register:124 - Registered command: ai-team-assign
+2025-07-10 02:30:50,437 - ai_team.registry - INFO - register:124 - Registered command: ai-team-quality-check
+2025-07-10 02:30:50,437 - ai_team.registry - INFO - register:124 - Registered command: ai-team-report
+2025-07-10 02:30:50,437 - ai_team.registry - INFO - register:124 - Registered command: ai-team-learn
+2025-07-10 02:30:50,437 - ai_team.registry - INFO - register:124 - Registered command: ai-team-improve
+2025-07-10 02:30:50,437 - ai_team.registry - INFO - register:124 - Registered command: ai-team-help
+2025-07-10 02:30:50,437 - ai_team - INFO - log:176 - Registered 8 commands
+2025-07-10 02:30:50,437 - ai_team - INFO - log:176 - AI Team system initialized
+2025-07-10 02:30:50,437 - ai_team - WARNING - log:176 - Knowledge base connection failed: No module named 'mcp_qdrant_server'
+2025-07-10 02:30:50,540 - ai_team - INFO - log:176 - Executing command: ai-team-assign architect SYSTEM ARCHITECTURE OPTIMIZATION: Design performance improvements for database loading and user experience. Focus on: 1) Optimize database initialization architecture 2) Design robust error handling patterns 3) Create scalable GitHub Pages deployment strategy 4) Architect solution for 14,000+ record performance. Project: /Users/homeserver/ai-creative-team/archi-site/
+2025-07-10 02:30:50,540 - ai_team.ai-team-assign - INFO - _update_knowledge_base:612 - Task created and logged: task_1752082250_6db3eaf1 for architect
+2025-07-10 02:30:50,540 - ai_team.ai-team-assign - INFO - log_execution:106 - {"command": "ai-team-assign", "status": "success", "execution_time": 9.894371032714844e-05, "timestamp": "2025-07-10T02:30:50.540377", "user_id": "default", "session_id": "0d347b76-d8ce-4a71-98c4-51c8eca78f4c", "message": "Task assigned to architect: SYSTEM ARCHITECTURE OPTIMIZATION: Design performan..."}
+2025-07-10 02:30:50,540 - ai_team - INFO - log:176 - Command completed: ai-team-assign
+2025-07-10 02:30:50,607 - ai_team.registry - INFO - register:124 - Registered command: ai-team-init
+2025-07-10 02:30:50,607 - ai_team.registry - INFO - register:124 - Registered command: ai-team-status
+2025-07-10 02:30:50,607 - ai_team.registry - INFO - register:124 - Registered command: ai-team-assign
+2025-07-10 02:30:50,607 - ai_team.registry - INFO - register:124 - Registered command: ai-team-quality-check
+2025-07-10 02:30:50,607 - ai_team.registry - INFO - register:124 - Registered command: ai-team-report
+2025-07-10 02:30:50,607 - ai_team.registry - INFO - register:124 - Registered command: ai-team-learn
+2025-07-10 02:30:50,607 - ai_team.registry - INFO - register:124 - Registered command: ai-team-improve
+2025-07-10 02:30:50,607 - ai_team.registry - INFO - register:124 - Registered command: ai-team-help
+2025-07-10 02:30:50,607 - ai_team - INFO - log:176 - Registered 8 commands
+2025-07-10 02:30:50,607 - ai_team - INFO - log:176 - AI Team system initialized
+2025-07-10 02:30:50,607 - ai_team - WARNING - log:176 - Knowledge base connection failed: No module named 'mcp_qdrant_server'
+2025-07-10 02:30:50,710 - ai_team - INFO - log:176 - Executing command: ai-team-assign developer IMPLEMENTATION & UX FIXES: Implement database loading optimizations and user experience improvements. Focus on: 1) Fix database timeout issues 2) Implement loading feedback mechanisms 3) Optimize accessibility compliance 4) Enhance error recovery systems. Project: /Users/homeserver/ai-creative-team/archi-site/
+2025-07-10 02:30:50,710 - ai_team.ai-team-assign - INFO - _update_knowledge_base:612 - Task created and logged: task_1752082250_cf082992 for developer
+2025-07-10 02:30:50,710 - ai_team.ai-team-assign - INFO - log_execution:106 - {"command": "ai-team-assign", "status": "success", "execution_time": 8.916854858398438e-05, "timestamp": "2025-07-10T02:30:50.710312", "user_id": "default", "session_id": "ca98f52f-e0d3-4279-b790-77c95405b68e", "message": "Task assigned to developer: IMPLEMENTATION & UX FIXES: Implement database load..."}
+2025-07-10 02:30:50,710 - ai_team - INFO - log:176 - Command completed: ai-team-assign
+2025-07-10 02:30:50,763 - ai_team.registry - INFO - register:124 - Registered command: ai-team-init
+2025-07-10 02:30:50,763 - ai_team.registry - INFO - register:124 - Registered command: ai-team-status
+2025-07-10 02:30:50,763 - ai_team.registry - INFO - register:124 - Registered command: ai-team-assign
+2025-07-10 02:30:50,763 - ai_team.registry - INFO - register:124 - Registered command: ai-team-quality-check
+2025-07-10 02:30:50,763 - ai_team.registry - INFO - register:124 - Registered command: ai-team-report
+2025-07-10 02:30:50,763 - ai_team.registry - INFO - register:124 - Registered command: ai-team-learn
+2025-07-10 02:30:50,763 - ai_team.registry - INFO - register:124 - Registered command: ai-team-improve
+2025-07-10 02:30:50,763 - ai_team.registry - INFO - register:124 - Registered command: ai-team-help
+2025-07-10 02:30:50,764 - ai_team - INFO - log:176 - Registered 8 commands
+2025-07-10 02:30:50,764 - ai_team - INFO - log:176 - AI Team system initialized
+2025-07-10 02:30:50,764 - ai_team - WARNING - log:176 - Knowledge base connection failed: No module named 'mcp_qdrant_server'
+2025-07-10 02:30:50,866 - ai_team - INFO - log:176 - Executing command: ai-team-assign reviewer QUALITY ASSURANCE VALIDATION: Review implementation quality and coordinate final validation. Focus on: 1) Validate all fixes meet production standards 2) Conduct comprehensive security audit 3) Perform accessibility compliance review 4) Execute final production readiness assessment. Project: /Users/homeserver/ai-creative-team/archi-site/
+2025-07-10 02:30:50,866 - ai_team.ai-team-assign - INFO - _update_knowledge_base:612 - Task created and logged: task_1752082250_376d2bf2 for reviewer
+2025-07-10 02:30:50,866 - ai_team.ai-team-assign - INFO - log_execution:106 - {"command": "ai-team-assign", "status": "success", "execution_time": 9.512901306152344e-05, "timestamp": "2025-07-10T02:30:50.866674", "user_id": "default", "session_id": "8f52dc40-41d1-4bae-a9c6-61da2089b76b", "message": "Task assigned to reviewer: QUALITY ASSURANCE VALIDATION: Review implementatio..."}
+2025-07-10 02:30:50,867 - ai_team - INFO - log:176 - Command completed: ai-team-assign
+2025-07-10 02:31:07,156 - ai_team.registry - INFO - register:124 - Registered command: ai-team-init
+2025-07-10 02:31:07,156 - ai_team.registry - INFO - register:124 - Registered command: ai-team-status
+2025-07-10 02:31:07,156 - ai_team.registry - INFO - register:124 - Registered command: ai-team-assign
+2025-07-10 02:31:07,156 - ai_team.registry - INFO - register:124 - Registered command: ai-team-quality-check
+2025-07-10 02:31:07,156 - ai_team.registry - INFO - register:124 - Registered command: ai-team-report
+2025-07-10 02:31:07,157 - ai_team.registry - INFO - register:124 - Registered command: ai-team-learn
+2025-07-10 02:31:07,157 - ai_team.registry - INFO - register:124 - Registered command: ai-team-improve
+2025-07-10 02:31:07,157 - ai_team.registry - INFO - register:124 - Registered command: ai-team-help
+2025-07-10 02:31:07,157 - ai_team - INFO - log:176 - Registered 8 commands
+2025-07-10 02:31:07,157 - ai_team - INFO - log:176 - AI Team system initialized
+2025-07-10 02:31:07,157 - ai_team - WARNING - log:176 - Knowledge base connection failed: No module named 'mcp_qdrant_server'
+2025-07-10 02:31:07,259 - ai_team - INFO - log:176 - Executing command: ai-team-status
+2025-07-10 02:31:07,259 - ai_team.ai-team-status - INFO - log_execution:106 - {"command": "ai-team-status", "status": "success", "execution_time": 3.0994415283203125e-05, "timestamp": "2025-07-10T02:31:07.259853", "user_id": "default", "session_id": "5aefc0bd-8f8d-43da-9380-05b57fedbf07", "message": "\ud83e\udd16 AI Team Status Report\n==================================================\n\ud83d\udccb Project: Japanese\n\u23f0 Last Updated: just now\n\ud83d\udc65 Active Agents: 4\n\ud83d\udcdd Tasks: 0/4 completed\n\n\ud83e\udd16 Agent Status:\n  \ud83d\udfe2 Architect (architect)\n     Current Tasks: 1\n  \ud83d\udfe2 Developer (developer)\n     Current Tasks: 1\n  \ud83d\udfe2 Tester (tester)\n     Current Tasks: 1\n  \ud83d\udfe2 Reviewer (reviewer)\n     Current Tasks: 1\n\n\ud83d\udccb Task Summary:\n  Total: 4\n  Pending: 4\n"}
+2025-07-10 02:31:07,259 - ai_team - INFO - log:176 - Command completed: ai-team-status

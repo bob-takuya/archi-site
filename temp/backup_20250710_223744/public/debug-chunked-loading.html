@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Chunked Database Loading</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            padding: 20px; 
+            background: #1a1a1a; 
+            color: #00ff00; 
+        }
+        .log { 
+            margin: 5px 0; 
+            padding: 5px; 
+            background: #2a2a2a; 
+            border-left: 3px solid #00ff00; 
+        }
+        .error { 
+            border-left-color: #ff0000; 
+            color: #ff5555; 
+        }
+        .success { 
+            border-left-color: #00ff00; 
+            color: #55ff55; 
+        }
+        .info { 
+            border-left-color: #0080ff; 
+            color: #5555ff; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Chunked Database Loading Debug</h1>
+    <div id="logs"></div>
+    
+    <script type="module">
+        const logs = document.getElementById('logs');
+        
+        function addLog(message, type = 'info') {
+            const logDiv = document.createElement('div');
+            logDiv.className = `log ${type}`;
+            logDiv.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+            logs.appendChild(logDiv);
+            console.log(message);
+        }
+        
+        async function testChunkedLoading() {
+            try {
+                addLog('🚀 Starting chunked database loading test...', 'info');
+                
+                // Test 1: Check if sql.js-httpvfs module is available
+                addLog('📦 Testing sql.js-httpvfs import...', 'info');
+                
+                const { createDbWorker } = await import('sql.js-httpvfs');
+                addLog('✅ sql.js-httpvfs imported successfully', 'success');
+                
+                // Test 2: Check config file accessibility
+                addLog('🗄️ Testing config file accessibility...', 'info');
+                const configUrl = './db/archimap.sqlite3.json';
+                
+                const configResponse = await fetch(configUrl);
+                if (!configResponse.ok) {
+                    throw new Error(`Config file not accessible: ${configResponse.status} ${configResponse.statusText}`);
+                }
+                
+                const config = await configResponse.json();
+                addLog(`✅ Config loaded: ${config.data.length} database(s) configured`, 'success');
+                addLog(`📊 Database size: ${(config.data[0].fileSize / 1024 / 1024).toFixed(2)} MB`, 'info');
+                addLog(`📦 Chunk size: ${(config.data[0].requestChunkSize / 1024).toFixed(0)} KB`, 'info');
+                
+                // Test 3: Check worker and WASM files
+                addLog('🔧 Testing worker and WASM files...', 'info');
+                
+                const workerUrl = new URL('./sqlite.worker.js', window.location.origin);
+                const wasmUrl = new URL('./sql-wasm.wasm', window.location.origin);
+                
+                addLog(`Worker URL: ${workerUrl}`, 'info');
+                addLog(`WASM URL: ${wasmUrl}`, 'info');
+                
+                const workerResponse = await fetch(workerUrl, { method: 'HEAD' });
+                const wasmResponse = await fetch(wasmUrl, { method: 'HEAD' });
+                
+                if (!workerResponse.ok) {
+                    throw new Error(`Worker file not accessible: ${workerResponse.status}`);
+                }
+                if (!wasmResponse.ok) {
+                    throw new Error(`WASM file not accessible: ${wasmResponse.status}`);
+                }
+                
+                addLog('✅ Worker and WASM files are accessible', 'success');
+                
+                // Test 4: Test actual database file accessibility
+                addLog('🗄️ Testing database file accessibility...', 'info');
+                const dbUrl = './db/archimap.sqlite3';
+                const dbResponse = await fetch(dbUrl, { method: 'HEAD' });
+                
+                if (!dbResponse.ok) {
+                    throw new Error(`Database file not accessible: ${dbResponse.status} ${dbResponse.statusText}`);
+                }
+                
+                const contentLength = dbResponse.headers.get('content-length');
+                if (contentLength) {
+                    addLog(`📁 Database file size: ${(parseInt(contentLength) / 1024 / 1024).toFixed(2)} MB`, 'info');
+                }
+                
+                addLog('✅ Database file is accessible', 'success');
+                
+                // Test 5: Initialize sql.js-httpvfs worker
+                addLog('🚀 Initializing sql.js-httpvfs worker...', 'info');
+                
+                const worker = await createDbWorker(
+                    [config],
+                    workerUrl.toString(),
+                    wasmUrl.toString()
+                );
+                
+                addLog('✅ sql.js-httpvfs worker initialized successfully!', 'success');
+                
+                // Test 6: Execute test queries
+                addLog('🔍 Testing database queries...', 'info');
+                
+                const versionResult = await worker.db.exec('SELECT sqlite_version()');
+                if (versionResult && versionResult.length > 0) {
+                    addLog(`🔍 SQLite version: ${versionResult[0].values[0][0]}`, 'success');
+                }
+                
+                const tablesResult = await worker.db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+                if (tablesResult && tablesResult.length > 0) {
+                    addLog(`📋 Tables found: ${tablesResult[0].values.length}`, 'success');
+                    addLog(`📋 Table names: ${tablesResult[0].values.map(row => row[0]).join(', ')}`, 'info');
+                }
+                
+                const countResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+                if (countResult && countResult.length > 0) {
+                    addLog(`🏢 Architecture records: ${countResult[0].values[0][0]}`, 'success');
+                }
+                
+                // Test 7: Sample data query
+                const sampleResult = await worker.db.exec("SELECT * FROM ZCDARCHITECTURE LIMIT 3");
+                if (sampleResult && sampleResult.length > 0) {
+                    addLog(`📊 Sample data query returned ${sampleResult[0].values.length} rows`, 'success');
+                    sampleResult[0].values.forEach((row, i) => {
+                        addLog(`   Row ${i + 1}: ${JSON.stringify(row).substring(0, 100)}...`, 'info');
+                    });
+                }
+                
+                addLog('🎉 ALL TESTS PASSED! Chunked database loading is working correctly!', 'success');
+                
+            } catch (error) {
+                addLog(`❌ Error: ${error.message}`, 'error');
+                console.error('Full error:', error);
+            }
+        }
+        
+        // Run tests
+        testChunkedLoading();
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "role": "analyst",
+  "default_capabilities": [
+    "metrics_analysis",
+    "performance_analysis",
+    "reporting"
+  ],
+  "task_patterns": [
+    "analyze_*",
+    "report_*",
+    "monitor_*"
+  ],
+  "quality_criteria": {
+    "analysis_accuracy": 90,
+    "insight_relevance": 85
+  }
+}

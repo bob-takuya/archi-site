@@ -1,0 +1,17 @@
+{
+  "role": "tester",
+  "default_capabilities": [
+    "test_design",
+    "test_execution",
+    "quality_assurance"
+  ],
+  "task_patterns": [
+    "test_*",
+    "verify_*",
+    "validate_*"
+  ],
+  "quality_criteria": {
+    "test_coverage": 95,
+    "defect_detection_rate": 90
+  }
+}

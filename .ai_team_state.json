@@ -1,0 +1,149 @@
+{
+  "initialized": true,
+  "agents": {
+    "architect": {
+      "role": "architect",
+      "status": "active",
+      "capabilities": [
+        "system_design",
+        "architecture_review",
+        "technical_planning"
+      ],
+      "current_tasks": [
+        "task_1752082250_6db3eaf1"
+      ],
+      "performance_metrics": {
+        "tasks_completed": 0,
+        "average_completion_time": 0,
+        "success_rate": 100
+      },
+      "initialized_at": "2025-07-10T02:30:26.897858"
+    },
+    "developer": {
+      "role": "developer",
+      "status": "active",
+      "capabilities": [
+        "coding",
+        "debugging",
+        "code_review",
+        "testing"
+      ],
+      "current_tasks": [
+        "task_1752082250_cf082992"
+      ],
+      "performance_metrics": {
+        "tasks_completed": 0,
+        "average_completion_time": 0,
+        "success_rate": 100
+      },
+      "initialized_at": "2025-07-10T02:30:26.897861"
+    },
+    "tester": {
+      "role": "tester",
+      "status": "active",
+      "capabilities": [
+        "test_design",
+        "test_execution",
+        "quality_assurance"
+      ],
+      "current_tasks": [
+        "task_1752082250_33f35b47"
+      ],
+      "performance_metrics": {
+        "tasks_completed": 0,
+        "average_completion_time": 0,
+        "success_rate": 100
+      },
+      "initialized_at": "2025-07-10T02:30:26.897863"
+    },
+    "reviewer": {
+      "role": "reviewer",
+      "status": "active",
+      "capabilities": [
+        "code_review",
+        "documentation_review",
+        "quality_gate"
+      ],
+      "current_tasks": [
+        "task_1752082250_376d2bf2"
+      ],
+      "performance_metrics": {
+        "tasks_completed": 0,
+        "average_completion_time": 0,
+        "success_rate": 100
+      },
+      "initialized_at": "2025-07-10T02:30:26.897864"
+    }
+  },
+  "tasks": {
+    "task_1752082250_33f35b47": {
+      "id": "task_1752082250_33f35b47",
+      "agent_role": "AgentRole.TESTER",
+      "title": "CRITICAL E2E TEST OPTIMIZATION: Fix playwright con...",
+      "description": "CRITICAL E2E TEST OPTIMIZATION: Fix playwright configuration issues causing architecture list test failures. Focus on: 1) Resolve 30+ second timeouts in navigation tests 2) Optimize database loading test scenarios 3) Fix URL configuration for production testing 4) Achieve stable 90%+ E2E test pass rate. Project: /Users/homeserver/ai-creative-team/archi-site/",
+      "priority": "medium",
+      "status": "pending",
+      "assigned_at": "2025-07-10 02:30:50.382112",
+      "due_date": null,
+      "dependencies": [],
+      "metadata": {
+        "created_by": "ai-team-assign",
+        "estimated_effort": "low",
+        "task_type": "testing"
+      }
+    },
+    "task_1752082250_6db3eaf1": {
+      "id": "task_1752082250_6db3eaf1",
+      "agent_role": "AgentRole.ARCHITECT",
+      "title": "SYSTEM ARCHITECTURE OPTIMIZATION: Design performan...",
+      "description": "SYSTEM ARCHITECTURE OPTIMIZATION: Design performance improvements for database loading and user experience. Focus on: 1) Optimize database initialization architecture 2) Design robust error handling patterns 3) Create scalable GitHub Pages deployment strategy 4) Architect solution for 14,000+ record performance. Project: /Users/homeserver/ai-creative-team/archi-site/",
+      "priority": "medium",
+      "status": "pending",
+      "assigned_at": "2025-07-10 02:30:50.540423",
+      "due_date": null,
+      "dependencies": [],
+      "metadata": {
+        "created_by": "ai-team-assign",
+        "estimated_effort": "low",
+        "task_type": "deployment"
+      }
+    },
+    "task_1752082250_cf082992": {
+      "id": "task_1752082250_cf082992",
+      "agent_role": "AgentRole.DEVELOPER",
+      "title": "IMPLEMENTATION & UX FIXES: Implement database load...",
+      "description": "IMPLEMENTATION & UX FIXES: Implement database loading optimizations and user experience improvements. Focus on: 1) Fix database timeout issues 2) Implement loading feedback mechanisms 3) Optimize accessibility compliance 4) Enhance error recovery systems. Project: /Users/homeserver/ai-creative-team/archi-site/",
+      "priority": "medium",
+      "status": "pending",
+      "assigned_at": "2025-07-10 02:30:50.710353",
+      "due_date": null,
+      "dependencies": [],
+      "metadata": {
+        "created_by": "ai-team-assign",
+        "estimated_effort": "low",
+        "task_type": "development"
+      }
+    },
+    "task_1752082250_376d2bf2": {
+      "id": "task_1752082250_376d2bf2",
+      "agent_role": "AgentRole.REVIEWER",
+      "title": "QUALITY ASSURANCE VALIDATION: Review implementatio...",
+      "description": "QUALITY ASSURANCE VALIDATION: Review implementation quality and coordinate final validation. Focus on: 1) Validate all fixes meet production standards 2) Conduct comprehensive security audit 3) Perform accessibility compliance review 4) Execute final production readiness assessment. Project: /Users/homeserver/ai-creative-team/archi-site/",
+      "priority": "medium",
+      "status": "pending",
+      "assigned_at": "2025-07-10 02:30:50.866712",
+      "due_date": null,
+      "dependencies": [],
+      "metadata": {
+        "created_by": "ai-team-assign",
+        "estimated_effort": "high",
+        "task_type": "development"
+      }
+    }
+  },
+  "projects": {},
+  "metrics": {},
+  "last_updated": "2025-07-10T02:30:50.866813",
+  "project_name": "Japanese",
+  "created_at": "2025-07-10T02:30:26.898409"
+}

@@ -1,0 +1,17 @@
+{
+  "role": "deployer",
+  "default_capabilities": [
+    "deployment",
+    "infrastructure",
+    "monitoring"
+  ],
+  "task_patterns": [
+    "deploy_*",
+    "release_*",
+    "infrastructure_*"
+  ],
+  "quality_criteria": {
+    "deployment_success_rate": 99,
+    "rollback_capability": 100
+  }
+}

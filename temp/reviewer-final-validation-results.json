@@ -1,0 +1,68 @@
+{
+  "timestamp": "2025-07-09T18:06:18.647Z",
+  "overall_status": "PRODUCTION_READY",
+  "critical_tests": {
+    "site_loading": {
+      "passed": true,
+      "load_time_ms": 2329,
+      "title": "日本の建築マップ | Architecture Map of Japan",
+      "notes": "Japanese title detected"
+    },
+    "navigation": {
+      "passed": true,
+      "nav_items_count": 6,
+      "japanese_nav_items": 6,
+      "nav_items": [
+        "建築データベース",
+        "ホーム",
+        "建築作品",
+        "建築家",
+        "マップ",
+        "研究"
+      ],
+      "notes": "Found 6 Japanese navigation items"
+    },
+    "database_content": {
+      "passed": true,
+      "cards_found": 9,
+      "has_real_architecture_data": true,
+      "sample_content": [
+        "ワン・ニセコ・リゾート・タワーズ隈研吾北海道虻田郡ニセコ町ニセコ455-3 • 2012年",
+        "ニセコ町民センターアトリエブンク北海道虻田郡ニセコ町富士見95 • 2012年",
+        "道の駅 むかわ四季の館アトリエブンク北海道勇払郡むかわ町美幸3-3-1 • 1997年"
+      ],
+      "notes": "Architecture cards loaded"
+    },
+    "search_functionality": {
+      "passed": true,
+      "search_input_found": true,
+      "search_results_count": 9,
+      "search_term": "東京",
+      "notes": "Japanese search functionality working"
+    },
+    "mobile_responsiveness": {
+      "passed": true,
+      "mobile_nav_visible": true,
+      "mobile_content_visible": true,
+      "viewport": "375x667",
+      "notes": "Mobile responsiveness test completed"
+    },
+    "accessibility": {
+      "passed": true,
+      "score": 100,
+      "landmarks_count": 3,
+      "headings_count": 12,
+      "images_total": 0,
+      "images_with_alt": 0,
+      "notes": "Accessibility score: 100%"
+    }
+  },
+  "performance_metrics": {
+    "page_load_time_ms": 2329,
+    "grade": "GOOD"
+  },
+  "accessibility_score": 100,
+  "production_readiness": true,
+  "issues": [],
+  "recommendations": []
+}

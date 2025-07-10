@@ -1,0 +1,20 @@
+{
+  "project_name": "Japanese",
+  "template": "default",
+  "version": "1.0.0",
+  "ai_team": {
+    "coordination_mode": "autonomous",
+    "quality_gates": [
+      "code_review",
+      "testing",
+      "security_scan"
+    ],
+    "reporting_schedule": "daily",
+    "knowledge_base_sync": true
+  },
+  "integrations": {
+    "knowledge_base": true,
+    "git_hooks": true,
+    "ci_cd": true
+  }
+}
