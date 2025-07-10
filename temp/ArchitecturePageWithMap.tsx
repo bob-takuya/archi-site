@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Container, 
@@ -35,7 +35,9 @@ import {
   Stack,
   Skeleton,
   ToggleButton,
-  ToggleButtonGroup
+  ToggleButtonGroup,
+  Fade,
+  Zoom
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
@@ -54,15 +56,34 @@ import TagIcon from '@mui/icons-material/Tag';
 import CloseIcon from '@mui/icons-material/Close';
 import ClearIcon from '@mui/icons-material/Clear';
 import GridViewIcon from '@mui/icons-material/GridView';
-import ViewListIcon from '@mui/icons-material/ViewList';
 import MapIcon from '@mui/icons-material/Map';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import { 
   getAllArchitectures, 
   searchArchitectures, 
   getResearchAnalytics,
   ResearchAnalytics 
 } from '../services/api/FastArchitectureService';
-import MapWithClustering from '../components/MapWithClustering';
+import EnhancedMap, { MapMarker, MapFilters } from '../components/EnhancedMap';
+
+// Unified filter state interface
+interface UnifiedFilterState {
+  searchQuery: string;
+  selectedArchitect?: string;
+  selectedCategory?: string;
+  selectedPrefecture?: string;
+  yearRange?: [number, number];
+  selectedTags: string[];
+  sortBy: 'year_desc' | 'year_asc' | 'name_asc';
+  viewMode: 'grid' | 'list' | 'map';
+  currentPage: number;
+  itemsPerPage: number;
+  mapBounds?: L.LatLngBounds;
+  mapZoom?: number;
+  mapCenter?: [number, number];
+  showClusters: boolean;
+}
 
 interface AutocompleteSuggestion {
   label: string;
@@ -72,24 +93,54 @@ interface AutocompleteSuggestion {
   count?: number;
 }
 
-const ArchitecturePageEnhanced = () => {
+const ArchitecturePageWithMap = () => {
+  // State management
   const [architectures, setArchitectures] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [mapLoading, setMapLoading] = useState(false);
   const [researchLoading, setResearchLoading] = useState(true);
   const [totalItems, setTotalItems] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState<AutocompleteSuggestion | null>(null);
   const [searchInputValue, setSearchInputValue] = useState('');
-  const [sortBy, setSortBy] = useState('year_desc');
   const [researchData, setResearchData] = useState<ResearchAnalytics | null>(null);
   const [showInsights, setShowInsights] = useState(true);
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
   const [activeFilters, setActiveFilters] = useState<{type: string, value: string, label: string}[]>([]);
-  const itemsPerPage = viewMode === 'grid' ? 12 : viewMode === 'list' ? 20 : 100; // Different pagination for each view
+  
+  // Unified filter state
+  const [filters, setFilters] = useState<UnifiedFilterState>({
+    searchQuery: '',
+    selectedTags: [],
+    sortBy: 'year_desc',
+    viewMode: 'grid',
+    currentPage: 1,
+    itemsPerPage: 12,
+    showClusters: true,
+  });
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 研究データの初期ロード
+  // Compute items per page based on view mode
+  const itemsPerPage = useMemo(() => {
+    switch (filters.viewMode) {
+      case 'list':
+        return 20;
+      case 'map':
+        return 100; // Load more for map view
+      default:
+        return 12;
+    }
+  }, [filters.viewMode]);
+
+  // Save view preference to localStorage
+  useEffect(() => {
+    const savedViewMode = localStorage.getItem('preferredViewMode');
+    if (savedViewMode && ['grid', 'list', 'map'].includes(savedViewMode)) {
+      setFilters(prev => ({ ...prev, viewMode: savedViewMode as 'grid' | 'list' | 'map' }));
+    }
+  }, []);
+
+  // Research data initial load
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -182,8 +233,8 @@ const ArchitecturePageEnhanced = () => {
     };
   }, [researchData]);
 
+  // Parse URL parameters on mount and when location changes
   useEffect(() => {
-    // URLからクエリパラメータを解析
     const queryParams = new URLSearchParams(location.search);
     const filters: {type: string, value: string, label: string}[] = [];
     let searchTerm = '';
@@ -211,7 +262,6 @@ const ArchitecturePageEnhanced = () => {
     const search = queryParams.get('search');
     if (search && !searchTerm) {
       searchTerm = search;
-      // Try to find matching suggestion
       const suggestion = autocompleteSuggestions.find(s => s.value === search);
       if (suggestion) {
         setSearchValue(suggestion);
@@ -222,20 +272,25 @@ const ArchitecturePageEnhanced = () => {
     
     const sort = queryParams.get('sort');
     if (sort) {
-      setSortBy(sort);
+      setFilters(prev => ({ ...prev, sortBy: sort as any }));
     }
     
     setActiveFilters(filters);
     
     if (searchTerm || filters.length > 0) {
-      fetchArchitectures(1, searchTerm || filters[0]?.prefix + filters[0]?.value, sort || sortBy);
+      fetchArchitectures(1, searchTerm || filters[0]?.prefix + filters[0]?.value, sort || filters.sortBy);
     } else {
-      fetchArchitectures(1, '', sort || sortBy);
+      fetchArchitectures(1, '', sort || filters.sortBy);
     }
   }, [location.search, autocompleteSuggestions]);
 
-  const fetchArchitectures = async (page: number, search = '', sort = sortBy) => {
+  // Fetch architectures
+  const fetchArchitectures = async (page: number, search = '', sort = filters.sortBy) => {
     setLoading(true);
+    if (filters.viewMode === 'map') {
+      setMapLoading(true);
+    }
+    
     try {
       let result;
       
@@ -263,31 +318,31 @@ const ArchitecturePageEnhanced = () => {
       
       setArchitectures(result.results);
       setTotalItems(result.total);
-      setCurrentPage(page);
+      setFilters(prev => ({ ...prev, currentPage: page }));
     } catch (error) {
       console.error('Error fetching architectures:', error);
       setArchitectures([]);
       setTotalItems(0);
     } finally {
       setLoading(false);
+      setMapLoading(false);
     }
   };
 
+  // Handle page change
   const handlePageChange = (event: any, value: number) => {
-    setCurrentPage(value);
+    setFilters(prev => ({ ...prev, currentPage: value }));
     const searchTerm = searchValue?.value || searchInputValue;
-    fetchArchitectures(value, searchTerm, sortBy);
+    fetchArchitectures(value, searchTerm, filters.sortBy);
     window.scrollTo(0, 0);
   };
 
+  // Handle search
   const handleSearch = (value: AutocompleteSuggestion | null) => {
     setSearchValue(value);
     
     if (value) {
-      // Update URL and fetch
       const queryParams = new URLSearchParams();
-      
-      // Parse the search type and value
       const [type, ...valueParts] = value.value.split(':');
       const searchValue = valueParts.join(':');
       
@@ -305,25 +360,25 @@ const ArchitecturePageEnhanced = () => {
         queryParams.set('search', value.value);
       }
       
-      if (sortBy !== 'year_desc') {
-        queryParams.set('sort', sortBy);
+      if (filters.sortBy !== 'year_desc') {
+        queryParams.set('sort', filters.sortBy);
       }
       
       navigate({ search: queryParams.toString() });
     } else if (searchInputValue) {
-      // Free text search
       const queryParams = new URLSearchParams();
       queryParams.set('search', searchInputValue);
-      if (sortBy !== 'year_desc') {
-        queryParams.set('sort', sortBy);
+      if (filters.sortBy !== 'year_desc') {
+        queryParams.set('sort', filters.sortBy);
       }
       navigate({ search: queryParams.toString() });
     }
   };
 
+  // Handle sort change
   const handleSortChange = (event: any) => {
     const newSort = event.target.value;
-    setSortBy(newSort);
+    setFilters(prev => ({ ...prev, sortBy: newSort }));
     
     const queryParams = new URLSearchParams(location.search);
     if (newSort !== 'year_desc') {
@@ -335,18 +390,33 @@ const ArchitecturePageEnhanced = () => {
     navigate({ search: queryParams.toString() });
   };
 
+  // Handle view mode change
+  const handleViewModeChange = (event: React.MouseEvent<HTMLElement>, newMode: string | null) => {
+    if (newMode && newMode !== filters.viewMode) {
+      setFilters(prev => ({ ...prev, viewMode: newMode as 'grid' | 'list' | 'map' }));
+      localStorage.setItem('preferredViewMode', newMode);
+      
+      // If switching to map view for the first time, load more data
+      if (newMode === 'map' && architectures.length < 100) {
+        const searchTerm = searchValue?.value || searchInputValue;
+        fetchArchitectures(1, searchTerm, filters.sortBy);
+      }
+    }
+  };
+
+  // Handle clear filters
   const handleClearFilters = () => {
     setSearchValue(null);
     setSearchInputValue('');
     setActiveFilters([]);
-    setSortBy('year_desc');
+    setFilters(prev => ({ ...prev, sortBy: 'year_desc', currentPage: 1 }));
     navigate({ search: '' });
   };
 
+  // Handle remove filter
   const handleRemoveFilter = (filterToRemove: {type: string, value: string}) => {
     const queryParams = new URLSearchParams(location.search);
     
-    // Find and remove the specific filter
     const filterTypes = ['tag', 'architect', 'category', 'prefecture', 'year'];
     filterTypes.forEach(type => {
       if (queryParams.get(type) === filterToRemove.value) {
@@ -357,6 +427,7 @@ const ArchitecturePageEnhanced = () => {
     navigate({ search: queryParams.toString() });
   };
 
+  // Handle quick filter
   const handleQuickFilter = (type: string, value: string) => {
     const queryParams = new URLSearchParams();
     
@@ -370,12 +441,46 @@ const ArchitecturePageEnhanced = () => {
       queryParams.set('year', value.replace('年代', ''));
     }
     
-    if (sortBy !== 'year_desc') {
-      queryParams.set('sort', sortBy);
+    if (filters.sortBy !== 'year_desc') {
+      queryParams.set('sort', filters.sortBy);
     }
     
     navigate({ search: queryParams.toString() });
   };
+
+  // Convert architectures to map markers
+  const mapMarkers: MapMarker[] = useMemo(() => {
+    return architectures
+      .filter(arch => arch.latitude && arch.longitude)
+      .map(arch => ({
+        id: arch.id,
+        position: [arch.latitude, arch.longitude],
+        title: arch.title,
+        architect: arch.architect,
+        year: arch.year,
+        category: arch.category,
+        tags: arch.tags,
+        address: arch.address,
+        markerType: arch.tags ? 'award' : 'default',
+      }));
+  }, [architectures]);
+
+  // Map filters based on active filters
+  const mapFilters: MapFilters = useMemo(() => {
+    const filters: MapFilters = {};
+    
+    activeFilters.forEach(filter => {
+      if (filter.type === 'カテゴリ') {
+        filters.categories = [...(filters.categories || []), filter.value];
+      } else if (filter.type === '賞/タグ') {
+        filters.awards = [...(filters.awards || []), filter.value];
+      } else if (filter.type === '建築家') {
+        filters.architects = [...(filters.architects || []), filter.value];
+      }
+    });
+    
+    return filters;
+  }, [activeFilters]);
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -386,23 +491,15 @@ const ArchitecturePageEnhanced = () => {
           建築作品一覧
         </Typography>
         <ToggleButtonGroup
-          value={viewMode}
+          value={filters.viewMode}
           exclusive
-          onChange={(e, newMode) => {
-          if (newMode) {
-            setViewMode(newMode);
-            // Reload data if switching to map view to get more items
-            if (newMode === 'map') {
-              const searchTerm = searchValue?.value || searchInputValue;
-              fetchArchitectures(currentPage, searchTerm, sortBy);
-            }
-          }
-        }}
+          onChange={handleViewModeChange}
           size="small"
+          aria-label="表示モード"
         >
-          <ToggleButton value="grid" aria-label="カードビュー">
-            <Tooltip title="カードビュー">
-              <GridViewIcon />
+          <ToggleButton value="grid" aria-label="グリッドビュー">
+            <Tooltip title="グリッドビュー">
+              <ViewModuleIcon />
             </Tooltip>
           </ToggleButton>
           <ToggleButton value="list" aria-label="リストビュー">
@@ -420,7 +517,7 @@ const ArchitecturePageEnhanced = () => {
 
       <Grid container spacing={3}>
         {/* Main Content */}
-        <Grid item xs={12} lg={showInsights ? 9 : 12}>
+        <Grid item xs={12} lg={showInsights && filters.viewMode !== 'map' ? 9 : 12}>
           <Paper sx={{ p: 3, mb: 3 }}>
             {/* Enhanced Search Bar */}
             <Box sx={{ mb: 3 }}>
@@ -471,7 +568,7 @@ const ArchitecturePageEnhanced = () => {
                 <FormControl size="small" sx={{ minWidth: 120 }}>
                   <InputLabel>並び替え</InputLabel>
                   <Select
-                    value={sortBy}
+                    value={filters.sortBy}
                     label="並び替え"
                     onChange={handleSortChange}
                     startAdornment={<SortIcon sx={{ mr: 1, color: 'action.active' }} />}
@@ -519,161 +616,53 @@ const ArchitecturePageEnhanced = () => {
               <Typography variant="body2" color="text.secondary">
                 {totalItems.toLocaleString()}件の建築作品
                 {activeFilters.length > 0 && ' (絞り込み結果)'}
-                {viewMode === 'map' && architectures.filter(a => a.latitude && a.longitude).length < architectures.length && 
-                  ` - ${architectures.filter(a => a.latitude && a.longitude).length}件を地図に表示`}
+                {filters.viewMode === 'map' && mapMarkers.length < architectures.length && 
+                  ` - ${mapMarkers.length}件を地図に表示`}
               </Typography>
             </Box>
           </Paper>
 
-          {/* Architecture List/Grid/Map */}
-          {loading ? (
-            viewMode === 'list' ? (
-              <Paper sx={{ p: 2 }}>
-                {[...Array(itemsPerPage)].map((_, i) => (
-                  <Box key={i} sx={{ mb: 2 }}>
-                    <Skeleton variant="text" height={40} />
-                    <Skeleton variant="text" height={20} width="60%" />
-                  </Box>
-                ))}
+          {/* Content based on view mode */}
+          {loading && filters.viewMode !== 'map' ? (
+            <Grid container spacing={2}>
+              {[...Array(itemsPerPage)].map((_, i) => (
+                <Grid 
+                  item 
+                  xs={12} 
+                  sm={filters.viewMode === 'list' ? 12 : 6} 
+                  md={filters.viewMode === 'list' ? 12 : 4} 
+                  key={i}
+                >
+                  <Skeleton variant="rectangular" height={filters.viewMode === 'list' ? 100 : 300} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : filters.viewMode === 'map' ? (
+            <Fade in={true} timeout={500}>
+              <Paper sx={{ height: '600px', overflow: 'hidden', position: 'relative' }}>
+                <EnhancedMap
+                  markers={mapMarkers}
+                  center={
+                    architectures.filter(a => a.latitude && a.longitude).length > 0
+                      ? undefined
+                      : [35.6762, 139.6503]
+                  }
+                  zoom={activeFilters.length > 0 ? 8 : 6}
+                  height="600px"
+                  showClusters={filters.showClusters}
+                  filters={mapFilters}
+                  loading={mapLoading}
+                  onMarkerClick={(marker) => {
+                    // Optional: Update URL to show selected building
+                    console.log('Marker clicked:', marker);
+                  }}
+                  onBoundsChange={(bounds, zoom) => {
+                    // Optional: Load more data based on visible area
+                    console.log('Map bounds changed:', bounds, zoom);
+                  }}
+                />
               </Paper>
-            ) : viewMode === 'grid' ? (
-              <Grid container spacing={2}>
-                {[...Array(itemsPerPage)].map((_, i) => (
-                  <Grid item xs={12} sm={6} md={4} key={i}>
-                    <Skeleton variant="rectangular" height={300} />
-                  </Grid>
-                ))}
-              </Grid>
-            ) : (
-              <Skeleton variant="rectangular" height={600} />
-            )
-          ) : viewMode === 'list' ? (
-            <Paper sx={{ p: 2 }}>
-              <List>
-                {architectures.map((architecture, index) => (
-                  <React.Fragment key={architecture.id}>
-                    <ListItem 
-                      alignItems="flex-start"
-                      component={RouterLink} 
-                      to={`/architecture/${architecture.id}`}
-                      sx={{ 
-                        textDecoration: 'none', 
-                        color: 'inherit',
-                        '&:hover': {
-                          backgroundColor: 'action.hover'
-                        }
-                      }}
-                    >
-                      <ListItemText
-                        primary={
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Typography variant="h6" component="span">
-                              {architecture.title}
-                            </Typography>
-                            {architecture.tags && (
-                              <Chip 
-                                label={architecture.tags} 
-                                size="small" 
-                                color="warning" 
-                                variant="outlined"
-                                icon={<EmojiEventsIcon />}
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  handleQuickFilter('award', architecture.tags);
-                                }}
-                              />
-                            )}
-                          </Box>
-                        }
-                        secondary={
-                          <Box sx={{ mt: 1 }}>
-                            <Grid container spacing={2}>
-                              {architecture.architect && (
-                                <Grid item xs={12} sm={4}>
-                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <PersonIcon sx={{ mr: 0.5, color: 'text.secondary', fontSize: 16 }} />
-                                    <Typography variant="body2" color="text.secondary">
-                                      {architecture.architect}
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                              )}
-                              {architecture.year && (
-                                <Grid item xs={12} sm={2}>
-                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <CalendarTodayIcon sx={{ mr: 0.5, color: 'text.secondary', fontSize: 16 }} />
-                                    <Typography variant="body2" color="text.secondary">
-                                      {architecture.year}年
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                              )}
-                              {architecture.category && (
-                                <Grid item xs={12} sm={3}>
-                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <CategoryIcon sx={{ mr: 0.5, color: 'text.secondary', fontSize: 16 }} />
-                                    <Typography variant="body2" color="text.secondary">
-                                      {architecture.category}
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                              )}
-                              {architecture.address && (
-                                <Grid item xs={12} sm={3}>
-                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <LocationOnIcon sx={{ mr: 0.5, color: 'text.secondary', fontSize: 16 }} />
-                                    <Typography variant="body2" color="text.secondary" noWrap>
-                                      {architecture.address}
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                              )}
-                            </Grid>
-                          </Box>
-                        }
-                      />
-                    </ListItem>
-                    {index < architectures.length - 1 && <Divider component="li" />}
-                  </React.Fragment>
-                ))}
-              </List>
-            </Paper>
-          ) : viewMode === 'map' ? (
-            <Paper sx={{ height: '600px', overflow: 'hidden', position: 'relative' }}>
-              <MapWithClustering
-                markers={architectures
-                  .filter(arch => arch.latitude && arch.longitude)
-                  .map(arch => ({
-                    id: arch.id,
-                    position: [arch.latitude, arch.longitude] as [number, number],
-                    title: arch.title,
-                    architect: arch.architect,
-                    year: arch.year,
-                    category: arch.category,
-                    tags: arch.tags,
-                    address: arch.address
-                  }))}
-                center={
-                  activeFilters.some(f => f.type === '地域')
-                    ? undefined // Let map auto-center on filtered markers
-                    : architectures.filter(a => a.latitude && a.longitude).length > 0
-                      ? undefined // Auto-center on all markers
-                      : [35.6762, 139.6503] as [number, number] // Tokyo default
-                }
-                zoom={
-                  activeFilters.some(f => f.type === '地域')
-                    ? 10 // Zoom in more for regional filters
-                    : activeFilters.length > 0
-                      ? 8 // Medium zoom for other filters
-                      : 6 // Wide view for all results
-                }
-                height="600px"
-                onMarkerClick={(markerId) => {
-                  navigate(`/architecture/${markerId}`);
-                }}
-              />
-            </Paper>
+            </Fade>
           ) : (
             <>
               <Grid container spacing={2}>
@@ -681,53 +670,58 @@ const ArchitecturePageEnhanced = () => {
                   <Grid 
                     item 
                     xs={12} 
-                    sm={6} 
-                    md={4} 
+                    sm={filters.viewMode === 'list' ? 12 : 6} 
+                    md={filters.viewMode === 'list' ? 12 : 4} 
                     key={architecture.id}
                   >
-                    <Card>
-                      <CardActionArea component={RouterLink} to={`/architecture/${architecture.id}`}>
-                        <CardContent>
-                          <Typography variant="h6" component="h2" gutterBottom>
-                            {architecture.title}
-                          </Typography>
-                          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                            {architecture.architect && (
-                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <PersonIcon sx={{ mr: 1, color: 'text.secondary', fontSize: 20 }} />
-                                <Typography variant="body2" color="text.secondary">
-                                  {architecture.architect}
-                                </Typography>
+                    {filters.viewMode === 'list' ? (
+                      // List view card
+                      <Card>
+                        <CardActionArea component={RouterLink} to={`/architecture/${architecture.id}`}>
+                          <CardContent sx={{ display: 'flex', gap: 2 }}>
+                            <Box sx={{ flexGrow: 1 }}>
+                              <Typography variant="h6" component="h2" gutterBottom>
+                                {architecture.title}
+                              </Typography>
+                              <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+                                {architecture.architect && (
+                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <PersonIcon sx={{ mr: 0.5, color: 'text.secondary', fontSize: 20 }} />
+                                    <Typography variant="body2" color="text.secondary">
+                                      {architecture.architect}
+                                    </Typography>
+                                  </Box>
+                                )}
+                                {architecture.year && (
+                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <CalendarTodayIcon sx={{ mr: 0.5, color: 'text.secondary', fontSize: 20 }} />
+                                    <Typography variant="body2" color="text.secondary">
+                                      {architecture.year}年
+                                    </Typography>
+                                  </Box>
+                                )}
+                                {architecture.address && (
+                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <LocationOnIcon sx={{ mr: 0.5, color: 'text.secondary', fontSize: 20 }} />
+                                    <Typography variant="body2" color="text.secondary" noWrap sx={{ maxWidth: 200 }}>
+                                      {architecture.address}
+                                    </Typography>
+                                  </Box>
+                                )}
+                                {architecture.category && (
+                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <CategoryIcon sx={{ mr: 0.5, color: 'text.secondary', fontSize: 20 }} />
+                                    <Typography variant="body2" color="text.secondary">
+                                      {architecture.category}
+                                    </Typography>
+                                  </Box>
+                                )}
                               </Box>
-                            )}
-                            {architecture.year && (
-                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <CalendarTodayIcon sx={{ mr: 1, color: 'text.secondary', fontSize: 20 }} />
-                                <Typography variant="body2" color="text.secondary">
-                                  {architecture.year}年
-                                </Typography>
-                              </Box>
-                            )}
-                            {architecture.address && (
-                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <LocationOnIcon sx={{ mr: 1, color: 'text.secondary', fontSize: 20 }} />
-                                <Typography variant="body2" color="text.secondary" noWrap>
-                                  {architecture.address}
-                                </Typography>
-                              </Box>
-                            )}
-                            {architecture.category && (
-                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <CategoryIcon sx={{ mr: 1, color: 'text.secondary', fontSize: 20 }} />
-                                <Typography variant="body2" color="text.secondary">
-                                  {architecture.category}
-                                </Typography>
-                              </Box>
-                            )}
+                            </Box>
                             {architecture.tags && (
-                              <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 0.5, mt: 1 }}>
-                                <EmojiEventsIcon sx={{ mr: 1, color: 'warning.main', fontSize: 20 }} />
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <Chip 
+                                  icon={<EmojiEventsIcon />}
                                   label={architecture.tags} 
                                   size="small" 
                                   color="warning" 
@@ -739,10 +733,70 @@ const ArchitecturePageEnhanced = () => {
                                 />
                               </Box>
                             )}
-                          </Box>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    ) : (
+                      // Grid view card
+                      <Card>
+                        <CardActionArea component={RouterLink} to={`/architecture/${architecture.id}`}>
+                          <CardContent>
+                            <Typography variant="h6" component="h2" gutterBottom>
+                              {architecture.title}
+                            </Typography>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                              {architecture.architect && (
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                  <PersonIcon sx={{ mr: 1, color: 'text.secondary', fontSize: 20 }} />
+                                  <Typography variant="body2" color="text.secondary">
+                                    {architecture.architect}
+                                  </Typography>
+                                </Box>
+                              )}
+                              {architecture.year && (
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                  <CalendarTodayIcon sx={{ mr: 1, color: 'text.secondary', fontSize: 20 }} />
+                                  <Typography variant="body2" color="text.secondary">
+                                    {architecture.year}年
+                                  </Typography>
+                                </Box>
+                              )}
+                              {architecture.address && (
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                  <LocationOnIcon sx={{ mr: 1, color: 'text.secondary', fontSize: 20 }} />
+                                  <Typography variant="body2" color="text.secondary" noWrap>
+                                    {architecture.address}
+                                  </Typography>
+                                </Box>
+                              )}
+                              {architecture.category && (
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                  <CategoryIcon sx={{ mr: 1, color: 'text.secondary', fontSize: 20 }} />
+                                  <Typography variant="body2" color="text.secondary">
+                                    {architecture.category}
+                                  </Typography>
+                                </Box>
+                              )}
+                              {architecture.tags && (
+                                <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 0.5, mt: 1 }}>
+                                  <EmojiEventsIcon sx={{ mr: 1, color: 'warning.main', fontSize: 20 }} />
+                                  <Chip 
+                                    label={architecture.tags} 
+                                    size="small" 
+                                    color="warning" 
+                                    variant="outlined"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleQuickFilter('award', architecture.tags);
+                                    }}
+                                  />
+                                </Box>
+                              )}
+                            </Box>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    )}
                   </Grid>
                 ))}
               </Grid>
@@ -752,7 +806,7 @@ const ArchitecturePageEnhanced = () => {
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                   <Pagination
                     count={totalPages}
-                    page={currentPage}
+                    page={filters.currentPage}
                     onChange={handlePageChange}
                     color="primary"
                     size="large"
@@ -761,23 +815,10 @@ const ArchitecturePageEnhanced = () => {
               )}
             </>
           )}
-          
-          {/* Pagination for list view */}
-          {viewMode === 'list' && totalPages > 1 && !loading && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
-                size="large"
-              />
-            </Box>
-          )}
         </Grid>
 
-        {/* Research Insights Sidebar */}
-        {showInsights && (
+        {/* Research Insights Sidebar (hidden in map view) */}
+        {showInsights && filters.viewMode !== 'map' && (
           <Grid item xs={12} lg={3}>
             <Paper sx={{ p: 2, position: 'sticky', top: 20 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -900,4 +941,4 @@ const ArchitecturePageEnhanced = () => {
   );
 };
 
-export default ArchitecturePageEnhanced;
+export default ArchitecturePageWithMap;
