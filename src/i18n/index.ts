@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import { initReactI18next, useTranslation } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 
@@ -88,7 +88,7 @@ export type SupportedLanguage = typeof supportedLanguages[number]['code'];
 
 // Custom hook for type-safe translations
 export const useTypedTranslation = () => {
-  const { t: originalT, i18n: i18nInstance } = require('react-i18next').useTranslation('common');
+  const { t: originalT, i18n: i18nInstance } = useTranslation('common');
   
   const t = (key: string, options?: any) => originalT(key, options);
   
