@@ -78,6 +78,15 @@ async function deployToGhPages() {
     log('Database preparation failed, continuing without it...');
   }
   
+  // Precompute analytics data
+  log('Precomputing analytics data...');
+  try {
+    executeCommand('npm run precompute-analytics');
+    log('Analytics data precomputed successfully');
+  } catch (error) {
+    log('Analytics precomputation failed, continuing without it...');
+  }
+  
   // Build the application
   log('Building application...');
   executeCommand('npm run build');
