@@ -1,0 +1,1217 @@
+{
+  "totalRecords": 503,
+  "yearDistribution": [
+    {
+      "year": 1894,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1902,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1906,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1910,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1913,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1924,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1926,
+      "count": 2,
+      "categories": {
+        "美術館": 2
+      }
+    },
+    {
+      "year": 1927,
+      "count": 2,
+      "categories": {
+        "美術館": 2
+      }
+    },
+    {
+      "year": 1930,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1933,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 1934,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1936,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1938,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1951,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1953,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1956,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1957,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1959,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1960,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 1961,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 1963,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1964,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 1966,
+      "count": 5,
+      "categories": {
+        "美術館": 5
+      }
+    },
+    {
+      "year": 1967,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1968,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 1969,
+      "count": 5,
+      "categories": {
+        "美術館": 5
+      }
+    },
+    {
+      "year": 1970,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 1971,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1973,
+      "count": 4,
+      "categories": {
+        "美術館": 4
+      }
+    },
+    {
+      "year": 1974,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 1975,
+      "count": 4,
+      "categories": {
+        "美術館": 4
+      }
+    },
+    {
+      "year": 1976,
+      "count": 2,
+      "categories": {
+        "美術館": 2
+      }
+    },
+    {
+      "year": 1977,
+      "count": 2,
+      "categories": {
+        "美術館": 2
+      }
+    },
+    {
+      "year": 1978,
+      "count": 7,
+      "categories": {
+        "美術館": 7
+      }
+    },
+    {
+      "year": 1979,
+      "count": 7,
+      "categories": {
+        "美術館": 7
+      }
+    },
+    {
+      "year": 1980,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 1981,
+      "count": 9,
+      "categories": {
+        "美術館": 9
+      }
+    },
+    {
+      "year": 1982,
+      "count": 10,
+      "categories": {
+        "美術館": 10
+      }
+    },
+    {
+      "year": 1983,
+      "count": 10,
+      "categories": {
+        "美術館": 10
+      }
+    },
+    {
+      "year": 1984,
+      "count": 8,
+      "categories": {
+        "美術館": 8
+      }
+    },
+    {
+      "year": 1985,
+      "count": 9,
+      "categories": {
+        "美術館": 9
+      }
+    },
+    {
+      "year": 1986,
+      "count": 5,
+      "categories": {
+        "美術館": 5
+      }
+    },
+    {
+      "year": 1987,
+      "count": 9,
+      "categories": {
+        "美術館": 9
+      }
+    },
+    {
+      "year": 1988,
+      "count": 11,
+      "categories": {
+        "美術館": 11
+      }
+    },
+    {
+      "year": 1989,
+      "count": 10,
+      "categories": {
+        "美術館": 10
+      }
+    },
+    {
+      "year": 1990,
+      "count": 12,
+      "categories": {
+        "美術館": 12
+      }
+    },
+    {
+      "year": 1991,
+      "count": 12,
+      "categories": {
+        "美術館": 12
+      }
+    },
+    {
+      "year": 1992,
+      "count": 14,
+      "categories": {
+        "美術館": 14
+      }
+    },
+    {
+      "year": 1993,
+      "count": 12,
+      "categories": {
+        "美術館": 12
+      }
+    },
+    {
+      "year": 1994,
+      "count": 23,
+      "categories": {
+        "美術館": 23
+      }
+    },
+    {
+      "year": 1995,
+      "count": 16,
+      "categories": {
+        "美術館": 16
+      }
+    },
+    {
+      "year": 1996,
+      "count": 12,
+      "categories": {
+        "美術館": 12
+      }
+    },
+    {
+      "year": 1997,
+      "count": 23,
+      "categories": {
+        "美術館": 23
+      }
+    },
+    {
+      "year": 1998,
+      "count": 21,
+      "categories": {
+        "美術館": 21
+      }
+    },
+    {
+      "year": 1999,
+      "count": 14,
+      "categories": {
+        "美術館": 14
+      }
+    },
+    {
+      "year": 2000,
+      "count": 11,
+      "categories": {
+        "美術館": 11
+      }
+    },
+    {
+      "year": 2001,
+      "count": 12,
+      "categories": {
+        "美術館": 12
+      }
+    },
+    {
+      "year": 2002,
+      "count": 11,
+      "categories": {
+        "美術館": 11
+      }
+    },
+    {
+      "year": 2003,
+      "count": 15,
+      "categories": {
+        "美術館": 15
+      }
+    },
+    {
+      "year": 2004,
+      "count": 7,
+      "categories": {
+        "美術館": 7
+      }
+    },
+    {
+      "year": 2005,
+      "count": 13,
+      "categories": {
+        "美術館": 13
+      }
+    },
+    {
+      "year": 2006,
+      "count": 4,
+      "categories": {
+        "美術館": 4
+      }
+    },
+    {
+      "year": 2007,
+      "count": 9,
+      "categories": {
+        "美術館": 9
+      }
+    },
+    {
+      "year": 2008,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 2009,
+      "count": 4,
+      "categories": {
+        "美術館": 4
+      }
+    },
+    {
+      "year": 2010,
+      "count": 10,
+      "categories": {
+        "美術館": 10
+      }
+    },
+    {
+      "year": 2011,
+      "count": 8,
+      "categories": {
+        "美術館": 8
+      }
+    },
+    {
+      "year": 2012,
+      "count": 10,
+      "categories": {
+        "美術館": 10
+      }
+    },
+    {
+      "year": 2013,
+      "count": 6,
+      "categories": {
+        "美術館": 6
+      }
+    },
+    {
+      "year": 2014,
+      "count": 4,
+      "categories": {
+        "美術館": 4
+      }
+    },
+    {
+      "year": 2015,
+      "count": 4,
+      "categories": {
+        "美術館": 4
+      }
+    },
+    {
+      "year": 2016,
+      "count": 4,
+      "categories": {
+        "美術館": 4
+      }
+    },
+    {
+      "year": 2017,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 2018,
+      "count": 6,
+      "categories": {
+        "美術館": 6
+      }
+    },
+    {
+      "year": 2019,
+      "count": 4,
+      "categories": {
+        "美術館": 4
+      }
+    },
+    {
+      "year": 2020,
+      "count": 5,
+      "categories": {
+        "美術館": 5
+      }
+    },
+    {
+      "year": 2021,
+      "count": 8,
+      "categories": {
+        "美術館": 8
+      }
+    },
+    {
+      "year": 2022,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 2023,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    },
+    {
+      "year": 2024,
+      "count": 3,
+      "categories": {
+        "美術館": 3
+      }
+    },
+    {
+      "year": 2025,
+      "count": 1,
+      "categories": {
+        "美術館": 1
+      }
+    }
+  ],
+  "prefectureDistribution": [
+    {
+      "prefecture": "東京",
+      "count": 60,
+      "percentage": 11.928429423459244
+    },
+    {
+      "prefecture": "長野",
+      "count": 38,
+      "percentage": 7.5546719681908545
+    },
+    {
+      "prefecture": "神奈川",
+      "count": 24,
+      "percentage": 4.7713717693836974
+    },
+    {
+      "prefecture": "北海道",
+      "count": 21,
+      "percentage": 4.174950298210735
+    },
+    {
+      "prefecture": "京都",
+      "count": 20,
+      "percentage": 3.9761431411530817
+    },
+    {
+      "prefecture": "静岡",
+      "count": 19,
+      "percentage": 3.7773359840954273
+    },
+    {
+      "prefecture": "広島",
+      "count": 18,
+      "percentage": 3.5785288270377733
+    },
+    {
+      "prefecture": "香川",
+      "count": 17,
+      "percentage": 3.3797216699801194
+    },
+    {
+      "prefecture": "兵庫",
+      "count": 16,
+      "percentage": 3.180914512922465
+    },
+    {
+      "prefecture": "愛知",
+      "count": 16,
+      "percentage": 3.180914512922465
+    },
+    {
+      "prefecture": "富山",
+      "count": 14,
+      "percentage": 2.783300198807157
+    },
+    {
+      "prefecture": "福島",
+      "count": 13,
+      "percentage": 2.584493041749503
+    },
+    {
+      "prefecture": "新潟",
+      "count": 13,
+      "percentage": 2.584493041749503
+    },
+    {
+      "prefecture": "山梨",
+      "count": 13,
+      "percentage": 2.584493041749503
+    },
+    {
+      "prefecture": "大阪",
+      "count": 12,
+      "percentage": 2.3856858846918487
+    }
+  ],
+  "categoryDistribution": [
+    {
+      "category": "美術館",
+      "count": 489,
+      "percentage": 100,
+      "color": "#8884d8"
+    }
+  ],
+  "cityDistribution": [],
+  "architectPopularity": [
+    {
+      "architect": "不明",
+      "count": 30,
+      "percentage": 6.134969325153374
+    },
+    {
+      "architect": "安藤忠雄",
+      "count": 20,
+      "percentage": 4.08997955010225
+    },
+    {
+      "architect": "日建設計",
+      "count": 13,
+      "percentage": 2.658486707566462
+    },
+    {
+      "architect": "黒川紀章",
+      "count": 12,
+      "percentage": 2.4539877300613497
+    },
+    {
+      "architect": "内井昭蔵",
+      "count": 9,
+      "percentage": 1.8404907975460123
+    },
+    {
+      "architect": "隈研吾",
+      "count": 8,
+      "percentage": 1.6359918200409
+    },
+    {
+      "architect": "竹中工務店",
+      "count": 8,
+      "percentage": 1.6359918200409
+    },
+    {
+      "architect": "佐藤総合計画",
+      "count": 8,
+      "percentage": 1.6359918200409
+    },
+    {
+      "architect": "磯崎新",
+      "count": 8,
+      "percentage": 1.6359918200409
+    },
+    {
+      "architect": "前川國男",
+      "count": 8,
+      "percentage": 1.6359918200409
+    },
+    {
+      "architect": "鹿島建設",
+      "count": 7,
+      "percentage": 1.4314928425357873
+    },
+    {
+      "architect": "菊竹清訓",
+      "count": 7,
+      "percentage": 1.4314928425357873
+    },
+    {
+      "architect": "栗生明",
+      "count": 6,
+      "percentage": 1.2269938650306749
+    },
+    {
+      "architect": "内藤廣",
+      "count": 6,
+      "percentage": 1.2269938650306749
+    },
+    {
+      "architect": "日本設計",
+      "count": 6,
+      "percentage": 1.2269938650306749
+    },
+    {
+      "architect": "谷口吉生",
+      "count": 6,
+      "percentage": 1.2269938650306749
+    },
+    {
+      "architect": "坂倉建築研究所",
+      "count": 6,
+      "percentage": 1.2269938650306749
+    },
+    {
+      "architect": "岡田新一",
+      "count": 6,
+      "percentage": 1.2269938650306749
+    },
+    {
+      "architect": "宮本忠長",
+      "count": 5,
+      "percentage": 1.0224948875255624
+    },
+    {
+      "architect": "今里隆",
+      "count": 5,
+      "percentage": 1.0224948875255624
+    },
+    {
+      "architect": "柳澤孝彦",
+      "count": 5,
+      "percentage": 1.0224948875255624
+    },
+    {
+      "architect": "大江宏",
+      "count": 5,
+      "percentage": 1.0224948875255624
+    },
+    {
+      "architect": "村野藤吾",
+      "count": 5,
+      "percentage": 1.0224948875255624
+    },
+    {
+      "architect": "槇文彦",
+      "count": 4,
+      "percentage": 0.81799591002045
+    },
+    {
+      "architect": "藤森照信",
+      "count": 4,
+      "percentage": 0.81799591002045
+    }
+  ],
+  "statusDistribution": [],
+  "timelineData": [
+    {
+      "year": 1894,
+      "cumulative": 1,
+      "new": 1
+    },
+    {
+      "year": 1902,
+      "cumulative": 2,
+      "new": 1
+    },
+    {
+      "year": 1906,
+      "cumulative": 3,
+      "new": 1
+    },
+    {
+      "year": 1910,
+      "cumulative": 4,
+      "new": 1
+    },
+    {
+      "year": 1913,
+      "cumulative": 5,
+      "new": 1
+    },
+    {
+      "year": 1924,
+      "cumulative": 6,
+      "new": 1
+    },
+    {
+      "year": 1926,
+      "cumulative": 8,
+      "new": 2
+    },
+    {
+      "year": 1927,
+      "cumulative": 10,
+      "new": 2
+    },
+    {
+      "year": 1930,
+      "cumulative": 11,
+      "new": 1
+    },
+    {
+      "year": 1933,
+      "cumulative": 14,
+      "new": 3
+    },
+    {
+      "year": 1934,
+      "cumulative": 15,
+      "new": 1
+    },
+    {
+      "year": 1936,
+      "cumulative": 16,
+      "new": 1
+    },
+    {
+      "year": 1938,
+      "cumulative": 17,
+      "new": 1
+    },
+    {
+      "year": 1951,
+      "cumulative": 18,
+      "new": 1
+    },
+    {
+      "year": 1953,
+      "cumulative": 19,
+      "new": 1
+    },
+    {
+      "year": 1956,
+      "cumulative": 20,
+      "new": 1
+    },
+    {
+      "year": 1957,
+      "cumulative": 21,
+      "new": 1
+    },
+    {
+      "year": 1959,
+      "cumulative": 22,
+      "new": 1
+    },
+    {
+      "year": 1960,
+      "cumulative": 25,
+      "new": 3
+    },
+    {
+      "year": 1961,
+      "cumulative": 28,
+      "new": 3
+    },
+    {
+      "year": 1963,
+      "cumulative": 29,
+      "new": 1
+    },
+    {
+      "year": 1964,
+      "cumulative": 32,
+      "new": 3
+    },
+    {
+      "year": 1966,
+      "cumulative": 37,
+      "new": 5
+    },
+    {
+      "year": 1967,
+      "cumulative": 38,
+      "new": 1
+    },
+    {
+      "year": 1968,
+      "cumulative": 41,
+      "new": 3
+    },
+    {
+      "year": 1969,
+      "cumulative": 46,
+      "new": 5
+    },
+    {
+      "year": 1970,
+      "cumulative": 49,
+      "new": 3
+    },
+    {
+      "year": 1971,
+      "cumulative": 50,
+      "new": 1
+    },
+    {
+      "year": 1973,
+      "cumulative": 54,
+      "new": 4
+    },
+    {
+      "year": 1974,
+      "cumulative": 57,
+      "new": 3
+    },
+    {
+      "year": 1975,
+      "cumulative": 61,
+      "new": 4
+    },
+    {
+      "year": 1976,
+      "cumulative": 63,
+      "new": 2
+    },
+    {
+      "year": 1977,
+      "cumulative": 65,
+      "new": 2
+    },
+    {
+      "year": 1978,
+      "cumulative": 72,
+      "new": 7
+    },
+    {
+      "year": 1979,
+      "cumulative": 79,
+      "new": 7
+    },
+    {
+      "year": 1980,
+      "cumulative": 80,
+      "new": 1
+    },
+    {
+      "year": 1981,
+      "cumulative": 89,
+      "new": 9
+    },
+    {
+      "year": 1982,
+      "cumulative": 99,
+      "new": 10
+    },
+    {
+      "year": 1983,
+      "cumulative": 109,
+      "new": 10
+    },
+    {
+      "year": 1984,
+      "cumulative": 117,
+      "new": 8
+    },
+    {
+      "year": 1985,
+      "cumulative": 126,
+      "new": 9
+    },
+    {
+      "year": 1986,
+      "cumulative": 131,
+      "new": 5
+    },
+    {
+      "year": 1987,
+      "cumulative": 140,
+      "new": 9
+    },
+    {
+      "year": 1988,
+      "cumulative": 151,
+      "new": 11
+    },
+    {
+      "year": 1989,
+      "cumulative": 161,
+      "new": 10
+    },
+    {
+      "year": 1990,
+      "cumulative": 173,
+      "new": 12
+    },
+    {
+      "year": 1991,
+      "cumulative": 185,
+      "new": 12
+    },
+    {
+      "year": 1992,
+      "cumulative": 199,
+      "new": 14
+    },
+    {
+      "year": 1993,
+      "cumulative": 211,
+      "new": 12
+    },
+    {
+      "year": 1994,
+      "cumulative": 234,
+      "new": 23
+    },
+    {
+      "year": 1995,
+      "cumulative": 250,
+      "new": 16
+    },
+    {
+      "year": 1996,
+      "cumulative": 262,
+      "new": 12
+    },
+    {
+      "year": 1997,
+      "cumulative": 285,
+      "new": 23
+    },
+    {
+      "year": 1998,
+      "cumulative": 306,
+      "new": 21
+    },
+    {
+      "year": 1999,
+      "cumulative": 320,
+      "new": 14
+    },
+    {
+      "year": 2000,
+      "cumulative": 331,
+      "new": 11
+    },
+    {
+      "year": 2001,
+      "cumulative": 343,
+      "new": 12
+    },
+    {
+      "year": 2002,
+      "cumulative": 354,
+      "new": 11
+    },
+    {
+      "year": 2003,
+      "cumulative": 369,
+      "new": 15
+    },
+    {
+      "year": 2004,
+      "cumulative": 376,
+      "new": 7
+    },
+    {
+      "year": 2005,
+      "cumulative": 389,
+      "new": 13
+    },
+    {
+      "year": 2006,
+      "cumulative": 393,
+      "new": 4
+    },
+    {
+      "year": 2007,
+      "cumulative": 402,
+      "new": 9
+    },
+    {
+      "year": 2008,
+      "cumulative": 405,
+      "new": 3
+    },
+    {
+      "year": 2009,
+      "cumulative": 409,
+      "new": 4
+    },
+    {
+      "year": 2010,
+      "cumulative": 419,
+      "new": 10
+    },
+    {
+      "year": 2011,
+      "cumulative": 427,
+      "new": 8
+    },
+    {
+      "year": 2012,
+      "cumulative": 437,
+      "new": 10
+    },
+    {
+      "year": 2013,
+      "cumulative": 443,
+      "new": 6
+    },
+    {
+      "year": 2014,
+      "cumulative": 447,
+      "new": 4
+    },
+    {
+      "year": 2015,
+      "cumulative": 451,
+      "new": 4
+    },
+    {
+      "year": 2016,
+      "cumulative": 455,
+      "new": 4
+    },
+    {
+      "year": 2017,
+      "cumulative": 458,
+      "new": 3
+    },
+    {
+      "year": 2018,
+      "cumulative": 464,
+      "new": 6
+    },
+    {
+      "year": 2019,
+      "cumulative": 468,
+      "new": 4
+    },
+    {
+      "year": 2020,
+      "cumulative": 473,
+      "new": 5
+    },
+    {
+      "year": 2021,
+      "cumulative": 481,
+      "new": 8
+    },
+    {
+      "year": 2022,
+      "cumulative": 484,
+      "new": 3
+    },
+    {
+      "year": 2023,
+      "cumulative": 485,
+      "new": 1
+    },
+    {
+      "year": 2024,
+      "cumulative": 488,
+      "new": 3
+    },
+    {
+      "year": 2025,
+      "cumulative": 489,
+      "new": 1
+    }
+  ],
+  "geographicDensity": [
+    {
+      "region": "北海道",
+      "density": 100,
+      "count": 21,
+      "coordinates": [
+        43.0642,
+        141.3469
+      ]
+    }
+  ],
+  "trendAnalysis": {
+    "growthRate": 0,
+    "peakYear": 1994,
+    "mostPopularCategory": "美術館",
+    "diversityIndex": 0
+  },
+  "metadata": {
+    "timeRange": "all",
+    "prefecture": "all",
+    "category": "美術館",
+    "computedAt": "2025-07-10T09:32:13.667Z",
+    "dataHash": "NTAzLTE0MzIyLTE4"
+  }
+}

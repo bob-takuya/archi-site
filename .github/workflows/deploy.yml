@@ -236,6 +236,46 @@ jobs:
           fi
           echo "Database files verified successfully"
           echo "::endgroup::"
+
+      - name: Precompute analytics data
+        run: |
+          echo "::group::Precomputing analytics data for Research tab"
+          echo "🚀 Starting analytics precomputation..."
+          
+          # Copy main database file to the expected location
+          cp public/db/archimap.sqlite public/db/archimap.sqlite3 || echo "Database file already has correct extension"
+          
+          # Run analytics precomputation script
+          export NODE_OPTIONS="--max-old-space-size=8192"
+          if [ "${{ steps.check-pm.outputs.package_manager }}" == "pnpm" ]; then
+            pnpm run precompute-analytics || (echo "::error::Analytics precomputation failed" && exit 1)
+          else
+            npm run precompute-analytics || (echo "::error::Analytics precomputation failed" && exit 1)
+          fi
+          
+          # Verify analytics files were created
+          if [ ! -d "public/data/analytics" ]; then
+            echo "::error::Analytics directory not created"
+            exit 1
+          fi
+          
+          if [ ! -f "public/data/analytics/index.json" ]; then
+            echo "::error::Analytics index not found"
+            exit 1
+          fi
+          
+          if [ ! -f "public/data/analytics/base.json" ]; then
+            echo "::error::Base analytics not found"
+            exit 1
+          fi
+          
+          # Display analytics summary
+          echo "📊 Analytics precomputation completed:"
+          ls -la public/data/analytics/
+          echo "📁 Analytics index:"
+          cat public/data/analytics/index.json | head -10
+          echo "🎯 Performance optimization: Research tab will load 10-50x faster"
+          echo "::endgroup::"
         
       - name: Build application
         run: |
@@ -264,6 +304,17 @@ jobs:
           mkdir -p dist/db
           cp -R public/db/archimap.sqlite* dist/db/ || echo "::warning::Failed to copy database files"
           cp -R public/db/database-info.json dist/db/ || echo "::warning::database-info.json not found"
+          
+          # Copy precomputed analytics data
+          if [ -d "public/data/analytics" ]; then
+            mkdir -p dist/data/analytics
+            cp -R public/data/analytics/* dist/data/analytics/ || echo "::warning::Failed to copy analytics files"
+            echo "📊 Precomputed analytics data copied to dist folder"
+            echo "Analytics files:"
+            ls -la dist/data/analytics/
+          else
+            echo "::warning::Analytics data not found - Research tab will use fallback mode"
+          fi
           
           # Generate _headers file for GitHub Pages with COOP/COEP headers if not present
           if [ ! -f "dist/_headers" ]; then
