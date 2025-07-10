@@ -1,0 +1,1313 @@
+{
+  "totalRecords": 541,
+  "yearDistribution": [
+    {
+      "year": 1911,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1918,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1922,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1924,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1925,
+      "count": 2,
+      "categories": {
+        "オフィスビル": 2
+      }
+    },
+    {
+      "year": 1926,
+      "count": 4,
+      "categories": {
+        "オフィスビル": 4
+      }
+    },
+    {
+      "year": 1927,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1928,
+      "count": 2,
+      "categories": {
+        "オフィスビル": 2
+      }
+    },
+    {
+      "year": 1929,
+      "count": 2,
+      "categories": {
+        "オフィスビル": 2
+      }
+    },
+    {
+      "year": 1930,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1931,
+      "count": 4,
+      "categories": {
+        "オフィスビル": 4
+      }
+    },
+    {
+      "year": 1932,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1933,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1934,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1935,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1936,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1937,
+      "count": 2,
+      "categories": {
+        "オフィスビル": 2
+      }
+    },
+    {
+      "year": 1938,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1939,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1953,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1954,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1958,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1959,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1960,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1961,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1962,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 1963,
+      "count": 2,
+      "categories": {
+        "オフィスビル": 2
+      }
+    },
+    {
+      "year": 1964,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1965,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1966,
+      "count": 6,
+      "categories": {
+        "オフィスビル": 6
+      }
+    },
+    {
+      "year": 1967,
+      "count": 4,
+      "categories": {
+        "オフィスビル": 4
+      }
+    },
+    {
+      "year": 1968,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 1969,
+      "count": 6,
+      "categories": {
+        "オフィスビル": 6
+      }
+    },
+    {
+      "year": 1970,
+      "count": 8,
+      "categories": {
+        "オフィスビル": 8
+      }
+    },
+    {
+      "year": 1971,
+      "count": 2,
+      "categories": {
+        "オフィスビル": 2
+      }
+    },
+    {
+      "year": 1972,
+      "count": 4,
+      "categories": {
+        "オフィスビル": 4
+      }
+    },
+    {
+      "year": 1973,
+      "count": 2,
+      "categories": {
+        "オフィスビル": 2
+      }
+    },
+    {
+      "year": 1974,
+      "count": 7,
+      "categories": {
+        "オフィスビル": 7
+      }
+    },
+    {
+      "year": 1975,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1976,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1977,
+      "count": 3,
+      "categories": {
+        "オフィスビル": 3
+      }
+    },
+    {
+      "year": 1978,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1979,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    },
+    {
+      "year": 1980,
+      "count": 6,
+      "categories": {
+        "オフィスビル": 6
+      }
+    },
+    {
+      "year": 1981,
+      "count": 4,
+      "categories": {
+        "オフィスビル": 4
+      }
+    },
+    {
+      "year": 1982,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 1983,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 1984,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 1985,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 1986,
+      "count": 6,
+      "categories": {
+        "オフィスビル": 6
+      }
+    },
+    {
+      "year": 1987,
+      "count": 7,
+      "categories": {
+        "オフィスビル": 7
+      }
+    },
+    {
+      "year": 1988,
+      "count": 7,
+      "categories": {
+        "オフィスビル": 7
+      }
+    },
+    {
+      "year": 1989,
+      "count": 16,
+      "categories": {
+        "オフィスビル": 16
+      }
+    },
+    {
+      "year": 1990,
+      "count": 12,
+      "categories": {
+        "オフィスビル": 12
+      }
+    },
+    {
+      "year": 1991,
+      "count": 18,
+      "categories": {
+        "オフィスビル": 18
+      }
+    },
+    {
+      "year": 1992,
+      "count": 11,
+      "categories": {
+        "オフィスビル": 11
+      }
+    },
+    {
+      "year": 1993,
+      "count": 16,
+      "categories": {
+        "オフィスビル": 16
+      }
+    },
+    {
+      "year": 1994,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 1995,
+      "count": 4,
+      "categories": {
+        "オフィスビル": 4
+      }
+    },
+    {
+      "year": 1996,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 1997,
+      "count": 7,
+      "categories": {
+        "オフィスビル": 7
+      }
+    },
+    {
+      "year": 1998,
+      "count": 9,
+      "categories": {
+        "オフィスビル": 9
+      }
+    },
+    {
+      "year": 1999,
+      "count": 6,
+      "categories": {
+        "オフィスビル": 6
+      }
+    },
+    {
+      "year": 2000,
+      "count": 6,
+      "categories": {
+        "オフィスビル": 6
+      }
+    },
+    {
+      "year": 2001,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 2002,
+      "count": 8,
+      "categories": {
+        "オフィスビル": 8
+      }
+    },
+    {
+      "year": 2003,
+      "count": 8,
+      "categories": {
+        "オフィスビル": 8
+      }
+    },
+    {
+      "year": 2004,
+      "count": 15,
+      "categories": {
+        "オフィスビル": 15
+      }
+    },
+    {
+      "year": 2005,
+      "count": 6,
+      "categories": {
+        "オフィスビル": 6
+      }
+    },
+    {
+      "year": 2006,
+      "count": 12,
+      "categories": {
+        "オフィスビル": 12
+      }
+    },
+    {
+      "year": 2007,
+      "count": 9,
+      "categories": {
+        "オフィスビル": 9
+      }
+    },
+    {
+      "year": 2008,
+      "count": 9,
+      "categories": {
+        "オフィスビル": 9
+      }
+    },
+    {
+      "year": 2009,
+      "count": 12,
+      "categories": {
+        "オフィスビル": 12
+      }
+    },
+    {
+      "year": 2010,
+      "count": 5,
+      "categories": {
+        "オフィスビル": 5
+      }
+    },
+    {
+      "year": 2011,
+      "count": 8,
+      "categories": {
+        "オフィスビル": 8
+      }
+    },
+    {
+      "year": 2012,
+      "count": 9,
+      "categories": {
+        "オフィスビル": 9
+      }
+    },
+    {
+      "year": 2013,
+      "count": 9,
+      "categories": {
+        "オフィスビル": 9
+      }
+    },
+    {
+      "year": 2014,
+      "count": 9,
+      "categories": {
+        "オフィスビル": 9
+      }
+    },
+    {
+      "year": 2015,
+      "count": 17,
+      "categories": {
+        "オフィスビル": 17
+      }
+    },
+    {
+      "year": 2016,
+      "count": 7,
+      "categories": {
+        "オフィスビル": 7
+      }
+    },
+    {
+      "year": 2017,
+      "count": 13,
+      "categories": {
+        "オフィスビル": 13
+      }
+    },
+    {
+      "year": 2018,
+      "count": 10,
+      "categories": {
+        "オフィスビル": 10
+      }
+    },
+    {
+      "year": 2019,
+      "count": 14,
+      "categories": {
+        "オフィスビル": 14
+      }
+    },
+    {
+      "year": 2020,
+      "count": 15,
+      "categories": {
+        "オフィスビル": 15
+      }
+    },
+    {
+      "year": 2021,
+      "count": 20,
+      "categories": {
+        "オフィスビル": 20
+      }
+    },
+    {
+      "year": 2022,
+      "count": 21,
+      "categories": {
+        "オフィスビル": 21
+      }
+    },
+    {
+      "year": 2023,
+      "count": 12,
+      "categories": {
+        "オフィスビル": 12
+      }
+    },
+    {
+      "year": 2024,
+      "count": 8,
+      "categories": {
+        "オフィスビル": 8
+      }
+    },
+    {
+      "year": 2025,
+      "count": 1,
+      "categories": {
+        "オフィスビル": 1
+      }
+    }
+  ],
+  "prefectureDistribution": [
+    {
+      "prefecture": "東京",
+      "count": 286,
+      "percentage": 52.865064695009245
+    },
+    {
+      "prefecture": "大阪",
+      "count": 78,
+      "percentage": 14.417744916820702
+    },
+    {
+      "prefecture": "愛知",
+      "count": 28,
+      "percentage": 5.175600739371535
+    },
+    {
+      "prefecture": "福岡",
+      "count": 19,
+      "percentage": 3.512014787430684
+    },
+    {
+      "prefecture": "京都",
+      "count": 19,
+      "percentage": 3.512014787430684
+    },
+    {
+      "prefecture": "神奈川",
+      "count": 18,
+      "percentage": 3.3271719038817005
+    },
+    {
+      "prefecture": "兵庫",
+      "count": 15,
+      "percentage": 2.7726432532347505
+    },
+    {
+      "prefecture": "広島",
+      "count": 13,
+      "percentage": 2.4029574861367835
+    },
+    {
+      "prefecture": "北海道",
+      "count": 10,
+      "percentage": 1.8484288354898337
+    },
+    {
+      "prefecture": "静岡",
+      "count": 5,
+      "percentage": 0.9242144177449169
+    },
+    {
+      "prefecture": "宮城",
+      "count": 5,
+      "percentage": 0.9242144177449169
+    },
+    {
+      "prefecture": "千葉",
+      "count": 3,
+      "percentage": 0.5545286506469501
+    },
+    {
+      "prefecture": "新潟",
+      "count": 3,
+      "percentage": 0.5545286506469501
+    },
+    {
+      "prefecture": "茨城",
+      "count": 3,
+      "percentage": 0.5545286506469501
+    },
+    {
+      "prefecture": "岐阜",
+      "count": 3,
+      "percentage": 0.5545286506469501
+    }
+  ],
+  "categoryDistribution": [
+    {
+      "category": "オフィスビル",
+      "count": 540,
+      "percentage": 100,
+      "color": "#8884d8"
+    }
+  ],
+  "cityDistribution": [],
+  "architectPopularity": [
+    {
+      "architect": "日建設計",
+      "count": 32,
+      "percentage": 5.9259259259259265
+    },
+    {
+      "architect": "竹中工務店",
+      "count": 20,
+      "percentage": 3.7037037037037033
+    },
+    {
+      "architect": "村野藤吾",
+      "count": 17,
+      "percentage": 3.148148148148148
+    },
+    {
+      "architect": "安藤忠雄",
+      "count": 15,
+      "percentage": 2.7777777777777777
+    },
+    {
+      "architect": "三菱地所",
+      "count": 15,
+      "percentage": 2.7777777777777777
+    },
+    {
+      "architect": "黒川紀章",
+      "count": 13,
+      "percentage": 2.4074074074074074
+    },
+    {
+      "architect": "高松伸",
+      "count": 12,
+      "percentage": 2.2222222222222223
+    },
+    {
+      "architect": "鈴木エドワード",
+      "count": 11,
+      "percentage": 2.037037037037037
+    },
+    {
+      "architect": "芦原義信",
+      "count": 11,
+      "percentage": 2.037037037037037
+    },
+    {
+      "architect": "北川原温",
+      "count": 9,
+      "percentage": 1.6666666666666667
+    },
+    {
+      "architect": "丹下健三",
+      "count": 9,
+      "percentage": 1.6666666666666667
+    },
+    {
+      "architect": "清水建設",
+      "count": 7,
+      "percentage": 1.2962962962962963
+    },
+    {
+      "architect": "日本設計",
+      "count": 7,
+      "percentage": 1.2962962962962963
+    },
+    {
+      "architect": "青木茂",
+      "count": 6,
+      "percentage": 1.1111111111111112
+    },
+    {
+      "architect": "大成建設",
+      "count": 6,
+      "percentage": 1.1111111111111112
+    },
+    {
+      "architect": "隈研吾",
+      "count": 6,
+      "percentage": 1.1111111111111112
+    },
+    {
+      "architect": "伊東豊雄",
+      "count": 6,
+      "percentage": 1.1111111111111112
+    },
+    {
+      "architect": "大江匡",
+      "count": 5,
+      "percentage": 0.9259259259259258
+    },
+    {
+      "architect": "槇文彦",
+      "count": 5,
+      "percentage": 0.9259259259259258
+    },
+    {
+      "architect": "櫻井潔",
+      "count": 4,
+      "percentage": 0.7407407407407408
+    },
+    {
+      "architect": "鹿島建設",
+      "count": 4,
+      "percentage": 0.7407407407407408
+    },
+    {
+      "architect": "坂茂",
+      "count": 4,
+      "percentage": 0.7407407407407408
+    },
+    {
+      "architect": "大林組",
+      "count": 4,
+      "percentage": 0.7407407407407408
+    },
+    {
+      "architect": "山下寿郎",
+      "count": 4,
+      "percentage": 0.7407407407407408
+    },
+    {
+      "architect": "安井武雄",
+      "count": 4,
+      "percentage": 0.7407407407407408
+    }
+  ],
+  "statusDistribution": [],
+  "timelineData": [
+    {
+      "year": 1911,
+      "cumulative": 1,
+      "new": 1
+    },
+    {
+      "year": 1918,
+      "cumulative": 2,
+      "new": 1
+    },
+    {
+      "year": 1922,
+      "cumulative": 3,
+      "new": 1
+    },
+    {
+      "year": 1924,
+      "cumulative": 6,
+      "new": 3
+    },
+    {
+      "year": 1925,
+      "cumulative": 8,
+      "new": 2
+    },
+    {
+      "year": 1926,
+      "cumulative": 12,
+      "new": 4
+    },
+    {
+      "year": 1927,
+      "cumulative": 13,
+      "new": 1
+    },
+    {
+      "year": 1928,
+      "cumulative": 15,
+      "new": 2
+    },
+    {
+      "year": 1929,
+      "cumulative": 17,
+      "new": 2
+    },
+    {
+      "year": 1930,
+      "cumulative": 18,
+      "new": 1
+    },
+    {
+      "year": 1931,
+      "cumulative": 22,
+      "new": 4
+    },
+    {
+      "year": 1932,
+      "cumulative": 23,
+      "new": 1
+    },
+    {
+      "year": 1933,
+      "cumulative": 26,
+      "new": 3
+    },
+    {
+      "year": 1934,
+      "cumulative": 27,
+      "new": 1
+    },
+    {
+      "year": 1935,
+      "cumulative": 28,
+      "new": 1
+    },
+    {
+      "year": 1936,
+      "cumulative": 29,
+      "new": 1
+    },
+    {
+      "year": 1937,
+      "cumulative": 31,
+      "new": 2
+    },
+    {
+      "year": 1938,
+      "cumulative": 32,
+      "new": 1
+    },
+    {
+      "year": 1939,
+      "cumulative": 33,
+      "new": 1
+    },
+    {
+      "year": 1953,
+      "cumulative": 34,
+      "new": 1
+    },
+    {
+      "year": 1954,
+      "cumulative": 35,
+      "new": 1
+    },
+    {
+      "year": 1958,
+      "cumulative": 38,
+      "new": 3
+    },
+    {
+      "year": 1959,
+      "cumulative": 41,
+      "new": 3
+    },
+    {
+      "year": 1960,
+      "cumulative": 42,
+      "new": 1
+    },
+    {
+      "year": 1961,
+      "cumulative": 45,
+      "new": 3
+    },
+    {
+      "year": 1962,
+      "cumulative": 50,
+      "new": 5
+    },
+    {
+      "year": 1963,
+      "cumulative": 52,
+      "new": 2
+    },
+    {
+      "year": 1964,
+      "cumulative": 55,
+      "new": 3
+    },
+    {
+      "year": 1965,
+      "cumulative": 58,
+      "new": 3
+    },
+    {
+      "year": 1966,
+      "cumulative": 64,
+      "new": 6
+    },
+    {
+      "year": 1967,
+      "cumulative": 68,
+      "new": 4
+    },
+    {
+      "year": 1968,
+      "cumulative": 73,
+      "new": 5
+    },
+    {
+      "year": 1969,
+      "cumulative": 79,
+      "new": 6
+    },
+    {
+      "year": 1970,
+      "cumulative": 87,
+      "new": 8
+    },
+    {
+      "year": 1971,
+      "cumulative": 89,
+      "new": 2
+    },
+    {
+      "year": 1972,
+      "cumulative": 93,
+      "new": 4
+    },
+    {
+      "year": 1973,
+      "cumulative": 95,
+      "new": 2
+    },
+    {
+      "year": 1974,
+      "cumulative": 102,
+      "new": 7
+    },
+    {
+      "year": 1975,
+      "cumulative": 105,
+      "new": 3
+    },
+    {
+      "year": 1976,
+      "cumulative": 108,
+      "new": 3
+    },
+    {
+      "year": 1977,
+      "cumulative": 111,
+      "new": 3
+    },
+    {
+      "year": 1978,
+      "cumulative": 112,
+      "new": 1
+    },
+    {
+      "year": 1979,
+      "cumulative": 113,
+      "new": 1
+    },
+    {
+      "year": 1980,
+      "cumulative": 119,
+      "new": 6
+    },
+    {
+      "year": 1981,
+      "cumulative": 123,
+      "new": 4
+    },
+    {
+      "year": 1982,
+      "cumulative": 128,
+      "new": 5
+    },
+    {
+      "year": 1983,
+      "cumulative": 133,
+      "new": 5
+    },
+    {
+      "year": 1984,
+      "cumulative": 138,
+      "new": 5
+    },
+    {
+      "year": 1985,
+      "cumulative": 143,
+      "new": 5
+    },
+    {
+      "year": 1986,
+      "cumulative": 149,
+      "new": 6
+    },
+    {
+      "year": 1987,
+      "cumulative": 156,
+      "new": 7
+    },
+    {
+      "year": 1988,
+      "cumulative": 163,
+      "new": 7
+    },
+    {
+      "year": 1989,
+      "cumulative": 179,
+      "new": 16
+    },
+    {
+      "year": 1990,
+      "cumulative": 191,
+      "new": 12
+    },
+    {
+      "year": 1991,
+      "cumulative": 209,
+      "new": 18
+    },
+    {
+      "year": 1992,
+      "cumulative": 220,
+      "new": 11
+    },
+    {
+      "year": 1993,
+      "cumulative": 236,
+      "new": 16
+    },
+    {
+      "year": 1994,
+      "cumulative": 241,
+      "new": 5
+    },
+    {
+      "year": 1995,
+      "cumulative": 245,
+      "new": 4
+    },
+    {
+      "year": 1996,
+      "cumulative": 250,
+      "new": 5
+    },
+    {
+      "year": 1997,
+      "cumulative": 257,
+      "new": 7
+    },
+    {
+      "year": 1998,
+      "cumulative": 266,
+      "new": 9
+    },
+    {
+      "year": 1999,
+      "cumulative": 272,
+      "new": 6
+    },
+    {
+      "year": 2000,
+      "cumulative": 278,
+      "new": 6
+    },
+    {
+      "year": 2001,
+      "cumulative": 283,
+      "new": 5
+    },
+    {
+      "year": 2002,
+      "cumulative": 291,
+      "new": 8
+    },
+    {
+      "year": 2003,
+      "cumulative": 299,
+      "new": 8
+    },
+    {
+      "year": 2004,
+      "cumulative": 314,
+      "new": 15
+    },
+    {
+      "year": 2005,
+      "cumulative": 320,
+      "new": 6
+    },
+    {
+      "year": 2006,
+      "cumulative": 332,
+      "new": 12
+    },
+    {
+      "year": 2007,
+      "cumulative": 341,
+      "new": 9
+    },
+    {
+      "year": 2008,
+      "cumulative": 350,
+      "new": 9
+    },
+    {
+      "year": 2009,
+      "cumulative": 362,
+      "new": 12
+    },
+    {
+      "year": 2010,
+      "cumulative": 367,
+      "new": 5
+    },
+    {
+      "year": 2011,
+      "cumulative": 375,
+      "new": 8
+    },
+    {
+      "year": 2012,
+      "cumulative": 384,
+      "new": 9
+    },
+    {
+      "year": 2013,
+      "cumulative": 393,
+      "new": 9
+    },
+    {
+      "year": 2014,
+      "cumulative": 402,
+      "new": 9
+    },
+    {
+      "year": 2015,
+      "cumulative": 419,
+      "new": 17
+    },
+    {
+      "year": 2016,
+      "cumulative": 426,
+      "new": 7
+    },
+    {
+      "year": 2017,
+      "cumulative": 439,
+      "new": 13
+    },
+    {
+      "year": 2018,
+      "cumulative": 449,
+      "new": 10
+    },
+    {
+      "year": 2019,
+      "cumulative": 463,
+      "new": 14
+    },
+    {
+      "year": 2020,
+      "cumulative": 478,
+      "new": 15
+    },
+    {
+      "year": 2021,
+      "cumulative": 498,
+      "new": 20
+    },
+    {
+      "year": 2022,
+      "cumulative": 519,
+      "new": 21
+    },
+    {
+      "year": 2023,
+      "cumulative": 531,
+      "new": 12
+    },
+    {
+      "year": 2024,
+      "cumulative": 539,
+      "new": 8
+    },
+    {
+      "year": 2025,
+      "cumulative": 540,
+      "new": 1
+    }
+  ],
+  "geographicDensity": [
+    {
+      "region": "北海道",
+      "density": 100,
+      "count": 10,
+      "coordinates": [
+        43.0642,
+        141.3469
+      ]
+    }
+  ],
+  "trendAnalysis": {
+    "growthRate": 0,
+    "peakYear": 2022,
+    "mostPopularCategory": "オフィスビル",
+    "diversityIndex": 0
+  },
+  "metadata": {
+    "timeRange": "all",
+    "prefecture": "all",
+    "category": "オフィスビル",
+    "computedAt": "2025-07-10T09:32:13.667Z",
+    "dataHash": "NTQxLTE0NDExLTEw"
+  }
+}

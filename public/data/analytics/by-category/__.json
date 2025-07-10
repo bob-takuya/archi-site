@@ -1,0 +1,1193 @@
+{
+  "totalRecords": 439,
+  "yearDistribution": [
+    {
+      "year": 1893,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1926,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1927,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1928,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1930,
+      "count": 3,
+      "categories": {
+        "学校": 3
+      }
+    },
+    {
+      "year": 1932,
+      "count": 3,
+      "categories": {
+        "学校": 3
+      }
+    },
+    {
+      "year": 1933,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1935,
+      "count": 3,
+      "categories": {
+        "学校": 3
+      }
+    },
+    {
+      "year": 1936,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1937,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1938,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1950,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1951,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1953,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1955,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1957,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1958,
+      "count": 3,
+      "categories": {
+        "学校": 3
+      }
+    },
+    {
+      "year": 1959,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1960,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1961,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1962,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1964,
+      "count": 4,
+      "categories": {
+        "学校": 4
+      }
+    },
+    {
+      "year": 1966,
+      "count": 5,
+      "categories": {
+        "学校": 5
+      }
+    },
+    {
+      "year": 1967,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1968,
+      "count": 3,
+      "categories": {
+        "学校": 3
+      }
+    },
+    {
+      "year": 1969,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1970,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1972,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1973,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1974,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1976,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1977,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1978,
+      "count": 4,
+      "categories": {
+        "学校": 4
+      }
+    },
+    {
+      "year": 1979,
+      "count": 4,
+      "categories": {
+        "学校": 4
+      }
+    },
+    {
+      "year": 1980,
+      "count": 3,
+      "categories": {
+        "学校": 3
+      }
+    },
+    {
+      "year": 1981,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1982,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1983,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1984,
+      "count": 2,
+      "categories": {
+        "学校": 2
+      }
+    },
+    {
+      "year": 1985,
+      "count": 3,
+      "categories": {
+        "学校": 3
+      }
+    },
+    {
+      "year": 1986,
+      "count": 5,
+      "categories": {
+        "学校": 5
+      }
+    },
+    {
+      "year": 1987,
+      "count": 3,
+      "categories": {
+        "学校": 3
+      }
+    },
+    {
+      "year": 1988,
+      "count": 5,
+      "categories": {
+        "学校": 5
+      }
+    },
+    {
+      "year": 1989,
+      "count": 1,
+      "categories": {
+        "学校": 1
+      }
+    },
+    {
+      "year": 1990,
+      "count": 8,
+      "categories": {
+        "学校": 8
+      }
+    },
+    {
+      "year": 1991,
+      "count": 7,
+      "categories": {
+        "学校": 7
+      }
+    },
+    {
+      "year": 1992,
+      "count": 5,
+      "categories": {
+        "学校": 5
+      }
+    },
+    {
+      "year": 1993,
+      "count": 4,
+      "categories": {
+        "学校": 4
+      }
+    },
+    {
+      "year": 1994,
+      "count": 4,
+      "categories": {
+        "学校": 4
+      }
+    },
+    {
+      "year": 1995,
+      "count": 7,
+      "categories": {
+        "学校": 7
+      }
+    },
+    {
+      "year": 1996,
+      "count": 13,
+      "categories": {
+        "学校": 13
+      }
+    },
+    {
+      "year": 1997,
+      "count": 12,
+      "categories": {
+        "学校": 12
+      }
+    },
+    {
+      "year": 1998,
+      "count": 8,
+      "categories": {
+        "学校": 8
+      }
+    },
+    {
+      "year": 1999,
+      "count": 7,
+      "categories": {
+        "学校": 7
+      }
+    },
+    {
+      "year": 2000,
+      "count": 5,
+      "categories": {
+        "学校": 5
+      }
+    },
+    {
+      "year": 2001,
+      "count": 7,
+      "categories": {
+        "学校": 7
+      }
+    },
+    {
+      "year": 2002,
+      "count": 13,
+      "categories": {
+        "学校": 13
+      }
+    },
+    {
+      "year": 2003,
+      "count": 11,
+      "categories": {
+        "学校": 11
+      }
+    },
+    {
+      "year": 2004,
+      "count": 9,
+      "categories": {
+        "学校": 9
+      }
+    },
+    {
+      "year": 2005,
+      "count": 8,
+      "categories": {
+        "学校": 8
+      }
+    },
+    {
+      "year": 2006,
+      "count": 10,
+      "categories": {
+        "学校": 10
+      }
+    },
+    {
+      "year": 2007,
+      "count": 9,
+      "categories": {
+        "学校": 9
+      }
+    },
+    {
+      "year": 2008,
+      "count": 17,
+      "categories": {
+        "学校": 17
+      }
+    },
+    {
+      "year": 2009,
+      "count": 11,
+      "categories": {
+        "学校": 11
+      }
+    },
+    {
+      "year": 2010,
+      "count": 7,
+      "categories": {
+        "学校": 7
+      }
+    },
+    {
+      "year": 2011,
+      "count": 12,
+      "categories": {
+        "学校": 12
+      }
+    },
+    {
+      "year": 2012,
+      "count": 13,
+      "categories": {
+        "学校": 13
+      }
+    },
+    {
+      "year": 2013,
+      "count": 21,
+      "categories": {
+        "学校": 21
+      }
+    },
+    {
+      "year": 2014,
+      "count": 11,
+      "categories": {
+        "学校": 11
+      }
+    },
+    {
+      "year": 2015,
+      "count": 15,
+      "categories": {
+        "学校": 15
+      }
+    },
+    {
+      "year": 2016,
+      "count": 19,
+      "categories": {
+        "学校": 19
+      }
+    },
+    {
+      "year": 2017,
+      "count": 9,
+      "categories": {
+        "学校": 9
+      }
+    },
+    {
+      "year": 2018,
+      "count": 14,
+      "categories": {
+        "学校": 14
+      }
+    },
+    {
+      "year": 2019,
+      "count": 5,
+      "categories": {
+        "学校": 5
+      }
+    },
+    {
+      "year": 2020,
+      "count": 6,
+      "categories": {
+        "学校": 6
+      }
+    },
+    {
+      "year": 2021,
+      "count": 15,
+      "categories": {
+        "学校": 15
+      }
+    },
+    {
+      "year": 2022,
+      "count": 4,
+      "categories": {
+        "学校": 4
+      }
+    },
+    {
+      "year": 2023,
+      "count": 8,
+      "categories": {
+        "学校": 8
+      }
+    },
+    {
+      "year": 2024,
+      "count": 3,
+      "categories": {
+        "学校": 3
+      }
+    }
+  ],
+  "prefectureDistribution": [
+    {
+      "prefecture": "東京",
+      "count": 68,
+      "percentage": 15.489749430523919
+    },
+    {
+      "prefecture": "神奈川",
+      "count": 40,
+      "percentage": 9.111617312072893
+    },
+    {
+      "prefecture": "大阪",
+      "count": 28,
+      "percentage": 6.378132118451026
+    },
+    {
+      "prefecture": "広島",
+      "count": 23,
+      "percentage": 5.239179954441914
+    },
+    {
+      "prefecture": "北海道",
+      "count": 21,
+      "percentage": 4.783599088838269
+    },
+    {
+      "prefecture": "千葉",
+      "count": 18,
+      "percentage": 4.100227790432802
+    },
+    {
+      "prefecture": "熊本",
+      "count": 16,
+      "percentage": 3.644646924829157
+    },
+    {
+      "prefecture": "兵庫",
+      "count": 14,
+      "percentage": 3.189066059225513
+    },
+    {
+      "prefecture": "福島",
+      "count": 12,
+      "percentage": 2.733485193621868
+    },
+    {
+      "prefecture": "福岡",
+      "count": 10,
+      "percentage": 2.277904328018223
+    },
+    {
+      "prefecture": "茨城",
+      "count": 10,
+      "percentage": 2.277904328018223
+    },
+    {
+      "prefecture": "京都",
+      "count": 10,
+      "percentage": 2.277904328018223
+    },
+    {
+      "prefecture": "新潟",
+      "count": 10,
+      "percentage": 2.277904328018223
+    },
+    {
+      "prefecture": "愛知",
+      "count": 9,
+      "percentage": 2.050113895216401
+    },
+    {
+      "prefecture": "群馬",
+      "count": 9,
+      "percentage": 2.050113895216401
+    }
+  ],
+  "categoryDistribution": [
+    {
+      "category": "学校",
+      "count": 435,
+      "percentage": 100,
+      "color": "#8884d8"
+    }
+  ],
+  "cityDistribution": [],
+  "architectPopularity": [
+    {
+      "architect": "久米設計",
+      "count": 13,
+      "percentage": 2.9885057471264367
+    },
+    {
+      "architect": "石本建築事務所",
+      "count": 12,
+      "percentage": 2.7586206896551726
+    },
+    {
+      "architect": "シーラカンスアンドアソシエイツ",
+      "count": 11,
+      "percentage": 2.528735632183908
+    },
+    {
+      "architect": "佐藤総合計画",
+      "count": 11,
+      "percentage": 2.528735632183908
+    },
+    {
+      "architect": "香山壽夫",
+      "count": 11,
+      "percentage": 2.528735632183908
+    },
+    {
+      "architect": "アトリエブンク",
+      "count": 11,
+      "percentage": 2.528735632183908
+    },
+    {
+      "architect": "内井昭蔵",
+      "count": 11,
+      "percentage": 2.528735632183908
+    },
+    {
+      "architect": "安藤忠雄",
+      "count": 10,
+      "percentage": 2.2988505747126435
+    },
+    {
+      "architect": "シーラカンスK&H",
+      "count": 9,
+      "percentage": 2.0689655172413794
+    },
+    {
+      "architect": "日建設計",
+      "count": 8,
+      "percentage": 1.839080459770115
+    },
+    {
+      "architect": "村野藤吾",
+      "count": 7,
+      "percentage": 1.6091954022988506
+    },
+    {
+      "architect": "日本設計",
+      "count": 6,
+      "percentage": 1.3793103448275863
+    },
+    {
+      "architect": "象設計集団",
+      "count": 6,
+      "percentage": 1.3793103448275863
+    },
+    {
+      "architect": "湯澤正信",
+      "count": 6,
+      "percentage": 1.3793103448275863
+    },
+    {
+      "architect": "原広司",
+      "count": 6,
+      "percentage": 1.3793103448275863
+    },
+    {
+      "architect": "古谷誠章",
+      "count": 5,
+      "percentage": 1.1494252873563218
+    },
+    {
+      "architect": "三上建築事務所",
+      "count": 5,
+      "percentage": 1.1494252873563218
+    },
+    {
+      "architect": "高松伸",
+      "count": 5,
+      "percentage": 1.1494252873563218
+    },
+    {
+      "architect": "長谷川逸子",
+      "count": 5,
+      "percentage": 1.1494252873563218
+    },
+    {
+      "architect": "毛綱毅曠",
+      "count": 5,
+      "percentage": 1.1494252873563218
+    },
+    {
+      "architect": "北川原温",
+      "count": 4,
+      "percentage": 0.9195402298850575
+    },
+    {
+      "architect": "竹中工務店",
+      "count": 4,
+      "percentage": 0.9195402298850575
+    },
+    {
+      "architect": "中村勉",
+      "count": 4,
+      "percentage": 0.9195402298850575
+    },
+    {
+      "architect": "末吉栄三",
+      "count": 4,
+      "percentage": 0.9195402298850575
+    },
+    {
+      "architect": "山下和正",
+      "count": 4,
+      "percentage": 0.9195402298850575
+    }
+  ],
+  "statusDistribution": [],
+  "timelineData": [
+    {
+      "year": 1893,
+      "cumulative": 1,
+      "new": 1
+    },
+    {
+      "year": 1926,
+      "cumulative": 3,
+      "new": 2
+    },
+    {
+      "year": 1927,
+      "cumulative": 5,
+      "new": 2
+    },
+    {
+      "year": 1928,
+      "cumulative": 7,
+      "new": 2
+    },
+    {
+      "year": 1930,
+      "cumulative": 10,
+      "new": 3
+    },
+    {
+      "year": 1932,
+      "cumulative": 13,
+      "new": 3
+    },
+    {
+      "year": 1933,
+      "cumulative": 15,
+      "new": 2
+    },
+    {
+      "year": 1935,
+      "cumulative": 18,
+      "new": 3
+    },
+    {
+      "year": 1936,
+      "cumulative": 20,
+      "new": 2
+    },
+    {
+      "year": 1937,
+      "cumulative": 21,
+      "new": 1
+    },
+    {
+      "year": 1938,
+      "cumulative": 23,
+      "new": 2
+    },
+    {
+      "year": 1950,
+      "cumulative": 24,
+      "new": 1
+    },
+    {
+      "year": 1951,
+      "cumulative": 26,
+      "new": 2
+    },
+    {
+      "year": 1953,
+      "cumulative": 28,
+      "new": 2
+    },
+    {
+      "year": 1955,
+      "cumulative": 29,
+      "new": 1
+    },
+    {
+      "year": 1957,
+      "cumulative": 31,
+      "new": 2
+    },
+    {
+      "year": 1958,
+      "cumulative": 34,
+      "new": 3
+    },
+    {
+      "year": 1959,
+      "cumulative": 36,
+      "new": 2
+    },
+    {
+      "year": 1960,
+      "cumulative": 38,
+      "new": 2
+    },
+    {
+      "year": 1961,
+      "cumulative": 39,
+      "new": 1
+    },
+    {
+      "year": 1962,
+      "cumulative": 41,
+      "new": 2
+    },
+    {
+      "year": 1964,
+      "cumulative": 45,
+      "new": 4
+    },
+    {
+      "year": 1966,
+      "cumulative": 50,
+      "new": 5
+    },
+    {
+      "year": 1967,
+      "cumulative": 51,
+      "new": 1
+    },
+    {
+      "year": 1968,
+      "cumulative": 54,
+      "new": 3
+    },
+    {
+      "year": 1969,
+      "cumulative": 55,
+      "new": 1
+    },
+    {
+      "year": 1970,
+      "cumulative": 56,
+      "new": 1
+    },
+    {
+      "year": 1972,
+      "cumulative": 58,
+      "new": 2
+    },
+    {
+      "year": 1973,
+      "cumulative": 59,
+      "new": 1
+    },
+    {
+      "year": 1974,
+      "cumulative": 61,
+      "new": 2
+    },
+    {
+      "year": 1976,
+      "cumulative": 62,
+      "new": 1
+    },
+    {
+      "year": 1977,
+      "cumulative": 63,
+      "new": 1
+    },
+    {
+      "year": 1978,
+      "cumulative": 67,
+      "new": 4
+    },
+    {
+      "year": 1979,
+      "cumulative": 71,
+      "new": 4
+    },
+    {
+      "year": 1980,
+      "cumulative": 74,
+      "new": 3
+    },
+    {
+      "year": 1981,
+      "cumulative": 75,
+      "new": 1
+    },
+    {
+      "year": 1982,
+      "cumulative": 77,
+      "new": 2
+    },
+    {
+      "year": 1983,
+      "cumulative": 79,
+      "new": 2
+    },
+    {
+      "year": 1984,
+      "cumulative": 81,
+      "new": 2
+    },
+    {
+      "year": 1985,
+      "cumulative": 84,
+      "new": 3
+    },
+    {
+      "year": 1986,
+      "cumulative": 89,
+      "new": 5
+    },
+    {
+      "year": 1987,
+      "cumulative": 92,
+      "new": 3
+    },
+    {
+      "year": 1988,
+      "cumulative": 97,
+      "new": 5
+    },
+    {
+      "year": 1989,
+      "cumulative": 98,
+      "new": 1
+    },
+    {
+      "year": 1990,
+      "cumulative": 106,
+      "new": 8
+    },
+    {
+      "year": 1991,
+      "cumulative": 113,
+      "new": 7
+    },
+    {
+      "year": 1992,
+      "cumulative": 118,
+      "new": 5
+    },
+    {
+      "year": 1993,
+      "cumulative": 122,
+      "new": 4
+    },
+    {
+      "year": 1994,
+      "cumulative": 126,
+      "new": 4
+    },
+    {
+      "year": 1995,
+      "cumulative": 133,
+      "new": 7
+    },
+    {
+      "year": 1996,
+      "cumulative": 146,
+      "new": 13
+    },
+    {
+      "year": 1997,
+      "cumulative": 158,
+      "new": 12
+    },
+    {
+      "year": 1998,
+      "cumulative": 166,
+      "new": 8
+    },
+    {
+      "year": 1999,
+      "cumulative": 173,
+      "new": 7
+    },
+    {
+      "year": 2000,
+      "cumulative": 178,
+      "new": 5
+    },
+    {
+      "year": 2001,
+      "cumulative": 185,
+      "new": 7
+    },
+    {
+      "year": 2002,
+      "cumulative": 198,
+      "new": 13
+    },
+    {
+      "year": 2003,
+      "cumulative": 209,
+      "new": 11
+    },
+    {
+      "year": 2004,
+      "cumulative": 218,
+      "new": 9
+    },
+    {
+      "year": 2005,
+      "cumulative": 226,
+      "new": 8
+    },
+    {
+      "year": 2006,
+      "cumulative": 236,
+      "new": 10
+    },
+    {
+      "year": 2007,
+      "cumulative": 245,
+      "new": 9
+    },
+    {
+      "year": 2008,
+      "cumulative": 262,
+      "new": 17
+    },
+    {
+      "year": 2009,
+      "cumulative": 273,
+      "new": 11
+    },
+    {
+      "year": 2010,
+      "cumulative": 280,
+      "new": 7
+    },
+    {
+      "year": 2011,
+      "cumulative": 292,
+      "new": 12
+    },
+    {
+      "year": 2012,
+      "cumulative": 305,
+      "new": 13
+    },
+    {
+      "year": 2013,
+      "cumulative": 326,
+      "new": 21
+    },
+    {
+      "year": 2014,
+      "cumulative": 337,
+      "new": 11
+    },
+    {
+      "year": 2015,
+      "cumulative": 352,
+      "new": 15
+    },
+    {
+      "year": 2016,
+      "cumulative": 371,
+      "new": 19
+    },
+    {
+      "year": 2017,
+      "cumulative": 380,
+      "new": 9
+    },
+    {
+      "year": 2018,
+      "cumulative": 394,
+      "new": 14
+    },
+    {
+      "year": 2019,
+      "cumulative": 399,
+      "new": 5
+    },
+    {
+      "year": 2020,
+      "cumulative": 405,
+      "new": 6
+    },
+    {
+      "year": 2021,
+      "cumulative": 420,
+      "new": 15
+    },
+    {
+      "year": 2022,
+      "cumulative": 424,
+      "new": 4
+    },
+    {
+      "year": 2023,
+      "cumulative": 432,
+      "new": 8
+    },
+    {
+      "year": 2024,
+      "cumulative": 435,
+      "new": 3
+    }
+  ],
+  "geographicDensity": [
+    {
+      "region": "北海道",
+      "density": 100,
+      "count": 21,
+      "coordinates": [
+        43.0642,
+        141.3469
+      ]
+    }
+  ],
+  "trendAnalysis": {
+    "growthRate": 200,
+    "peakYear": 2013,
+    "mostPopularCategory": "学校",
+    "diversityIndex": 0
+  },
+  "metadata": {
+    "timeRange": "all",
+    "prefecture": "all",
+    "category": "学校",
+    "computedAt": "2025-07-10T09:32:13.668Z",
+    "dataHash": "NDM5LTEzOTM1LTQy"
+  }
+}
