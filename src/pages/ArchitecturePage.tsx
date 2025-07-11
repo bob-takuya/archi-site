@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Container, 
@@ -300,6 +300,45 @@ const ArchitecturePageEnhanced = () => {
     };
   }, [researchData]);
 
+  const fetchArchitectures = useCallback(async (page: number, search = '', sort = sortBy) => {
+    setLoading(true);
+    try {
+      let result;
+      
+      // Parse search query and call appropriate method
+      if (!search || search.trim() === '') {
+        result = await getAllArchitectures(page, itemsPerPage);
+      } else if (search.startsWith('tag:')) {
+        const tag = search.substring(4).trim();
+        result = await searchArchitectures('', { tag }, page, itemsPerPage);
+      } else if (search.startsWith('year:')) {
+        const year = parseInt(search.substring(5).trim());
+        result = await searchArchitectures('', { year }, page, itemsPerPage);
+      } else if (search.startsWith('architect:')) {
+        const architect = search.substring(10).trim();
+        result = await searchArchitectures('', { architect }, page, itemsPerPage);
+      } else if (search.startsWith('category:')) {
+        const category = search.substring(9).trim();
+        result = await searchArchitectures('', { category }, page, itemsPerPage);
+      } else if (search.startsWith('prefecture:')) {
+        const prefecture = search.substring(11).trim();
+        result = await searchArchitectures(prefecture, {}, page, itemsPerPage);
+      } else {
+        result = await searchArchitectures(search, {}, page, itemsPerPage);
+      }
+      
+      setArchitectures(result.results);
+      setTotalItems(result.total);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error('Error fetching architectures:', error);
+      setArchitectures([]);
+      setTotalItems(0);
+    } finally {
+      setLoading(false);
+    }
+  }, [itemsPerPage, sortBy]);
+
   useEffect(() => {
     // URLからクエリパラメータを解析
     const queryParams = new URLSearchParams(location.search);
@@ -350,46 +389,7 @@ const ArchitecturePageEnhanced = () => {
     } else {
       fetchArchitectures(1, '', sort || sortBy);
     }
-  }, [location.search, autocompleteSuggestions]);
-
-  const fetchArchitectures = async (page: number, search = '', sort = sortBy) => {
-    setLoading(true);
-    try {
-      let result;
-      
-      // Parse search query and call appropriate method
-      if (!search || search.trim() === '') {
-        result = await getAllArchitectures(page, itemsPerPage);
-      } else if (search.startsWith('tag:')) {
-        const tag = search.substring(4).trim();
-        result = await searchArchitectures('', { tag }, page, itemsPerPage);
-      } else if (search.startsWith('year:')) {
-        const year = parseInt(search.substring(5).trim());
-        result = await searchArchitectures('', { year }, page, itemsPerPage);
-      } else if (search.startsWith('architect:')) {
-        const architect = search.substring(10).trim();
-        result = await searchArchitectures('', { architect }, page, itemsPerPage);
-      } else if (search.startsWith('category:')) {
-        const category = search.substring(9).trim();
-        result = await searchArchitectures('', { category }, page, itemsPerPage);
-      } else if (search.startsWith('prefecture:')) {
-        const prefecture = search.substring(11).trim();
-        result = await searchArchitectures(prefecture, {}, page, itemsPerPage);
-      } else {
-        result = await searchArchitectures(search, {}, page, itemsPerPage);
-      }
-      
-      setArchitectures(result.results);
-      setTotalItems(result.total);
-      setCurrentPage(page);
-    } catch (error) {
-      console.error('Error fetching architectures:', error);
-      setArchitectures([]);
-      setTotalItems(0);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [location.search, autocompleteSuggestions, fetchArchitectures, sortBy]);
 
   const handlePageChange = (event: any, value: number) => {
     setCurrentPage(value);
