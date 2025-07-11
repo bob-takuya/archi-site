@@ -63,6 +63,8 @@ import {
   ResearchAnalytics 
 } from '../services/api/FastArchitectureService';
 import MapWithClustering from '../components/MapWithClustering';
+import TouchOptimizedSearchBar from '../components/TouchOptimizedSearchBar';
+import { useGestureNavigation } from '../hooks/useGestureNavigation';
 
 interface AutocompleteSuggestion {
   label: string;
@@ -85,9 +87,125 @@ const ArchitecturePageEnhanced = () => {
   const [showInsights, setShowInsights] = useState(true);
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
   const [activeFilters, setActiveFilters] = useState<{type: string, value: string, label: string}[]>([]);
+  const [recentSearches, setRecentSearches] = useState<AutocompleteSuggestion[]>([]);
+  const [trendingSearches, setTrendingSearches] = useState<AutocompleteSuggestion[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
   const itemsPerPage = viewMode === 'grid' ? 12 : viewMode === 'list' ? 20 : 200; // Show more results on map to see spatial distribution
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Gesture navigation setup
+  const { gestureRef } = useGestureNavigation({
+    onSwipeLeft: () => {
+      // Navigate to next page if available
+      if (currentPage < Math.ceil(totalItems / itemsPerPage)) {
+        handlePageChange(null, currentPage + 1);
+      }
+    },
+    onSwipeRight: () => {
+      // Navigate to previous page if available
+      if (currentPage > 1) {
+        handlePageChange(null, currentPage - 1);
+      }
+    },
+    onSwipeUp: () => {
+      // Switch view mode
+      const modes: Array<'grid' | 'list' | 'map'> = ['grid', 'list', 'map'];
+      const currentIndex = modes.indexOf(viewMode);
+      const nextIndex = (currentIndex + 1) % modes.length;
+      setViewMode(modes[nextIndex]);
+    },
+    onSwipeDown: () => {
+      // Clear search or go back
+      if (searchValue || searchInputValue || activeFilters.length > 0) {
+        handleClearFilters();
+      }
+    }
+  });
+
+  // Recent searches management
+  const addToRecentSearches = useCallback((search: AutocompleteSuggestion) => {
+    setRecentSearches(prev => {
+      const filtered = prev.filter(item => item.value !== search.value);
+      return [search, ...filtered].slice(0, 5); // Keep only 5 recent searches
+    });
+    
+    // Save to localStorage
+    try {
+      const updated = [search, ...recentSearches.filter(item => item.value !== search.value)].slice(0, 5);
+      localStorage.setItem('archi-recent-searches', JSON.stringify(updated));
+    } catch (e) {
+      console.warn('Failed to save recent searches to localStorage');
+    }
+  }, [recentSearches]);
+
+  // Load recent searches from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('archi-recent-searches');
+      if (saved) {
+        setRecentSearches(JSON.parse(saved));
+      }
+    } catch (e) {
+      console.warn('Failed to load recent searches from localStorage');
+    }
+  }, []);
+
+  // Generate trending searches from research data
+  useEffect(() => {
+    if (researchData) {
+      const trending: AutocompleteSuggestion[] = [
+        ...researchData.architects.slice(0, 3).map(architect => ({
+          label: architect.name,
+          value: `architect:${architect.name}`,
+          category: '建築家',
+          icon: '👨‍🎨',
+          count: architect.count,
+          type: 'trending' as const
+        })),
+        ...researchData.prefectures.slice(0, 2).map(pref => ({
+          label: pref.name,
+          value: `prefecture:${pref.name}`,
+          category: '地域',
+          icon: '📍',
+          count: pref.count,
+          type: 'trending' as const
+        }))
+      ];
+      setTrendingSearches(trending);
+    }
+  }, [researchData]);
+
+  // Enhanced search handling
+  const handleOptimizedSearch = useCallback((value: AutocompleteSuggestion | null) => {
+    if (value) {
+      addToRecentSearches(value);
+    }
+    handleSearch(value);
+  }, [addToRecentSearches, handleSearch]);
+
+  // Enhanced input change with loading state
+  const handleOptimizedInputChange = useCallback((value: string) => {
+    setSearchLoading(true);
+    setSearchInputValue(value);
+    
+    // Debounce search loading
+    setTimeout(() => {
+      setSearchLoading(false);
+    }, 300);
+  }, []);
+
+  // Voice search handler
+  const handleVoiceSearch = useCallback(() => {
+    console.log('Voice search activated');
+    // Voice search implementation would go here
+  }, []);
+
+  // Camera search handler  
+  const handleCameraSearch = useCallback(() => {
+    console.log('Camera search activated');
+    // Camera search implementation would go here
+  }, []);
 
   // 研究データの初期ロード
   useEffect(() => {
@@ -422,52 +540,23 @@ const ArchitecturePageEnhanced = () => {
         {/* Main Content */}
         <Grid item xs={12} lg={showInsights ? 9 : 12}>
           <Paper sx={{ p: 3, mb: 3 }}>
-            {/* Enhanced Search Bar */}
-            <Box sx={{ mb: 3 }}>
-              <Autocomplete
+            {/* Touch-Optimized Search Bar */}
+            <Box sx={{ mb: 3 }} ref={gestureRef}>
+              <TouchOptimizedSearchBar
                 value={searchValue}
-                onChange={(event, newValue) => setSearchValue(newValue)}
+                onSearch={handleOptimizedSearch}
+                onInputChange={handleOptimizedInputChange}
                 inputValue={searchInputValue}
-                onInputChange={(event, newInputValue) => setSearchInputValue(newInputValue)}
-                options={autocompleteSuggestions}
-                groupBy={(option) => option.category}
-                getOptionLabel={(option) => option.label}
-                renderOption={(props, option) => (
-                  <Box component="li" {...props}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <Typography sx={{ mr: 1 }}>{option.icon}</Typography>
-                      <Typography sx={{ flexGrow: 1 }}>{option.label}</Typography>
-                      {option.count && (
-                        <Chip label={`${option.count}件`} size="small" />
-                      )}
-                    </Box>
-                  </Box>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="検索（建築賞、建築家、カテゴリ、地域、年代）"
-                    placeholder="例: 日本建築学会賞、隈研吾、美術館、東京都、1990"
-                    InputProps={{
-                      ...params.InputProps,
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                )}
-                sx={{ flexGrow: 1 }}
+                suggestions={autocompleteSuggestions}
+                loading={searchLoading}
+                placeholder="建築作品、建築家、場所を検索..."
+                onVoiceSearch={handleVoiceSearch}
+                onCameraSearch={handleCameraSearch}
+                recentSearches={recentSearches}
+                trendingSearches={trendingSearches}
               />
-              <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-                <Button 
-                  variant="contained" 
-                  onClick={() => handleSearch(searchValue)}
-                  disabled={!searchValue && !searchInputValue}
-                >
-                  検索
-                </Button>
+              
+              <Box sx={{ display: 'flex', gap: 2, mt: 2, flexWrap: 'wrap' }}>
                 <FormControl size="small" sx={{ minWidth: 120 }}>
                   <InputLabel>並び替え</InputLabel>
                   <Select
@@ -481,6 +570,15 @@ const ArchitecturePageEnhanced = () => {
                     <MenuItem value="name_asc">名前順</MenuItem>
                   </Select>
                 </FormControl>
+                
+                <Button
+                  variant="outlined"
+                  onClick={handleClearFilters}
+                  disabled={!searchValue && !searchInputValue && activeFilters.length === 0}
+                  sx={{ minHeight: '44px' }} // Touch-friendly target
+                >
+                  クリア
+                </Button>
               </Box>
             </Box>
 

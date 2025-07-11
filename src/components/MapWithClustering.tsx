@@ -5,8 +5,30 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import { Box, CircularProgress, Typography } from '@mui/material';
-import { LocationOn, EmojiEvents, CalendarToday, Architecture } from '@mui/icons-material';
+import { 
+  Box, 
+  CircularProgress, 
+  Typography, 
+  IconButton, 
+  Fab, 
+  useTheme, 
+  useMediaQuery,
+  Tooltip,
+  Zoom
+} from '@mui/material';
+import { 
+  LocationOn, 
+  EmojiEvents, 
+  CalendarToday, 
+  Architecture,
+  MyLocation,
+  ZoomIn,
+  ZoomOut,
+  Fullscreen,
+  Layers,
+  Close
+} from '@mui/icons-material';
+import { useGestureNavigation } from '../hooks/useGestureNavigation';
 import '../styles/map.css';
 
 // Leaflet iconのデフォルト設定を修正
@@ -36,6 +58,11 @@ interface MapWithClusteringProps {
   center?: [number, number];
   zoom?: number;
   height?: string;
+  enableMobileControls?: boolean;
+  enableGestures?: boolean;
+  enableFullscreen?: boolean;
+  onMarkerClick?: (marker: ArchitectureMarker) => void;
+  showLocationButton?: boolean;
 }
 
 /**
@@ -46,12 +73,114 @@ const MapWithClustering: React.FC<MapWithClusteringProps> = ({
   markers, 
   center = [35.6762, 139.6503], // 東京をデフォルト中心に
   zoom = 6,
-  height = '600px'
+  height = '600px',
+  enableMobileControls = true,
+  enableGestures = true,
+  enableFullscreen = true,
+  onMarkerClick,
+  showLocationButton = true
 }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [map, setMap] = useState<L.Map | null>(null);
   const [loading, setLoading] = useState(true);
   const [clusterGroup, setClusterGroup] = useState<L.MarkerClusterGroup | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [currentZoom, setCurrentZoom] = useState(zoom);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [showControls, setShowControls] = useState(!isMobile);
+
+  // Gesture navigation for mobile
+  const { gestureRef } = useGestureNavigation({
+    onPinchStart: (scale) => {
+      if (map && enableGestures) {
+        map.dragging.disable();
+      }
+    },
+    onPinchMove: (scale) => {
+      if (map && enableGestures) {
+        const newZoom = Math.max(2, Math.min(18, currentZoom + (scale - 1) * 2));
+        setCurrentZoom(newZoom);
+        map.setZoom(newZoom);
+      }
+    },
+    onPinchEnd: (scale) => {
+      if (map && enableGestures) {
+        map.dragging.enable();
+      }
+    },
+    onDoubleTap: (x, y) => {
+      if (map && enableGestures) {
+        const containerPoint = [x, y];
+        const latLng = map.containerPointToLatLng(containerPoint as any);
+        map.setView(latLng, Math.min(currentZoom + 2, 18));
+      }
+    },
+    onLongPress: (x, y) => {
+      if (isMobile) {
+        setShowControls(!showControls);
+      }
+    }
+  });
+
+  // Get user location
+  const getUserLocation = useCallback(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation([latitude, longitude]);
+          if (map) {
+            map.setView([latitude, longitude], 15);
+          }
+        },
+        (error) => {
+          console.warn("Failed to get user location:", error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 600000 // 10 minutes
+        }
+      );
+    }
+  }, [map]);
+
+  // Zoom controls
+  const handleZoomIn = useCallback(() => {
+    if (map) {
+      const newZoom = Math.min(currentZoom + 1, 18);
+      setCurrentZoom(newZoom);
+      map.setZoom(newZoom);
+    }
+  }, [map, currentZoom]);
+
+  const handleZoomOut = useCallback(() => {
+    if (map) {
+      const newZoom = Math.max(currentZoom - 1, 2);
+      setCurrentZoom(newZoom);
+      map.setZoom(newZoom);
+    }
+  }, [map, currentZoom]);
+
+  // Fullscreen toggle
+  const handleFullscreenToggle = useCallback(() => {
+    const mapContainer = document.getElementById('map-with-clustering');
+    if (!mapContainer) return;
+
+    if (!isFullscreen) {
+      if (mapContainer.requestFullscreen) {
+        mapContainer.requestFullscreen();
+      }
+      setIsFullscreen(true);
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+      setIsFullscreen(false);
+    }
+  }, [isFullscreen]);
 
   // 地図の初期化
   useEffect(() => {
@@ -64,12 +193,24 @@ const MapWithClustering: React.FC<MapWithClusteringProps> = ({
       map.remove();
     }
 
-    // 新しい地図インスタンスを作成
+    // 新しい地図インスタンスを作成（モバイル最適化）
     const newMap = L.map('map-with-clustering', {
       center: center,
       zoom: zoom,
-      scrollWheelZoom: true,
-      zoomControl: true
+      scrollWheelZoom: !isMobile, // Disable scroll wheel zoom on mobile
+      zoomControl: !enableMobileControls, // Use custom controls on mobile
+      touchZoom: enableGestures,
+      doubleClickZoom: enableGestures,
+      boxZoom: false, // Disable box zoom on mobile
+      keyboard: false, // Disable keyboard navigation on mobile
+      dragging: true,
+      tap: isMobile,
+      tapTolerance: 20, // Increase tap tolerance for touch devices
+      zoomSnap: 0.5, // Smoother zooming
+      zoomDelta: 0.5,
+      wheelPxPerZoomLevel: 100,
+      maxZoom: 18,
+      minZoom: 2
     });
 
     // タイルレイヤーを追加（OpenStreetMap）
@@ -111,6 +252,22 @@ const MapWithClustering: React.FC<MapWithClusteringProps> = ({
     });
 
     newMap.addLayer(newClusterGroup);
+    
+    // Add zoom event listener
+    newMap.on('zoomend', () => {
+      setCurrentZoom(newMap.getZoom());
+    });
+
+    // Add mobile-specific event listeners
+    if (isMobile) {
+      newMap.on('movestart', () => {
+        setShowControls(false);
+      });
+      
+      newMap.on('moveend', () => {
+        setTimeout(() => setShowControls(false), 2000);
+      });
+    }
     
     setMap(newMap);
     setClusterGroup(newClusterGroup);
@@ -154,46 +311,52 @@ const MapWithClustering: React.FC<MapWithClusteringProps> = ({
 
       const marker = L.marker(position, { icon });
       
-      // ポップアップコンテンツ
+      // モバイル最適化されたポップアップコンテンツ
+      const isMobilePopup = window.innerWidth < 768;
       const popupContent = `
-        <div style="min-width: 250px; max-width: 300px;">
-          <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold;">
+        <div style="min-width: ${isMobilePopup ? '200px' : '250px'}; max-width: ${isMobilePopup ? '250px' : '300px'}; 
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <h3 style="margin: 0 0 12px 0; font-size: ${isMobilePopup ? '14px' : '16px'}; font-weight: bold; line-height: 1.3;">
             ${title}
           </h3>
           ${architect ? `
-            <div style="display: flex; align-items: center; margin-bottom: 4px;">
-              <span style="color: #666; margin-right: 8px;">建築家:</span>
-              <span>${architect}</span>
+            <div style="display: flex; align-items: center; margin-bottom: 6px; font-size: ${isMobilePopup ? '12px' : '13px'};">
+              <span style="color: #666; margin-right: 8px; min-width: 50px;">建築家:</span>
+              <span style="font-weight: 500;">${architect}</span>
             </div>
           ` : ''}
           ${year ? `
-            <div style="display: flex; align-items: center; margin-bottom: 4px;">
-              <span style="color: #666; margin-right: 8px;">竣工年:</span>
+            <div style="display: flex; align-items: center; margin-bottom: 6px; font-size: ${isMobilePopup ? '12px' : '13px'};">
+              <span style="color: #666; margin-right: 8px; min-width: 50px;">竣工年:</span>
               <span>${year}年</span>
             </div>
           ` : ''}
           ${category ? `
-            <div style="display: flex; align-items: center; margin-bottom: 4px;">
-              <span style="color: #666; margin-right: 8px;">カテゴリ:</span>
+            <div style="display: flex; align-items: center; margin-bottom: 6px; font-size: ${isMobilePopup ? '12px' : '13px'};">
+              <span style="color: #666; margin-right: 8px; min-width: 50px;">カテゴリ:</span>
               <span>${category}</span>
             </div>
           ` : ''}
           ${tags ? `
-            <div style="display: flex; align-items: center; margin-bottom: 4px;">
-              <span style="color: #666; margin-right: 8px;">タグ:</span>
+            <div style="display: flex; align-items: center; margin-bottom: 6px; font-size: ${isMobilePopup ? '12px' : '13px'};">
+              <span style="color: #666; margin-right: 8px; min-width: 50px;">タグ:</span>
               <span style="color: #ff6b00; font-weight: bold;">${tags}</span>
             </div>
           ` : ''}
           ${address ? `
-            <div style="display: flex; align-items: center; margin-bottom: 8px;">
-              <span style="color: #666; margin-right: 8px;">住所:</span>
-              <span style="font-size: 12px;">${address}</span>
+            <div style="display: flex; align-items: flex-start; margin-bottom: 12px; font-size: ${isMobilePopup ? '11px' : '12px'};">
+              <span style="color: #666; margin-right: 8px; min-width: 50px; margin-top: 2px;">住所:</span>
+              <span style="line-height: 1.3;">${address}</span>
             </div>
           ` : ''}
-          <div style="text-align: center; margin-top: 12px;">
+          <div style="text-align: center; margin-top: 16px;">
             <button onclick="window.location.hash='/architecture/${id}'" 
-              style="background: #1976d2; color: white; border: none; padding: 8px 16px; 
-                     border-radius: 4px; cursor: pointer; font-size: 14px;">
+              style="background: #1976d2; color: white; border: none; 
+                     padding: ${isMobilePopup ? '12px 20px' : '10px 18px'}; 
+                     border-radius: 6px; cursor: pointer; 
+                     font-size: ${isMobilePopup ? '14px' : '13px'}; 
+                     font-weight: 500; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                     min-height: 44px; min-width: ${isMobilePopup ? '120px' : '100px'};">
               詳細を見る
             </button>
           </div>
@@ -201,14 +364,26 @@ const MapWithClustering: React.FC<MapWithClusteringProps> = ({
       `;
       
       marker.bindPopup(popupContent, {
-        maxWidth: 300,
-        minWidth: 250,
-        className: 'architecture-popup'
+        maxWidth: isMobilePopup ? 280 : 320,
+        minWidth: isMobilePopup ? 200 : 250,
+        className: 'architecture-popup',
+        closeButton: true,
+        autoClose: true,
+        keepInView: true,
+        offset: [0, -10]
       });
 
       // クリックイベント
       marker.on('click', function() {
-        // ポップアップが自動的に開く
+        // Custom click handler
+        if (onMarkerClick) {
+          onMarkerClick(markerData);
+        }
+        // Show controls on mobile when marker is clicked
+        if (isMobile) {
+          setShowControls(true);
+          setTimeout(() => setShowControls(false), 3000);
+        }
       });
 
       return marker;
@@ -262,6 +437,7 @@ const MapWithClustering: React.FC<MapWithClusteringProps> = ({
       )}
       <div 
         id="map-with-clustering" 
+        ref={gestureRef}
         style={{ 
           height: '100%', 
           width: '100%',
@@ -269,6 +445,190 @@ const MapWithClustering: React.FC<MapWithClusteringProps> = ({
           overflow: 'hidden'
         }} 
       />
+
+      {/* Mobile Touch Controls */}
+      {enableMobileControls && isMobile && (
+        <Zoom in={showControls || loading}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: theme.spacing(2),
+              right: theme.spacing(2),
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              zIndex: 1000,
+            }}
+          >
+            {/* Zoom In */}
+            <Tooltip title="ズームイン" placement="left">
+              <Fab
+                size="small"
+                color="primary"
+                onClick={handleZoomIn}
+                disabled={currentZoom >= 18}
+                sx={{
+                  minHeight: '48px',
+                  minWidth: '48px',
+                  boxShadow: theme.shadows[6],
+                }}
+              >
+                <ZoomIn />
+              </Fab>
+            </Tooltip>
+
+            {/* Zoom Out */}
+            <Tooltip title="ズームアウト" placement="left">
+              <Fab
+                size="small"
+                color="primary"
+                onClick={handleZoomOut}
+                disabled={currentZoom <= 2}
+                sx={{
+                  minHeight: '48px',
+                  minWidth: '48px',
+                  boxShadow: theme.shadows[6],
+                }}
+              >
+                <ZoomOut />
+              </Fab>
+            </Tooltip>
+
+            {/* My Location */}
+            {showLocationButton && (
+              <Tooltip title="現在地" placement="left">
+                <Fab
+                  size="small"
+                  color="secondary"
+                  onClick={getUserLocation}
+                  sx={{
+                    minHeight: '48px',
+                    minWidth: '48px',
+                    boxShadow: theme.shadows[6],
+                  }}
+                >
+                  <MyLocation />
+                </Fab>
+              </Tooltip>
+            )}
+
+            {/* Fullscreen */}
+            {enableFullscreen && (
+              <Tooltip title={isFullscreen ? "全画面終了" : "全画面表示"} placement="left">
+                <Fab
+                  size="small"
+                  color="default"
+                  onClick={handleFullscreenToggle}
+                  sx={{
+                    minHeight: '48px',
+                    minWidth: '48px',
+                    boxShadow: theme.shadows[6],
+                  }}
+                >
+                  {isFullscreen ? <Close /> : <Fullscreen />}
+                </Fab>
+              </Tooltip>
+            )}
+          </Box>
+        </Zoom>
+      )}
+
+      {/* Desktop Controls */}
+      {enableMobileControls && !isMobile && (
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: theme.spacing(2),
+            right: theme.spacing(2),
+            display: 'flex',
+            gap: 1,
+            zIndex: 1000,
+          }}
+        >
+          {showLocationButton && (
+            <Tooltip title="現在地">
+              <IconButton
+                color="primary"
+                onClick={getUserLocation}
+                sx={{
+                  backgroundColor: 'background.paper',
+                  boxShadow: theme.shadows[2],
+                  '&:hover': {
+                    backgroundColor: 'background.paper',
+                    boxShadow: theme.shadows[4],
+                  },
+                }}
+              >
+                <MyLocation />
+              </IconButton>
+            </Tooltip>
+          )}
+
+          {enableFullscreen && (
+            <Tooltip title={isFullscreen ? "全画面終了" : "全画面表示"}>
+              <IconButton
+                color="default"
+                onClick={handleFullscreenToggle}
+                sx={{
+                  backgroundColor: 'background.paper',
+                  boxShadow: theme.shadows[2],
+                  '&:hover': {
+                    backgroundColor: 'background.paper',
+                    boxShadow: theme.shadows[4],
+                  },
+                }}
+              >
+                {isFullscreen ? <Close /> : <Fullscreen />}
+              </IconButton>
+            </Tooltip>
+          )}
+        </Box>
+      )}
+
+      {/* Mobile Instructions */}
+      {isMobile && !loading && showControls && (
+        <Zoom in={showControls}>
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: theme.spacing(2),
+              left: '50%',
+              transform: 'translateX(-50%)',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              color: 'white',
+              padding: theme.spacing(1, 2),
+              borderRadius: 2,
+              zIndex: 1000,
+              fontSize: '12px',
+              textAlign: 'center',
+            }}
+          >
+            <Typography variant="caption" color="inherit">
+              長押しでコントロール表示 • ピンチでズーム • ダブルタップで拡大
+            </Typography>
+          </Box>
+        </Zoom>
+      )}
+
+      {/* User Location Marker */}
+      {userLocation && map && (
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: theme.spacing(1),
+            left: theme.spacing(1),
+            backgroundColor: 'primary.main',
+            color: 'white',
+            padding: theme.spacing(0.5, 1),
+            borderRadius: 1,
+            fontSize: '12px',
+            zIndex: 1000,
+          }}
+        >
+          現在地表示中
+        </Box>
+      )}
+
       {markers.length === 0 && !loading && (
         <Box
           sx={{
