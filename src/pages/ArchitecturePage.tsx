@@ -63,8 +63,8 @@ import {
   ResearchAnalytics 
 } from '../services/api/FastArchitectureService';
 import MapWithClustering from '../components/MapWithClustering';
-import TouchOptimizedSearchBar from '../components/TouchOptimizedSearchBar';
-import { useGestureNavigation } from '../hooks/useGestureNavigation';
+// import TouchOptimizedSearchBar from '../components/TouchOptimizedSearchBar';
+// import { useGestureNavigation } from '../hooks/useGestureNavigation';
 
 interface AutocompleteSuggestion {
   label: string;
@@ -94,34 +94,34 @@ const ArchitecturePageEnhanced = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Gesture navigation setup
-  const { gestureRef } = useGestureNavigation({
-    onSwipeLeft: () => {
-      // Navigate to next page if available
-      if (currentPage < Math.ceil(totalItems / itemsPerPage)) {
-        handlePageChange(null, currentPage + 1);
-      }
-    },
-    onSwipeRight: () => {
-      // Navigate to previous page if available
-      if (currentPage > 1) {
-        handlePageChange(null, currentPage - 1);
-      }
-    },
-    onSwipeUp: () => {
-      // Switch view mode
-      const modes: Array<'grid' | 'list' | 'map'> = ['grid', 'list', 'map'];
-      const currentIndex = modes.indexOf(viewMode);
-      const nextIndex = (currentIndex + 1) % modes.length;
-      setViewMode(modes[nextIndex]);
-    },
-    onSwipeDown: () => {
-      // Clear search or go back
-      if (searchValue || searchInputValue || activeFilters.length > 0) {
-        handleClearFilters();
-      }
-    }
-  });
+  // Gesture navigation setup - temporarily disabled
+  // const { gestureRef } = useGestureNavigation({
+  //   onSwipeLeft: () => {
+  //     // Navigate to next page if available
+  //     if (currentPage < Math.ceil(totalItems / itemsPerPage)) {
+  //       handlePageChange(null, currentPage + 1);
+  //     }
+  //   },
+  //   onSwipeRight: () => {
+  //     // Navigate to previous page if available
+  //     if (currentPage > 1) {
+  //       handlePageChange(null, currentPage - 1);
+  //     }
+  //   },
+  //   onSwipeUp: () => {
+  //     // Switch view mode
+  //     const modes: Array<'grid' | 'list' | 'map'> = ['grid', 'list', 'map'];
+  //     const currentIndex = modes.indexOf(viewMode);
+  //     const nextIndex = (currentIndex + 1) % modes.length;
+  //     setViewMode(modes[nextIndex]);
+  //   },
+  //   onSwipeDown: () => {
+  //     // Clear search or go back
+  //     if (searchValue || searchInputValue || activeFilters.length > 0) {
+  //       handleClearFilters();
+  //     }
+  //   }
+  // });
 
   // Recent searches management
   const addToRecentSearches = useCallback((search: AutocompleteSuggestion) => {
@@ -540,20 +540,21 @@ const ArchitecturePageEnhanced = () => {
         {/* Main Content */}
         <Grid item xs={12} lg={showInsights ? 9 : 12}>
           <Paper sx={{ p: 3, mb: 3 }}>
-            {/* Touch-Optimized Search Bar */}
-            <Box sx={{ mb: 3 }} ref={gestureRef}>
-              <TouchOptimizedSearchBar
-                value={searchValue}
-                onSearch={handleOptimizedSearch}
-                onInputChange={handleOptimizedInputChange}
-                inputValue={searchInputValue}
-                suggestions={autocompleteSuggestions}
-                loading={searchLoading}
+            {/* Basic Search Bar - TouchOptimized temporarily disabled */}
+            <Box sx={{ mb: 3 }}>
+              <TextField
+                fullWidth
                 placeholder="建築作品、建築家、場所を検索..."
-                onVoiceSearch={handleVoiceSearch}
-                onCameraSearch={handleCameraSearch}
-                recentSearches={recentSearches}
-                trendingSearches={trendingSearches}
+                value={searchInputValue}
+                onChange={(e) => handleOptimizedInputChange(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleOptimizedSearch(null)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  )
+                }}
               />
               
               <Box sx={{ display: 'flex', gap: 2, mt: 2, flexWrap: 'wrap' }}>
