@@ -3,7 +3,7 @@
  * Replaces FastArchitectService with real database integration
  */
 
-import { getResultsArray, getSingleResult } from '../db/SimpleDatabaseService';
+import { getResultsArray, getSingleResult } from '../db/FixedDatabaseService';
 
 export interface Architect {
   id: number;

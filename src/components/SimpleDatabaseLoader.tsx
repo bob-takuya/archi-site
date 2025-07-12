@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, Box, Typography, Alert, Button } from '@mui/material';
-import { initDatabase, DatabaseStatus, getDatabaseStatus } from '../services/db/SimpleDatabaseService';
+import { initDatabase, DatabaseStatus, getDatabaseStatus } from '../services/db/FixedDatabaseService';
 
 interface SimpleDatabaseLoaderProps {
   children: React.ReactNode;
