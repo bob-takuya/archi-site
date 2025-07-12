@@ -24,8 +24,6 @@ import { mobileTheme, isMobileDevice, isTouchDevice } from './styles/mobileTheme
 import { register as registerSW, useServiceWorkerStatus } from './utils/serviceWorker';
 import './i18n'; // Initialize i18n
 
-// Lazy load the enhanced architects page for better performance
-const EnhancedArchitectsPage = lazy(() => import('./pages/EnhancedArchitectsPage'));
 
 /**
  * ScrollToTop component - scrolls to top when route changes
@@ -133,7 +131,6 @@ const AppContent: React.FC = () => {
               <Route path="/architecture" element={<ArchitecturePage />} />
               <Route path="/architecture/:id" element={<ArchitectureSinglePage />} />
               <Route path="/architects" element={<ArchitectsPage />} />
-              <Route path="/architects/enhanced" element={<EnhancedArchitectsPage />} />
               <Route path="/architects/:id" element={<ArchitectSinglePage />} />
               <Route path="/map" element={<MapPage />} />
               <Route path="/research" element={<ResearchPage />} />
