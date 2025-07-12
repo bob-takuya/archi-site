@@ -1,0 +1,138 @@
+{
+  "testSuite": "English Search Functionality",
+  "timestamp": "2025-07-12T04:18:56.647Z",
+  "baseUrl": "http://localhost:3000/archi-site",
+  "totalTests": 5,
+  "results": [
+    {
+      "id": "museum_lowercase",
+      "searchTerm": "museum",
+      "description": "Search for \"museum\" in lowercase - testing English term translation",
+      "expectedBehavior": "Should find museums (博物館) or return no results",
+      "timestamp": "2025-07-12T04:18:56.648Z",
+      "status": "requires_translation",
+      "findings": [
+        "Search term: \"museum\" (6 characters)",
+        "Character encoding: 6d757365756d",
+        "Contains ASCII only: true",
+        "Analysis: Japanese architecture data likely uses \"博物館\" for museums",
+        "Prediction: Search may return 0 results unless system has English translation layer"
+      ],
+      "errors": [],
+      "searchUrl": "http://localhost:3000/archi-site/architecture?search=museum",
+      "resultCount": 0,
+      "responseTime": 0
+    },
+    {
+      "id": "ando_architect",
+      "searchTerm": "Ando",
+      "description": "Search for \"Ando\" - testing architect name search",
+      "expectedBehavior": "Should find Tadao Ando (安藤忠雄) works if any exist",
+      "timestamp": "2025-07-12T04:18:56.648Z",
+      "status": "name_search",
+      "findings": [
+        "Search term: \"Ando\" (4 characters)",
+        "Character encoding: 416e646f",
+        "Contains ASCII only: true",
+        "Analysis: Architect names might be in Japanese (安藤忠雄) or romanized",
+        "Prediction: May find results if romanized names are indexed"
+      ],
+      "errors": [],
+      "searchUrl": "http://localhost:3000/archi-site/architecture?search=Ando",
+      "resultCount": 0,
+      "responseTime": 0
+    },
+    {
+      "id": "tokyo_location",
+      "searchTerm": "Tokyo",
+      "description": "Search for \"Tokyo\" - testing location search",
+      "expectedBehavior": "Should find Tokyo buildings or return no results",
+      "timestamp": "2025-07-12T04:18:56.649Z",
+      "status": "location_search",
+      "findings": [
+        "Search term: \"Tokyo\" (5 characters)",
+        "Character encoding: 546f6b796f",
+        "Contains ASCII only: true",
+        "Analysis: Location data shows prefecture in Japanese (東京)",
+        "Prediction: May not find results unless English location names are supported"
+      ],
+      "errors": [],
+      "searchUrl": "http://localhost:3000/archi-site/architecture?search=Tokyo",
+      "resultCount": 0,
+      "responseTime": 0
+    },
+    {
+      "id": "partial_mus",
+      "searchTerm": "mus",
+      "description": "Search for partial word \"mus\" - testing partial matching",
+      "expectedBehavior": "Should handle partial matching appropriately",
+      "timestamp": "2025-07-12T04:18:56.649Z",
+      "status": "partial_search",
+      "findings": [
+        "Search term: \"mus\" (3 characters)",
+        "Character encoding: 6d7573",
+        "Contains ASCII only: true",
+        "Analysis: Partial search of English term",
+        "Prediction: Depends on search algorithm implementation"
+      ],
+      "errors": [],
+      "searchUrl": "http://localhost:3000/archi-site/architecture?search=mus",
+      "resultCount": 0,
+      "responseTime": 0
+    },
+    {
+      "id": "museum_uppercase",
+      "searchTerm": "MUSEUM",
+      "description": "Search for \"MUSEUM\" in uppercase - testing case sensitivity",
+      "expectedBehavior": "Should work same as lowercase or handle case insensitively",
+      "timestamp": "2025-07-12T04:18:56.649Z",
+      "status": "requires_translation",
+      "findings": [
+        "Search term: \"MUSEUM\" (6 characters)",
+        "Character encoding: 4d555345554d",
+        "Contains ASCII only: true",
+        "Analysis: Japanese architecture data likely uses \"博物館\" for museums",
+        "Prediction: Search may return 0 results unless system has English translation layer"
+      ],
+      "errors": [],
+      "searchUrl": "http://localhost:3000/archi-site/architecture?search=MUSEUM",
+      "resultCount": 0,
+      "responseTime": 0
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "failed": 0,
+    "unknown": 5,
+    "errors": 0
+  },
+  "patterns": [
+    {
+      "pattern": "English-Japanese Translation Gap",
+      "description": "The database contains Japanese text but searches are in English",
+      "impact": "English searches likely to return few or no results",
+      "recommendation": "Implement translation layer or bilingual search index"
+    },
+    {
+      "pattern": "Character Encoding Compatibility",
+      "description": "English ASCII characters vs Japanese Unicode characters",
+      "impact": "Search algorithm may not handle cross-language matching",
+      "recommendation": "Ensure search supports both ASCII and Unicode properly"
+    },
+    {
+      "pattern": "Data Structure Analysis",
+      "description": "Field analysis shows Japanese content in title, architect, category fields",
+      "impact": "Direct English matching unlikely to succeed",
+      "recommendation": "Add English metadata fields or search translation"
+    }
+  ],
+  "recommendations": [
+    "Implement bilingual search capability with English-Japanese term mapping",
+    "Add English translations for common architectural terms (museum→博物館)",
+    "Create romanized architect name index for international accessibility",
+    "Add English location names alongside Japanese prefecture names",
+    "Implement fuzzy matching for partial English searches",
+    "Consider search suggestions to guide users to Japanese terms",
+    "Add case-insensitive search handling for English terms"
+  ]
+}

@@ -38,40 +38,44 @@ export async function initDatabase(): Promise<SqliteWorker<WorkerHttpvfs>> {
 
   console.log(`Initializing database from ${BASE_PATH}/db/archimap.sqlite`);
 
-  // Get actual server response size (compressed if applicable)
-  let databaseSize = 12730368; // Default fallback size (uncompressed)
+  // Load database metadata for precise configuration
+  let dbConfig;
   try {
-    // Try to get actual content-length from server
-    const headResponse = await fetch(`${BASE_PATH}/db/archimap.sqlite`, { method: 'HEAD' });
-    if (headResponse.ok) {
-      const contentLength = headResponse.headers.get('content-length');
-      if (contentLength) {
-        databaseSize = parseInt(contentLength, 10);
-        console.log(`Database size from server headers: ${databaseSize} bytes`);
-      }
-    }
-    
-    // Also fetch database info for additional metadata
     const dbInfoResponse = await fetch(`${BASE_PATH}/db/database-info.json`);
     if (dbInfoResponse.ok) {
       const dbInfo = await dbInfoResponse.json();
-      console.log(`Database info - uncompressed size: ${dbInfo.size} bytes`);
+      console.log(`Database info loaded - size: ${dbInfo.size} bytes, chunks: ${dbInfo.chunks}`);
+      
+      dbConfig = {
+        serverMode: 'full',
+        requestChunkSize: dbInfo.chunkSize || 65536, // Use actual chunk size
+        url: `${BASE_PATH}/db/archimap.sqlite`,
+        suffixUrl: `${BASE_PATH}/db/archimap.sqlite.suffix`,
+        // Explicitly specify the uncompressed size for GitHub Pages compatibility
+        size: dbInfo.size,
+        maxBytesToRead: dbInfo.size,
+      };
+    } else {
+      throw new Error('Could not load database metadata');
     }
   } catch (error) {
-    console.warn('Could not fetch database size, using default:', error);
+    console.warn('Could not load database metadata, using fallback configuration:', error);
+    // Fallback configuration with known values
+    dbConfig = {
+      serverMode: 'full',
+      requestChunkSize: 65536, // 64KB chunks
+      url: `${BASE_PATH}/db/archimap.sqlite`,
+      suffixUrl: `${BASE_PATH}/db/archimap.sqlite.suffix`,
+      size: 12730368, // Known database size
+      maxBytesToRead: 12730368,
+    };
   }
 
-  // Initialize the database with special handling for compressed files
+  // Initialize the database with optimized configuration for GitHub Pages
   initPromise = createDbWorker(
     [{
       from: 'chunks',
-      config: {
-        serverMode: 'full',
-        requestChunkSize: 1024 * 1024, // 1MB chunks for better compatibility
-        url: `${BASE_PATH}/db/archimap.sqlite`,
-        suffixUrl: `${BASE_PATH}/db/archimap.sqlite.suffix`,
-        // Don't specify size for compressed files - let sql.js-httpvfs handle it
-      },
+      config: dbConfig,
     }],
     `${BASE_PATH}/sqlite.worker.js`,
     `${BASE_PATH}/sql-wasm.wasm`,
