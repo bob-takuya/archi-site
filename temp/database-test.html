@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Connectivity Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 3px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .status.success { background-color: #d4edda; color: #155724; }
+        .status.error { background-color: #f8d7da; color: #721c24; }
+        .status.warning { background-color: #fff3cd; color: #856404; }
+        .status.info { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            background-color: #007acc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .log {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .metric {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 5px 10px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Database Connectivity Test Agent</h1>
+        
+        <div class="test-section">
+            <h3>Quick Health Check</h3>
+            <p>Perform a basic health check of the database connection and functionality.</p>
+            <button id="healthCheckBtn" onclick="runHealthCheck()">Run Health Check</button>
+            <div id="healthStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Comprehensive Connectivity Test</h3>
+            <p>Run a complete test suite covering all database functionality including worker initialization, table access, and data verification.</p>
+            <button id="fullTestBtn" onclick="runFullTest()">Run Full Test Suite</button>
+            <div id="testStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Manual Database Queries</h3>
+            <p>Test custom SQL queries against the database.</p>
+            <input type="text" id="customQuery" placeholder="Enter SQL query (e.g., SELECT COUNT(*) FROM ZCDARCHITECT)" style="width: 70%; padding: 8px; margin-right: 10px;">
+            <button onclick="runCustomQuery()">Execute Query</button>
+            <div id="queryResults"></div>
+        </div>
+        
+        <div class="results">
+            <h3>Test Results & Logs</h3>
+            <div id="log" class="log">Ready to run tests...\n</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Database Information</h3>
+            <div id="dbInfo">
+                <div class="metric">Status: <span id="dbStatus">Unknown</span></div>
+                <div class="metric">Type: <span id="dbType">Unknown</span></div>
+                <div class="metric">SQLite Version: <span id="sqliteVersion">Unknown</span></div>
+                <div class="metric">Tables: <span id="tableCount">Unknown</span></div>
+                <div class="metric">Records: <span id="recordCount">Unknown</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        let logDiv = document.getElementById('log');
+        let dbService = null;
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : '📋';
+            logDiv.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function updateStatus(elementId, text, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${text}</div>`;
+        }
+        
+        function updateMetric(metricId, value) {
+            const element = document.getElementById(metricId);
+            if (element) {
+                element.textContent = value;
+            }
+        }
+        
+        async function initDatabaseService() {
+            if (!dbService) {
+                try {
+                    log("Importing database service...");
+                    dbService = await import('../src/services/db/ClientDatabaseService.js');
+                    log("Database service imported successfully", 'success');
+                } catch (error) {
+                    log(`Failed to import database service: ${error.message}`, 'error');
+                    throw error;
+                }
+            }
+            return dbService;
+        }
+        
+        window.runHealthCheck = async function() {
+            const btn = document.getElementById('healthCheckBtn');
+            btn.disabled = true;
+            btn.textContent = 'Running...';
+            
+            try {
+                log("Starting health check...");
+                const service = await initDatabaseService();
+                
+                // Check status
+                const status = service.getDatabaseStatus();
+                log(`Current database status: ${status}`);
+                updateMetric('dbStatus', status);
+                
+                // Initialize if needed
+                if (status !== 'ready') {
+                    log("Initializing database...");
+                    await service.initDatabase();
+                    const newStatus = service.getDatabaseStatus();
+                    log(`Database status after init: ${newStatus}`, newStatus === 'ready' ? 'success' : 'warning');
+                    updateMetric('dbStatus', newStatus);
+                }
+                
+                // Test basic functionality
+                const versionResult = await service.executeQuery('SELECT sqlite_version()');
+                const version = versionResult[0]?.values?.[0]?.[0] || 'Unknown';
+                log(`SQLite version: ${version}`, 'success');
+                updateMetric('sqliteVersion', version);
+                
+                const tablesResult = await service.executeQuery("SELECT name FROM sqlite_master WHERE type='table'");
+                const tableCount = tablesResult[0]?.values?.length || 0;
+                log(`Found ${tableCount} tables`, 'success');
+                updateMetric('tableCount', tableCount);
+                
+                const countResult = await service.executeQuery("SELECT COUNT(*) FROM ZCDARCHITECT");
+                const recordCount = countResult[0]?.values?.[0]?.[0] || 0;
+                log(`ZCDARCHITECT table contains ${recordCount} records`, 'success');
+                updateMetric('recordCount', recordCount);
+                
+                if (service.getDatabaseStatus() === 'ready' && tableCount > 0 && recordCount > 0) {
+                    updateStatus('healthStatus', 'Database is healthy and fully functional!', 'success');
+                    log("Health check completed successfully", 'success');
+                } else {
+                    updateStatus('healthStatus', 'Database has some issues - check logs for details', 'warning');
+                    log("Health check completed with warnings", 'warning');
+                }
+                
+            } catch (error) {
+                log(`Health check failed: ${error.message}`, 'error');
+                updateStatus('healthStatus', `Health check failed: ${error.message}`, 'error');
+            }
+            
+            btn.disabled = false;
+            btn.textContent = 'Run Health Check';
+        };
+        
+        window.runFullTest = async function() {
+            const btn = document.getElementById('fullTestBtn');
+            btn.disabled = true;
+            btn.textContent = 'Running Full Test...';
+            
+            try {
+                log("Starting comprehensive database connectivity test...");
+                
+                // Import and run the full test
+                const testModule = await import('./database-connectivity-test.js');
+                const results = await testModule.testDatabaseConnectivity();
+                
+                log("Full test completed", results.success ? 'success' : 'error');
+                
+                // Update UI with results
+                const passedTests = results.tests.filter(t => t.status === 'PASS').length;
+                const totalTests = results.tests.length;
+                const successRate = Math.round((passedTests / totalTests) * 100);
+                
+                updateStatus('testStatus', 
+                    `Test completed: ${passedTests}/${totalTests} passed (${successRate}%)`, 
+                    results.success ? 'success' : 'error'
+                );
+                
+                // Update metrics
+                if (results.database_info) {
+                    if (results.database_info.instance_type) {
+                        updateMetric('dbType', results.database_info.instance_type);
+                    }
+                    if (results.database_info.sqlite_version) {
+                        updateMetric('sqliteVersion', results.database_info.sqlite_version);
+                    }
+                    if (results.database_info.table_count !== undefined) {
+                        updateMetric('tableCount', results.database_info.table_count);
+                    }
+                    if (results.database_info.zcdarchitect_record_count !== undefined) {
+                        updateMetric('recordCount', results.database_info.zcdarchitect_record_count);
+                    }
+                }
+                
+            } catch (error) {
+                log(`Full test failed: ${error.message}`, 'error');
+                updateStatus('testStatus', `Full test failed: ${error.message}`, 'error');
+            }
+            
+            btn.disabled = false;
+            btn.textContent = 'Run Full Test Suite';
+        };
+        
+        window.runCustomQuery = async function() {
+            const queryInput = document.getElementById('customQuery');
+            const query = queryInput.value.trim();
+            
+            if (!query) {
+                log("Please enter a query", 'warning');
+                return;
+            }
+            
+            try {
+                log(`Executing query: ${query}`);
+                const service = await initDatabaseService();
+                
+                // Ensure database is initialized
+                if (service.getDatabaseStatus() !== 'ready') {
+                    log("Initializing database for query...");
+                    await service.initDatabase();
+                }
+                
+                const result = await service.executeQuery(query);
+                
+                if (result && result.length > 0 && result[0].values) {
+                    const rowCount = result[0].values.length;
+                    const colCount = result[0].columns ? result[0].columns.length : 0;
+                    log(`Query successful: ${rowCount} rows, ${colCount} columns`, 'success');
+                    
+                    // Display first few results
+                    const resultsDiv = document.getElementById('queryResults');
+                    let html = `<div class="metric">Results: ${rowCount} rows</div>`;
+                    
+                    if (result[0].columns && result[0].values.length > 0) {
+                        html += '<table style="width:100%; margin-top:10px; border-collapse:collapse;">';
+                        html += '<tr style="background-color:#f8f9fa;">';
+                        result[0].columns.forEach(col => {
+                            html += `<th style="border:1px solid #ddd; padding:8px; text-align:left;">${col}</th>`;
+                        });
+                        html += '</tr>';
+                        
+                        // Show first 10 rows
+                        const displayRows = result[0].values.slice(0, 10);
+                        displayRows.forEach(row => {
+                            html += '<tr>';
+                            row.forEach(cell => {
+                                html += `<td style="border:1px solid #ddd; padding:8px;">${cell || ''}</td>`;
+                            });
+                            html += '</tr>';
+                        });
+                        
+                        if (result[0].values.length > 10) {
+                            html += `<tr><td colspan="${result[0].columns.length}" style="text-align:center; padding:8px; font-style:italic;">... and ${result[0].values.length - 10} more rows</td></tr>`;
+                        }
+                        
+                        html += '</table>';
+                    }
+                    
+                    resultsDiv.innerHTML = html;
+                } else {
+                    log("Query executed successfully (no results)", 'success');
+                    document.getElementById('queryResults').innerHTML = '<div class="metric">Query executed successfully (no results)</div>';
+                }
+                
+            } catch (error) {
+                log(`Query failed: ${error.message}`, 'error');
+                document.getElementById('queryResults').innerHTML = `<div class="status error">Query failed: ${error.message}</div>`;
+            }
+        };
+        
+        // Auto-run health check on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            log("Database connectivity test page loaded");
+            log("Click 'Run Health Check' to verify database connectivity");
+        });
+    </script>
+</body>
+</html>
