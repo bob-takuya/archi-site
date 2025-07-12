@@ -1,9 +1,0 @@
-
-> archi-site@1.1.0 preview
-> vite preview
-
-[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
-worker.plugins is now a function that returns an array of plugins. Please update your Vite config accordingly.
-
-  ➜  Local:   http://localhost:4173/archi-site/
-  ➜  Network: use --host to expose

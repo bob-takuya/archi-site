@@ -28,7 +28,14 @@ import {
   Close as CloseIcon,
   Refresh as RefreshIcon
 } from '@mui/icons-material';
-import { debounce } from 'lodash';
+// Custom debounce implementation to avoid lodash dependency issues
+const debounce = <T extends (...args: any[]) => any>(func: T, delay: number) => {
+  let timeoutId: NodeJS.Timeout;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
+};
 
 // Types
 interface AutocompleteSuggestion {
