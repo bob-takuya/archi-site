@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-07-12T04:24:14.851Z",
+  "testSuite": "English Search Functionality Analysis",
+  "summary": {
+    "totalTests": 1,
+    "successfulSearches": 0,
+    "successRate": 0,
+    "averageSearchTime": 0
+  },
+  "patterns": {
+    "caseSensitive": "unknown",
+    "supportsPartialMatching": false,
+    "hasTermInResults": false
+  },
+  "results": [
+    {
+      "searchTerm": "Ando",
+      "resultCount": 0,
+      "hasResults": false,
+      "searchTime": 0,
+      "status": "ERROR",
+      "findings": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByPlaceholder('検索')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByPlaceholder('検索')\u001b[22m\n"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "timestamp": "2025-07-12T04:25:05.402Z",
+  "testSuite": "Manual English Search Inspection",
+  "dataAnalysis": {
+    "language": "Japanese",
+    "architectNames": "Japanese characters (隈研吾, 安藤忠雄) with some romanized",
+    "categories": "Japanese (博物館, 美術館, ホテル)",
+    "prefectures": "Japanese (北海道, 東京)",
+    "titles": "Japanese characters",
+    "searchIndexStructure": "Unknown - need to examine search implementation"
+  },
+  "searchTerms": [
+    {
+      "term": "museum",
+      "expectation": "Should find museums (博物館) if translation exists"
+    },
+    {
+      "term": "Ando",
+      "expectation": "Should find 安藤忠雄 works if romanized names indexed"
+    },
+    {
+      "term": "Tokyo",
+      "expectation": "Should find Tokyo buildings if English locations supported"
+    },
+    {
+      "term": "mus",
+      "expectation": "Should test partial matching behavior"
+    },
+    {
+      "term": "MUSEUM",
+      "expectation": "Should test case sensitivity"
+    }
+  ],
+  "findings": [
+    {
+      "term": "museum",
+      "analysis": {
+        "length": 6,
+        "isAscii": true,
+        "hasUppercase": false,
+        "isPartial": false
+      },
+      "prediction": "LIKELY NO RESULTS - requires \"博物館\" translation"
+    },
+    {
+      "term": "Ando",
+      "analysis": {
+        "length": 4,
+        "isAscii": true,
+        "hasUppercase": true,
+        "isPartial": false
+      },
+      "prediction": "POSSIBLE RESULTS - if romanized \"安藤忠雄\" indexed"
+    },
+    {
+      "term": "Tokyo",
+      "analysis": {
+        "length": 5,
+        "isAscii": true,
+        "hasUppercase": true,
+        "isPartial": false
+      },
+      "prediction": "LIKELY NO RESULTS - requires \"東京\" translation"
+    },
+    {
+      "term": "mus",
+      "analysis": {
+        "length": 3,
+        "isAscii": true,
+        "hasUppercase": false,
+        "isPartial": true
+      },
+      "prediction": "UNLIKELY - partial English word"
+    },
+    {
+      "term": "MUSEUM",
+      "analysis": {
+        "length": 6,
+        "isAscii": true,
+        "hasUppercase": true,
+        "isPartial": false
+      },
+      "prediction": "LIKELY NO RESULTS - requires \"博物館\" translation"
+    }
+  ],
+  "patternsToTest": [
+    {
+      "pattern": "Translation Layer",
+      "test": "Do English terms find Japanese content?",
+      "indicator": "museum finds 博物館 buildings"
+    },
+    {
+      "pattern": "Romanization Support",
+      "test": "Do romanized names work?",
+      "indicator": "Ando finds 安藤忠雄 works"
+    },
+    {
+      "pattern": "Case Sensitivity",
+      "test": "Are searches case sensitive?",
+      "indicator": "museum vs MUSEUM return same results"
+    },
+    {
+      "pattern": "Partial Matching",
+      "test": "Do partial words work?",
+      "indicator": "mus finds museum-related content"
+    },
+    {
+      "pattern": "Fuzzy Matching",
+      "test": "Are approximate matches supported?",
+      "indicator": "English terms find semantically related Japanese content"
+    }
+  ],
+  "recommendations": [
+    "Add English-Japanese term mapping (museum → 博物館)",
+    "Create romanized architect name index",
+    "Include English location names (Tokyo → 東京)",
+    "Implement search suggestions for English terms",
+    "Add bilingual search capability",
+    "Create architectural glossary with translations",
+    "Support fuzzy matching for international users"
+  ],
+  "urls": {
+    "baseUrl": "http://localhost:3000/archi-site",
+    "architecturePage": "http://localhost:3000/archi-site/architecture",
+    "searchUrls": [
+      "http://localhost:3000/archi-site/architecture?search=museum",
+      "http://localhost:3000/archi-site/architecture?search=Ando",
+      "http://localhost:3000/archi-site/architecture?search=Tokyo",
+      "http://localhost:3000/archi-site/architecture?search=mus",
+      "http://localhost:3000/archi-site/architecture?search=MUSEUM"
+    ]
+  }
+}

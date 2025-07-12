@@ -90,6 +90,14 @@ export default defineConfig({
         headless: !!process.env.CI,
       },
     },
+    {
+      name: 'edge',
+      use: { 
+        ...devices['Desktop Edge'],
+        channel: 'msedge',
+        headless: !!process.env.CI,
+      },
+    },
     // Mobile testing for responsive design
     {
       name: 'Mobile Chrome',

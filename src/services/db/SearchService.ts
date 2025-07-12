@@ -1,10 +1,12 @@
 /**
  * Search service for unified search functionality across the database
  * This provides a centralized way to search across multiple data types
+ * with English-Japanese translation support for international accessibility
  */
 
 import { executeQuery } from './DatabaseLoader';
 import { getCachedQuery, generateCacheKey } from './DatabaseCache';
+import { enhanceSearchTerms, createSearchPatterns, isEnglishTerm } from '../SearchTranslationService';
 import type { Architecture } from '../../types/architecture';
 import type { Architect } from '../../types/architect';
 import type { SearchResult } from '../../types/search';
@@ -35,10 +37,28 @@ export async function globalSearch(
   return getCachedQuery<SearchResult>(
     cacheKey,
     async () => {
-      const searchTermFormatted = `%${searchTerm}%`;
+      // Enhance search terms with translations for better international accessibility
+      const enhancedTerms = enhanceSearchTerms(searchTerm);
+      const searchPatterns = createSearchPatterns(searchTerm);
+      
+      console.log(`🔍 Search enhanced: "${searchTerm}" → [${enhancedTerms.join(', ')}] (${isEnglishTerm(searchTerm) ? 'EN→JP' : 'JP→EN'})`);
       
       try {
-        // Search architectures
+        // Build dynamic WHERE clause for enhanced search patterns
+        const whereConditions = searchPatterns.map(() => 
+          '(ZAR_TITLE LIKE ? OR ZAR_ADDRESS LIKE ? OR ZAR_PREFECTURE LIKE ? OR ZAR_DESCRIPTION LIKE ? OR ZAR_ARCHITECT LIKE ?)'
+        ).join(' OR ');
+        
+        const whereParams: string[] = [];
+        searchPatterns.forEach(pattern => {
+          whereParams.push(pattern, pattern, pattern, pattern, pattern);
+        });
+        
+        // Build relevance scoring for original term (higher priority)
+        const originalPattern = `%${searchTerm}%`;
+        const startsWithPattern = `${searchTerm}%`;
+        
+        // Search architectures with enhanced translation support
         const architectures = await executeQuery<Architecture>(`
           SELECT 
             Z_PK as id,
@@ -48,31 +68,35 @@ export async function globalSearch(
             ZAR_ARCHITECT as architectName,
             'architecture' as type
           FROM ZCDARCHITECTURE
-          WHERE (
-            ZAR_TITLE LIKE ? OR 
-            ZAR_ADDRESS LIKE ? OR 
-            ZAR_PREFECTURE LIKE ? OR
-            ZAR_DESCRIPTION LIKE ?
-          )
+          WHERE (${whereConditions})
           AND ZAR_TAG NOT LIKE '%の追加建築%'
           ORDER BY 
             CASE 
-              WHEN ZAR_TITLE LIKE ? THEN 1
-              WHEN ZAR_TITLE LIKE ? THEN 2
-              ELSE 3
-            END
+              WHEN ZAR_TITLE LIKE ? THEN 1        -- Original term in title (highest priority)
+              WHEN ZAR_ARCHITECT LIKE ? THEN 2    -- Original term in architect name
+              WHEN ZAR_TITLE LIKE ? THEN 3        -- Original term contains
+              ELSE 4                               -- Translation matches (lower priority)
+            END,
+            ZAR_YEAR DESC
           LIMIT ?
         `, [
-          searchTermFormatted, 
-          searchTermFormatted, 
-          searchTermFormatted,
-          searchTermFormatted,
-          `${searchTerm}%`,  // Starts with (higher priority)
-          `%${searchTerm}%`, // Contains
+          ...whereParams,
+          startsWithPattern,    // Original term starts with
+          startsWithPattern,    // Original architect starts with
+          originalPattern,      // Original term contains
           limit
         ], false); // Don't use cache for individual queries, only the final result
 
-        // Search architects
+        // Search architects with translation support
+        const architectWhereConditions = searchPatterns.map(() => 
+          '(ZAT_ARCHITECT LIKE ? OR ZAT_OFFICE LIKE ?)'
+        ).join(' OR ');
+        
+        const architectWhereParams: string[] = [];
+        searchPatterns.forEach(pattern => {
+          architectWhereParams.push(pattern, pattern);
+        });
+        
         const architects = await executeQuery<Architect>(`
           SELECT 
             Z_PK as id,
@@ -80,72 +104,83 @@ export async function globalSearch(
             ZAT_OFFICE as office,
             'architect' as type
           FROM ZCDARCHITECT
-          WHERE ZAT_ARCHITECT LIKE ? OR ZAT_OFFICE LIKE ?
+          WHERE ${architectWhereConditions}
           ORDER BY 
             CASE 
-              WHEN ZAT_ARCHITECT LIKE ? THEN 1
-              WHEN ZAT_ARCHITECT LIKE ? THEN 2
-              ELSE 3
+              WHEN ZAT_ARCHITECT LIKE ? THEN 1     -- Original term starts with architect name
+              WHEN ZAT_ARCHITECT LIKE ? THEN 2     -- Original term contains architect name
+              WHEN ZAT_OFFICE LIKE ? THEN 3        -- Original term in office
+              ELSE 4                                -- Translation matches
             END
           LIMIT ?
         `, [
-          searchTermFormatted,
-          searchTermFormatted,
-          `${searchTerm}%`,  // Starts with (higher priority)
-          `%${searchTerm}%`, // Contains
+          ...architectWhereParams,
+          startsWithPattern,  // Original term starts with
+          originalPattern,    // Original term contains
+          originalPattern,    // Original term in office
           limit
         ], false);
 
-        // Search prefectures
+        // Search prefectures with translation support
+        const prefectureWhereConditions = searchPatterns.map(() => 'ZAR_PREFECTURE LIKE ?').join(' OR ');
+        
         const prefectures = await executeQuery<{ name: string, count: number }>(`
           SELECT 
             ZAR_PREFECTURE as name,
             COUNT(*) as count
           FROM ZCDARCHITECTURE
-          WHERE ZAR_PREFECTURE LIKE ?
+          WHERE (${prefectureWhereConditions})
             AND ZAR_PREFECTURE IS NOT NULL
             AND ZAR_PREFECTURE != ''
             AND ZAR_TAG NOT LIKE '%の追加建築%'
           GROUP BY ZAR_PREFECTURE
           ORDER BY 
             CASE 
-              WHEN ZAR_PREFECTURE LIKE ? THEN 1
-              WHEN ZAR_PREFECTURE LIKE ? THEN 2
-              ELSE 3
+              WHEN ZAR_PREFECTURE LIKE ? THEN 1    -- Original term starts with
+              WHEN ZAR_PREFECTURE LIKE ? THEN 2    -- Original term contains
+              ELSE 3                                -- Translation matches
             END,
             count DESC
           LIMIT ?
         `, [
-          searchTermFormatted,
-          `${searchTerm}%`,  // Starts with (higher priority)
-          `%${searchTerm}%`, // Contains
+          ...searchPatterns,
+          startsWithPattern,  // Original term starts with
+          originalPattern,    // Original term contains
           limit
         ], false);
 
-        // Search categories
+        // Search categories with translation support
+        const categoryWhereConditions = searchPatterns.map(() => 
+          '(ZAR_CATEGORY LIKE ? OR ZAR_BIGCATEGORY LIKE ?)'
+        ).join(' OR ');
+        
+        const categoryWhereParams: string[] = [];
+        searchPatterns.forEach(pattern => {
+          categoryWhereParams.push(pattern, pattern);
+        });
+
         const categories = await executeQuery<{ name: string, count: number }>(`
           SELECT 
             ZAR_CATEGORY as name,
             COUNT(*) as count
           FROM ZCDARCHITECTURE
-          WHERE (ZAR_CATEGORY LIKE ? OR ZAR_BIGCATEGORY LIKE ?)
+          WHERE (${categoryWhereConditions})
             AND ZAR_CATEGORY IS NOT NULL
             AND ZAR_CATEGORY != ''
             AND ZAR_TAG NOT LIKE '%の追加建築%'
           GROUP BY ZAR_CATEGORY
           ORDER BY 
             CASE 
-              WHEN ZAR_CATEGORY LIKE ? THEN 1
-              WHEN ZAR_CATEGORY LIKE ? THEN 2
-              ELSE 3
+              WHEN ZAR_CATEGORY LIKE ? THEN 1      -- Original term starts with
+              WHEN ZAR_CATEGORY LIKE ? THEN 2      -- Original term contains
+              ELSE 3                                -- Translation matches
             END,
             count DESC
           LIMIT ?
         `, [
-          searchTermFormatted,
-          searchTermFormatted,
-          `${searchTerm}%`,  // Starts with (higher priority)
-          `%${searchTerm}%`, // Contains
+          ...categoryWhereParams,
+          startsWithPattern,  // Original term starts with
+          originalPattern,    // Original term contains
           limit
         ], false);
 
@@ -254,25 +289,38 @@ export async function fullTextSearch(
   return getCachedQuery<{ items: Architecture[], total: number, pages: number }>(
     cacheKey,
     async () => {
+      // Enhance search terms with translations for full-text search
+      const enhancedTerms = enhanceSearchTerms(term);
+      const searchPatterns = createSearchPatterns(term);
+      
+      console.log(`🔍 Full-text search enhanced: "${term}" → [${enhancedTerms.join(', ')}]`);
+      
       try {
-        // Get total count
+        // Build dynamic WHERE clause for enhanced search patterns
+        const whereConditions = searchPatterns.map(() => 
+          '(ZAR_TITLE LIKE ? OR ZAR_ARCHITECT LIKE ? OR ZAR_ADDRESS LIKE ? OR ZAR_PREFECTURE LIKE ? OR ZAR_DESCRIPTION LIKE ? OR ZAR_TAG LIKE ?)'
+        ).join(' OR ');
+        
+        const whereParams: string[] = [];
+        searchPatterns.forEach(pattern => {
+          whereParams.push(pattern, pattern, pattern, pattern, pattern, pattern);
+        });
+        
+        // Build relevance scoring patterns
+        const originalPattern = `%${term}%`;
+        const startsWithPattern = `${term}%`;
+
+        // Get total count with enhanced search
         const totalResult = await executeQuery<{ total: number }>(`
           SELECT COUNT(*) as total
           FROM ZCDARCHITECTURE
-          WHERE (
-            ZAR_TITLE LIKE ? OR
-            ZAR_ARCHITECT LIKE ? OR
-            ZAR_ADDRESS LIKE ? OR
-            ZAR_PREFECTURE LIKE ? OR
-            ZAR_DESCRIPTION LIKE ? OR
-            ZAR_TAG LIKE ?
-          )
+          WHERE (${whereConditions})
           AND ZAR_TAG NOT LIKE '%の追加建築%'
-        `, [searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm], false);
+        `, whereParams, false);
 
         const total = totalResult[0]?.total || 0;
 
-        // Get paginated results
+        // Get paginated results with enhanced search and relevance scoring
         const items = await executeQuery<Architecture>(`
           SELECT 
             Z_PK as id,
@@ -282,27 +330,22 @@ export async function fullTextSearch(
             ZAR_ARCHITECT as architectName,
             ZAR_ADDRESS as location
           FROM ZCDARCHITECTURE
-          WHERE (
-            ZAR_TITLE LIKE ? OR
-            ZAR_ARCHITECT LIKE ? OR
-            ZAR_ADDRESS LIKE ? OR
-            ZAR_PREFECTURE LIKE ? OR
-            ZAR_DESCRIPTION LIKE ? OR
-            ZAR_TAG LIKE ?
-          )
+          WHERE (${whereConditions})
           AND ZAR_TAG NOT LIKE '%の追加建築%'
           ORDER BY
             CASE 
-              WHEN ZAR_TITLE LIKE ? THEN 1
-              WHEN ZAR_ARCHITECT LIKE ? THEN 2
-              WHEN ZAR_PREFECTURE LIKE ? THEN 3
-              ELSE 4
+              WHEN ZAR_TITLE LIKE ? THEN 1          -- Original term in title (highest priority)
+              WHEN ZAR_ARCHITECT LIKE ? THEN 2      -- Original term in architect name
+              WHEN ZAR_PREFECTURE LIKE ? THEN 3     -- Original term in prefecture
+              WHEN ZAR_TITLE LIKE ? THEN 4          -- Original term contains in title
+              ELSE 5                                 -- Translation matches (lower priority)
             END,
             ZAR_YEAR DESC
           LIMIT ? OFFSET ?
         `, [
-          searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm,
-          `${term}%`, `${term}%`, `${term}%`, // Starts with pattern for relevance sorting
+          ...whereParams,
+          startsWithPattern, startsWithPattern, startsWithPattern, // Starts with patterns for relevance
+          originalPattern,   // Contains pattern for relevance
           limit, offset
         ], false);
 
