@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { 
   ArchitectureService, 
-  ArchitectService,
+  getAllArchitects,
+  getArchitectById,
   DatabaseStatus, 
   getDatabaseStatus,
   initDatabase
@@ -101,15 +102,11 @@ const useDatabase = () => {
     architect: {
       getById: (id: number) => 
         measureQueryPerformance(`getArchitectById(${id})`,
-          () => ArchitectService.getArchitectById(id)),
+          () => getArchitectById(id)),
           
-      getAll: (page = 1, limit = 12, searchTerm = '', tags = [], sortBy = 'ZAR_NAME', sortOrder = 'asc', options = {}) =>
+      getAll: (page = 1, limit = 12, searchTerm = '', sortBy = 'name_asc') =>
         measureQueryPerformance('getAllArchitects',
-          () => ArchitectService.getAllArchitects(page, limit, searchTerm, tags, sortBy, sortOrder, options)),
-          
-      getTags: () =>
-        measureQueryPerformance('getArchitectTags',
-          () => ArchitectService.getArchitectTags()),
+          () => getAllArchitects(page, limit, searchTerm, sortBy)),
     }
   };
 };

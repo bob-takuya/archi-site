@@ -1,15 +1,18 @@
 /**
  * Database service index file
  * Exports all database services and provides a common interface
+ * Updated to use simplified, more reliable services
  */
 
-import { DatabaseStatus, getDatabaseStatus, initDatabase, getResultsArray } from './ClientDatabaseService';
-import * as ArchitectService from './ArchitectService';
+import { DatabaseStatus, getDatabaseStatus, initDatabase, getResultsArray } from './SimpleDatabaseService';
 import * as ArchitectureService from './ArchitectureService';
+
+// Re-export for backward compatibility, but prefer using RealArchitectService directly
+export { getAllArchitects, getArchitectById } from '../api/RealArchitectService';
 
 // Export all services
 export {
-  // Client database core
+  // Client database core (simplified)
   DatabaseStatus,
   getDatabaseStatus,
   initDatabase,
@@ -17,9 +20,6 @@ export {
   
   // Architecture services
   ArchitectureService,
-  
-  // Architect services
-  ArchitectService,
 };
 
 /**
