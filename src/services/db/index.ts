@@ -4,7 +4,7 @@
  * Updated to use simplified, more reliable services
  */
 
-import { DatabaseStatus, getDatabaseStatus, initDatabase, getResultsArray } from './SimpleDatabaseService';
+import { DatabaseStatus, getDatabaseStatus, initDatabase, getResultsArray } from './FixedDatabaseService';
 import * as ArchitectureService from './ArchitectureService';
 
 // Re-export for backward compatibility, but prefer using RealArchitectService directly
