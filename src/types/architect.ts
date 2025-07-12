@@ -6,23 +6,31 @@
  * 建築家の基本情報
  */
 export interface Architect {
-  ZAR_ID: number;
-  ZAR_NAME: string;
-  ZAR_KANA?: string;
-  ZAR_NAMEENG?: string;
-  ZAR_BIRTHYEAR?: number;
-  ZAR_DEATHYEAR?: number;
-  ZAR_BIRTHPLACE?: string;
-  ZAR_NATIONALITY?: string;
-  ZAR_CATEGORY?: string;
-  ZAR_SCHOOL?: string;
-  ZAR_OFFICE?: string;
-  ZAR_BIO?: string;
-  ZAR_MAINWORKS?: string;
-  ZAR_AWARDS?: string;
-  ZAR_IMAGE?: string;
-  ZAR_CREATED?: string;
-  ZAR_MODIFIED?: string;
+  ZAT_ID?: number;
+  Z_PK?: number; // Primary key
+  ZAT_ARCHITECT: string; // Main name
+  ZAT_ARCHITECT_JP?: string; // Japanese reading
+  ZAT_ARCHITECT_EN?: string; // English name
+  ZAT_BIRTHYEAR?: number;
+  ZAT_BIRTHMONTH?: number;
+  ZAT_BIRTHDAY?: number;
+  ZAT_DEATHYEAR?: number;
+  ZAT_DEATHMONTH?: number;
+  ZAT_DEATHDAY?: number;
+  ZAT_BIRTHPLACE?: string;
+  ZAT_NATIONALITY?: string;
+  ZAT_CATEGORY?: string;
+  ZAT_SCHOOL?: string;
+  ZAT_OFFICE?: string;
+  ZAT_BIO?: string;
+  ZAT_MAINWORKS?: string;
+  ZAT_AWARDS?: string;
+  ZAT_IMAGE?: string;
+  ZAT_CREATED?: string;
+  ZAT_MODIFIED?: string;
+  // Legacy compatibility
+  ZAR_ID?: number;
+  ZAR_NAME?: string;
 }
 
 /**

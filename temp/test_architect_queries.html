@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architect Query Debug Tool</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #2d2d2d;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        .success {
+            background-color: #0f5132;
+            border: 1px solid #0a3622;
+            color: #d1eddd;
+        }
+        .error {
+            background-color: #842029;
+            border: 1px solid #5c1a20;
+            color: #f8d7da;
+        }
+        .warning {
+            background-color: #664d03;
+            border: 1px solid #4d3a02;
+            color: #fff3cd;
+        }
+        .info {
+            background-color: #055160;
+            border: 1px solid #033940;
+            color: #b6effb;
+        }
+        button {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0b5ed7;
+        }
+        pre {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            border: 1px solid #444;
+        }
+        .log {
+            background-color: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            min-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 ArchitectService SQL Query Debug Tool</h1>
+    
+    <div class="section">
+        <h2>📊 Database Connection Test</h2>
+        <button onclick="testDatabaseConnection()">Test Database Connection</button>
+        <div id="connection-result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>🗄️ Table Structure Analysis</h2>
+        <button onclick="analyzeTableStructure()">Analyze ZCDARCHITECT Table</button>
+        <div id="table-result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>📈 Data Count Tests</h2>
+        <button onclick="testDataCounts()">Test Data Counts</button>
+        <div id="count-result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>🔍 Query Testing</h2>
+        <button onclick="testOriginalQueries()">Test Original ArchitectService Queries</button>
+        <div id="query-result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>🧪 Parameter Binding Tests</h2>
+        <button onclick="testParameterBinding()">Test Parameter Binding</button>
+        <div id="param-result"></div>
+    </div>
+    
+    <div class="section">
+        <h2>📋 Live Console Log</h2>
+        <div id="console-log" class="log"></div>
+    </div>
+
+    <script type="module">
+        // Capture console output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function appendToLog(type, message) {
+            const logDiv = document.getElementById('console-log');
+            const timestamp = new Date().toISOString().substr(11, 12);
+            logDiv.innerHTML += `[${timestamp}] ${type}: ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        console.log = (...args) => {
+            originalLog(...args);
+            appendToLog('LOG', args.join(' '));
+        };
+        
+        console.error = (...args) => {
+            originalError(...args);
+            appendToLog('ERROR', args.join(' '));
+        };
+        
+        console.warn = (...args) => {
+            originalWarn(...args);
+            appendToLog('WARN', args.join(' '));
+        };
+
+        // Test functions
+        window.testDatabaseConnection = async function() {
+            const resultDiv = document.getElementById('connection-result');
+            resultDiv.innerHTML = '<div class="info">Testing database connection...</div>';
+            
+            try {
+                console.log('🚀 Starting database connection test...');
+                
+                // Import database service dynamically
+                const { initDatabase, executeQuery, resultsToObjects } = await import('../src/services/db/ClientDatabaseService.js');
+                
+                // Test 1: Initialize database
+                console.log('1. Initializing database...');
+                await initDatabase();
+                console.log('✅ Database initialized');
+                
+                // Test 2: Basic SQL test
+                console.log('2. Testing basic SQL...');
+                const basicResult = await executeQuery('SELECT 1 as test');
+                const basicData = resultsToObjects(basicResult);
+                console.log('✅ Basic SQL works:', basicData);
+                
+                // Test 3: SQLite version
+                console.log('3. Checking SQLite version...');
+                const versionResult = await executeQuery('SELECT sqlite_version() as version');
+                const versionData = resultsToObjects(versionResult);
+                console.log('✅ SQLite version:', versionData);
+                
+                // Test 4: List tables
+                console.log('4. Listing tables...');
+                const tablesResult = await executeQuery("SELECT name FROM sqlite_master WHERE type='table'");
+                const tablesData = resultsToObjects(tablesResult);
+                console.log('✅ Available tables:', tablesData);
+                
+                resultDiv.innerHTML = `
+                    <div class="success">✅ Database connection successful!</div>
+                    <div class="info">SQLite Version: ${versionData[0]?.version || 'Unknown'}</div>
+                    <div class="info">Available Tables: ${tablesData.map(t => t.name).join(', ')}</div>
+                `;
+                
+            } catch (error) {
+                console.error('❌ Database connection failed:', error);
+                resultDiv.innerHTML = `<div class="error">❌ Database connection failed: ${error.message}</div>`;
+            }
+        };
+
+        window.analyzeTableStructure = async function() {
+            const resultDiv = document.getElementById('table-result');
+            resultDiv.innerHTML = '<div class="info">Analyzing table structure...</div>';
+            
+            try {
+                const { executeQuery, resultsToObjects } = await import('../src/services/db/ClientDatabaseService.js');
+                
+                console.log('🔍 Analyzing ZCDARCHITECT table structure...');
+                
+                // Test 1: Check if table exists
+                const tableExistsResult = await executeQuery(
+                    "SELECT name FROM sqlite_master WHERE type='table' AND name='ZCDARCHITECT'"
+                );
+                const tableExists = resultsToObjects(tableExistsResult);
+                
+                if (tableExists.length === 0) {
+                    // Try case-insensitive search
+                    const anyArchitectTable = await executeQuery(
+                        "SELECT name FROM sqlite_master WHERE type='table' AND LOWER(name) LIKE '%architect%'"
+                    );
+                    const architectTables = resultsToObjects(anyArchitectTable);
+                    
+                    throw new Error(`ZCDARCHITECT table not found. Available architect tables: ${architectTables.map(t => t.name).join(', ')}`);
+                }
+                
+                console.log('✅ ZCDARCHITECT table exists');
+                
+                // Test 2: Get table structure
+                const structureResult = await executeQuery('PRAGMA table_info(ZCDARCHITECT)');
+                const columns = resultsToObjects(structureResult);
+                
+                console.log('✅ Table columns:', columns);
+                
+                // Test 3: Get table creation SQL
+                const createSqlResult = await executeQuery(
+                    "SELECT sql FROM sqlite_master WHERE type='table' AND name='ZCDARCHITECT'"
+                );
+                const createSql = resultsToObjects(createSqlResult);
+                
+                resultDiv.innerHTML = `
+                    <div class="success">✅ ZCDARCHITECT table found!</div>
+                    <div class="info">Columns (${columns.length}):</div>
+                    <pre>${columns.map(col => `${col.name}: ${col.type} (${col.notnull ? 'NOT NULL' : 'nullable'})`).join('\n')}</pre>
+                    <div class="info">Table creation SQL:</div>
+                    <pre>${createSql[0]?.sql || 'Not available'}</pre>
+                `;
+                
+            } catch (error) {
+                console.error('❌ Table analysis failed:', error);
+                resultDiv.innerHTML = `<div class="error">❌ Table analysis failed: ${error.message}</div>`;
+            }
+        };
+
+        window.testDataCounts = async function() {
+            const resultDiv = document.getElementById('count-result');
+            resultDiv.innerHTML = '<div class="info">Testing data counts...</div>';
+            
+            try {
+                const { executeQuery, resultsToObjects } = await import('../src/services/db/ClientDatabaseService.js');
+                
+                console.log('📊 Testing data counts in ZCDARCHITECT...');
+                
+                // Test 1: Basic count
+                const countResult = await executeQuery('SELECT COUNT(*) as count FROM ZCDARCHITECT');
+                const countData = resultsToObjects(countResult);
+                const totalCount = countData[0]?.count || 0;
+                
+                console.log(`✅ Total records: ${totalCount}`);
+                
+                if (totalCount === 0) {
+                    resultDiv.innerHTML = `<div class="error">❌ ZCDARCHITECT table is empty! No data to query.</div>`;
+                    return;
+                }
+                
+                // Test 2: Count with DISTINCT (used in original query)
+                const distinctCountResult = await executeQuery('SELECT COUNT(DISTINCT ZAR_ID) as count FROM ZCDARCHITECT');
+                const distinctCountData = resultsToObjects(distinctCountResult);
+                const distinctCount = distinctCountData[0]?.count || 0;
+                
+                console.log(`✅ Distinct ZAR_ID count: ${distinctCount}`);
+                
+                // Test 3: Sample data
+                const sampleResult = await executeQuery('SELECT * FROM ZCDARCHITECT LIMIT 3');
+                const sampleData = resultsToObjects(sampleResult);
+                
+                console.log('✅ Sample data:', sampleData);
+                
+                resultDiv.innerHTML = `
+                    <div class="success">✅ Data found in ZCDARCHITECT table!</div>
+                    <div class="info">Total records: ${totalCount}</div>
+                    <div class="info">Distinct ZAR_ID count: ${distinctCount}</div>
+                    <div class="info">Sample record:</div>
+                    <pre>${JSON.stringify(sampleData[0] || {}, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                console.error('❌ Data count test failed:', error);
+                resultDiv.innerHTML = `<div class="error">❌ Data count test failed: ${error.message}</div>`;
+            }
+        };
+
+        window.testOriginalQueries = async function() {
+            const resultDiv = document.getElementById('query-result');
+            resultDiv.innerHTML = '<div class="info">Testing original ArchitectService queries...</div>';
+            
+            try {
+                const { executeQuery, resultsToObjects } = await import('../src/services/db/ClientDatabaseService.js');
+                
+                console.log('🔍 Testing original ArchitectService queries...');
+                
+                // Test 1: Count query from getAllArchitects
+                console.log('1. Testing count query...');
+                const countQuery = `
+                    SELECT COUNT(DISTINCT ZCDARCHITECT.ZAR_ID) as total
+                    FROM ZCDARCHITECT
+                    WHERE 1=1
+                `;
+                const countResult = await executeQuery(countQuery);
+                const countData = resultsToObjects(countResult);
+                console.log('✅ Count query result:', countData);
+                
+                // Test 2: Data query from getAllArchitects
+                console.log('2. Testing data query...');
+                const dataQuery = `
+                    SELECT DISTINCT ZCDARCHITECT.*
+                    FROM ZCDARCHITECT
+                    WHERE 1=1
+                    ORDER BY ZAR_NAME ASC
+                    LIMIT 12 OFFSET 0
+                `;
+                const dataResult = await executeQuery(dataQuery);
+                const data = resultsToObjects(dataResult);
+                console.log(`✅ Data query returned ${data.length} records`);
+                
+                // Test 3: getArchitectById query (if we have data)
+                if (data.length > 0 && data[0].ZAR_ID) {
+                    console.log('3. Testing getArchitectById query...');
+                    const byIdQuery = 'SELECT * FROM ZCDARCHITECT WHERE ZAR_ID = ?';
+                    const byIdResult = await executeQuery(byIdQuery, [data[0].ZAR_ID]);
+                    const byIdData = resultsToObjects(byIdResult);
+                    console.log('✅ getArchitectById result:', byIdData);
+                }
+                
+                resultDiv.innerHTML = `
+                    <div class="success">✅ Original queries tested successfully!</div>
+                    <div class="info">Count query returned: ${countData[0]?.total || 0}</div>
+                    <div class="info">Data query returned: ${data.length} records</div>
+                    <div class="info">First record:</div>
+                    <pre>${JSON.stringify(data[0] || {}, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                console.error('❌ Original query test failed:', error);
+                resultDiv.innerHTML = `<div class="error">❌ Original query test failed: ${error.message}</div>`;
+            }
+        };
+
+        window.testParameterBinding = async function() {
+            const resultDiv = document.getElementById('param-result');
+            resultDiv.innerHTML = '<div class="info">Testing parameter binding...</div>';
+            
+            try {
+                const { executeQuery, resultsToObjects } = await import('../src/services/db/ClientDatabaseService.js');
+                
+                console.log('🧪 Testing parameter binding...');
+                
+                // Test 1: Simple parameter binding
+                const simpleResult = await executeQuery('SELECT ? as test_param', ['Hello World']);
+                const simpleData = resultsToObjects(simpleResult);
+                console.log('✅ Simple parameter binding:', simpleData);
+                
+                // Test 2: LIKE parameter binding (used in search)
+                const likeResult = await executeQuery(
+                    'SELECT COUNT(*) as count FROM ZCDARCHITECT WHERE ZAR_NAME LIKE ?', 
+                    ['%建築%']
+                );
+                const likeData = resultsToObjects(likeResult);
+                console.log('✅ LIKE parameter binding:', likeData);
+                
+                // Test 3: Multiple parameters
+                const multiResult = await executeQuery(
+                    'SELECT COUNT(*) as count FROM ZCDARCHITECT WHERE ZAR_NAME LIKE ? OR ZAR_KANA LIKE ? OR ZAR_NAMEENG LIKE ?',
+                    ['%test%', '%test%', '%test%']
+                );
+                const multiData = resultsToObjects(multiResult);
+                console.log('✅ Multiple parameter binding:', multiData);
+                
+                resultDiv.innerHTML = `
+                    <div class="success">✅ Parameter binding tests completed!</div>
+                    <div class="info">Simple param: ${simpleData[0]?.test_param || 'Failed'}</div>
+                    <div class="info">LIKE search count: ${likeData[0]?.count || 0}</div>
+                    <div class="info">Multi-param search count: ${multiData[0]?.count || 0}</div>
+                `;
+                
+            } catch (error) {
+                console.error('❌ Parameter binding test failed:', error);
+                resultDiv.innerHTML = `<div class="error">❌ Parameter binding test failed: ${error.message}</div>`;
+            }
+        };
+
+        // Auto-start connection test
+        console.log('🚀 SQL Query Debug Tool Loaded');
+        console.log('Click the buttons above to run different tests');
+    </script>
+</body>
+</html>

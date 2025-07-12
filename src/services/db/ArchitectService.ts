@@ -13,7 +13,7 @@ import type { Architect, ArchitectsResponse, Tag } from '../../types/architect';
  */
 export const getArchitectById = async (id: number): Promise<Architect | undefined> => {
   return getSingleResult<Architect>(
-    `SELECT * FROM ZCDARCHITECT WHERE ZAR_ID = ?`,
+    `SELECT * FROM ZCDARCHITECT WHERE ZAT_ID = ?`,
     [id]
   );
 };
@@ -34,7 +34,7 @@ export const getAllArchitects = async (
   limit: number = 12,
   searchTerm: string = '',
   tags: string[] = [],
-  sortBy: string = 'ZAR_NAME',
+  sortBy: string = 'ZAT_ARCHITECT',
   sortOrder: string = 'asc',
   options: {
     nationality?: string;
@@ -53,38 +53,38 @@ export const getAllArchitects = async (
   
   // キーワード検索
   if (searchTerm) {
-    whereClause += ' AND (ZAR_NAME LIKE ? OR ZAR_KANA LIKE ? OR ZAR_NAMEENG LIKE ?)';
+    whereClause += ' AND (ZAT_ARCHITECT LIKE ? OR ZAT_ARCHITECT_JP LIKE ? OR ZAT_ARCHITECT_EN LIKE ?)';
     params.push(`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`);
   }
   
   // その他のフィルター条件
   if (options.nationality) {
-    whereClause += ' AND ZAR_NATIONALITY = ?';
+    whereClause += ' AND ZAT_NATIONALITY = ?';
     params.push(options.nationality);
   }
   
   if (options.category) {
-    whereClause += ' AND ZAR_CATEGORY = ?';
+    whereClause += ' AND ZAT_CATEGORY = ?';
     params.push(options.category);
   }
   
   if (options.school) {
-    whereClause += ' AND ZAR_SCHOOL = ?';
+    whereClause += ' AND ZAT_SCHOOL = ?';
     params.push(options.school);
   }
   
   if (options.birthYearFrom) {
-    whereClause += ' AND ZAR_BIRTHYEAR >= ?';
+    whereClause += ' AND ZAT_BIRTHYEAR >= ?';
     params.push(options.birthYearFrom);
   }
   
   if (options.birthYearTo) {
-    whereClause += ' AND ZAR_BIRTHYEAR <= ?';
+    whereClause += ' AND ZAT_BIRTHYEAR <= ?';
     params.push(options.birthYearTo);
   }
   
   if (options.deathYear) {
-    whereClause += ' AND ZAR_DEATHYEAR = ?';
+    whereClause += ' AND ZAT_DEATHYEAR = ?';
     params.push(options.deathYear);
   }
   
@@ -97,14 +97,14 @@ export const getAllArchitects = async (
     // Fallback: search in architect fields for tag-like terms
     const tagSearchTerms = tags.join(' ');
     if (tagSearchTerms) {
-      whereClause += ' AND (ZAR_CATEGORY LIKE ? OR ZAR_SCHOOL LIKE ? OR ZAR_NATIONALITY LIKE ?)';
+      whereClause += ' AND (ZAT_CATEGORY LIKE ? OR ZAT_SCHOOL LIKE ? OR ZAT_NATIONALITY LIKE ?)';
       params.push(`%${tagSearchTerms}%`, `%${tagSearchTerms}%`, `%${tagSearchTerms}%`);
     }
   }
   
   // 総件数のクエリ
   const countQuery = `
-    SELECT COUNT(DISTINCT ZCDARCHITECT.ZAR_ID) as total
+    SELECT COUNT(DISTINCT ZCDARCHITECT.ZAT_ID) as total
     FROM ZCDARCHITECT
     ${joinClause}
     WHERE ${whereClause}
@@ -155,29 +155,29 @@ export const getArchitectTags = async (): Promise<Tag[]> => {
     
     const results = await getResultsArray<{TAG_NAME: string; TAG_COUNT: number}>(`
       SELECT 
-        COALESCE(ZAR_NATIONALITY, '不明') as TAG_NAME,
+        COALESCE(ZAT_NATIONALITY, '不明') as TAG_NAME,
         COUNT(*) as TAG_COUNT
       FROM ZCDARCHITECT 
-      WHERE ZAR_NATIONALITY IS NOT NULL AND ZAR_NATIONALITY != ''
-      GROUP BY ZAR_NATIONALITY
+      WHERE ZAT_NATIONALITY IS NOT NULL AND ZAT_NATIONALITY != ''
+      GROUP BY ZAT_NATIONALITY
       
       UNION ALL
       
       SELECT 
-        COALESCE(ZAR_CATEGORY, '不明') as TAG_NAME,
+        COALESCE(ZAT_CATEGORY, '不明') as TAG_NAME,
         COUNT(*) as TAG_COUNT
       FROM ZCDARCHITECT 
-      WHERE ZAR_CATEGORY IS NOT NULL AND ZAR_CATEGORY != ''
-      GROUP BY ZAR_CATEGORY
+      WHERE ZAT_CATEGORY IS NOT NULL AND ZAT_CATEGORY != ''
+      GROUP BY ZAT_CATEGORY
       
       UNION ALL
       
       SELECT 
-        COALESCE(ZAR_SCHOOL, '不明') as TAG_NAME,
+        COALESCE(ZAT_SCHOOL, '不明') as TAG_NAME,
         COUNT(*) as TAG_COUNT
       FROM ZCDARCHITECT 
-      WHERE ZAR_SCHOOL IS NOT NULL AND ZAR_SCHOOL != ''
-      GROUP BY ZAR_SCHOOL
+      WHERE ZAT_SCHOOL IS NOT NULL AND ZAT_SCHOOL != ''
+      GROUP BY ZAT_SCHOOL
       
       ORDER BY TAG_COUNT DESC, TAG_NAME
       LIMIT 50

@@ -645,7 +645,7 @@ const ArchitectsPage: React.FC = () => {
           ) : (
             <Grid container spacing={3}>
               {architects.map((architect) => (
-                <Grid item xs={12} sm={6} md={4} key={architect.id}>
+                <Grid item xs={12} sm={6} md={4} key={architect.ZAT_ID || architect.Z_PK}>
                   <Card 
                     sx={{ 
                       height: '100%', 
@@ -657,13 +657,13 @@ const ArchitectsPage: React.FC = () => {
                       },
                     }}
                   >
-                    <CardActionArea component={RouterLink} to={`/architects/${architect.id}`}>
+                    <CardActionArea component={RouterLink} to={`/architects/${architect.ZAT_ID || architect.Z_PK}`}>
                       <CardContent>
                         <Typography variant="h6" component="div" gutterBottom>
-                          {architect.name}
+                          {architect.ZAT_ARCHITECT}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" gutterBottom>
-                          {architect.nationality} • {architect.birthYear || '?'}-{architect.deathYear || '現在'}
+                          {architect.ZAT_NATIONALITY || '不明'} • {architect.ZAT_BIRTHYEAR || '?'}-{architect.ZAT_DEATHYEAR || '現在'}
                         </Typography>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 1 }}>
                           {architect.tags && architect.tags.map((tag) => (

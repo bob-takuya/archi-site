@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Mapping Verification Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .error { color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 4px; margin: 10px 0; }
+        .success { color: #2e7d32; background: #e8f5e9; padding: 10px; border-radius: 4px; margin: 10px 0; }
+        .warning { color: #f57c00; background: #fff3e0; padding: 10px; border-radius: 4px; margin: 10px 0; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; }
+        .primary { background: #1976d2; color: white; }
+        .secondary { background: #757575; color: white; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f5f5f5; }
+        .field-correct { background: #e8f5e9; }
+        .field-incorrect { background: #ffebee; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Field Mapping Verification Test</h1>
+        <p>This test verifies the correct field mappings between database schema, TypeScript interfaces, and UI components.</p>
+
+        <div class="test-section">
+            <h2>Database Connection Test</h2>
+            <button onclick="testDatabaseConnection()" class="primary">Test Database Connection</button>
+            <div id="db-connection-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Field Name Verification</h2>
+            <button onclick="testFieldNames()" class="primary">Test Field Names</button>
+            <div id="field-test-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Sample Data Query Test</h2>
+            <button onclick="testSampleQuery()" class="primary">Test Sample Query</button>
+            <div id="sample-query-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Field Mapping Analysis</h2>
+            <div id="mapping-analysis">
+                <h3>Current Issues Detected:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Current Usage</th>
+                            <th>Expected Field</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="field-incorrect">
+                            <td>ArchitectsPage Query</td>
+                            <td>ZAT_NATIONALITY</td>
+                            <td>ZAR_NATIONALITY</td>
+                            <td>❌ Incorrect Prefix</td>
+                        </tr>
+                        <tr class="field-incorrect">
+                            <td>ArchitectsPage Query</td>
+                            <td>ZAT_CATEGORY</td>
+                            <td>ZAR_CATEGORY</td>
+                            <td>❌ Incorrect Prefix</td>
+                        </tr>
+                        <tr class="field-incorrect">
+                            <td>ArchitectsPage Query</td>
+                            <td>ZAT_SCHOOL</td>
+                            <td>ZAR_SCHOOL</td>
+                            <td>❌ Incorrect Prefix</td>
+                        </tr>
+                        <tr class="field-incorrect">
+                            <td>ArchitectsPage Query</td>
+                            <td>ZAT_BIRTHYEAR</td>
+                            <td>ZAR_BIRTHYEAR</td>
+                            <td>❌ Incorrect Prefix</td>
+                        </tr>
+                        <tr class="field-incorrect">
+                            <td>ArchitectsPage Query</td>
+                            <td>ZAT_DEATHYEAR</td>
+                            <td>ZAR_DEATHYEAR</td>
+                            <td>❌ Incorrect Prefix</td>
+                        </tr>
+                        <tr class="field-incorrect">
+                            <td>UI Component</td>
+                            <td>architect.id</td>
+                            <td>architect.ZAR_ID</td>
+                            <td>❌ Missing Prefix</td>
+                        </tr>
+                        <tr class="field-incorrect">
+                            <td>UI Component</td>
+                            <td>architect.name</td>
+                            <td>architect.ZAR_NAME</td>
+                            <td>❌ Missing Prefix</td>
+                        </tr>
+                        <tr class="field-incorrect">
+                            <td>Response Property</td>
+                            <td>result.items</td>
+                            <td>result.results</td>
+                            <td>❌ Wrong Property</td>
+                        </tr>
+                        <tr class="field-correct">
+                            <td>TypeScript Interface</td>
+                            <td>ZAR_* fields</td>
+                            <td>ZAR_* fields</td>
+                            <td>✅ Correct</td>
+                        </tr>
+                        <tr class="field-correct">
+                            <td>ArchitectService</td>
+                            <td>ZAR_* fields</td>
+                            <td>ZAR_* fields</td>
+                            <td>✅ Correct</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test Database Schema</h2>
+            <button onclick="testDatabaseSchema()" class="primary">Check Database Schema</button>
+            <div id="schema-result"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import database utilities
+        import { initDatabase, getResultsArray, getSingleResult } from './src/services/db/ClientDatabaseService.js';
+
+        window.testDatabaseConnection = async function() {
+            const resultDiv = document.getElementById('db-connection-result');
+            resultDiv.innerHTML = '<p>Testing database connection...</p>';
+
+            try {
+                const db = await initDatabase();
+                resultDiv.innerHTML = '<div class="success">✅ Database connection successful!</div>';
+                return true;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Database connection failed: ${error.message}</div>`;
+                return false;
+            }
+        };
+
+        window.testFieldNames = async function() {
+            const resultDiv = document.getElementById('field-test-result');
+            resultDiv.innerHTML = '<p>Testing field names...</p>';
+
+            try {
+                // Test if ZAR_ fields exist
+                const testQueries = [
+                    "SELECT ZAR_ID, ZAR_NAME FROM ZCDARCHITECT LIMIT 1",
+                    "SELECT ZAR_NATIONALITY FROM ZCDARCHITECT WHERE ZAR_NATIONALITY IS NOT NULL LIMIT 1",
+                    "SELECT ZAR_CATEGORY FROM ZCDARCHITECT WHERE ZAR_CATEGORY IS NOT NULL LIMIT 1",
+                    "SELECT ZAR_SCHOOL FROM ZCDARCHITECT WHERE ZAR_SCHOOL IS NOT NULL LIMIT 1",
+                    "SELECT ZAR_BIRTHYEAR FROM ZCDARCHITECT WHERE ZAR_BIRTHYEAR IS NOT NULL LIMIT 1",
+                    "SELECT ZAR_DEATHYEAR FROM ZCDARCHITECT WHERE ZAR_DEATHYEAR IS NOT NULL LIMIT 1"
+                ];
+
+                let results = [];
+                
+                for (const query of testQueries) {
+                    try {
+                        const result = await getResultsArray(query);
+                        results.push({
+                            query: query,
+                            success: true,
+                            result: result.length > 0 ? 'Data found' : 'No data'
+                        });
+                    } catch (error) {
+                        results.push({
+                            query: query,
+                            success: false,
+                            error: error.message
+                        });
+                    }
+                }
+
+                let html = '<div class="success">Field name test results:</div><table><thead><tr><th>Query</th><th>Status</th><th>Result</th></tr></thead><tbody>';
+                
+                results.forEach(result => {
+                    const statusClass = result.success ? 'field-correct' : 'field-incorrect';
+                    const status = result.success ? '✅ Success' : '❌ Failed';
+                    const details = result.success ? result.result : result.error;
+                    html += `<tr class="${statusClass}"><td>${result.query}</td><td>${status}</td><td>${details}</td></tr>`;
+                });
+                
+                html += '</tbody></table>';
+                resultDiv.innerHTML = html;
+
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Field name test failed: ${error.message}</div>`;
+            }
+        };
+
+        window.testSampleQuery = async function() {
+            const resultDiv = document.getElementById('sample-query-result');
+            resultDiv.innerHTML = '<p>Testing sample query...</p>';
+
+            try {
+                // Test the corrected query
+                const result = await getResultsArray(`
+                    SELECT ZAR_ID, ZAR_NAME, ZAR_NATIONALITY, ZAR_BIRTHYEAR, ZAR_DEATHYEAR 
+                    FROM ZCDARCHITECT 
+                    WHERE ZAR_NAME IS NOT NULL 
+                    LIMIT 5
+                `);
+
+                if (result.length > 0) {
+                    let html = '<div class="success">✅ Sample query successful!</div>';
+                    html += '<table><thead><tr><th>ID</th><th>Name</th><th>Nationality</th><th>Birth Year</th><th>Death Year</th></tr></thead><tbody>';
+                    
+                    result.forEach(architect => {
+                        html += `<tr>
+                            <td>${architect.ZAR_ID || 'N/A'}</td>
+                            <td>${architect.ZAR_NAME || 'N/A'}</td>
+                            <td>${architect.ZAR_NATIONALITY || 'N/A'}</td>
+                            <td>${architect.ZAR_BIRTHYEAR || 'N/A'}</td>
+                            <td>${architect.ZAR_DEATHYEAR || 'N/A'}</td>
+                        </tr>`;
+                    });
+                    
+                    html += '</tbody></table>';
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = '<div class="warning">⚠️ Query successful but no results returned</div>';
+                }
+
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Sample query failed: ${error.message}</div>`;
+            }
+        };
+
+        window.testDatabaseSchema = async function() {
+            const resultDiv = document.getElementById('schema-result');
+            resultDiv.innerHTML = '<p>Checking database schema...</p>';
+
+            try {
+                // Get table schema
+                const schema = await getResultsArray(`
+                    PRAGMA table_info(ZCDARCHITECT)
+                `);
+
+                if (schema.length > 0) {
+                    let html = '<div class="success">✅ ZCDARCHITECT table schema:</div>';
+                    html += '<table><thead><tr><th>Column Name</th><th>Type</th><th>Not Null</th><th>Default</th><th>Primary Key</th></tr></thead><tbody>';
+                    
+                    schema.forEach(col => {
+                        const isZARField = col.name.startsWith('ZAR_');
+                        const rowClass = isZARField ? 'field-correct' : '';
+                        html += `<tr class="${rowClass}">
+                            <td>${col.name} ${isZARField ? '✅' : ''}</td>
+                            <td>${col.type}</td>
+                            <td>${col.notnull ? 'Yes' : 'No'}</td>
+                            <td>${col.dflt_value || 'NULL'}</td>
+                            <td>${col.pk ? 'Yes' : 'No'}</td>
+                        </tr>`;
+                    });
+                    
+                    html += '</tbody></table>';
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = '<div class="error">❌ Could not retrieve table schema</div>';
+                }
+
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Schema check failed: ${error.message}</div>`;
+            }
+        };
+
+        // Auto-run connection test on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testDatabaseConnection();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
