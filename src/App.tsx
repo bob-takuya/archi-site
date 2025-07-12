@@ -227,7 +227,7 @@ const App: React.FC = () => {
     });
 
     // Initialize axe-core for accessibility testing in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       import('@axe-core/react').then(axe => {
         axe.default(React, undefined, 1000);
       });

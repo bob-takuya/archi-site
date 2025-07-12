@@ -1,0 +1,306 @@
+{
+  "timestamp": "2025-07-12T13:12:47.289Z",
+  "baseUrl": "http://localhost:3001/archi-site",
+  "tests": [
+    {
+      "name": "Endpoint: /",
+      "url": "http://localhost:3001/archi-site/",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "statusMessage": "OK",
+        "duration": 7,
+        "contentLength": "unknown",
+        "contentType": "text/html"
+      }
+    },
+    {
+      "name": "Endpoint: /architects",
+      "url": "http://localhost:3001/archi-site/architects",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "statusMessage": "OK",
+        "duration": 2,
+        "contentLength": "unknown",
+        "contentType": "text/html"
+      }
+    },
+    {
+      "name": "Endpoint: /archi-site/db/archimap.sqlite3.json",
+      "url": "http://localhost:3001/archi-site/archi-site/db/archimap.sqlite3.json",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "statusMessage": "OK",
+        "duration": 3,
+        "contentLength": "unknown",
+        "contentType": "text/html"
+      }
+    },
+    {
+      "name": "Endpoint: /archi-site/db/archimap.sqlite3",
+      "url": "http://localhost:3001/archi-site/archi-site/db/archimap.sqlite3",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "statusMessage": "OK",
+        "duration": 1,
+        "contentLength": "unknown",
+        "contentType": "text/html"
+      }
+    },
+    {
+      "name": "Endpoint: /archi-site/sqlite.worker.js",
+      "url": "http://localhost:3001/archi-site/archi-site/sqlite.worker.js",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "statusMessage": "OK",
+        "duration": 2,
+        "contentLength": "unknown",
+        "contentType": "text/html"
+      }
+    },
+    {
+      "name": "Endpoint: /archi-site/sql-wasm.wasm",
+      "url": "http://localhost:3001/archi-site/archi-site/sql-wasm.wasm",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "statusMessage": "OK",
+        "duration": 2,
+        "contentLength": "unknown",
+        "contentType": "text/html"
+      }
+    },
+    {
+      "name": "Endpoint: /static/js/main.js",
+      "url": "http://localhost:3001/archi-site/static/js/main.js",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "statusMessage": "OK",
+        "duration": 1,
+        "contentLength": "unknown",
+        "contentType": "text/html"
+      }
+    },
+    {
+      "name": "Endpoint: /static/css/main.css",
+      "url": "http://localhost:3001/archi-site/static/css/main.css",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "statusMessage": "OK",
+        "duration": 1,
+        "contentLength": "unknown",
+        "contentType": "text/html"
+      }
+    },
+    {
+      "name": "Database Config JSON",
+      "url": "http://localhost:3001/archi-site/archi-site/db/archimap.sqlite3.json",
+      "passed": false,
+      "details": {
+        "statusCode": 200,
+        "duration": 2,
+        "size": 6285,
+        "contentType": "text/html"
+      },
+      "checks": [
+        {
+          "name": "Valid JSON",
+          "passed": false,
+          "error": "Invalid JSON format"
+        },
+        {
+          "name": "Has database URL",
+          "passed": false,
+          "error": "Cannot parse JSON"
+        },
+        {
+          "name": "Has server mode",
+          "passed": false,
+          "error": "Cannot parse JSON"
+        }
+      ]
+    },
+    {
+      "name": "SQLite Database File",
+      "url": "http://localhost:3001/archi-site/archi-site/db/archimap.sqlite3",
+      "passed": false,
+      "details": {
+        "statusCode": 200,
+        "duration": 0,
+        "size": 6285,
+        "contentType": "text/html"
+      },
+      "checks": [
+        {
+          "name": "Reasonable file size",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "SQLite file format",
+          "passed": false,
+          "error": "Invalid SQLite file header"
+        }
+      ]
+    },
+    {
+      "name": "SQLite Worker Script",
+      "url": "http://localhost:3001/archi-site/archi-site/sqlite.worker.js",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "duration": 1,
+        "size": 6285,
+        "contentType": "text/html"
+      },
+      "checks": [
+        {
+          "name": "JavaScript content",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Reasonable file size",
+          "passed": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "WebAssembly Module",
+      "url": "http://localhost:3001/archi-site/archi-site/sql-wasm.wasm",
+      "passed": false,
+      "details": {
+        "statusCode": 200,
+        "duration": 1,
+        "size": 6285,
+        "contentType": "text/html"
+      },
+      "checks": [
+        {
+          "name": "WebAssembly format",
+          "passed": false,
+          "error": "Invalid WebAssembly file header"
+        },
+        {
+          "name": "Reasonable file size",
+          "passed": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "CORS: /archi-site/db/archimap.sqlite3",
+      "url": "http://localhost:3001/archi-site/archi-site/db/archimap.sqlite3",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "corsHeaders": {
+          "access-control-allow-origin": "http://localhost:3000"
+        },
+        "duration": 1
+      }
+    },
+    {
+      "name": "CORS: /archi-site/sqlite.worker.js",
+      "url": "http://localhost:3001/archi-site/archi-site/sqlite.worker.js",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "corsHeaders": {
+          "access-control-allow-origin": "http://localhost:3000"
+        },
+        "duration": 1
+      }
+    },
+    {
+      "name": "CORS: /archi-site/sql-wasm.wasm",
+      "url": "http://localhost:3001/archi-site/archi-site/sql-wasm.wasm",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "corsHeaders": {
+          "access-control-allow-origin": "http://localhost:3000"
+        },
+        "duration": 0
+      }
+    },
+    {
+      "name": "Performance: Small file (favicon)",
+      "url": "http://localhost:3001/archi-site/favicon.ico",
+      "passed": false,
+      "details": {
+        "statusCode": 404,
+        "duration": 0,
+        "sizeKB": "0.0",
+        "speedKBps": "NaN"
+      }
+    },
+    {
+      "name": "Performance: Medium file (worker)",
+      "url": "http://localhost:3001/archi-site/archi-site/sqlite.worker.js",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "duration": 1,
+        "sizeKB": "6.1",
+        "speedKBps": "6137.7"
+      }
+    },
+    {
+      "name": "Performance: Large file (database)",
+      "url": "http://localhost:3001/archi-site/archi-site/db/archimap.sqlite3",
+      "passed": true,
+      "details": {
+        "statusCode": 200,
+        "duration": 1,
+        "sizeKB": "6.1",
+        "speedKBps": "6137.7"
+      }
+    }
+  ],
+  "summary": {
+    "total": 18,
+    "passed": 14,
+    "failed": 4,
+    "warnings": 0
+  },
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "issue": "Database configuration file not accessible",
+      "solution": "Ensure /archi-site/db/archimap.sqlite3.json is properly served and contains valid configuration",
+      "commands": [
+        "Check if the file exists in the public directory",
+        "Verify JSON syntax is valid",
+        "Ensure web server is configured to serve .json files"
+      ]
+    },
+    {
+      "priority": "HIGH",
+      "issue": "SQLite database file not accessible",
+      "solution": "Ensure the database file is properly placed and served",
+      "commands": [
+        "Check if archimap.sqlite3 exists in /archi-site/db/",
+        "Verify file permissions and size",
+        "Test direct URL access in browser"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "issue": "WebAssembly module not loading",
+      "solution": "Ensure WASM files are served with correct MIME type",
+      "commands": [
+        "Configure server to serve .wasm files with application/wasm MIME type",
+        "Check browser WebAssembly support",
+        "Verify WASM file integrity"
+      ]
+    }
+  ]
+}

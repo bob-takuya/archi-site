@@ -84,7 +84,7 @@ class ErrorBoundary extends Component<Props, State> {
               お手数ですが、再読み込みをお試しください。
             </Typography>
 
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <Box
                 sx={{
                   mt: 2,

@@ -6,11 +6,11 @@ const BASE_PATH = '/archi-site';
 // Database configuration (will try sql.js-httpvfs first, fallback to direct sql.js)
 const DATABASE_CONFIG = {
   from: "jsonconfig",
-  configUrl: `${BASE_PATH}/db/archimap.sqlite3.json`
+  configUrl: `${BASE_PATH}/db/database-info.json`
 };
 
 // Fallback direct database URL
-const DATABASE_URL = `${BASE_PATH}/db/archimap.sqlite3`;
+const DATABASE_URL = `${BASE_PATH}/db/archimap.sqlite`;
 
 // Debug logging
 console.log('🔧 Environment debug info:');
@@ -102,7 +102,7 @@ async function tryChunkedLoading(): Promise<any> {
       from: "inline",
       config: {
         serverMode: "full",
-        url: `${BASE_PATH}/db/archimap.sqlite3`,
+        url: `${BASE_PATH}/db/archimap.sqlite`,
         requestChunkSize: 65536
       },
       // Add fileLength at top level to help with GitHub Pages compression issues
