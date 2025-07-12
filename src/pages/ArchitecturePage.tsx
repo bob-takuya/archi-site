@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Container, 
@@ -300,7 +300,7 @@ const ArchitecturePageEnhanced = () => {
     };
   }, [researchData]);
 
-  const fetchArchitectures = useCallback(async (page: number, search = '', sort = sortBy) => {
+  const fetchArchitectures = async (page: number, search = '', sort = sortBy) => {
     setLoading(true);
     try {
       let result;
@@ -337,7 +337,7 @@ const ArchitecturePageEnhanced = () => {
     } finally {
       setLoading(false);
     }
-  }, [itemsPerPage, sortBy]);
+  };
 
   useEffect(() => {
     // URLからクエリパラメータを解析
@@ -389,7 +389,7 @@ const ArchitecturePageEnhanced = () => {
     } else {
       fetchArchitectures(1, '', sort || sortBy);
     }
-  }, [location.search, autocompleteSuggestions, fetchArchitectures, sortBy]);
+  }, [location.search, autocompleteSuggestions, sortBy]);
 
   const handlePageChange = (event: any, value: number) => {
     setCurrentPage(value);
