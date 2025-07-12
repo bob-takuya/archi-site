@@ -26,7 +26,7 @@ jobs:
           cache: 'npm'
           
       - name: 依存関係のインストール
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         
       - name: ESLintによるコード品質チェック
         run: npm run lint
@@ -58,7 +58,7 @@ jobs:
           cache: 'npm'
           
       - name: 依存関係のインストール
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         
       - name: Playwrightブラウザのインストール
         run: npx playwright install --with-deps chromium
@@ -102,7 +102,7 @@ jobs:
           cache: 'npm'
           
       - name: 依存関係のインストール
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         
       - name: npmパッケージの監査
         run: npm audit --audit-level=high
@@ -130,7 +130,7 @@ jobs:
           cache: 'npm'
           
       - name: 依存関係のインストール
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         
       - name: アプリケーションのビルド
         run: npm run build

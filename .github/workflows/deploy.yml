@@ -91,7 +91,7 @@ jobs:
           if [ "${{ steps.check-pm.outputs.package_manager }}" == "pnpm" ]; then
             pnpm install --frozen-lockfile
           else
-            npm ci
+            npm ci --legacy-peer-deps
           fi
         
       - name: Lint code
@@ -195,7 +195,7 @@ jobs:
           if [ "${{ steps.check-pm.outputs.package_manager }}" == "pnpm" ]; then
             pnpm install --frozen-lockfile
           else
-            npm ci
+            npm ci --legacy-peer-deps
           fi
         
       - name: Cache database files
