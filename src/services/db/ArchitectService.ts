@@ -5,6 +5,7 @@
 
 import { getResultsArray, getSingleResult } from './ClientDatabaseService';
 import type { Architect, ArchitectsResponse, Tag } from '../../types/architect';
+import type { SearchFacets, FacetCount, RangeFacet, ActiveFacets } from '../../components/search/FacetedSearch';
 
 /**
  * IDによる建築家の取得
@@ -192,5 +193,262 @@ export const getArchitectTags = async (): Promise<Tag[]> => {
   } catch (error) {
     console.error('タグ取得エラー:', error);
     return [];
+  }
+};
+
+/**
+ * ファセット検索用のメタデータを取得
+ * @returns ファセット情報
+ */
+export const getArchitectFacets = async (activeFacets?: ActiveFacets): Promise<SearchFacets> => {
+  try {
+    // Build base query with applied filters
+    let baseWhereClause = '1=1';
+    const baseParams: any[] = [];
+
+    // Apply active facets for cross-filtering
+    if (activeFacets) {
+      if (activeFacets.prefectures && Array.isArray(activeFacets.prefectures) && activeFacets.prefectures.length > 0) {
+        baseWhereClause += ` AND ZAT_NATIONALITY IN (${activeFacets.prefectures.map(() => '?').join(',')})`;
+        baseParams.push(...activeFacets.prefectures);
+      }
+      
+      if (activeFacets.architects && Array.isArray(activeFacets.architects) && activeFacets.architects.length > 0) {
+        baseWhereClause += ` AND ZAT_ARCHITECT IN (${activeFacets.architects.map(() => '?').join(',')})`;
+        baseParams.push(...activeFacets.architects);
+      }
+      
+      if (activeFacets.categories && Array.isArray(activeFacets.categories) && activeFacets.categories.length > 0) {
+        baseWhereClause += ` AND ZAT_CATEGORY IN (${activeFacets.categories.map(() => '?').join(',')})`;
+        baseParams.push(...activeFacets.categories);
+      }
+      
+      if (activeFacets.styles && Array.isArray(activeFacets.styles) && activeFacets.styles.length > 0) {
+        baseWhereClause += ` AND ZAT_SCHOOL IN (${activeFacets.styles.map(() => '?').join(',')})`;
+        baseParams.push(...activeFacets.styles);
+      }
+      
+      if (activeFacets.yearRange && Array.isArray(activeFacets.yearRange)) {
+        const [minYear, maxYear] = activeFacets.yearRange;
+        if (minYear > 0) {
+          baseWhereClause += ' AND ZAT_BIRTHYEAR >= ?';
+          baseParams.push(minYear);
+        }
+        if (maxYear > 0) {
+          baseWhereClause += ' AND ZAT_BIRTHYEAR <= ?';
+          baseParams.push(maxYear);
+        }
+      }
+    }
+
+    // Get nationality facets
+    const prefecturesFacets = await getResultsArray<{value: string; count: number}>(`
+      SELECT ZAT_NATIONALITY as value, COUNT(*) as count
+      FROM ZCDARCHITECT 
+      WHERE ${baseWhereClause} AND ZAT_NATIONALITY IS NOT NULL AND ZAT_NATIONALITY != ''
+      GROUP BY ZAT_NATIONALITY
+      ORDER BY count DESC
+      LIMIT 20
+    `, baseParams);
+
+    // Get architect name facets (top architects by work count)
+    const architectsFacets = await getResultsArray<{value: string; count: number}>(`
+      SELECT ZAT_ARCHITECT as value, 1 as count
+      FROM ZCDARCHITECT 
+      WHERE ${baseWhereClause} AND ZAT_ARCHITECT IS NOT NULL
+      GROUP BY ZAT_ARCHITECT
+      ORDER BY ZAT_ARCHITECT
+      LIMIT 50
+    `, baseParams);
+
+    // Get category facets
+    const categoriesFacets = await getResultsArray<{value: string; count: number}>(`
+      SELECT ZAT_CATEGORY as value, COUNT(*) as count
+      FROM ZCDARCHITECT 
+      WHERE ${baseWhereClause} AND ZAT_CATEGORY IS NOT NULL AND ZAT_CATEGORY != ''
+      GROUP BY ZAT_CATEGORY
+      ORDER BY count DESC
+      LIMIT 15
+    `, baseParams);
+
+    // Get school/style facets
+    const stylesFacets = await getResultsArray<{value: string; count: number}>(`
+      SELECT ZAT_SCHOOL as value, COUNT(*) as count
+      FROM ZCDARCHITECT 
+      WHERE ${baseWhereClause} AND ZAT_SCHOOL IS NOT NULL AND ZAT_SCHOOL != ''
+      GROUP BY ZAT_SCHOOL
+      ORDER BY count DESC
+      LIMIT 20
+    `, baseParams);
+
+    // Get year range
+    const yearRangeResult = await getSingleResult<{min_year: number; max_year: number}>(`
+      SELECT 
+        MIN(ZAT_BIRTHYEAR) as min_year,
+        MAX(ZAT_BIRTHYEAR) as max_year
+      FROM ZCDARCHITECT 
+      WHERE ${baseWhereClause} AND ZAT_BIRTHYEAR > 0
+    `, baseParams);
+
+    const minYear = yearRangeResult?.min_year || 1800;
+    const maxYear = yearRangeResult?.max_year || new Date().getFullYear();
+
+    // Convert to facet format
+    const convertToFacetCounts = (data: Array<{value: string; count: number}>, selectedValues: string[] = []): FacetCount[] => {
+      return data.map(item => ({
+        value: item.value,
+        label: item.value,
+        count: item.count,
+        selected: selectedValues.includes(item.value)
+      }));
+    };
+
+    const activeYearRange = activeFacets?.yearRange as [number, number] || [minYear, maxYear];
+
+    return {
+      prefectures: convertToFacetCounts(
+        prefecturesFacets, 
+        activeFacets?.prefectures as string[] || []
+      ),
+      architects: convertToFacetCounts(
+        architectsFacets, 
+        activeFacets?.architects as string[] || []
+      ),
+      decades: [], // Not implemented for architects
+      categories: convertToFacetCounts(
+        categoriesFacets, 
+        activeFacets?.categories as string[] || []
+      ),
+      materials: [], // Not applicable for architects
+      styles: convertToFacetCounts(
+        stylesFacets, 
+        activeFacets?.styles as string[] || []
+      ),
+      yearRange: {
+        min: minYear,
+        max: maxYear,
+        selectedMin: activeYearRange[0],
+        selectedMax: activeYearRange[1],
+        step: 1,
+        unit: '年'
+      },
+      popular: [] // Not implemented
+    };
+  } catch (error) {
+    console.error('ファセット取得エラー:', error);
+    return {
+      prefectures: [],
+      architects: [],
+      decades: [],
+      categories: [],
+      materials: [],
+      styles: [],
+      yearRange: {
+        min: 1800,
+        max: new Date().getFullYear(),
+        selectedMin: 1800,
+        selectedMax: new Date().getFullYear(),
+        step: 1,
+        unit: '年'
+      },
+      popular: []
+    };
+  }
+};
+
+/**
+ * ファセット検索を実行
+ * @param query 検索クエリ
+ * @param facets アクティブなファセット
+ * @param page ページ番号
+ * @param limit 1ページあたりの件数
+ * @returns 検索結果
+ */
+export const searchArchitectsWithFacets = async (
+  query: string = '',
+  facets: ActiveFacets = {},
+  page: number = 1,
+  limit: number = 12
+): Promise<ArchitectsResponse> => {
+  const offset = (page - 1) * limit;
+  
+  // Build search conditions
+  let whereClause = '1=1';
+  const params: any[] = [];
+  
+  // Text search
+  if (query.trim()) {
+    whereClause += ' AND (ZAT_ARCHITECT LIKE ? OR ZAT_ARCHITECT_JP LIKE ? OR ZAT_ARCHITECT_EN LIKE ? OR ZAT_NATIONALITY LIKE ? OR ZAT_CATEGORY LIKE ? OR ZAT_SCHOOL LIKE ?)';
+    const searchTerm = `%${query.trim()}%`;
+    params.push(searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
+  }
+  
+  // Apply facet filters
+  if (facets.prefectures && Array.isArray(facets.prefectures) && facets.prefectures.length > 0) {
+    whereClause += ` AND ZAT_NATIONALITY IN (${facets.prefectures.map(() => '?').join(',')})`;
+    params.push(...facets.prefectures);
+  }
+  
+  if (facets.architects && Array.isArray(facets.architects) && facets.architects.length > 0) {
+    whereClause += ` AND ZAT_ARCHITECT IN (${facets.architects.map(() => '?').join(',')})`;
+    params.push(...facets.architects);
+  }
+  
+  if (facets.categories && Array.isArray(facets.categories) && facets.categories.length > 0) {
+    whereClause += ` AND ZAT_CATEGORY IN (${facets.categories.map(() => '?').join(',')})`;
+    params.push(...facets.categories);
+  }
+  
+  if (facets.styles && Array.isArray(facets.styles) && facets.styles.length > 0) {
+    whereClause += ` AND ZAT_SCHOOL IN (${facets.styles.map(() => '?').join(',')})`;
+    params.push(...facets.styles);
+  }
+  
+  if (facets.yearRange && Array.isArray(facets.yearRange)) {
+    const [minYear, maxYear] = facets.yearRange;
+    if (minYear > 0) {
+      whereClause += ' AND ZAT_BIRTHYEAR >= ?';
+      params.push(minYear);
+    }
+    if (maxYear > 0) {
+      whereClause += ' AND ZAT_BIRTHYEAR <= ?';
+      params.push(maxYear);
+    }
+  }
+  
+  // Get total count
+  const countQuery = `
+    SELECT COUNT(*) as total
+    FROM ZCDARCHITECT
+    WHERE ${whereClause}
+  `;
+  
+  // Get data
+  const dataQuery = `
+    SELECT *
+    FROM ZCDARCHITECT
+    WHERE ${whereClause}
+    ORDER BY ZAT_ARCHITECT ASC
+    LIMIT ? OFFSET ?
+  `;
+  
+  const dataParams = [...params, limit, offset];
+  
+  try {
+    const countResult = await getSingleResult<{ total: number }>(countQuery, params);
+    const total = countResult?.total || 0;
+    
+    const architects = await getResultsArray<Architect>(dataQuery, dataParams);
+    
+    return {
+      results: architects,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
+    };
+  } catch (error) {
+    console.error('ファセット検索エラー:', error);
+    throw error;
   }
 };
