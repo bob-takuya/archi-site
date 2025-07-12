@@ -18,7 +18,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { SkipLink } from './components/accessibility/SkipLink';
 import { AriaLiveRegion } from './utils/accessibility';
 import { logDatabaseDetails } from './utils/dbUtils';
-import DatabaseLoader from './components/DatabaseLoader';
+import SimpleDatabaseLoader from './components/SimpleDatabaseLoader';
 import { theme } from './styles/theme';
 import { mobileTheme, isMobileDevice, isTouchDevice } from './styles/mobileTheme';
 import { register as registerSW, useServiceWorkerStatus } from './utils/serviceWorker';
@@ -254,9 +254,9 @@ const App: React.FC = () => {
         <ThemeProvider theme={selectedTheme}>
           <CssBaseline />
           <HashRouter>
-            <DatabaseLoader>
+            <SimpleDatabaseLoader>
               <AppContent />
-            </DatabaseLoader>
+            </SimpleDatabaseLoader>
           </HashRouter>
         </ThemeProvider>
       </HelmetProvider>

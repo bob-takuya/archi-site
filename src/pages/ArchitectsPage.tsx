@@ -54,7 +54,7 @@ import {
   getArchitectSchools,
   type Architect,
   type ArchitectResponse 
-} from '../services/api/FastArchitectService';
+} from '../services/api/RealArchitectService';
 
 interface AutocompleteSuggestion {
   label: string;

@@ -36,7 +36,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import CakeIcon from '@mui/icons-material/Cake';
 import CategoryIcon from '@mui/icons-material/Category';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
-import { ArchitectService } from '../services/db';
+import { getArchitectById, type Architect } from '../services/api/RealArchitectService';
 import MapComponent from '../components/Map';
 import ArchitectureList from '../components/ArchitectureList';
 
@@ -68,9 +68,9 @@ const WikipediaIcon = () => (
 
 const ArchitectSinglePage = () => {
   const { id } = useParams();
-  const [architect, setArchitect] = useState(null);
+  const [architect, setArchitect] = useState<Architect | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [teacherInfo, setTeacherInfo] = useState([]);
   const navigate = useNavigate();
 
@@ -78,7 +78,7 @@ const ArchitectSinglePage = () => {
     const fetchArchitect = async () => {
       setLoading(true);
       try {
-        const data = await ArchitectService.getArchitectById(parseInt(id));
+        const data = await getArchitectById(parseInt(id || '0'));
         if (!data) {
           setError('建築家情報が見つかりませんでした。');
           setLoading(false);
