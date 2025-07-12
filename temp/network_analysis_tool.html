@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Analysis Tool - Architects Tab</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .nav {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            padding: 20px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .status-card {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .status-card.error {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .status-card.warning {
+            border-left-color: #ffc107;
+            background: #fffbf0;
+        }
+
+        .status-card.info {
+            border-left-color: #17a2b8;
+            background: #f0fdff;
+        }
+
+        .request-item {
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .request-header {
+            background: #f8f9fa;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .request-details {
+            padding: 15px;
+            display: none;
+            background: white;
+        }
+
+        .request-details.show {
+            display: block;
+        }
+
+        .status-success { color: #28a745; }
+        .status-error { color: #dc3545; }
+        .status-pending { color: #ffc107; }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .metric-label {
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background 0.3s ease;
+        }
+
+        .test-button:hover {
+            background: #5a6fd8;
+        }
+
+        .test-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .log-entry {
+            background: #f8f9fa;
+            border-left: 3px solid #667eea;
+            padding: 10px;
+            margin: 5px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .error-log {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .warning-log {
+            border-left-color: #ffc107;
+            background: #fffbf0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .timeline {
+            border-left: 2px solid #667eea;
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            border-radius: 50%;
+            position: absolute;
+            left: -25px;
+            top: 5px;
+        }
+
+        .timeline-item.error::before {
+            background: #dc3545;
+        }
+
+        .timeline-item.warning::before {
+            background: #ffc107;
+        }
+
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+
+        .fix-suggestion {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .fix-suggestion h4 {
+            color: #155724;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Network Analysis Tool</h1>
+            <p>Monitoring architects tab loading issues and database connectivity</p>
+        </div>
+
+        <div class="nav">
+            <button class="nav-button active" onclick="showTab('overview')">Overview</button>
+            <button class="nav-button" onclick="showTab('requests')">Network Requests</button>
+            <button class="nav-button" onclick="showTab('database')">Database Connectivity</button>
+            <button class="nav-button" onclick="showTab('performance')">Performance</button>
+            <button class="nav-button" onclick="showTab('fixes')">Recommended Fixes</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <h3>System Overview</h3>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value" id="totalRequests">0</div>
+                    <div class="metric-label">Total Requests</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="failedRequests">0</div>
+                    <div class="metric-label">Failed Requests</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="avgResponseTime">0ms</div>
+                    <div class="metric-label">Avg Response Time</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="dbStatus">Unknown</div>
+                    <div class="metric-label">Database Status</div>
+                </div>
+            </div>
+
+            <div id="systemStatus">
+                <div class="status-card info">
+                    <strong>🔄 System Initializing...</strong><br>
+                    Starting network analysis for architects tab loading issues.
+                </div>
+            </div>
+
+            <button class="test-button" onclick="startNetworkAnalysis()">Start Analysis</button>
+            <button class="test-button" onclick="testArchitectsTab()">Test Architects Tab</button>
+            <button class="test-button" onclick="clearLogs()">Clear Logs</button>
+        </div>
+
+        <!-- Network Requests Tab -->
+        <div id="requests" class="tab-content">
+            <h3>Network Requests Monitor</h3>
+            <p>Real-time monitoring of all network requests for the architects tab</p>
+
+            <div class="timeline" id="requestTimeline">
+                <div class="timeline-item info">
+                    <strong>Analysis Ready</strong><br>
+                    Waiting for network requests to monitor...
+                </div>
+            </div>
+
+            <div id="requestsList"></div>
+        </div>
+
+        <!-- Database Connectivity Tab -->
+        <div id="database" class="tab-content">
+            <h3>Database Connectivity Analysis</h3>
+            
+            <div id="dbConnectionStatus">
+                <div class="status-card info">
+                    <strong>Database Status: Unknown</strong><br>
+                    Click "Test Database Connection" to check connectivity.
+                </div>
+            </div>
+
+            <button class="test-button" onclick="testDatabaseConnection()">Test Database Connection</button>
+            <button class="test-button" onclick="testChunkedLoading()">Test Chunked Loading</button>
+            <button class="test-button" onclick="testDirectLoading()">Test Direct Loading</button>
+
+            <div id="dbTestResults"></div>
+        </div>
+
+        <!-- Performance Tab -->
+        <div id="performance" class="tab-content">
+            <h3>Performance Analysis</h3>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="performanceProgress"></div>
+            </div>
+
+            <div id="performanceMetrics">
+                <h4>Key Performance Indicators</h4>
+                <div id="performanceData"></div>
+            </div>
+
+            <button class="test-button" onclick="runPerformanceTest()">Run Performance Test</button>
+        </div>
+
+        <!-- Fixes Tab -->
+        <div id="fixes" class="tab-content">
+            <h3>Recommended Fixes</h3>
+            
+            <div id="recommendedFixes">
+                <div class="fix-suggestion">
+                    <h4>🔧 Common Solutions</h4>
+                    <p>Based on network analysis, here are potential fixes for architects tab loading issues:</p>
+                    <ul>
+                        <li>Check database file accessibility</li>
+                        <li>Verify CORS configuration</li>
+                        <li>Test WebAssembly (WASM) file loading</li>
+                        <li>Validate SQLite worker script</li>
+                        <li>Monitor chunk loading performance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let networkRequests = [];
+        let performanceMetrics = {};
+        let isAnalyzing = false;
+
+        // Tab management
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all nav buttons
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Set active nav button
+            event.target.classList.add('active');
+        }
+
+        // Network monitoring functions
+        function startNetworkAnalysis() {
+            if (isAnalyzing) {
+                updateSystemStatus('warning', '⚠️ Analysis already running...');
+                return;
+            }
+
+            isAnalyzing = true;
+            updateSystemStatus('info', '🔄 Starting network analysis...');
+            
+            // Clear previous data
+            networkRequests = [];
+            updateMetrics();
+            
+            // Start monitoring
+            monitorNetworkRequests();
+            
+            updateSystemStatus('success', '✅ Network analysis started. Monitoring all requests...');
+        }
+
+        function monitorNetworkRequests() {
+            // Override fetch to monitor requests
+            const originalFetch = window.fetch;
+            window.fetch = async function(...args) {
+                const startTime = Date.now();
+                const url = args[0];
+                
+                logRequest('start', url, startTime);
+                
+                try {
+                    const response = await originalFetch.apply(this, args);
+                    const endTime = Date.now();
+                    const duration = endTime - startTime;
+                    
+                    logRequest('success', url, startTime, {
+                        status: response.status,
+                        statusText: response.statusText,
+                        duration: duration,
+                        size: response.headers.get('content-length') || 'unknown'
+                    });
+                    
+                    return response;
+                } catch (error) {
+                    const endTime = Date.now();
+                    const duration = endTime - startTime;
+                    
+                    logRequest('error', url, startTime, {
+                        error: error.message,
+                        duration: duration
+                    });
+                    
+                    throw error;
+                }
+            };
+        }
+
+        function logRequest(type, url, timestamp, details = {}) {
+            const request = {
+                id: Date.now() + Math.random(),
+                type,
+                url,
+                timestamp,
+                details
+            };
+            
+            networkRequests.push(request);
+            updateRequestTimeline(request);
+            updateMetrics();
+            
+            // Check for critical database files
+            if (url.includes('archimap.sqlite') || url.includes('sqlite.worker') || url.includes('sql-wasm.wasm')) {
+                highlightCriticalRequest(request);
+            }
+        }
+
+        function updateRequestTimeline(request) {
+            const timeline = document.getElementById('requestTimeline');
+            const item = document.createElement('div');
+            
+            let statusClass = 'info';
+            let statusText = '🔄 Pending';
+            let detailsHtml = '';
+            
+            if (request.type === 'success') {
+                statusClass = 'success';
+                statusText = `✅ ${request.details.status} (${request.details.duration}ms)`;
+                detailsHtml = `
+                    <br><small>Size: ${request.details.size} bytes</small>
+                `;
+            } else if (request.type === 'error') {
+                statusClass = 'error';
+                statusText = `❌ Error (${request.details.duration}ms)`;
+                detailsHtml = `
+                    <br><small>Error: ${request.details.error}</small>
+                `;
+            }
+            
+            item.className = `timeline-item ${statusClass}`;
+            item.innerHTML = `
+                <strong>${statusText}</strong><br>
+                <code>${request.url}</code>
+                ${detailsHtml}
+                <br><small>${new Date(request.timestamp).toLocaleTimeString()}</small>
+            `;
+            
+            timeline.appendChild(item);
+            
+            // Auto-scroll to bottom
+            timeline.scrollTop = timeline.scrollHeight;
+        }
+
+        function updateMetrics() {
+            const total = networkRequests.length;
+            const failed = networkRequests.filter(r => r.type === 'error').length;
+            const completed = networkRequests.filter(r => r.type === 'success');
+            const avgTime = completed.length > 0 
+                ? Math.round(completed.reduce((sum, r) => sum + r.details.duration, 0) / completed.length)
+                : 0;
+            
+            document.getElementById('totalRequests').textContent = total;
+            document.getElementById('failedRequests').textContent = failed;
+            document.getElementById('avgResponseTime').textContent = avgTime + 'ms';
+        }
+
+        function highlightCriticalRequest(request) {
+            const status = document.getElementById('systemStatus');
+            
+            if (request.type === 'error') {
+                const errorCard = document.createElement('div');
+                errorCard.className = 'status-card error';
+                errorCard.innerHTML = `
+                    <strong>❌ Critical Database File Failed</strong><br>
+                    Failed to load: <code>${request.url}</code><br>
+                    Error: ${request.details.error}<br>
+                    <small>This may prevent the architects tab from loading properly.</small>
+                `;
+                status.appendChild(errorCard);
+            } else if (request.type === 'success') {
+                const successCard = document.createElement('div');
+                successCard.className = 'status-card';
+                successCard.innerHTML = `
+                    <strong>✅ Critical Database File Loaded</strong><br>
+                    Successfully loaded: <code>${request.url}</code><br>
+                    Duration: ${request.details.duration}ms, Size: ${request.details.size} bytes
+                `;
+                status.appendChild(successCard);
+            }
+        }
+
+        function updateSystemStatus(type, message) {
+            const status = document.getElementById('systemStatus');
+            const card = document.createElement('div');
+            card.className = `status-card ${type}`;
+            card.innerHTML = message;
+            status.appendChild(card);
+        }
+
+        // Test functions
+        async function testArchitectsTab() {
+            updateSystemStatus('info', '🧪 Testing architects tab...');
+            
+            try {
+                // Test the main architects page URL
+                const response = await fetch('/architects', { method: 'HEAD' });
+                
+                if (response.ok) {
+                    updateSystemStatus('success', '✅ Architects tab endpoint is accessible');
+                } else {
+                    updateSystemStatus('error', `❌ Architects tab returned ${response.status}: ${response.statusText}`);
+                }
+                
+                // Test database files
+                await testDatabaseFiles();
+                
+            } catch (error) {
+                updateSystemStatus('error', `❌ Architects tab test failed: ${error.message}`);
+            }
+        }
+
+        async function testDatabaseFiles() {
+            const filesToTest = [
+                '/archi-site/db/archimap.sqlite3.json',
+                '/archi-site/db/archimap.sqlite3',
+                '/archi-site/sqlite.worker.js',
+                '/archi-site/sql-wasm.wasm'
+            ];
+            
+            for (const file of filesToTest) {
+                try {
+                    const response = await fetch(file, { method: 'HEAD' });
+                    
+                    if (response.ok) {
+                        const size = response.headers.get('content-length');
+                        updateSystemStatus('success', `✅ ${file} - OK (${size ? size + ' bytes' : 'size unknown'})`);
+                    } else {
+                        updateSystemStatus('error', `❌ ${file} - ${response.status}: ${response.statusText}`);
+                    }
+                } catch (error) {
+                    updateSystemStatus('error', `❌ ${file} - Network error: ${error.message}`);
+                }
+            }
+        }
+
+        async function testDatabaseConnection() {
+            const dbStatus = document.getElementById('dbConnectionStatus');
+            const results = document.getElementById('dbTestResults');
+            
+            dbStatus.innerHTML = `
+                <div class="status-card info">
+                    <strong>🔄 Testing Database Connection...</strong><br>
+                    Checking database initialization and connectivity.
+                </div>
+            `;
+            
+            try {
+                // Test database status from the application
+                const testResult = await new Promise((resolve, reject) => {
+                    // This would need to be adapted to your actual database service
+                    const script = document.createElement('script');
+                    script.type = 'module';
+                    script.textContent = `
+                        import { initDatabase, getDatabaseStatus } from '/src/services/db/ClientDatabaseService.js';
+                        
+                        try {
+                            const status = getDatabaseStatus();
+                            window.dbTestResult = { success: true, status };
+                            
+                            if (status === 'not_initialized') {
+                                const db = await initDatabase();
+                                window.dbTestResult = { success: true, status: 'ready', db: !!db };
+                            }
+                        } catch (error) {
+                            window.dbTestResult = { success: false, error: error.message };
+                        }
+                    `;
+                    document.head.appendChild(script);
+                    
+                    // Check for result
+                    const checkResult = () => {
+                        if (window.dbTestResult) {
+                            resolve(window.dbTestResult);
+                            delete window.dbTestResult;
+                            document.head.removeChild(script);
+                        } else {
+                            setTimeout(checkResult, 100);
+                        }
+                    };
+                    
+                    checkResult();
+                    
+                    // Timeout after 10 seconds
+                    setTimeout(() => {
+                        reject(new Error('Database test timeout'));
+                    }, 10000);
+                });
+                
+                if (testResult.success) {
+                    dbStatus.innerHTML = `
+                        <div class="status-card">
+                            <strong>✅ Database Connection Successful</strong><br>
+                            Status: ${testResult.status}<br>
+                            ${testResult.db ? 'Database instance available' : ''}
+                        </div>
+                    `;
+                } else {
+                    dbStatus.innerHTML = `
+                        <div class="status-card error">
+                            <strong>❌ Database Connection Failed</strong><br>
+                            Error: ${testResult.error}
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                dbStatus.innerHTML = `
+                    <div class="status-card error">
+                        <strong>❌ Database Test Failed</strong><br>
+                        Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        async function testChunkedLoading() {
+            updateSystemStatus('info', '🧪 Testing chunked database loading...');
+            
+            try {
+                const configResponse = await fetch('/archi-site/db/archimap.sqlite3.json');
+                
+                if (configResponse.ok) {
+                    const config = await configResponse.json();
+                    updateSystemStatus('success', `✅ Database config loaded: ${JSON.stringify(config).substring(0, 100)}...`);
+                    
+                    // Test if chunks are accessible
+                    if (config.serverMode === 'chunked' && config.requestChunkSize) {
+                        updateSystemStatus('info', `📦 Chunk size: ${config.requestChunkSize} bytes`);
+                    }
+                } else {
+                    updateSystemStatus('error', `❌ Database config failed: ${configResponse.status}`);
+                }
+                
+            } catch (error) {
+                updateSystemStatus('error', `❌ Chunked loading test failed: ${error.message}`);
+            }
+        }
+
+        async function testDirectLoading() {
+            updateSystemStatus('info', '🧪 Testing direct database loading...');
+            
+            try {
+                const dbResponse = await fetch('/archi-site/db/archimap.sqlite3', { method: 'HEAD' });
+                
+                if (dbResponse.ok) {
+                    const size = dbResponse.headers.get('content-length');
+                    const sizeInMB = size ? (parseInt(size) / (1024 * 1024)).toFixed(2) : 'unknown';
+                    updateSystemStatus('success', `✅ Direct database accessible: ${sizeInMB} MB`);
+                } else {
+                    updateSystemStatus('error', `❌ Direct database failed: ${dbResponse.status}`);
+                }
+                
+            } catch (error) {
+                updateSystemStatus('error', `❌ Direct loading test failed: ${error.message}`);
+            }
+        }
+
+        async function runPerformanceTest() {
+            const progressBar = document.getElementById('performanceProgress');
+            const performanceData = document.getElementById('performanceData');
+            
+            let progress = 0;
+            const updateProgress = (value) => {
+                progress = value;
+                progressBar.style.width = progress + '%';
+            };
+            
+            performanceData.innerHTML = '<div class="log-entry">🔄 Starting performance analysis...</div>';
+            
+            updateProgress(10);
+            
+            // Test connection speed
+            const speedTest = await testConnectionSpeed();
+            updateProgress(30);
+            
+            performanceData.innerHTML += `<div class="log-entry">🌐 Connection speed: ${speedTest}</div>`;
+            
+            // Test database file sizes
+            const sizeTest = await testFileSizes();
+            updateProgress(60);
+            
+            performanceData.innerHTML += `<div class="log-entry">📁 File size analysis: ${JSON.stringify(sizeTest, null, 2)}</div>`;
+            
+            // Test WebAssembly loading
+            const wasmTest = await testWasmLoading();
+            updateProgress(80);
+            
+            performanceData.innerHTML += `<div class="log-entry">⚡ WebAssembly test: ${wasmTest}</div>`;
+            
+            updateProgress(100);
+            performanceData.innerHTML += '<div class="log-entry">✅ Performance analysis complete</div>';
+        }
+
+        async function testConnectionSpeed() {
+            const startTime = Date.now();
+            try {
+                await fetch('/archi-site/images/shinkenchiku-favicon.ico', { method: 'HEAD', cache: 'no-cache' });
+                const duration = Date.now() - startTime;
+                
+                if (duration < 100) return 'fast';
+                if (duration < 500) return 'moderate';
+                return 'slow';
+            } catch {
+                return 'failed';
+            }
+        }
+
+        async function testFileSizes() {
+            const files = [
+                '/archi-site/db/archimap.sqlite3',
+                '/archi-site/sqlite.worker.js',
+                '/archi-site/sql-wasm.wasm'
+            ];
+            
+            const sizes = {};
+            
+            for (const file of files) {
+                try {
+                    const response = await fetch(file, { method: 'HEAD' });
+                    const size = response.headers.get('content-length');
+                    sizes[file] = size ? `${(parseInt(size) / 1024).toFixed(1)} KB` : 'unknown';
+                } catch {
+                    sizes[file] = 'failed';
+                }
+            }
+            
+            return sizes;
+        }
+
+        async function testWasmLoading() {
+            try {
+                const response = await fetch('/archi-site/sql-wasm.wasm', { method: 'HEAD' });
+                return response.ok ? 'accessible' : `failed (${response.status})`;
+            } catch (error) {
+                return `error: ${error.message}`;
+            }
+        }
+
+        function clearLogs() {
+            document.getElementById('systemStatus').innerHTML = `
+                <div class="status-card info">
+                    <strong>🔄 Logs cleared</strong><br>
+                    Ready for new analysis.
+                </div>
+            `;
+            document.getElementById('requestTimeline').innerHTML = `
+                <div class="timeline-item info">
+                    <strong>Analysis Ready</strong><br>
+                    Waiting for network requests to monitor...
+                </div>
+            `;
+            networkRequests = [];
+            updateMetrics();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSystemStatus('info', '🎯 Network Analysis Tool Ready');
+            updateSystemStatus('info', '💡 Click "Start Analysis" to begin monitoring network requests');
+        });
+    </script>
+</body>
+</html>

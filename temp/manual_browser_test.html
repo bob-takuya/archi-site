@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Architects Tab Network Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 4px solid;
+        }
+        .success { border-left-color: #28a745; background: #d4edda; }
+        .error { border-left-color: #dc3545; background: #f8d7da; }
+        .warning { border-left-color: #ffc107; background: #fff3cd; }
+        .info { border-left-color: #17a2b8; background: #d1ecf1; }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Manual Architects Tab Network Test</h1>
+        <p>This tool helps diagnose network issues with the architects tab by testing loading in an iframe and monitoring network requests.</p>
+
+        <div id="status"></div>
+
+        <h3>Controls</h3>
+        <button onclick="testDirectFiles()">Test Database Files</button>
+        <button onclick="loadArchitectsTab()">Load Architects Tab</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+        <button onclick="openDevTools()">Open DevTools Instructions</button>
+
+        <h3>Network Log</h3>
+        <div id="networkLog" class="log">Ready to test...</div>
+
+        <h3>Architects Tab Preview</h3>
+        <iframe id="architectsFrame" src="about:blank"></iframe>
+
+        <h3>Database File Tests</h3>
+        <div id="fileTests"></div>
+    </div>
+
+    <script>
+        let networkLog = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = `[${timestamp}] ${message}`;
+            networkLog.push(entry);
+            
+            const logDiv = document.getElementById('networkLog');
+            logDiv.innerHTML = networkLog.join('\n');
+            logDiv.scrollTop = logDiv.scrollHeight;
+            
+            // Also show status
+            showStatus(message, type);
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = message;
+            status.appendChild(div);
+            
+            // Remove old status messages (keep last 5)
+            while (status.children.length > 5) {
+                status.removeChild(status.firstChild);
+            }
+        }
+
+        async function testDirectFiles() {
+            log('🧪 Testing database files directly...', 'info');
+            
+            const files = [
+                { 
+                    path: '/archi-site/db/archimap.sqlite3.json', 
+                    name: 'Database Config',
+                    expectedType: 'application/json'
+                },
+                { 
+                    path: '/archi-site/db/archimap.sqlite3', 
+                    name: 'SQLite Database',
+                    expectedType: 'application/octet-stream'
+                },
+                { 
+                    path: '/archi-site/sqlite.worker.js', 
+                    name: 'SQLite Worker',
+                    expectedType: 'application/javascript'
+                },
+                { 
+                    path: '/archi-site/sql-wasm.wasm', 
+                    name: 'WebAssembly Module',
+                    expectedType: 'application/wasm'
+                }
+            ];
+
+            const results = [];
+            
+            for (const file of files) {
+                try {
+                    log(`Testing ${file.name}...`, 'info');
+                    
+                    const startTime = Date.now();
+                    const response = await fetch(file.path);
+                    const duration = Date.now() - startTime;
+                    
+                    const result = {
+                        name: file.name,
+                        path: file.path,
+                        status: response.status,
+                        statusText: response.statusText,
+                        contentType: response.headers.get('content-type'),
+                        contentLength: response.headers.get('content-length'),
+                        duration: duration,
+                        success: response.ok
+                    };
+
+                    if (response.ok) {
+                        log(`✅ ${file.name}: ${response.status} (${duration}ms, ${result.contentLength || 'unknown'} bytes)`, 'success');
+                        
+                        // Additional validation for specific file types
+                        if (file.path.includes('.json')) {
+                            try {
+                                const text = await response.text();
+                                JSON.parse(text);
+                                log(`✅ ${file.name}: Valid JSON format`, 'success');
+                            } catch (e) {
+                                log(`❌ ${file.name}: Invalid JSON - ${e.message}`, 'error');
+                                result.jsonError = e.message;
+                            }
+                        }
+                        
+                    } else {
+                        log(`❌ ${file.name}: ${response.status} ${response.statusText}`, 'error');
+                    }
+                    
+                    results.push(result);
+                    
+                } catch (error) {
+                    log(`❌ ${file.name}: Network error - ${error.message}`, 'error');
+                    results.push({
+                        name: file.name,
+                        path: file.path,
+                        error: error.message,
+                        success: false
+                    });
+                }
+            }
+            
+            // Display results summary
+            displayFileTestResults(results);
+            
+            const successCount = results.filter(r => r.success).length;
+            log(`📊 File test complete: ${successCount}/${results.length} files accessible`, 
+                successCount === results.length ? 'success' : 'warning');
+        }
+
+        function displayFileTestResults(results) {
+            const container = document.getElementById('fileTests');
+            container.innerHTML = '<h4>Test Results:</h4>';
+            
+            results.forEach(result => {
+                const div = document.createElement('div');
+                div.className = `status ${result.success ? 'success' : 'error'}`;
+                
+                let content = `<strong>${result.name}</strong><br>`;
+                content += `Path: ${result.path}<br>`;
+                
+                if (result.success) {
+                    content += `Status: ${result.status} (${result.duration}ms)<br>`;
+                    content += `Content-Type: ${result.contentType || 'unknown'}<br>`;
+                    content += `Size: ${result.contentLength || 'unknown'} bytes`;
+                    if (result.jsonError) {
+                        content += `<br><span style="color: red;">JSON Error: ${result.jsonError}</span>`;
+                    }
+                } else {
+                    content += `Error: ${result.error || `${result.status} ${result.statusText}`}`;
+                }
+                
+                div.innerHTML = content;
+                container.appendChild(div);
+            });
+        }
+
+        function loadArchitectsTab() {
+            log('🚀 Loading architects tab in iframe...', 'info');
+            
+            const iframe = document.getElementById('architectsFrame');
+            const baseUrl = window.location.origin;
+            
+            // Set up iframe loading monitoring
+            iframe.onload = function() {
+                log('✅ Iframe loaded successfully', 'success');
+                
+                try {
+                    // Try to access iframe content (may fail due to CORS)
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    const title = iframeDoc.title;
+                    log(`📄 Page title: ${title}`, 'info');
+                    
+                    // Check for error messages
+                    const errorElements = iframeDoc.querySelectorAll('.error, [data-testid*="error"]');
+                    if (errorElements.length > 0) {
+                        log(`⚠️ Found ${errorElements.length} error elements in page`, 'warning');
+                    }
+                    
+                    // Check for loading indicators
+                    const loadingElements = iframeDoc.querySelectorAll('.loading, [data-testid*="loading"]');
+                    if (loadingElements.length > 0) {
+                        log(`🔄 Found ${loadingElements.length} loading indicators`, 'info');
+                    }
+                    
+                } catch (e) {
+                    log(`ℹ️ Cannot access iframe content (CORS): ${e.message}`, 'info');
+                }
+            };
+            
+            iframe.onerror = function() {
+                log('❌ Iframe failed to load', 'error');
+            };
+            
+            // Load the architects page
+            iframe.src = `${baseUrl}/archi-site/architects`;
+            
+            // Monitor for 30 seconds
+            setTimeout(() => {
+                log('📊 Monitoring complete - check browser DevTools Network tab for detailed analysis', 'info');
+            }, 30000);
+        }
+
+        function clearLogs() {
+            networkLog = [];
+            document.getElementById('networkLog').innerHTML = 'Logs cleared...';
+            document.getElementById('status').innerHTML = '';
+            document.getElementById('fileTests').innerHTML = '';
+        }
+
+        function openDevTools() {
+            const instructions = `
+                📖 DevTools Network Analysis Instructions:
+                
+                1. Open Browser Developer Tools (F12)
+                2. Go to Network tab
+                3. Clear network log (trash icon)
+                4. Click "Load Architects Tab" button
+                5. Watch for:
+                   • Red failed requests
+                   • Slow requests (>5 seconds)
+                   • Large file downloads
+                   • CORS errors in Console tab
+                
+                Look specifically for these files:
+                • archimap.sqlite3.json
+                • archimap.sqlite3
+                • sqlite.worker.js
+                • sql-wasm.wasm
+                
+                If any of these fail, that's the root cause!
+            `;
+            
+            alert(instructions);
+            log('📖 DevTools instructions displayed', 'info');
+        }
+
+        // Automatically run file tests on page load
+        window.addEventListener('load', () => {
+            log('🔍 Manual Browser Test loaded - ready for diagnostics', 'info');
+            setTimeout(testDirectFiles, 1000);
+        });
+
+        // Monitor global fetch requests
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            const url = args[0];
+            const startTime = Date.now();
+            
+            log(`📡 Request: ${url}`, 'info');
+            
+            return originalFetch.apply(this, args)
+                .then(response => {
+                    const duration = Date.now() - startTime;
+                    if (response.ok) {
+                        log(`📡 Response: ${response.status} ${url} (${duration}ms)`, 'success');
+                    } else {
+                        log(`📡 Response: ${response.status} ${url} (${duration}ms)`, 'error');
+                    }
+                    return response;
+                })
+                .catch(error => {
+                    const duration = Date.now() - startTime;
+                    log(`📡 Error: ${url} - ${error.message} (${duration}ms)`, 'error');
+                    throw error;
+                });
+        };
+    </script>
+</body>
+</html>

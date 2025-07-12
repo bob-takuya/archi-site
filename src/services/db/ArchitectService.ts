@@ -88,17 +88,18 @@ export const getAllArchitects = async (
     params.push(options.deathYear);
   }
   
-  // タグによるフィルタリング（INNER JOIN使用）
+  // タグによるフィルタリング（現在無効 - テーブルが存在しないため）
   let joinClause = '';
+  // Note: ZCDTAG and ZCDARCHITECT_TAG tables don't exist in current database
+  // Tag filtering disabled until proper tag tables are available
   if (tags && tags.length > 0) {
-    joinClause = `
-      INNER JOIN ZCDARCHITECT_TAG ON ZCDARCHITECT.ZAR_ID = ZCDARCHITECT_TAG.ARCHITECT_ID
-      INNER JOIN ZCDTAG ON ZCDARCHITECT_TAG.TAG_ID = ZCDTAG.TAG_ID
-    `;
-    whereClause += ' AND ZCDTAG.TAG_NAME IN (';
-    whereClause += tags.map(() => '?').join(',');
-    whereClause += ')';
-    params.push(...tags);
+    console.warn('⚠️ Tag filtering requested but tag tables (ZCDTAG, ZCDARCHITECT_TAG) not available in database');
+    // Fallback: search in architect fields for tag-like terms
+    const tagSearchTerms = tags.join(' ');
+    if (tagSearchTerms) {
+      whereClause += ' AND (ZAR_CATEGORY LIKE ? OR ZAR_SCHOOL LIKE ? OR ZAR_NATIONALITY LIKE ?)';
+      params.push(`%${tagSearchTerms}%`, `%${tagSearchTerms}%`, `%${tagSearchTerms}%`);
+    }
   }
   
   // 総件数のクエリ
@@ -148,11 +149,48 @@ export const getAllArchitects = async (
  * @returns タグ一覧
  */
 export const getArchitectTags = async (): Promise<Tag[]> => {
-  return getResultsArray<Tag>(`
-    SELECT TAG_ID, TAG_NAME, COUNT(ARCHITECT_ID) as TAG_COUNT
-    FROM ZCDTAG
-    LEFT JOIN ZCDARCHITECT_TAG ON ZCDTAG.TAG_ID = ZCDARCHITECT_TAG.TAG_ID
-    GROUP BY ZCDTAG.TAG_ID, ZCDTAG.TAG_NAME
-    ORDER BY TAG_COUNT DESC, TAG_NAME
-  `);
+  try {
+    // ZCDTAG table doesn't exist, so we'll generate tags from architect data
+    console.warn('⚠️ ZCDTAG table not available, generating tags from architect fields');
+    
+    const results = await getResultsArray<{TAG_NAME: string; TAG_COUNT: number}>(`
+      SELECT 
+        COALESCE(ZAR_NATIONALITY, '不明') as TAG_NAME,
+        COUNT(*) as TAG_COUNT
+      FROM ZCDARCHITECT 
+      WHERE ZAR_NATIONALITY IS NOT NULL AND ZAR_NATIONALITY != ''
+      GROUP BY ZAR_NATIONALITY
+      
+      UNION ALL
+      
+      SELECT 
+        COALESCE(ZAR_CATEGORY, '不明') as TAG_NAME,
+        COUNT(*) as TAG_COUNT
+      FROM ZCDARCHITECT 
+      WHERE ZAR_CATEGORY IS NOT NULL AND ZAR_CATEGORY != ''
+      GROUP BY ZAR_CATEGORY
+      
+      UNION ALL
+      
+      SELECT 
+        COALESCE(ZAR_SCHOOL, '不明') as TAG_NAME,
+        COUNT(*) as TAG_COUNT
+      FROM ZCDARCHITECT 
+      WHERE ZAR_SCHOOL IS NOT NULL AND ZAR_SCHOOL != ''
+      GROUP BY ZAR_SCHOOL
+      
+      ORDER BY TAG_COUNT DESC, TAG_NAME
+      LIMIT 50
+    `);
+    
+    // Transform to Tag format
+    return results.map((row, index) => ({
+      TAG_ID: index + 1,
+      TAG_NAME: row.TAG_NAME,
+      TAG_COUNT: row.TAG_COUNT
+    }));
+  } catch (error) {
+    console.error('タグ取得エラー:', error);
+    return [];
+  }
 };

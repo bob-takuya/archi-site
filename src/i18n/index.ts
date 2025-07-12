@@ -26,7 +26,7 @@ i18n
     resources,
     
     fallbackLng: 'ja', // Default to Japanese since this is a Japanese architecture database
-    debug: process.env.NODE_ENV === 'development',
+    debug: import.meta.env.DEV,
     
     // Default namespace
     defaultNS: 'common',

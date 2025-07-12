@@ -5,7 +5,7 @@ import './index.css';
 import App from './App';
 
 // ブラウザコンソールにデバッグメッセージを出力
-console.log('React アプリケーションを初期化中...', process.env.NODE_ENV);
+console.log('React アプリケーションを初期化中...', import.meta.env.MODE);
 console.log('DOM root element:', document.getElementById('root'));
 
 // React 18の新しいcreateRootメソッドを使用
