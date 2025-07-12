@@ -30,7 +30,7 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --legacy-peer-deps
       
     - name: Install Playwright browsers
       run: npx playwright install --with-deps ${{ matrix.browser }}
@@ -81,7 +81,7 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --legacy-peer-deps
       
     - name: Install Playwright browsers
       run: npx playwright install --with-deps chromium
@@ -122,7 +122,7 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --legacy-peer-deps
       
     - name: Install Playwright browsers
       run: npx playwright install --with-deps chromium
@@ -296,7 +296,7 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --legacy-peer-deps
       
     - name: Prepare database
       run: npm run prepare-static-db
