@@ -95,12 +95,6 @@ interface NetworkInformation extends EventTarget {
   onchange: ((this: NetworkInformation, ev: Event) => any) | null;
 }
 
-interface Navigator {
-  readonly connection?: NetworkInformation;
-  readonly mozConnection?: NetworkInformation;
-  readonly webkitConnection?: NetworkInformation;
-}
-
 // Web Share API
 interface ShareData {
   title?: string;
@@ -110,6 +104,9 @@ interface ShareData {
 }
 
 interface Navigator {
+  readonly connection?: NetworkInformation;
+  readonly mozConnection?: NetworkInformation;
+  readonly webkitConnection?: NetworkInformation;
   share?(data?: ShareData): Promise<void>;
   canShare?(data?: ShareData): boolean;
 }
