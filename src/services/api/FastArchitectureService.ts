@@ -107,6 +107,10 @@ class FastArchitectureService {
     // Use dynamic base path - both dev and prod use /archi-site/data due to GitHub Pages base path
     this.baseUrl = '/archi-site/data';
     console.log('🚀 FastArchitectureService initialized with baseUrl:', this.baseUrl);
+    
+    // ⚠️ WARNING: Always ensure data files exist in /public/data/ directory
+    // Missing files will NOT cause "問題が発生しました" errors but will return empty data
+    // To prevent eternal loading, all methods return empty data on failure instead of throwing
   }
 
   /**
@@ -149,6 +153,8 @@ class FastArchitectureService {
       this.initialized = true;
     } catch (error) {
       console.error('❌ Failed to initialize FastArchitectureService:', error);
+      // ⚠️ CRITICAL: Never throw errors here - always initialize with empty data
+      // This prevents eternal loading states and "問題が発生しました" errors
       // Initialize with empty data instead of throwing
       this.searchIndex = {
         architects: {},

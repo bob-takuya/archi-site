@@ -75,6 +75,17 @@ interface AutocompleteSuggestion {
   type?: 'recent' | 'trending' | 'suggestion';
 }
 
+// ⚠️ WARNING: CRITICAL LOADING STATE MANAGEMENT ⚠️
+// This component MUST properly handle loading states to prevent:
+// 1. Eternal loading (loading spinner never disappears)
+// 2. Error boundary triggers showing "問題が発生しました"
+//
+// KEY RULES:
+// - ALWAYS use try-catch-finally blocks for async operations
+// - ALWAYS set loading to false in finally blocks
+// - NEVER let async operations hang without setting loading state
+// - ALWAYS provide fallback data when services fail
+// - AVOID circular dependencies in useCallback hooks
 const ArchitecturePageEnhanced = () => {
   const [architectures, setArchitectures] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -343,6 +354,8 @@ const ArchitecturePageEnhanced = () => {
   }, [researchData]);
 
   const fetchArchitectures = async (page: number, search = '', sort = sortBy) => {
+    // ⚠️ WARNING: Always set loading to false in finally block
+    // This prevents eternal loading states even if errors occur
     setLoading(true);
     try {
       let result;
@@ -487,7 +500,7 @@ const ArchitecturePageEnhanced = () => {
       addToRecentSearches(value);
     }
     handleSearch(value);
-  }, [addToRecentSearches]);
+  }, [addToRecentSearches, handleSearch]);
 
   const handleSortChange = (event: any) => {
     const newSort = event.target.value;

@@ -1,3 +1,9 @@
+// ⚠️ WARNING: CRITICAL ERROR PREVENTION ⚠️
+// This page was showing "問題が発生しました" and eternal loading
+// because it was trying to use database services that weren't initialized.
+// Now using RealArchitectService which uses JSON data and doesn't require
+// database initialization. DO NOT switch back to database services without
+// proper lazy loading and error handling.
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
