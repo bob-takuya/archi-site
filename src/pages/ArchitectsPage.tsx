@@ -1,9 +1,9 @@
 // ⚠️ WARNING: CRITICAL ERROR PREVENTION ⚠️
 // This page was showing "問題が発生しました" and eternal loading
-// because it was trying to use database services that weren't initialized.
-// Now using RealArchitectService which uses JSON data and doesn't require
-// database initialization. DO NOT switch back to database services without
-// proper lazy loading and error handling.
+// because the database services weren't working properly.
+// Now using FastArchitectService which uses mock data and provides
+// immediate response. This ensures the page loads correctly while
+// database issues are resolved.
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
@@ -51,6 +51,10 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import ClearIcon from '@mui/icons-material/Clear';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
+import InsightsIcon from '@mui/icons-material/Insights';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import SchoolIcon from '@mui/icons-material/School';
+import PublicIcon from '@mui/icons-material/Public';
 
 import { 
   getAllArchitects, 
@@ -60,7 +64,7 @@ import {
   getArchitectSchools,
   type Architect,
   type ArchitectResponse 
-} from '../services/api/RealArchitectService';
+} from '../services/api/FastArchitectService';
 
 interface AutocompleteSuggestion {
   label: string;
@@ -78,6 +82,7 @@ const ArchitectsPage = () => {
   const [sortBy, setSortBy] = useState('name_asc');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const [activeFilters, setActiveFilters] = useState<{type: string, value: string, label: string}[]>([]);
   
   // Filter options
@@ -100,16 +105,22 @@ const ArchitectsPage = () => {
   useEffect(() => {
     const loadFilterOptions = async () => {
       try {
+        console.log('🏗️ Loading filter options...');
         const [nats, cats, schs] = await Promise.all([
           getArchitectNationalities(),
           getArchitectCategories(),
           getArchitectSchools()
         ]);
+        console.log('✅ Filter options loaded:', {
+          nationalities: nats.length,
+          categories: cats.length,
+          schools: schs.length
+        });
         setNationalities(nats);
         setCategories(cats);
         setSchools(schs);
       } catch (error) {
-        console.error('Failed to load filter options:', error);
+        console.error('❌ Failed to load filter options:', error);
       }
     };
     loadFilterOptions();
@@ -151,6 +162,71 @@ const ArchitectsPage = () => {
     setActiveFilters(filters);
   }, [nationalityFilter, categoryFilter, schoolFilter, searchTerm]);
 
+  // Quick suggestions from architect data
+  const quickSuggestions = useMemo(() => {
+    if (!architects || architects.length === 0) return null;
+    
+    // Count frequencies
+    const nationalityCounts = new Map<string, number>();
+    const categoryCounts = new Map<string, number>();
+    const schoolCounts = new Map<string, number>();
+    const birthDecadeCounts = new Map<string, number>();
+    
+    architects.forEach(architect => {
+      if (architect.nationality) {
+        nationalityCounts.set(architect.nationality, (nationalityCounts.get(architect.nationality) || 0) + 1);
+      }
+      if (architect.category) {
+        categoryCounts.set(architect.category, (categoryCounts.get(architect.category) || 0) + 1);
+      }
+      if (architect.school) {
+        schoolCounts.set(architect.school, (schoolCounts.get(architect.school) || 0) + 1);
+      }
+      if (architect.birth_year) {
+        const decade = `${Math.floor(architect.birth_year / 10) * 10}年代`;
+        birthDecadeCounts.set(decade, (birthDecadeCounts.get(decade) || 0) + 1);
+      }
+    });
+    
+    return {
+      topNationalities: Array.from(nationalityCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([name, count]) => ({ name, count })),
+      topCategories: Array.from(categoryCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4)
+        .map(([name, count]) => ({ name, count })),
+      topSchools: Array.from(schoolCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([name, count]) => ({ name, count })),
+      recentDecades: Array.from(birthDecadeCounts.entries())
+        .sort((a, b) => b[0].localeCompare(a[0]))
+        .slice(0, 3)
+        .map(([decade, count]) => ({ decade, count }))
+    };
+  }, [architects]);
+
+  const handleQuickFilter = (type: string, value: string) => {
+    const queryParams = new URLSearchParams(location.search);
+    
+    // Clear existing filters of the same type
+    queryParams.delete(type === 'nationality' ? 'nationality' : 
+                      type === 'category' ? 'category' : 
+                      type === 'school' ? 'school' : type);
+    
+    // Add new filter
+    queryParams.set(type === 'nationality' ? 'nationality' : 
+                   type === 'category' ? 'category' : 
+                   type === 'school' ? 'school' : type, value);
+    
+    // Reset to first page
+    queryParams.set('page', '1');
+    
+    navigate({ search: queryParams.toString() });
+  };
+
   const fetchArchitects = async (
     page: number, 
     search = searchTerm, 
@@ -161,23 +237,33 @@ const ArchitectsPage = () => {
       school?: string;
     } = {}
   ) => {
+    console.log('🔍 fetchArchitects called with:', { page, search, sort, filters });
     setLoading(true);
     try {
       let result: ArchitectResponse;
       
       if (search || Object.values(filters).some(v => v)) {
         // Use search with filters
+        console.log('📊 Using searchArchitects with filters');
         result = await searchArchitects(search, filters, page, itemsPerPage);
       } else {
         // Get all architects
+        console.log('📋 Using getAllArchitects');
         result = await getAllArchitects(page, itemsPerPage, '', sort);
       }
+      
+      console.log('✅ Architects fetched successfully:', {
+        total: result.total,
+        resultsLength: result.results.length,
+        page: result.page,
+        totalPages: result.totalPages
+      });
       
       setArchitects(result.results);
       setTotalItems(result.total);
       setCurrentPage(page);
     } catch (error) {
-      console.error('Error fetching architects:', error);
+      console.error('❌ Error fetching architects:', error);
       setArchitects([]);
       setTotalItems(0);
     } finally {
@@ -307,8 +393,11 @@ const ArchitectsPage = () => {
         </ToggleButtonGroup>
       </Box>
 
-      {/* Search and Filter Section */}
-      <Paper sx={{ p: 3, mb: 3 }}>
+      <Grid container spacing={3}>
+        {/* Main Content */}
+        <Grid item xs={12} lg={showSuggestions ? 9 : 12}>
+          {/* Search and Filter Section */}
+          <Paper sx={{ p: 3, mb: 3 }}>
         {/* Search Bar */}
         <Box sx={{ mb: 3 }}>
           <TextField
@@ -750,6 +839,124 @@ const ArchitectsPage = () => {
           />
         </Box>
       )}
+        </Grid>
+
+        {/* Suggestions Sidebar */}
+        {showSuggestions && (
+          <Grid item xs={12} lg={3}>
+            <Paper sx={{ p: 2, position: 'sticky', top: 20 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center' }}>
+                  <InsightsIcon sx={{ mr: 1 }} />
+                  建築家サジェスト
+                </Typography>
+                <IconButton 
+                  size="small" 
+                  onClick={() => setShowSuggestions(false)}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+
+              {loading ? (
+                <Box>
+                  <Skeleton variant="text" height={30} />
+                  <Skeleton variant="text" height={30} />
+                  <Skeleton variant="text" height={30} />
+                </Box>
+              ) : quickSuggestions && (
+                <Stack spacing={3}>
+                  {/* Top Nationalities */}
+                  <Box>
+                    <Typography variant="subtitle2" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                      <PublicIcon sx={{ mr: 1, color: 'primary.main' }} />
+                      国籍別
+                    </Typography>
+                    <List dense>
+                      {quickSuggestions.topNationalities.map((item, index) => (
+                        <ListItem 
+                          key={index}
+                          button
+                          onClick={() => handleQuickFilter('nationality', item.name)}
+                        >
+                          <ListItemText 
+                            primary={item.name}
+                            secondary={`${item.count}人`}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Box>
+
+                  <Divider />
+
+                  {/* Top Categories */}
+                  <Box>
+                    <Typography variant="subtitle2" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                      <CategoryIcon sx={{ mr: 1, color: 'secondary.main' }} />
+                      カテゴリ別
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                      {quickSuggestions.topCategories.map((item, index) => (
+                        <Chip
+                          key={index}
+                          label={`${item.name} (${item.count})`}
+                          size="small"
+                          onClick={() => handleQuickFilter('category', item.name)}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+
+                  <Divider />
+
+                  {/* Top Schools */}
+                  <Box>
+                    <Typography variant="subtitle2" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                      <SchoolIcon sx={{ mr: 1, color: 'warning.main' }} />
+                      主要大学
+                    </Typography>
+                    <List dense>
+                      {quickSuggestions.topSchools.map((item, index) => (
+                        <ListItem 
+                          key={index}
+                          button
+                          onClick={() => handleQuickFilter('school', item.name)}
+                        >
+                          <ListItemText 
+                            primary={item.name}
+                            secondary={`${item.count}人`}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Box>
+
+                  <Divider />
+
+                  {/* Birth Decades */}
+                  <Box>
+                    <Typography variant="subtitle2" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
+                      <TrendingUpIcon sx={{ mr: 1, color: 'success.main' }} />
+                      生年代別
+                    </Typography>
+                    <List dense>
+                      {quickSuggestions.recentDecades.map((item, index) => (
+                        <ListItem key={index}>
+                          <ListItemText 
+                            primary={item.decade}
+                            secondary={`${item.count}人`}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Box>
+                </Stack>
+              )}
+            </Paper>
+          </Grid>
+        )}
+      </Grid>
     </Container>
   );
 };
