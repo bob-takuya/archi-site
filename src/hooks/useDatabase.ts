@@ -24,9 +24,13 @@ const useDatabase = () => {
       try {
         setIsLoading(true);
         setError(null);
+        // ⚠️ WARNING: initDatabase must always complete (success or failure)
+        // Never let it hang indefinitely to prevent eternal loading states
         await initDatabase();
         setIsLoading(false);
       } catch (err) {
+        // ⚠️ CRITICAL: Always set isLoading to false on error
+        // This prevents eternal loading and allows the UI to show error state
         setError(err as Error);
         setIsLoading(false);
       }

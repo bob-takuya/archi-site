@@ -18,7 +18,13 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { SkipLink } from './components/accessibility/SkipLink';
 import { AriaLiveRegion } from './utils/accessibility';
 import { logDatabaseDetails } from './utils/dbUtils';
-// Removed SimpleDatabaseLoader - using JSON-based services now
+// ⚠️ WARNING: CRITICAL - DO NOT RE-ADD SimpleDatabaseLoader ⚠️
+// SimpleDatabaseLoader was removed because it caused 10+ minute loading times
+// by trying to initialize a 12MB SQLite database on every page load.
+// The app now uses JSON-based services (FastArchitectureService) which load
+// data on-demand and don't require database initialization.
+// If you need database functionality, use the JSON services or implement
+// lazy loading, but NEVER block the entire app startup with database loading.
 import { theme } from './styles/theme';
 import { mobileTheme, isMobileDevice, isTouchDevice } from './styles/mobileTheme';
 import { register as registerSW, useServiceWorkerStatus } from './utils/serviceWorker';

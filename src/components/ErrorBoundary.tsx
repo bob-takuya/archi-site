@@ -1,6 +1,22 @@
 /**
  * ErrorBoundary component for catching and displaying runtime errors gracefully
  * This improves user experience by showing friendly error messages instead of crashing the app
+ * 
+ * ⚠️ WARNING: This component shows "問題が発生しました" when errors occur ⚠️
+ * 
+ * Common causes that trigger this error boundary:
+ * 1. Unhandled promise rejections in async functions
+ * 2. Services throwing errors instead of returning empty data
+ * 3. Missing data files causing fetch errors to propagate
+ * 4. Circular dependencies in React hooks
+ * 5. Component render errors due to undefined data
+ * 
+ * TO PREVENT THIS ERROR:
+ * - Always use try-catch in async functions
+ * - Return empty/default data instead of throwing errors in services
+ * - Handle missing files gracefully
+ * - Avoid circular dependencies in useCallback/useMemo
+ * - Use optional chaining (?.) for potentially undefined data
  */
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
