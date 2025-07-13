@@ -642,7 +642,7 @@ class FastArchitectureService {
   
   private parseAwards(tags: string): string[] {
     const awardPatterns = [
-      /日本建築学会[\s　]*作品[賞選]?[\s　]*[奨賞]?/g,
+      /日本建築学会[\s]*作品[賞選]?[\s]*[奨賞]?/g,
       /日本建築大賞/g,
       /村野藤吾賞/g,
       /JIA25年賞/g,

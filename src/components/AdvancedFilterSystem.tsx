@@ -635,6 +635,7 @@ const AdvancedFilterSystem: React.FC<AdvancedFilterSystemProps> = ({
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
                 <Chip
+                  key={`${option}-${index}`}
                   variant="outlined"
                   label={option}
                   size="small"
