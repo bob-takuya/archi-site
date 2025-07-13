@@ -64,7 +64,7 @@ import {
   getArchitectSchools,
   type Architect,
   type ArchitectResponse 
-} from '../services/api/SmartArchitectService';
+} from '../services/api/RealArchitectService';
 
 interface AutocompleteSuggestion {
   label: string;
@@ -84,8 +84,6 @@ const ArchitectsPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [activeFilters, setActiveFilters] = useState<{type: string, value: string, label: string}[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [databaseUnavailable, setDatabaseUnavailable] = useState(false);
   
   // Filter options
   const [nationalityFilter, setNationalityFilter] = useState('');
@@ -241,8 +239,6 @@ const ArchitectsPage = () => {
   ) => {
     console.log('🔍 fetchArchitects called with:', { page, search, sort, filters });
     setLoading(true);
-    setError(null);
-    setDatabaseUnavailable(false);
     
     try {
       let result: ArchitectResponse;
@@ -257,17 +253,6 @@ const ArchitectsPage = () => {
         result = await getAllArchitects(page, itemsPerPage, '', sort);
       }
       
-      // Check if result contains an error
-      if (result.error === 'DATABASE_UNAVAILABLE') {
-        console.warn('⚠️ Database unavailable:', result.message);
-        setDatabaseUnavailable(true);
-        setError(result.message || 'データベースサービスが利用できません');
-        setArchitects([]);
-        setTotalItems(0);
-        setCurrentPage(page);
-        return;
-      }
-      
       console.log('✅ Architects fetched successfully:', {
         total: result.total,
         resultsLength: result.results.length,
@@ -280,7 +265,6 @@ const ArchitectsPage = () => {
       setCurrentPage(page);
     } catch (error) {
       console.error('❌ Error fetching architects:', error);
-      setError('データの取得中にエラーが発生しました');
       setArchitects([]);
       setTotalItems(0);
     } finally {

@@ -68,9 +68,15 @@ async function tryChunkedLoading(): Promise<any> {
       console.log(`🔍 SQLite version: ${versionResult[0].values[0][0]}`);
     }
     
-    const countResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
-    if (countResult && countResult.length > 0) {
-      console.log(`🏢 Architecture records: ${countResult[0].values[0][0]} (chunked loading)`);
+    // Test both main tables
+    const archCountResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+    if (archCountResult && archCountResult.length > 0) {
+      console.log(`🏢 Architecture records: ${archCountResult[0].values[0][0]} (chunked loading)`);
+    }
+    
+    const architectCountResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECT");
+    if (architectCountResult && architectCountResult.length > 0) {
+      console.log(`👤 Architect records: ${architectCountResult[0].values[0][0]} (chunked loading)`);
     }
     
     return worker;
@@ -114,9 +120,15 @@ async function tryDirectLoading(): Promise<any> {
     
     database = new SQL.Database(new Uint8Array(dbArrayBuffer));
     
-    const countResult = database.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
-    if (countResult.length > 0) {
-      console.log(`🏢 Architecture records: ${countResult[0].values[0][0]} (direct loading)`);
+    // Test both main tables
+    const archCountResult = database.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
+    if (archCountResult.length > 0) {
+      console.log(`🏢 Architecture records: ${archCountResult[0].values[0][0]} (direct loading)`);
+    }
+    
+    const architectCountResult = database.exec("SELECT COUNT(*) FROM ZCDARCHITECT");
+    if (architectCountResult.length > 0) {
+      console.log(`👤 Architect records: ${architectCountResult[0].values[0][0]} (direct loading)`);
     }
     
     return database;
