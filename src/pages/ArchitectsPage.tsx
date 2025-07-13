@@ -53,8 +53,8 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
 import InsightsIcon from '@mui/icons-material/Insights';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import SchoolIcon from '@mui/icons-material/School';
-import PublicIcon from '@mui/icons-material/Public';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import CloudOffIcon from '@mui/icons-material/CloudOff';
 
 import { 
   getAllArchitects, 
@@ -64,7 +64,7 @@ import {
   getArchitectSchools,
   type Architect,
   type ArchitectResponse 
-} from '../services/api/FastArchitectService';
+} from '../services/api/SmartArchitectService';
 
 interface AutocompleteSuggestion {
   label: string;
@@ -84,6 +84,8 @@ const ArchitectsPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [activeFilters, setActiveFilters] = useState<{type: string, value: string, label: string}[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [databaseUnavailable, setDatabaseUnavailable] = useState(false);
   
   // Filter options
   const [nationalityFilter, setNationalityFilter] = useState('');
@@ -239,6 +241,9 @@ const ArchitectsPage = () => {
   ) => {
     console.log('🔍 fetchArchitects called with:', { page, search, sort, filters });
     setLoading(true);
+    setError(null);
+    setDatabaseUnavailable(false);
+    
     try {
       let result: ArchitectResponse;
       
@@ -250,6 +255,17 @@ const ArchitectsPage = () => {
         // Get all architects
         console.log('📋 Using getAllArchitects');
         result = await getAllArchitects(page, itemsPerPage, '', sort);
+      }
+      
+      // Check if result contains an error
+      if (result.error === 'DATABASE_UNAVAILABLE') {
+        console.warn('⚠️ Database unavailable:', result.message);
+        setDatabaseUnavailable(true);
+        setError(result.message || 'データベースサービスが利用できません');
+        setArchitects([]);
+        setTotalItems(0);
+        setCurrentPage(page);
+        return;
       }
       
       console.log('✅ Architects fetched successfully:', {
@@ -264,6 +280,7 @@ const ArchitectsPage = () => {
       setCurrentPage(page);
     } catch (error) {
       console.error('❌ Error fetching architects:', error);
+      setError('データの取得中にエラーが発生しました');
       setArchitects([]);
       setTotalItems(0);
     } finally {
@@ -582,6 +599,19 @@ const ArchitectsPage = () => {
             ))}
           </Grid>
         )
+      ) : databaseUnavailable ? (
+        <Paper elevation={1} sx={{ p: 6, textAlign: 'center' }}>
+          <CloudOffIcon sx={{ fontSize: 64, color: 'error.main', mb: 2 }} />
+          <Typography variant="h6" gutterBottom color="error.main">
+            データベースサービスが利用できません
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            現在、建築家データベースに接続できません。
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {error || 'データベースサーバーが起動していない可能性があります。しばらく待ってから再度お試しください。'}
+          </Typography>
+        </Paper>
       ) : architects.length === 0 ? (
         <Paper elevation={1} sx={{ p: 6, textAlign: 'center' }}>
           <PersonIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
