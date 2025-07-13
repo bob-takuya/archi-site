@@ -18,7 +18,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { SkipLink } from './components/accessibility/SkipLink';
 import { AriaLiveRegion } from './utils/accessibility';
 import { logDatabaseDetails } from './utils/dbUtils';
-import SimpleDatabaseLoader from './components/SimpleDatabaseLoader';
+// Removed SimpleDatabaseLoader - using JSON-based services now
 import { theme } from './styles/theme';
 import { mobileTheme, isMobileDevice, isTouchDevice } from './styles/mobileTheme';
 import { register as registerSW, useServiceWorkerStatus } from './utils/serviceWorker';
@@ -254,9 +254,7 @@ const App: React.FC = () => {
         <ThemeProvider theme={selectedTheme}>
           <CssBaseline />
           <HashRouter>
-            <SimpleDatabaseLoader>
-              <AppContent />
-            </SimpleDatabaseLoader>
+            <AppContent />
           </HashRouter>
         </ThemeProvider>
       </HelmetProvider>

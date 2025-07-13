@@ -1,4 +1,4 @@
-import { getResultsArray, getSingleResult } from './ClientDatabaseService';
+import { getResultsArray, getSingleResult } from './FixedDatabaseService';
 import type { Architecture, ArchitectureResponse, Tag } from '../../types/architecture';
 
 /**

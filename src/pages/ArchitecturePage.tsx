@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Container, 
@@ -128,17 +128,18 @@ const ArchitecturePageEnhanced = () => {
   const addToRecentSearches = useCallback((search: AutocompleteSuggestion) => {
     setRecentSearches(prev => {
       const filtered = prev.filter(item => item.value !== search.value);
-      return [search, ...filtered].slice(0, 5); // Keep only 5 recent searches
+      const updated = [search, ...filtered].slice(0, 5); // Keep only 5 recent searches
+      
+      // Save to localStorage
+      try {
+        localStorage.setItem('archi-recent-searches', JSON.stringify(updated));
+      } catch (e) {
+        console.warn('Failed to save recent searches to localStorage');
+      }
+      
+      return updated;
     });
-    
-    // Save to localStorage
-    try {
-      const updated = [search, ...recentSearches.filter(item => item.value !== search.value)].slice(0, 5);
-      localStorage.setItem('archi-recent-searches', JSON.stringify(updated));
-    } catch (e) {
-      console.warn('Failed to save recent searches to localStorage');
-    }
-  }, [recentSearches]);
+  }, []);
 
   // Load recent searches from localStorage
   useEffect(() => {
@@ -177,13 +178,7 @@ const ArchitecturePageEnhanced = () => {
     }
   }, [researchData]);
 
-  // Enhanced search handling
-  const handleOptimizedSearch = useCallback((value: AutocompleteSuggestion | null) => {
-    if (value) {
-      addToRecentSearches(value);
-    }
-    handleSearch(value);
-  }, [addToRecentSearches, handleSearch]);
+  // Note: handleOptimizedSearch is defined after handleSearch below
 
   // Enhanced input change with loading state
   const handleOptimizedInputChange = useCallback((value: string) => {
@@ -254,6 +249,15 @@ const ArchitecturePageEnhanced = () => {
         setResearchData(analytics);
       } catch (error) {
         console.error('初期データ取得エラー:', error);
+        // Set empty data to prevent issues
+        setResearchData({
+          awards: [],
+          architects: [],
+          temporalAnalysis: [],
+          regionalAnalysis: [],
+          buildingTypeEvolution: [],
+          professionalNetworks: []
+        });
       } finally {
         setResearchLoading(false);
       }
@@ -476,6 +480,14 @@ const ArchitecturePageEnhanced = () => {
       navigate({ search: queryParams.toString() });
     }
   };
+
+  // Enhanced search handling
+  const handleOptimizedSearch = useCallback((value: AutocompleteSuggestion | null) => {
+    if (value) {
+      addToRecentSearches(value);
+    }
+    handleSearch(value);
+  }, [addToRecentSearches]);
 
   const handleSortChange = (event: any) => {
     const newSort = event.target.value;
