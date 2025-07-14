@@ -113,10 +113,8 @@ export const getAllArchitects = async (
         ZAT_CATEGORY,
         ZAT_SCHOOL,
         ZAT_OFFICE,
-        ZAT_BIO,
-        ZAT_MAINWORKS,
-        ZAT_AWARDS,
-        ZAT_IMAGE
+        ZAT_DESCRIPTION,
+        ZAT_WEBSITE
       FROM ZCDARCHITECT 
       ${whereClause}
       ${orderClause}
@@ -138,10 +136,10 @@ export const getAllArchitects = async (
       category: architect.ZAT_CATEGORY,
       school: architect.ZAT_SCHOOL,
       office: architect.ZAT_OFFICE,
-      bio: architect.ZAT_BIO,
-      mainWorks: architect.ZAT_MAINWORKS,
-      awards: architect.ZAT_AWARDS,
-      imageUrl: architect.ZAT_IMAGE
+      bio: architect.ZAT_DESCRIPTION,
+      mainWorks: undefined,
+      awards: undefined,
+      imageUrl: undefined
     }));
     
     return {
@@ -190,7 +188,7 @@ export const searchArchitects = async (
         ZAT_CATEGORY LIKE '${term}' OR 
         ZAT_SCHOOL LIKE '${term}' OR
         ZAT_OFFICE LIKE '${term}' OR
-        ZAT_MAINWORKS LIKE '${term}'
+        ZAT_DESCRIPTION LIKE '${term}'
       )`);
     }
     
@@ -237,10 +235,8 @@ export const searchArchitects = async (
         ZAT_CATEGORY,
         ZAT_SCHOOL,
         ZAT_OFFICE,
-        ZAT_BIO,
-        ZAT_MAINWORKS,
-        ZAT_AWARDS,
-        ZAT_IMAGE
+        ZAT_DESCRIPTION,
+        ZAT_WEBSITE
       FROM ZCDARCHITECT 
       ${whereClause}
       ORDER BY ZAT_ARCHITECT ASC
@@ -262,10 +258,10 @@ export const searchArchitects = async (
       category: architect.ZAT_CATEGORY,
       school: architect.ZAT_SCHOOL,
       office: architect.ZAT_OFFICE,
-      bio: architect.ZAT_BIO,
-      mainWorks: architect.ZAT_MAINWORKS,
-      awards: architect.ZAT_AWARDS,
-      imageUrl: architect.ZAT_IMAGE
+      bio: architect.ZAT_DESCRIPTION,
+      mainWorks: undefined,
+      awards: undefined,
+      imageUrl: undefined
     }));
     
     return {
@@ -300,10 +296,8 @@ export const getArchitectById = async (id: number): Promise<Architect | null> =>
         ZAT_CATEGORY,
         ZAT_SCHOOL,
         ZAT_OFFICE,
-        ZAT_BIO,
-        ZAT_MAINWORKS,
-        ZAT_AWARDS,
-        ZAT_IMAGE
+        ZAT_DESCRIPTION,
+        ZAT_WEBSITE
       FROM ZCDARCHITECT 
       WHERE ZAT_ID = ${id} OR Z_PK = ${id}
       LIMIT 1
@@ -328,10 +322,10 @@ export const getArchitectById = async (id: number): Promise<Architect | null> =>
       category: architect.ZAT_CATEGORY,
       school: architect.ZAT_SCHOOL,
       office: architect.ZAT_OFFICE,
-      bio: architect.ZAT_BIO,
-      mainWorks: architect.ZAT_MAINWORKS,
-      awards: architect.ZAT_AWARDS,
-      imageUrl: architect.ZAT_IMAGE
+      bio: architect.ZAT_DESCRIPTION,
+      mainWorks: undefined,
+      awards: undefined,
+      imageUrl: undefined
     };
     
   } catch (error) {
