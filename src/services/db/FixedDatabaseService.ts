@@ -143,10 +143,12 @@ async function tryDirectLoading(): Promise<any> {
  */
 export const initDatabase = async (): Promise<any> => {
   if (worker || database) {
+    console.log('✅ Database already initialized');
     return worker || database;
   }
   
   if (initPromise) {
+    console.log('⏳ Database initialization already in progress');
     return initPromise;
   }
   
@@ -155,6 +157,7 @@ export const initDatabase = async (): Promise<any> => {
   initPromise = (async () => {
     try {
       console.log('🚀 Starting database initialization (chunked preferred)...');
+      console.log('📍 Current URL:', window.location.href);
       
       // Try chunked loading first (much faster for 12MB file)
       try {

@@ -55,6 +55,7 @@ export const getAllArchitects = async (
   searchTerm: string = '',
   sortBy: string = 'name_asc'
 ): Promise<ArchitectResponse> => {
+  console.log('🏗️ RealArchitectService.getAllArchitects called with:', { page, limit, searchTerm, sortBy });
   try {
     let whereClause = '';
     let orderClause = '';
@@ -92,7 +93,9 @@ export const getAllArchitects = async (
     
     // Get total count
     const countQuery = `SELECT COUNT(*) as total FROM ZCDARCHITECT ${whereClause}`;
+    console.log('📊 Count query:', countQuery);
     const countResult = await getSingleResult<{total: number}>(countQuery);
+    console.log('📊 Count result:', countResult);
     const total = countResult?.total || 0;
     
     // Get paginated results
@@ -150,7 +153,11 @@ export const getAllArchitects = async (
     };
     
   } catch (error) {
-    console.error('Error fetching architects:', error);
+    console.error('❌ Error in RealArchitectService.getAllArchitects:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    });
     throw error;
   }
 };
