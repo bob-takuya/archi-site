@@ -79,11 +79,6 @@ declare global {
   }
 }
 
-// Vibration API
-interface Navigator {
-  vibrate(pattern: number | number[]): boolean;
-}
-
 // Network Information API
 interface NetworkInformation extends EventTarget {
   readonly downlink: number;
@@ -109,6 +104,7 @@ interface Navigator {
   readonly webkitConnection?: NetworkInformation;
   share?(data?: ShareData): Promise<void>;
   canShare?(data?: ShareData): boolean;
+  vibrate(pattern: number | number[]): boolean;
 }
 
 // Device Motion API
