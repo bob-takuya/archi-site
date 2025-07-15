@@ -1,0 +1,113 @@
+{
+  "name": "建築データベース - 日本の建築作品と建築家の包括的データベース",
+  "short_name": "建築データベース",
+  "description": "日本全国から14,000件以上の建築作品と2,900人以上の建築家情報を検索・閲覧できる包括的なデータベース。地図表示、詳細検索、研究機能を提供。",
+  "icons": [
+    {
+      "src": "/images/shinkenchiku-favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/shinkenchiku-data-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/archi-site/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "theme_color": "#2E3440",
+  "background_color": "#ECEFF4",
+  "scope": "/archi-site/",
+  "lang": "ja",
+  "dir": "ltr",
+  "categories": ["education", "reference", "utilities"],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "screenshots": [
+    {
+      "src": "/images/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "建築データベースのデスクトップ表示"
+    },
+    {
+      "src": "/images/screenshot-mobile.png", 
+      "sizes": "375x667",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "建築データベースのモバイル表示"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "建築作品を検索",
+      "short_name": "作品検索",
+      "description": "建築作品を詳細検索",
+      "url": "/archi-site/#/architecture",
+      "icons": [
+        {
+          "src": "/images/shinkenchiku-favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    },
+    {
+      "name": "建築家を検索",
+      "short_name": "建築家検索", 
+      "description": "建築家を検索",
+      "url": "/archi-site/#/architects",
+      "icons": [
+        {
+          "src": "/images/shinkenchiku-favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    },
+    {
+      "name": "マップ表示",
+      "short_name": "マップ",
+      "description": "建築作品をマップで表示",
+      "url": "/archi-site/#/map",
+      "icons": [
+        {
+          "src": "/images/shinkenchiku-favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/archi-site/#/architecture",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "search"
+    }
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+archi",
+      "url": "/archi-site/#/architecture/%s"
+    }
+  ],
+  "related_applications": [],
+  "iarc_rating_id": "",
+  "file_handlers": [
+    {
+      "action": "/archi-site/#/research",
+      "accept": {
+        "application/json": [".json"],
+        "text/csv": [".csv"]
+      }
+    }
+  ]
+}
