@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    
+    <!-- Primary Meta Tags -->
+    <title>建築データベース | 日本の建築作品と建築家の包括的データベース</title>
+    <meta name="title" content="建築データベース | 日本の建築作品と建築家の包括的データベース">
+    <meta name="description" content="日本全国から14,000件以上の建築作品と2,900人以上の建築家情報を検索・閲覧できる包括的なデータベース。地図表示、詳細検索、研究機能を提供。">
+    <meta name="keywords" content="建築, 建築家, 日本, データベース, マップ, 検索, 建築作品, 設計, アーキテクチャ">
+    <meta name="author" content="建築データベース">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Language and Locale -->
+    <meta name="language" content="Japanese">
+    <link rel="alternate" hreflang="ja" href="https://bob-takuya.github.io/archi-site/">
+    <link rel="alternate" hreflang="en" href="https://bob-takuya.github.io/archi-site/">
+    <link rel="alternate" hreflang="x-default" href="https://bob-takuya.github.io/archi-site/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bob-takuya.github.io/archi-site/">
+    <meta property="og:title" content="建築データベース | 日本の建築作品と建築家の包括的データベース">
+    <meta property="og:description" content="日本全国から14,000件以上の建築作品と2,900人以上の建築家情報を検索・閲覧できる包括的なデータベース。">
+    <meta property="og:image" content="https://bob-takuya.github.io/archi-site/images/shinkenchiku-data-logo.svg">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:site_name" content="建築データベース">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bob-takuya.github.io/archi-site/">
+    <meta property="twitter:title" content="建築データベース | 日本の建築作品と建築家の包括的データベース">
+    <meta property="twitter:description" content="日本全国から14,000件以上の建築作品と2,900人以上の建築家情報を検索・閲覧できる包括的なデータベース。">
+    <meta property="twitter:image" content="https://bob-takuya.github.io/archi-site/images/shinkenchiku-data-logo.svg">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/x-icon" href="/archi-site/images/shinkenchiku-favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/archi-site/images/shinkenchiku-favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/archi-site/images/shinkenchiku-favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/archi-site/images/shinkenchiku-favicon.ico">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/archi-site/manifest.json">
+    <meta name="theme-color" content="#2E3440">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="建築データベース">
+    
+    <!-- Performance and Caching -->
+    <meta http-equiv="Cache-Control" content="public, max-age=86400">
+    <meta http-equiv="Expires" content="Mon, 01 Jan 2024 00:00:00 GMT">
+    
+    <!-- Accessibility -->
+    <meta name="color-scheme" content="light dark">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Preconnect to improve performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "建築データベース",
+        "alternateName": "Architecture Database Japan",
+        "url": "https://bob-takuya.github.io/archi-site/",
+        "description": "日本全国から14,000件以上の建築作品と2,900人以上の建築家情報を検索・閲覧できる包括的なデータベース",
+        "inLanguage": ["ja", "en"],
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://bob-takuya.github.io/archi-site/#/architecture?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <!-- GitHub Pages用のSPAリダイレクト処理 -->
+    <script type="text/javascript">
+        // SPAリダイレクト処理
+        (function(l) {
+            if (l.search[1] === '/') {
+                var decoded = l.search.slice(1).split('&').map(function(s) { 
+                    return s.replace(/~and~/g, '&');
+                }).join('?');
+                window.history.replaceState(null, null,
+                    l.pathname.slice(0, -1) + decoded + l.hash
+                );
+            }
+        }(window.location));
+    </script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/archi-site/sw.js')
+                    .then(function(registration) {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(function(registrationError) {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+  <script type="module" crossorigin src="/archi-site/assets/index-DlzPOi97.js"></script>
+  <link rel="modulepreload" crossorigin href="/archi-site/assets/vendor-hK-MsNnn.js">
+  <link rel="modulepreload" crossorigin href="/archi-site/assets/ui-C5B4GpJo.js">
+  <link rel="modulepreload" crossorigin href="/archi-site/assets/map-BtvNs8GB.js">
+  <link rel="modulepreload" crossorigin href="/archi-site/assets/database-CPgyCjHm.js">
+  <link rel="stylesheet" crossorigin href="/archi-site/assets/index-C5nte7oJ.css">
+</head>
+<body>
+    <!-- Skip to main content for screen readers -->
+    <a href="#main-content" class="skip-link" style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;">メインコンテンツへスキップ</a>
+    
+    <!-- Root container with ARIA live region for dynamic content -->
+    <div id="root" role="application" aria-label="建築データベースアプリケーション"></div>
+    
+    <!-- Loading indicator for users with JavaScript disabled -->
+    <noscript>
+        <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+            <h1>建築データベース</h1>
+            <p>このアプリケーションはJavaScriptが必要です。ブラウザでJavaScriptを有効にしてください。</p>
+            <p>This application requires JavaScript. Please enable JavaScript in your browser.</p>
+        </div>
+    </noscript>
+    
+    <!-- Application script -->
+</body>
+</html>

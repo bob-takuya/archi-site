@@ -1,0 +1,979 @@
+{
+  "totalRecords": 698,
+  "yearDistribution": [
+    {
+      "year": 1958,
+      "count": 1,
+      "categories": {
+        "集合住宅": 1
+      }
+    },
+    {
+      "year": 1963,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1964,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1965,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1968,
+      "count": 1,
+      "categories": {
+        "集合住宅": 1
+      }
+    },
+    {
+      "year": 1969,
+      "count": 3,
+      "categories": {
+        "集合住宅": 3
+      }
+    },
+    {
+      "year": 1970,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1971,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1972,
+      "count": 7,
+      "categories": {
+        "集合住宅": 7
+      }
+    },
+    {
+      "year": 1973,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1974,
+      "count": 6,
+      "categories": {
+        "集合住宅": 6
+      }
+    },
+    {
+      "year": 1975,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1976,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1977,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1978,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    },
+    {
+      "year": 1979,
+      "count": 4,
+      "categories": {
+        "集合住宅": 4
+      }
+    },
+    {
+      "year": 1980,
+      "count": 3,
+      "categories": {
+        "集合住宅": 3
+      }
+    },
+    {
+      "year": 1981,
+      "count": 4,
+      "categories": {
+        "集合住宅": 4
+      }
+    },
+    {
+      "year": 1982,
+      "count": 3,
+      "categories": {
+        "集合住宅": 3
+      }
+    },
+    {
+      "year": 1983,
+      "count": 3,
+      "categories": {
+        "集合住宅": 3
+      }
+    },
+    {
+      "year": 1984,
+      "count": 5,
+      "categories": {
+        "集合住宅": 5
+      }
+    },
+    {
+      "year": 1985,
+      "count": 4,
+      "categories": {
+        "集合住宅": 4
+      }
+    },
+    {
+      "year": 1986,
+      "count": 8,
+      "categories": {
+        "集合住宅": 8
+      }
+    },
+    {
+      "year": 1987,
+      "count": 9,
+      "categories": {
+        "集合住宅": 9
+      }
+    },
+    {
+      "year": 1988,
+      "count": 9,
+      "categories": {
+        "集合住宅": 9
+      }
+    },
+    {
+      "year": 1989,
+      "count": 13,
+      "categories": {
+        "集合住宅": 13
+      }
+    },
+    {
+      "year": 1990,
+      "count": 11,
+      "categories": {
+        "集合住宅": 11
+      }
+    },
+    {
+      "year": 1991,
+      "count": 19,
+      "categories": {
+        "集合住宅": 19
+      }
+    },
+    {
+      "year": 1992,
+      "count": 10,
+      "categories": {
+        "集合住宅": 10
+      }
+    },
+    {
+      "year": 1993,
+      "count": 9,
+      "categories": {
+        "集合住宅": 9
+      }
+    },
+    {
+      "year": 1994,
+      "count": 7,
+      "categories": {
+        "集合住宅": 7
+      }
+    },
+    {
+      "year": 1995,
+      "count": 9,
+      "categories": {
+        "集合住宅": 9
+      }
+    },
+    {
+      "year": 1996,
+      "count": 10,
+      "categories": {
+        "集合住宅": 10
+      }
+    },
+    {
+      "year": 1997,
+      "count": 5,
+      "categories": {
+        "集合住宅": 5
+      }
+    },
+    {
+      "year": 1998,
+      "count": 21,
+      "categories": {
+        "集合住宅": 21
+      }
+    },
+    {
+      "year": 1999,
+      "count": 10,
+      "categories": {
+        "集合住宅": 10
+      }
+    },
+    {
+      "year": 2000,
+      "count": 12,
+      "categories": {
+        "集合住宅": 12
+      }
+    },
+    {
+      "year": 2001,
+      "count": 5,
+      "categories": {
+        "集合住宅": 5
+      }
+    },
+    {
+      "year": 2002,
+      "count": 9,
+      "categories": {
+        "集合住宅": 9
+      }
+    },
+    {
+      "year": 2003,
+      "count": 18,
+      "categories": {
+        "集合住宅": 18
+      }
+    },
+    {
+      "year": 2004,
+      "count": 12,
+      "categories": {
+        "集合住宅": 12
+      }
+    },
+    {
+      "year": 2005,
+      "count": 11,
+      "categories": {
+        "集合住宅": 11
+      }
+    },
+    {
+      "year": 2006,
+      "count": 13,
+      "categories": {
+        "集合住宅": 13
+      }
+    },
+    {
+      "year": 2007,
+      "count": 22,
+      "categories": {
+        "集合住宅": 22
+      }
+    },
+    {
+      "year": 2008,
+      "count": 12,
+      "categories": {
+        "集合住宅": 12
+      }
+    },
+    {
+      "year": 2009,
+      "count": 13,
+      "categories": {
+        "集合住宅": 13
+      }
+    },
+    {
+      "year": 2010,
+      "count": 15,
+      "categories": {
+        "集合住宅": 15
+      }
+    },
+    {
+      "year": 2011,
+      "count": 10,
+      "categories": {
+        "集合住宅": 10
+      }
+    },
+    {
+      "year": 2012,
+      "count": 20,
+      "categories": {
+        "集合住宅": 20
+      }
+    },
+    {
+      "year": 2013,
+      "count": 19,
+      "categories": {
+        "集合住宅": 19
+      }
+    },
+    {
+      "year": 2014,
+      "count": 32,
+      "categories": {
+        "集合住宅": 32
+      }
+    },
+    {
+      "year": 2015,
+      "count": 29,
+      "categories": {
+        "集合住宅": 29
+      }
+    },
+    {
+      "year": 2016,
+      "count": 26,
+      "categories": {
+        "集合住宅": 26
+      }
+    },
+    {
+      "year": 2017,
+      "count": 24,
+      "categories": {
+        "集合住宅": 24
+      }
+    },
+    {
+      "year": 2018,
+      "count": 28,
+      "categories": {
+        "集合住宅": 28
+      }
+    },
+    {
+      "year": 2019,
+      "count": 24,
+      "categories": {
+        "集合住宅": 24
+      }
+    },
+    {
+      "year": 2020,
+      "count": 26,
+      "categories": {
+        "集合住宅": 26
+      }
+    },
+    {
+      "year": 2021,
+      "count": 21,
+      "categories": {
+        "集合住宅": 21
+      }
+    },
+    {
+      "year": 2022,
+      "count": 35,
+      "categories": {
+        "集合住宅": 35
+      }
+    },
+    {
+      "year": 2023,
+      "count": 27,
+      "categories": {
+        "集合住宅": 27
+      }
+    },
+    {
+      "year": 2024,
+      "count": 18,
+      "categories": {
+        "集合住宅": 18
+      }
+    },
+    {
+      "year": 2027,
+      "count": 2,
+      "categories": {
+        "集合住宅": 2
+      }
+    }
+  ],
+  "prefectureDistribution": [
+    {
+      "prefecture": "東京",
+      "count": 358,
+      "percentage": 51.28939828080229
+    },
+    {
+      "prefecture": "神奈川",
+      "count": 50,
+      "percentage": 7.163323782234957
+    },
+    {
+      "prefecture": "大阪",
+      "count": 39,
+      "percentage": 5.587392550143266
+    },
+    {
+      "prefecture": "福岡",
+      "count": 34,
+      "percentage": 4.871060171919771
+    },
+    {
+      "prefecture": "兵庫",
+      "count": 26,
+      "percentage": 3.7249283667621778
+    },
+    {
+      "prefecture": "京都",
+      "count": 20,
+      "percentage": 2.865329512893983
+    },
+    {
+      "prefecture": "千葉",
+      "count": 20,
+      "percentage": 2.865329512893983
+    },
+    {
+      "prefecture": "広島",
+      "count": 16,
+      "percentage": 2.292263610315186
+    },
+    {
+      "prefecture": "熊本",
+      "count": 16,
+      "percentage": 2.292263610315186
+    },
+    {
+      "prefecture": "愛知",
+      "count": 15,
+      "percentage": 2.148997134670487
+    },
+    {
+      "prefecture": "宮城",
+      "count": 9,
+      "percentage": 1.2893982808022924
+    },
+    {
+      "prefecture": "茨城",
+      "count": 9,
+      "percentage": 1.2893982808022924
+    },
+    {
+      "prefecture": "長野",
+      "count": 7,
+      "percentage": 1.002865329512894
+    },
+    {
+      "prefecture": "群馬",
+      "count": 6,
+      "percentage": 0.8595988538681949
+    },
+    {
+      "prefecture": "埼玉",
+      "count": 6,
+      "percentage": 0.8595988538681949
+    }
+  ],
+  "categoryDistribution": [
+    {
+      "category": "集合住宅",
+      "count": 697,
+      "percentage": 100,
+      "color": "#8884d8"
+    }
+  ],
+  "cityDistribution": [],
+  "architectPopularity": [
+    {
+      "architect": "遠藤剛生",
+      "count": 21,
+      "percentage": 3.012912482065997
+    },
+    {
+      "architect": "青木茂",
+      "count": 20,
+      "percentage": 2.8694404591104736
+    },
+    {
+      "architect": "安藤忠雄",
+      "count": 14,
+      "percentage": 2.008608321377331
+    },
+    {
+      "architect": "千葉学",
+      "count": 13,
+      "percentage": 1.8651362984218076
+    },
+    {
+      "architect": "黒川紀章",
+      "count": 12,
+      "percentage": 1.721664275466284
+    },
+    {
+      "architect": "伊藤博之",
+      "count": 11,
+      "percentage": 1.5781922525107603
+    },
+    {
+      "architect": "梵寿綱",
+      "count": 11,
+      "percentage": 1.5781922525107603
+    },
+    {
+      "architect": "飯田善彦",
+      "count": 10,
+      "percentage": 1.4347202295552368
+    },
+    {
+      "architect": "篠原聡子",
+      "count": 9,
+      "percentage": 1.291248206599713
+    },
+    {
+      "architect": "竹中工務店",
+      "count": 8,
+      "percentage": 1.1477761836441895
+    },
+    {
+      "architect": "新居千秋",
+      "count": 8,
+      "percentage": 1.1477761836441895
+    },
+    {
+      "architect": "藤本高志",
+      "count": 7,
+      "percentage": 1.0043041606886656
+    },
+    {
+      "architect": "長谷川逸子",
+      "count": 7,
+      "percentage": 1.0043041606886656
+    },
+    {
+      "architect": "高松伸",
+      "count": 7,
+      "percentage": 1.0043041606886656
+    },
+    {
+      "architect": "内井昭蔵",
+      "count": 7,
+      "percentage": 1.0043041606886656
+    },
+    {
+      "architect": "早川邦彦",
+      "count": 7,
+      "percentage": 1.0043041606886656
+    },
+    {
+      "architect": "北山恒",
+      "count": 6,
+      "percentage": 0.860832137733142
+    },
+    {
+      "architect": "小山光",
+      "count": 6,
+      "percentage": 0.860832137733142
+    },
+    {
+      "architect": "駒田建築設計事務所",
+      "count": 6,
+      "percentage": 0.860832137733142
+    },
+    {
+      "architect": "松岡恭子",
+      "count": 6,
+      "percentage": 0.860832137733142
+    },
+    {
+      "architect": "浅利幸男",
+      "count": 5,
+      "percentage": 0.7173601147776184
+    },
+    {
+      "architect": "坂倉建築研究所",
+      "count": 5,
+      "percentage": 0.7173601147776184
+    },
+    {
+      "architect": "槇文彦",
+      "count": 5,
+      "percentage": 0.7173601147776184
+    },
+    {
+      "architect": "納谷建築設計事務所",
+      "count": 5,
+      "percentage": 0.7173601147776184
+    },
+    {
+      "architect": "設計組織ADH",
+      "count": 5,
+      "percentage": 0.7173601147776184
+    }
+  ],
+  "statusDistribution": [],
+  "timelineData": [
+    {
+      "year": 1958,
+      "cumulative": 1,
+      "new": 1
+    },
+    {
+      "year": 1963,
+      "cumulative": 3,
+      "new": 2
+    },
+    {
+      "year": 1964,
+      "cumulative": 5,
+      "new": 2
+    },
+    {
+      "year": 1965,
+      "cumulative": 7,
+      "new": 2
+    },
+    {
+      "year": 1968,
+      "cumulative": 8,
+      "new": 1
+    },
+    {
+      "year": 1969,
+      "cumulative": 11,
+      "new": 3
+    },
+    {
+      "year": 1970,
+      "cumulative": 13,
+      "new": 2
+    },
+    {
+      "year": 1971,
+      "cumulative": 15,
+      "new": 2
+    },
+    {
+      "year": 1972,
+      "cumulative": 22,
+      "new": 7
+    },
+    {
+      "year": 1973,
+      "cumulative": 24,
+      "new": 2
+    },
+    {
+      "year": 1974,
+      "cumulative": 30,
+      "new": 6
+    },
+    {
+      "year": 1975,
+      "cumulative": 32,
+      "new": 2
+    },
+    {
+      "year": 1976,
+      "cumulative": 34,
+      "new": 2
+    },
+    {
+      "year": 1977,
+      "cumulative": 36,
+      "new": 2
+    },
+    {
+      "year": 1978,
+      "cumulative": 38,
+      "new": 2
+    },
+    {
+      "year": 1979,
+      "cumulative": 42,
+      "new": 4
+    },
+    {
+      "year": 1980,
+      "cumulative": 45,
+      "new": 3
+    },
+    {
+      "year": 1981,
+      "cumulative": 49,
+      "new": 4
+    },
+    {
+      "year": 1982,
+      "cumulative": 52,
+      "new": 3
+    },
+    {
+      "year": 1983,
+      "cumulative": 55,
+      "new": 3
+    },
+    {
+      "year": 1984,
+      "cumulative": 60,
+      "new": 5
+    },
+    {
+      "year": 1985,
+      "cumulative": 64,
+      "new": 4
+    },
+    {
+      "year": 1986,
+      "cumulative": 72,
+      "new": 8
+    },
+    {
+      "year": 1987,
+      "cumulative": 81,
+      "new": 9
+    },
+    {
+      "year": 1988,
+      "cumulative": 90,
+      "new": 9
+    },
+    {
+      "year": 1989,
+      "cumulative": 103,
+      "new": 13
+    },
+    {
+      "year": 1990,
+      "cumulative": 114,
+      "new": 11
+    },
+    {
+      "year": 1991,
+      "cumulative": 133,
+      "new": 19
+    },
+    {
+      "year": 1992,
+      "cumulative": 143,
+      "new": 10
+    },
+    {
+      "year": 1993,
+      "cumulative": 152,
+      "new": 9
+    },
+    {
+      "year": 1994,
+      "cumulative": 159,
+      "new": 7
+    },
+    {
+      "year": 1995,
+      "cumulative": 168,
+      "new": 9
+    },
+    {
+      "year": 1996,
+      "cumulative": 178,
+      "new": 10
+    },
+    {
+      "year": 1997,
+      "cumulative": 183,
+      "new": 5
+    },
+    {
+      "year": 1998,
+      "cumulative": 204,
+      "new": 21
+    },
+    {
+      "year": 1999,
+      "cumulative": 214,
+      "new": 10
+    },
+    {
+      "year": 2000,
+      "cumulative": 226,
+      "new": 12
+    },
+    {
+      "year": 2001,
+      "cumulative": 231,
+      "new": 5
+    },
+    {
+      "year": 2002,
+      "cumulative": 240,
+      "new": 9
+    },
+    {
+      "year": 2003,
+      "cumulative": 258,
+      "new": 18
+    },
+    {
+      "year": 2004,
+      "cumulative": 270,
+      "new": 12
+    },
+    {
+      "year": 2005,
+      "cumulative": 281,
+      "new": 11
+    },
+    {
+      "year": 2006,
+      "cumulative": 294,
+      "new": 13
+    },
+    {
+      "year": 2007,
+      "cumulative": 316,
+      "new": 22
+    },
+    {
+      "year": 2008,
+      "cumulative": 328,
+      "new": 12
+    },
+    {
+      "year": 2009,
+      "cumulative": 341,
+      "new": 13
+    },
+    {
+      "year": 2010,
+      "cumulative": 356,
+      "new": 15
+    },
+    {
+      "year": 2011,
+      "cumulative": 366,
+      "new": 10
+    },
+    {
+      "year": 2012,
+      "cumulative": 386,
+      "new": 20
+    },
+    {
+      "year": 2013,
+      "cumulative": 405,
+      "new": 19
+    },
+    {
+      "year": 2014,
+      "cumulative": 437,
+      "new": 32
+    },
+    {
+      "year": 2015,
+      "cumulative": 466,
+      "new": 29
+    },
+    {
+      "year": 2016,
+      "cumulative": 492,
+      "new": 26
+    },
+    {
+      "year": 2017,
+      "cumulative": 516,
+      "new": 24
+    },
+    {
+      "year": 2018,
+      "cumulative": 544,
+      "new": 28
+    },
+    {
+      "year": 2019,
+      "cumulative": 568,
+      "new": 24
+    },
+    {
+      "year": 2020,
+      "cumulative": 594,
+      "new": 26
+    },
+    {
+      "year": 2021,
+      "cumulative": 615,
+      "new": 21
+    },
+    {
+      "year": 2022,
+      "cumulative": 650,
+      "new": 35
+    },
+    {
+      "year": 2023,
+      "cumulative": 677,
+      "new": 27
+    },
+    {
+      "year": 2024,
+      "cumulative": 695,
+      "new": 18
+    },
+    {
+      "year": 2027,
+      "cumulative": 697,
+      "new": 2
+    }
+  ],
+  "geographicDensity": [],
+  "trendAnalysis": {
+    "growthRate": 100,
+    "peakYear": 2022,
+    "mostPopularCategory": "集合住宅",
+    "diversityIndex": 0
+  },
+  "metadata": {
+    "timeRange": "all",
+    "prefecture": "all",
+    "category": "集合住宅",
+    "computedAt": "2025-07-11T00:32:12.440Z",
+    "dataHash": "Njk4LTEzNTU2LTEw"
+  }
+}
