@@ -84,6 +84,8 @@ const ArchitectsPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [activeFilters, setActiveFilters] = useState<{type: string, value: string, label: string}[]>([]);
+  const [databaseUnavailable, setDatabaseUnavailable] = useState(false);
+  const [error, setError] = useState<string>('');
   
   // Filter options
   const [nationalityFilter, setNationalityFilter] = useState('');
@@ -182,8 +184,8 @@ const ArchitectsPage = () => {
       if (architect.school) {
         schoolCounts.set(architect.school, (schoolCounts.get(architect.school) || 0) + 1);
       }
-      if (architect.birth_year) {
-        const decade = `${Math.floor(architect.birth_year / 10) * 10}年代`;
+      if (architect.birthYear) {
+        const decade = `${Math.floor(architect.birthYear / 10) * 10}年代`;
         birthDecadeCounts.set(decade, (birthDecadeCounts.get(decade) || 0) + 1);
       }
     });
@@ -263,10 +265,14 @@ const ArchitectsPage = () => {
       setArchitects(result.results);
       setTotalItems(result.total);
       setCurrentPage(page);
+      setDatabaseUnavailable(false);
+      setError('');
     } catch (error) {
       console.error('❌ Error fetching architects:', error);
       setArchitects([]);
       setTotalItems(0);
+      setDatabaseUnavailable(true);
+      setError(error instanceof Error ? error.message : 'データベースに接続できませんでした');
     } finally {
       setLoading(false);
     }
