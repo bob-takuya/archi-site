@@ -8,21 +8,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-    // Add explicit minification settings to prevent function name mangling
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: false, // Keep console logs for debugging
-        drop_debugger: true,
-      },
-      mangle: {
-        keep_fnames: true, // Preserve function names to prevent "ge is not a function" errors
-        keep_classnames: true,
-      },
-      format: {
-        comments: false,
-      },
-    },
+    // Disable minification to prevent function name mangling issues
+    minify: false,
     rollupOptions: {
       output: {
         manualChunks: {
