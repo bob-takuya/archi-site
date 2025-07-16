@@ -65,6 +65,7 @@ jobs:
           mkdir -p dist/db
           cp -R public/db/archimap.sqlite* dist/db/ || echo "Failed to copy database files"
           cp -R public/db/database-info.json dist/db/ || echo "database-info.json not found"
+          cp -R public/db/chunks dist/db/ || echo "Failed to copy chunks directory"
           
           echo "Build complete"
           ls -la dist
