@@ -167,6 +167,13 @@ async function tryDirectLoading(): Promise<any> {
  * Initialize database with chunked loading preferred, direct fallback
  */
 export const initDatabase = async (): Promise<any> => {
+  console.log('🔍 initDatabase called - Current state:', {
+    hasWorker: !!worker,
+    hasDatabase: !!database,
+    isInitializing,
+    hasInitPromise: !!initPromise
+  });
+  
   if (worker || database) {
     console.log('✅ Database already initialized');
     return worker || database;
@@ -216,7 +223,10 @@ export const initDatabase = async (): Promise<any> => {
  * Execute SQL query
  */
 export const executeQuery = async (query: string, params: any[] = []): Promise<any[]> => {
+  console.log('📊 executeQuery called:', { query: query.substring(0, 50) + '...', hasWorker: !!worker, hasDatabase: !!database });
+  
   if (!worker && !database) {
+    console.log('📊 No database connection, initializing...');
     await initDatabase();
   }
   
