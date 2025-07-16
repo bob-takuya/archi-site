@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Architects Database Initialization</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .log { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; font-family: monospace; }
+        .error { background: #ffe6e6; color: #d00; }
+        .success { background: #e6ffe6; color: #060; }
+        .warning { background: #fffbe6; color: #850; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Test Architects Database Initialization</h1>
+    <div>
+        <button onclick="testDatabaseConfig()">Test Database Config</button>
+        <button onclick="testSqlJsHttpvfs()">Test sql.js-httpvfs</button>
+        <button onclick="testDirectSqlJs()">Test Direct SQL.js</button>
+    </div>
+    <div id="logs"></div>
+
+    <script type="module">
+        window.logsDiv = document.getElementById('logs');
+        
+        window.log = function(message, type = 'info') {
+            console.log(message);
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            window.logsDiv.appendChild(div);
+            window.logsDiv.scrollTop = window.logsDiv.scrollHeight;
+        }
+
+        window.testDatabaseConfig = async function() {
+            log('Testing database configuration...');
+            try {
+                // Test database-info.json
+                const configUrl = '/archi-site/db/database-info.json';
+                log(`Fetching config from: ${configUrl}`);
+                const configResponse = await fetch(configUrl);
+                if (!configResponse.ok) {
+                    throw new Error(`Config fetch failed: ${configResponse.status} ${configResponse.statusText}`);
+                }
+                const config = await configResponse.json();
+                log(`Config loaded: ${JSON.stringify(config, null, 2)}`, 'success');
+                
+                // Test database file availability
+                const dbUrl = `/archi-site/db/${config.database}`;
+                log(`Testing database file: ${dbUrl}`);
+                const dbResponse = await fetch(dbUrl, { method: 'HEAD' });
+                if (!dbResponse.ok) {
+                    throw new Error(`Database file not accessible: ${dbResponse.status}`);
+                }
+                const size = dbResponse.headers.get('content-length');
+                log(`Database file accessible, size: ${size} bytes`, 'success');
+                
+                // Test chunk files if mentioned
+                if (config.chunks > 0) {
+                    log(`Testing chunk files (expecting ${config.chunks} chunks)...`);
+                    const chunkUrl = '/archi-site/db/chunks/chunk_000000.bin';
+                    const chunkResponse = await fetch(chunkUrl, { method: 'HEAD' });
+                    if (chunkResponse.ok) {
+                        log('Chunk files are accessible', 'success');
+                    } else {
+                        log('Chunk files not found (may use different format)', 'warning');
+                    }
+                }
+                
+            } catch (error) {
+                log(`Config test error: ${error.message}`, 'error');
+            }
+        }
+
+        window.testSqlJsHttpvfs = async function() {
+            log('Testing sql.js-httpvfs initialization...');
+            try {
+                // Test module import
+                log('Importing sql.js-httpvfs module...');
+                const module = await import('sql.js-httpvfs');
+                log(`Module imported, exports: ${Object.keys(module).join(', ')}`, 'success');
+                
+                // Check for createDbWorker function
+                if (!module.createDbWorker) {
+                    throw new Error('createDbWorker function not found in module');
+                }
+                
+                // Try to create worker with inline config
+                log('Creating database worker...');
+                const config = {
+                    from: "inline",
+                    config: {
+                        serverMode: "full",
+                        url: "/archi-site/db/archimap.sqlite",
+                        requestChunkSize: 65536
+                    }
+                };
+                
+                const workerUrl = new URL('/archi-site/sqlite.worker.js', window.location.origin);
+                const wasmUrl = new URL('/archi-site/sql-wasm.wasm', window.location.origin);
+                
+                log(`Worker URL: ${workerUrl}`);
+                log(`WASM URL: ${wasmUrl}`);
+                
+                const worker = await module.createDbWorker(
+                    [config],
+                    workerUrl.toString(),
+                    wasmUrl.toString()
+                );
+                
+                log('Worker created successfully!', 'success');
+                
+                // Test basic query
+                const result = await worker.db.exec('SELECT sqlite_version()');
+                log(`SQLite version: ${result[0]?.values[0][0]}`, 'success');
+                
+                // Test ZCDARCHITECT table
+                const architectCount = await worker.db.exec('SELECT COUNT(*) FROM ZCDARCHITECT');
+                log(`Architects count: ${architectCount[0]?.values[0][0]}`, 'success');
+                
+            } catch (error) {
+                log(`sql.js-httpvfs error: ${error.message}`, 'error');
+                log(`Stack trace: ${error.stack}`, 'error');
+                
+                // Check if "ge is not a function" error
+                if (error.message.includes('ge is not a function')) {
+                    log('This is the "ge is not a function" error!', 'error');
+                    log('Possible causes:', 'warning');
+                    log('1. Minification/bundling issue with sql.js-httpvfs', 'warning');
+                    log('2. Module loading conflict or version mismatch', 'warning');
+                    log('3. Missing or incorrect worker/wasm files', 'warning');
+                }
+            }
+        }
+
+        window.testDirectSqlJs = async function() {
+            log('Testing direct SQL.js loading...');
+            try {
+                // Import SQL.js
+                log('Importing SQL.js module...');
+                const sqljs = await import('sql.js');
+                const initSqlJs = sqljs.default || sqljs;
+                
+                log('Initializing SQL.js...');
+                const SQL = await initSqlJs({
+                    locateFile: file => {
+                        if (file === 'sql-wasm.wasm') {
+                            return '/archi-site/sql-wasm.wasm';
+                        }
+                        return file;
+                    }
+                });
+                
+                log('SQL.js initialized', 'success');
+                
+                // Fetch database
+                log('Fetching database file...');
+                const response = await fetch('/archi-site/db/archimap.sqlite');
+                if (!response.ok) {
+                    throw new Error(`Database fetch failed: ${response.status}`);
+                }
+                
+                const buffer = await response.arrayBuffer();
+                log(`Database downloaded: ${(buffer.byteLength / 1024 / 1024).toFixed(2)} MB`, 'success');
+                
+                // Create database
+                const db = new SQL.Database(new Uint8Array(buffer));
+                log('Database opened successfully', 'success');
+                
+                // Test query
+                const result = db.exec('SELECT COUNT(*) FROM ZCDARCHITECT');
+                log(`Architects count: ${result[0]?.values[0][0]}`, 'success');
+                
+                // Sample data
+                const sample = db.exec('SELECT ZAT_ID, ZAT_ARCHITECT FROM ZCDARCHITECT LIMIT 5');
+                log(`Sample architects: ${JSON.stringify(sample[0]?.values)}`, 'success');
+                
+            } catch (error) {
+                log(`Direct SQL.js error: ${error.message}`, 'error');
+                log(`Stack trace: ${error.stack}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

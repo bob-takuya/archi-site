@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .loading {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Database Connection Test</h1>
+    <div id="status"></div>
+    <div id="results"></div>
+
+    <script type="module">
+        const statusDiv = document.getElementById('status');
+        const resultsDiv = document.getElementById('results');
+
+        function addStatus(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.textContent = message;
+            statusDiv.appendChild(div);
+        }
+
+        function addResult(title, content) {
+            const div = document.createElement('div');
+            div.innerHTML = `<h3>${title}</h3><pre>${JSON.stringify(content, null, 2)}</pre>`;
+            resultsDiv.appendChild(div);
+        }
+
+        async function testDatabaseConnection() {
+            addStatus('Starting database connection test...', 'loading');
+
+            try {
+                // Test 1: Check if sql.js-httpvfs can be imported
+                addStatus('Testing sql.js-httpvfs import...', 'loading');
+                const sqlJsHttpvfs = await import('/archi-site/node_modules/sql.js-httpvfs/dist/sqlite.worker.js');
+                addStatus('✅ sql.js-httpvfs module loaded', 'success');
+
+                // Test 2: Check worker and wasm files
+                addStatus('Checking worker and wasm files...', 'loading');
+                
+                const workerResponse = await fetch('/archi-site/sqlite.worker.js', { method: 'HEAD' });
+                if (workerResponse.ok) {
+                    addStatus('✅ Worker file accessible', 'success');
+                } else {
+                    addStatus(`❌ Worker file not accessible: ${workerResponse.status}`, 'error');
+                }
+
+                const wasmResponse = await fetch('/archi-site/sql-wasm.wasm', { method: 'HEAD' });
+                if (wasmResponse.ok) {
+                    addStatus('✅ WASM file accessible', 'success');
+                } else {
+                    addStatus(`❌ WASM file not accessible: ${wasmResponse.status}`, 'error');
+                }
+
+                // Test 3: Check database config files
+                addStatus('Checking database configuration...', 'loading');
+                
+                const configResponse = await fetch('/archi-site/db/database-info.json');
+                if (configResponse.ok) {
+                    const config = await configResponse.json();
+                    addStatus('✅ Database config loaded', 'success');
+                    addResult('Database Configuration', config);
+                } else {
+                    addStatus(`❌ Database config not accessible: ${configResponse.status}`, 'error');
+                }
+
+                const sqliteConfigResponse = await fetch('/archi-site/db/archimap.sqlite3.json');
+                if (sqliteConfigResponse.ok) {
+                    const sqliteConfig = await sqliteConfigResponse.json();
+                    addStatus('✅ SQLite config loaded', 'success');
+                    addResult('SQLite Configuration', sqliteConfig);
+                } else {
+                    addStatus(`❌ SQLite config not accessible: ${sqliteConfigResponse.status}`, 'error');
+                }
+
+                // Test 4: Try to initialize the database
+                addStatus('Attempting to initialize database...', 'loading');
+                
+                // Import and test the database service
+                const dbModule = await import('/archi-site/src/services/db/FixedDatabaseService.ts');
+                const { initDatabase, executeQuery } = dbModule;
+
+                const db = await initDatabase();
+                addStatus('✅ Database initialized successfully', 'success');
+
+                // Test 5: Run a simple query
+                addStatus('Testing database query...', 'loading');
+                const result = await executeQuery('SELECT sqlite_version()');
+                if (result && result.length > 0) {
+                    addStatus(`✅ SQLite version: ${result[0].values[0][0]}`, 'success');
+                }
+
+                // Test 6: Query architects table
+                const architectResult = await executeQuery('SELECT COUNT(*) FROM ZCDARCHITECT');
+                if (architectResult && architectResult.length > 0) {
+                    addStatus(`✅ Architect records: ${architectResult[0].values[0][0]}`, 'success');
+                }
+
+                addStatus('🎉 All tests passed!', 'success');
+
+            } catch (error) {
+                addStatus(`❌ Error: ${error.message}`, 'error');
+                console.error('Full error:', error);
+                addResult('Error Details', {
+                    message: error.message,
+                    stack: error.stack
+                });
+            }
+        }
+
+        // Run the test
+        testDatabaseConnection();
+    </script>
+</body>
+</html>

@@ -32,7 +32,13 @@ async function tryChunkedLoading(): Promise<any> {
   
   try {
     // Dynamic import of sql.js-httpvfs
-    const { createDbWorker } = await import('sql.js-httpvfs');
+    const sqlJsHttpvfs = await import('sql.js-httpvfs');
+    const { createDbWorker } = sqlJsHttpvfs;
+    
+    // Ensure createDbWorker is available
+    if (!createDbWorker || typeof createDbWorker !== 'function') {
+      throw new Error('createDbWorker function not found in sql.js-httpvfs module');
+    }
     
     // Test database config file accessibility
     const configResponse = await fetch(`${BASE_PATH}/db/database-info.json`, { method: 'HEAD' });
@@ -42,46 +48,65 @@ async function tryChunkedLoading(): Promise<any> {
     
     console.log('✅ Database config is accessible');
     
-    // Use direct chunked configuration
+    // Use the existing JSON configuration file
     const dbConfig = [{
-      from: "inline",
-      config: {
-        serverMode: "full", 
-        url: `${BASE_PATH}/db/archimap.sqlite`,
-        requestChunkSize: 65536
-      }
+      from: "jsonconfig",
+      configUrl: `${BASE_PATH}/db/archimap.sqlite3.json`
     }];
     
-    console.log('🔧 Using chunked config for 12MB database');
+    console.log('🔧 Using jsonconfig for production-safe loading');
     
-    // Initialize worker
-    const workerUrl = new URL(`${BASE_PATH}/sqlite.worker.js`, window.location.origin);
-    const wasmUrl = new URL(`${BASE_PATH}/sql-wasm.wasm`, window.location.origin);
+    // Initialize worker with absolute URLs
+    const publicUrl = window.location.origin;
+    const workerUrl = `${publicUrl}${BASE_PATH}/sqlite.worker.js`;
+    const wasmUrl = `${publicUrl}${BASE_PATH}/sql-wasm.wasm`;
     
-    worker = await createDbWorker(dbConfig, workerUrl.toString(), wasmUrl.toString());
+    console.log('📍 Worker URL:', workerUrl);
+    console.log('📍 WASM URL:', wasmUrl);
+    
+    worker = await createDbWorker(dbConfig, workerUrl, wasmUrl)
     
     console.log('✅ Chunked database worker initialized');
     
-    // Test functionality
-    const versionResult = await worker.db.exec('SELECT sqlite_version()');
-    if (versionResult && versionResult.length > 0) {
-      console.log(`🔍 SQLite version: ${versionResult[0].values[0][0]}`);
+    // Test functionality with error handling for minification issues
+    try {
+      const exec = worker.db.exec || worker.db['exec'];
+      if (!exec || typeof exec !== 'function') {
+        throw new Error('exec method not found on worker.db');
+      }
+      
+      const versionResult = await exec.call(worker.db, 'SELECT sqlite_version()');
+      if (versionResult && versionResult.length > 0) {
+        console.log(`🔍 SQLite version: ${versionResult[0].values[0][0]}`);
+      }
+    } catch (versionError) {
+      console.warn('⚠️ Version check failed, but continuing:', versionError);
     }
     
-    // Test both main tables
-    const archCountResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECTURE");
-    if (archCountResult && archCountResult.length > 0) {
-      console.log(`🏢 Architecture records: ${archCountResult[0].values[0][0]} (chunked loading)`);
+    // Test both main tables with error handling
+    try {
+      const exec = worker.db.exec || worker.db['exec'];
+      const archCountResult = await exec.call(worker.db, "SELECT COUNT(*) FROM ZCDARCHITECTURE");
+      if (archCountResult && archCountResult.length > 0) {
+        console.log(`🏢 Architecture records: ${archCountResult[0].values[0][0]} (chunked loading)`);
+      }
+    } catch (tableError) {
+      console.warn('⚠️ Architecture table check failed:', tableError);
     }
     
-    const architectCountResult = await worker.db.exec("SELECT COUNT(*) FROM ZCDARCHITECT");
-    if (architectCountResult && architectCountResult.length > 0) {
-      console.log(`👤 Architect records: ${architectCountResult[0].values[0][0]} (chunked loading)`);
+    try {
+      const exec = worker.db.exec || worker.db['exec'];
+      const architectCountResult = await exec.call(worker.db, "SELECT COUNT(*) FROM ZCDARCHITECT");
+      if (architectCountResult && architectCountResult.length > 0) {
+        console.log(`👤 Architect records: ${architectCountResult[0].values[0][0]} (chunked loading)`);
+      }
+    } catch (tableError) {
+      console.warn('⚠️ Architect table check failed:', tableError);
     }
     
     return worker;
   } catch (error) {
-    console.warn('⚠️ Chunked loading failed:', error.message);
+    console.warn('⚠️ Chunked loading failed:', error);
     throw error;
   }
 }
@@ -93,10 +118,10 @@ async function tryDirectLoading(): Promise<any> {
   console.log('🚀 Fallback: Direct loading (may be slow for large files)...');
   
   try {
-    const sqljs = await import('sql.js');
-    const initSqlJs = sqljs.default || sqljs.initSqlJs;
+    const sqlJsModule = await import('sql.js');
+    const initSqlJs = sqlJsModule.default;
     
-    if (typeof initSqlJs !== 'function') {
+    if (!initSqlJs || typeof initSqlJs !== 'function') {
       throw new Error('sql.js initialization function not found');
     }
     
@@ -196,13 +221,26 @@ export const executeQuery = async (query: string, params: any[] = []): Promise<a
   }
   
   if (worker) {
-    // Use chunked worker
-    const result = await worker.db.exec(query, params);
-    return result;
+    try {
+      // Handle potential minification issues with method names
+      const exec = worker.db.exec || worker.db['exec'];
+      if (!exec || typeof exec !== 'function') {
+        throw new Error('exec method not found on worker.db');
+      }
+      const result = await exec.call(worker.db, query, params);
+      return result;
+    } catch (error) {
+      console.error('Worker query error:', error);
+      throw error;
+    }
   } else if (database) {
-    // Use direct database
-    const result = database.exec(query, params);
-    return result;
+    try {
+      const result = database.exec(query, params);
+      return result;
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
+    }
   } else {
     throw new Error('Database not initialized');
   }
