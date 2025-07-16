@@ -97,6 +97,7 @@ export const getAllArchitects = async (
     const countResult = await getSingleResult<{total: number}>(countQuery);
     console.log('📊 Count result:', countResult);
     const total = countResult?.total || 0;
+    console.log('📊 Total architects found:', total);
     
     // Get paginated results
     const offset = (page - 1) * limit;

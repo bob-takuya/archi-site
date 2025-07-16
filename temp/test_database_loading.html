@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Loading Test</title>
+</head>
+<body>
+    <h1>Database Loading Test</h1>
+    <div id="status">Initializing...</div>
+    <div id="results"></div>
+
+    <script type="module">
+        const statusEl = document.getElementById('status');
+        const resultsEl = document.getElementById('results');
+
+        function log(message) {
+            const div = document.createElement('div');
+            div.textContent = `${new Date().toISOString()} - ${message}`;
+            resultsEl.appendChild(div);
+            console.log(message);
+        }
+
+        async function testDatabase() {
+            try {
+                log('Starting database test...');
+                
+                // Import the service
+                const { initDatabase, getResultsArray } = await import('../src/services/db/FixedDatabaseService.ts');
+                
+                log('Imported database service');
+                statusEl.textContent = 'Initializing database...';
+                
+                // Initialize database
+                await initDatabase();
+                
+                log('Database initialized successfully');
+                statusEl.textContent = 'Database ready!';
+                
+                // Test query
+                log('Running test query...');
+                const architects = await getResultsArray('SELECT COUNT(*) as count FROM ZCDARCHITECT');
+                
+                log(`Query result: ${JSON.stringify(architects)}`);
+                
+                if (architects && architects.length > 0) {
+                    statusEl.textContent = `Success! Found ${architects[0].count} architects in database`;
+                    statusEl.style.color = 'green';
+                } else {
+                    statusEl.textContent = 'Query returned no results';
+                    statusEl.style.color = 'orange';
+                }
+                
+            } catch (error) {
+                log(`Error: ${error.message}`);
+                statusEl.textContent = `Error: ${error.message}`;
+                statusEl.style.color = 'red';
+                console.error(error);
+            }
+        }
+
+        // Run test
+        testDatabase();
+    </script>
+</body>
+</html>

@@ -12788,6 +12788,12 @@ async function tryDirectLoading() {
   }
 }
 const initDatabase = async () => {
+  console.log("🔍 initDatabase called - Current state:", {
+    hasWorker: !!worker,
+    hasDatabase: !!database,
+    isInitializing,
+    hasInitPromise: !!initPromise
+  });
   if (worker || database) {
     console.log("✅ Database already initialized");
     return worker || database;
@@ -12824,7 +12830,9 @@ const initDatabase = async () => {
   return initPromise;
 };
 const executeQuery = async (query, params = []) => {
+  console.log("📊 executeQuery called:", { query: query.substring(0, 50) + "...", hasWorker: !!worker, hasDatabase: !!database });
   if (!worker && !database) {
+    console.log("📊 No database connection, initializing...");
     await initDatabase();
   }
   if (worker) {
@@ -12910,6 +12918,7 @@ const getAllArchitects = async (page = 1, limit = 12, searchTerm = "", sortBy = 
     const countResult = await getSingleResult(countQuery);
     console.log("📊 Count result:", countResult);
     const total = countResult?.total || 0;
+    console.log("📊 Total architects found:", total);
     const offset = (page - 1) * limit;
     const dataQuery = `
       SELECT 
@@ -47449,4 +47458,4 @@ try {
 } catch (error) {
   console.error("React アプリケーションのレンダリング中にエラーが発生しました:", error);
 }
-//# sourceMappingURL=index-_RrstsZD.js.map
+//# sourceMappingURL=index-By2tyqGo.js.map

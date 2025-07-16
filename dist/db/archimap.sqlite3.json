@@ -2,9 +2,9 @@
   "from": "inline",
   "data": [
     {
-      "urlPrefix": "./db/",
+      "urlPrefix": "chunks/",
       "filename": "archimap.sqlite3",
-      "url": "./db/archimap.sqlite3",
+      "url": "archimap.sqlite3",
       "fileSize": 12730368,
       "fileLength": 12730368,
       "integrity": "sha256-693359dbb03d1319dd53564a45307b574784259b27f615491959fdc8436a453b",
