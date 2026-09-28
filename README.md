@@ -8,23 +8,23 @@ A browser-based map and database of architectural works in Japan, built with Rea
 
 **Unfinished prototype — development stopped in July 2025.** The building list, map and detail pages were deployed and work from pre-generated static JSON, but the architect pages, several filters and the CI pipeline were still being debugged when work stopped. It is not actively maintained.
 
-✅ **Works (in the code / last deployment)**
+**Works (in the code / last deployment)**
 - Building list, search and detail pages, backed by static JSON (`public/data/page_*.json`, 50 items per page)
 - Map view with marker clustering (Leaflet)
 - Dataset: **14,467 buildings**; almost all have coordinates, architect and year; about 2,400 have a text description and fewer than 300 have an image URL
 - Japanese / English UI strings (i18next, `src/locales/ja|en`)
 - GitHub Pages deployment via `.github/workflows/deploy-simple.yml` (the last deployment, on 2025-07-16, succeeded)
 
-🚧 **Partial**
+**Partial**
 - Architect list and architect detail pages query an in-browser SQLite database (sql.js + chunked HTTP loading). The last commits (July 14–16, 2025) were still fixing this loading path, so these pages may not work reliably
 - Research and Analytics pages: precomputed analytics JSON exists, but these pages were not reviewed or tested much
 - Several alternative services and page variants (e.g. `Enhanced…`, `Optimized…`, `Simple…`) are still in the tree. It is not always clear which one is live
 
-📝 **Not implemented**
+**Not implemented**
 - Architect filters by nationality, category and school (`SmartArchitectService.ts` logs "not implemented yet")
 - Most buildings have no photos or descriptions
 
-⚠️ **Known issues**
+**Known issues**
 - Scheduled CI and E2E workflows on GitHub Actions fail on every recorded run (last run September 2025)
 - Minification is disabled in the build to work around a runtime error (`'ge is not a function'`)
 - Some service workers are registered at root paths (`/mobile-sw.js`, `/sw-performance.js`) that do not match the `/archi-site/` base path
@@ -67,3 +67,9 @@ scripts/        DB preparation and deployment scripts
 ## Related
 
 - [genshi-studio](https://github.com/bob-takuya/genshi-studio) — another project built with the same AI-agent workflow in July 2025
+
+## License
+
+The source code is released under the MIT License — see [LICENSE](LICENSE).
+
+The building and architect data (`Archimap_database.sqlite*`, `public/data/`, `public/db/` and the copies under `dist/`) was not created by the author and is **not** covered by this license. Rights to that data belong to its original sources.
