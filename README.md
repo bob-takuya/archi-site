@@ -1,201 +1,69 @@
-# 日本の建築マップ (Japanese Architecture Map)
+# Japanese Architecture Map (日本の建築マップ)
 
-An interactive database and map application for Japanese architectural works.
+A browser-based map and database of architectural works in Japan, built with React/TypeScript and deployed as a static site on GitHub Pages.
 
-## Overview
+日本の建築作品を地図と一覧で探せるWebアプリ（開発は2025年7月で停止しており、未完成の部分があります）。
 
-This application provides a comprehensive database of architectural works in Japan, allowing users to browse, search, and visualize buildings on an interactive map. Users can explore architectural works by various criteria including location, architect, year, and style.
+## Status
 
-## Features
+**Unfinished prototype — development stopped in July 2025.** The building list, map and detail pages were deployed and work from pre-generated static JSON, but the architect pages, several filters and the CI pipeline were still being debugged when work stopped. It is not actively maintained.
 
-- **Building Database**: Browse and search through a comprehensive collection of Japanese architectural works
-- **Architect Profiles**: Explore information about architects and their works
-- **Interactive Map**: Visualize buildings on a map with filtering options
-- **Responsive Design**: Optimized for both desktop and mobile devices
-- **Bilingual Support**: Interface available in Japanese and English
-- **Offline Capability**: Works even with limited connectivity
+✅ **Works (in the code / last deployment)**
+- Building list, search and detail pages, backed by static JSON (`public/data/page_*.json`, 50 items per page)
+- Map view with marker clustering (Leaflet)
+- Dataset: **14,467 buildings**; almost all have coordinates, architect and year; about 2,400 have a text description and fewer than 300 have an image URL
+- Japanese / English UI strings (i18next, `src/locales/ja|en`)
+- GitHub Pages deployment via `.github/workflows/deploy-simple.yml` (the last deployment, on 2025-07-16, succeeded)
 
-## Technology Stack
+🚧 **Partial**
+- Architect list and architect detail pages query an in-browser SQLite database (sql.js + chunked HTTP loading). The last commits (July 14–16, 2025) were still fixing this loading path, so these pages may not work reliably
+- Research and Analytics pages: precomputed analytics JSON exists, but these pages were not reviewed or tested much
+- Several alternative services and page variants (e.g. `Enhanced…`, `Optimized…`, `Simple…`) are still in the tree. It is not always clear which one is live
 
-### Frontend
-- React 19.0.0
-- TypeScript 5.8.2
-- Material UI 6.4.8
-- Leaflet 1.9.4 (for maps)
-- React Router 7.4.0
+📝 **Not implemented**
+- Architect filters by nationality, category and school (`SmartArchitectService.ts` logs "not implemented yet")
+- Most buildings have no photos or descriptions
 
-### Backend
-- Node.js
-- Express 4.21.2
-- SQLite3 5.1.7 (with sql.js for browser access)
+⚠️ **Known issues**
+- Scheduled CI and E2E workflows on GitHub Actions fail on every recorded run (last run September 2025)
+- Minification is disabled in the build to work around a runtime error (`'ge is not a function'`)
+- Some service workers are registered at root paths (`/mobile-sw.js`, `/sw-performance.js`) that do not match the `/archi-site/` base path
+- The repository root holds many generated reports (`*_SUMMARY.md`, `*_REPORT.md`, debug HTML files, logs). They came from AI-agent-assisted development. They describe intended results and are **not** verified documentation of the current state
+- Data sources and licensing of the building data are not documented
 
-### Build Tools
-- Webpack 5.98.0
-- TypeScript 5.8.2
+## Demo
 
-### Testing
-- Jest
-- React Testing Library
-- Playwright for E2E testing
+https://bob-takuya.github.io/archi-site/ — last deployed 2025-07-16. How well it works depends on the partial features listed above.
 
-## Setup and Installation
+## Background
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm (v9 or higher)
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/bob-takuya/archi-site.git
-cd archi-site
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Prepare the database:
-```bash
-npm run prepare-db
-```
-
-4. Start the development server:
-```bash
-npm run dev
-```
-
-This will start both the backend server and the frontend development server. The application will be available at http://localhost:8080.
+This started in March 2025 as a personal project: a map of Japanese architecture for architecture students. Most of the development happened in July 2025, with heavy use of AI coding agents (the many report files come from that process). Work stopped after July 2025.
 
 ## Development
 
-### Project Structure
-
-```
-archi-site/
-├── public/            # Static assets
-├── scripts/           # Build and utility scripts
-├── server/            # Backend API server
-│   ├── middleware/    # Express middleware
-│   ├── routes/        # API routes
-│   └── utils/         # Server utilities
-├── src/               # Frontend source code
-│   ├── components/    # React components
-│   │   └── ui/        # Reusable UI components
-│   ├── context/       # React contexts for state management
-│   ├── hooks/         # Custom React hooks
-│   ├── pages/         # Page components
-│   ├── services/      # API and database services
-│   │   └── db/        # Database access modules
-│   ├── styles/        # CSS styles
-│   ├── types/         # TypeScript type definitions
-│   └── utils/         # Utility functions
-└── tests/             # Test files
-    ├── unit/          # Unit tests
-    └── screenshots/   # Test screenshots
-```
-
-### Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run test` - Run unit tests
-- `npm run test:e2e` - Run end-to-end tests
-- `npm run test:coverage` - Run tests with coverage report
-- `npm run prepare-db` - Prepare database for development
-
-## Testing
-
-### Unit Tests
-
-Run unit tests with:
+Requires Node.js 18+.
 
 ```bash
-npm test
+npm install          # the deploy workflow uses: npm ci --legacy-peer-deps
+npm run dev          # Vite dev server
+npm run build        # production build into dist/
+npm run prepare-static-db   # regenerate static DB files used for Pages
 ```
 
-### End-to-End Tests
+Tests exist (Jest unit tests under `tests/` and `src/**/__tests__`, many Playwright specs under `tests/e2e`), but they were not passing in CI when development stopped.
 
-Run E2E tests with:
+Main structure:
 
-```bash
-npm run test:e2e
+```
+src/
+  pages/        HomePage, ArchitecturePage, MapPage, ArchitectsPage, ResearchPage, AnalyticsPage, ...
+  components/   UI, map, search, analytics components
+  services/     data access (api/FastArchitectureService = static JSON; db/* = SQLite in browser)
+  locales/      ja / en strings
+public/data/    pre-generated JSON pages, search index, analytics
+scripts/        DB preparation and deployment scripts
 ```
 
-To view test reports:
+## Related
 
-```bash
-npx playwright show-report test-results/reports
-```
-
-## Deployment
-
-### Build for Production
-
-```bash
-npm run build
-```
-
-This will create optimized production builds in the `dist` directory.
-
-### Start Production Server
-
-```bash
-npm start
-```
-
-### GitHub Pages Deployment
-
-This application has transitioned from server-side SQLite to static hosting on GitHub Pages. Deployment is automated via GitHub Actions upon pushing to the main branch.
-
-#### Deployment Workflow
-
-1. GitHub Actions workflow is defined in `.github/workflows/deploy.yml`
-2. Build process:
-   - Run tests (lint, type-check, unit tests, E2E tests)
-   - Convert database to static files (`scripts/prepare-static-db.js`)
-   - Build the application using Vite
-   - Add necessary headers and static files
-3. Deploy to the `gh-pages` branch
-4. Post-build audits (Lighthouse, link checks)
-
-#### Key Technical Elements
-
-- **Client-side Database**: Streaming large SQLite databases using SQL.js and sql.js-httpvfs
-- **SPA Routing**: Client-side routing with HashRouter
-- **Performance Optimization**:
-  - Caching database queries
-  - Bundle optimization and splitting
-  - Static asset caching settings
-- **Security**: Enable SharedArrayBuffer with COOP/COEP headers
-
-#### Post-Deployment Verification
-
-- **Production URL**: https://bob-takuya.github.io/archi-site/
-- **Verification Checklist**:
-  1. Database connection
-  2. Map display and interaction
-  3. Search functionality
-  4. Detail page rendering
-  5. Responsive design
-- **Audit Results**: Check Lighthouse scores and link check results from GitHub Actions
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the ISC License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Data sourced from various architectural archives and publications
-- Thanks to the Shinkenchiku magazine for inspiration and references
+- [genshi-studio](https://github.com/bob-takuya/genshi-studio) — another project built with the same AI-agent workflow in July 2025
